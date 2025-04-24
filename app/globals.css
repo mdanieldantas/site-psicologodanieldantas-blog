@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 30 45% 23%;
+
+    --card: 36 33% 97%;
+    --card-foreground: 30 45% 23%;
+
+    --popover: 36 33% 97%;
+    --popover-foreground: 30 45% 23%;
+
+    --primary: 30 45% 23%;
+    --primary-foreground: 36 33% 97%;
+
+    --secondary: 36 33% 97%;
+    --secondary-foreground: 30 45% 23%;
+
+    --muted: 36 33% 97%;
+    --muted-foreground: 30 30% 36%;
+
+    --accent: 36 33% 97%;
+    --accent-foreground: 30 45% 23%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 36 33% 97%;
+
+    --border: 30 30% 76%;
+    --input: 30 30% 76%;
+    --ring: 30 45% 23%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 30 45% 23%;
+    --foreground: 36 33% 97%;
+
+    --card: 30 45% 23%;
+    --card-foreground: 36 33% 97%;
+
+    --popover: 30 45% 23%;
+    --popover-foreground: 36 33% 97%;
+
+    --primary: 36 33% 97%;
+    --primary-foreground: 30 45% 23%;
+
+    --secondary: 30 30% 36%;
+    --secondary-foreground: 36 33% 97%;
+
+    --muted: 30 30% 36%;
+    --muted-foreground: 36 20% 80%;
+
+    --accent: 30 30% 36%;
+    --accent-foreground: 36 33% 97%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 36 33% 97%;
+
+    --border: 30 30% 36%;
+    --input: 30 30% 36%;
+    --ring: 36 33% 97%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@font-face {
+  font-family: "Kaisei Opti";
+  src: url("https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@400;500;700&display=swap");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Melhorias de foco para acessibilidade */
+:focus-visible {
+  outline: 3px solid #583b1f;
+  outline-offset: 3px;
+}
+
+/* Melhorias de contraste */
+.text-enhanced-contrast {
+  color: #4a3114;
+}
+
+/* Rolagem suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Adicionar ao final do arquivo */
+.navbar-scrolled {
+  background-color: rgba(248, 245, 240, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Melhorias para dispositivos móveis */
+@media (max-width: 768px) {
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.5rem 1rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Evita zoom automático em iOS */
+  }
+
+  .touch-target {
+    padding: 0.75rem;
+  }
+}
+
+/* Otimizações de performance */
+.will-change-transform {
+  will-change: transform;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+}
+
+/* Melhorias de carregamento de imagens */
+.image-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-loaded {
+  opacity: 1;
+}
+
