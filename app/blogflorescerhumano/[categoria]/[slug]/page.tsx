@@ -5,7 +5,8 @@ import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import type { Database } from '@/types/supabase';
-import GiscusComments from '@/app/blogflorescerhumano/components/GiscusComments'; // Corrigindo o import para usar o alias @/
+import GiscusComments from '@/app/blogflorescerhumano/components/GiscusComments';
+import RelatedArticles from '@/app/blogflorescerhumano/components/RelatedArticles'; // Corrigido o import para usar o alias @/
 
 type Artigo = Database['public']['Tables']['artigos']['Row'];
 type Categoria = Database['public']['Tables']['categorias']['Row'];
@@ -67,10 +68,10 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
 
   // --- Extração de Dados --- //
   // Agora 'artigo' tem o tipo ArtigoComRelacoes, e as propriedades devem ser reconhecidas
-  const { titulo, conteudo: artigoConteudo, data_publicacao, imagem_capa_arquivo, categorias, autores, tags } = artigo;
+  const { id: currentArticleId, titulo, conteudo: artigoConteudo, data_publicacao, imagem_capa_arquivo, categorias, autores, tags } = artigo; // Extrai o ID também
   const nomeAutor = autores?.nome ?? 'Autor Desconhecido';
   const nomeCategoria = categorias?.nome ?? 'Categoria Desconhecida';
-  const categoriaSlug = categorias?.slug ?? 'sem-categoria'; // Para links, se necessário
+  const categoriaSlug = categorias?.slug ?? 'sem-categoria';
 
   // --- Formatação da Data --- //
   const dataFormatada = data_publicacao
@@ -153,12 +154,12 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
         <GiscusComments />
       </section>
 
-      {/* TODO: Seção de Artigos Relacionados */}
-      {/* ... */}
+      {/* Seção de Artigos Relacionados */}
+      {/* Passa o ID do artigo atual e suas tags para o componente */}
+      <RelatedArticles currentArticleId={currentArticleId} tags={tags} />
+
     </article>
   );
 }
 
-// TODO: Implementar Tags
-// TODO: Implementar Artigos Relacionados
 // TODO: SEO Dinâmico (metadata)
