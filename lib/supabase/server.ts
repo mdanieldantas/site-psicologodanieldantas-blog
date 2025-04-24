@@ -1,43 +1,21 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+// lib/supabase/server.ts
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/supabase'; // Importa os tipos gerados
 
-// Cria um cliente Supabase para uso no lado do servidor (Server Components, Route Handlers, Server Actions)
-export function createClient() {
-  const cookieStore = cookies();
+// Cria um cliente Supabase para uso no lado do servidor (Server Components, Route Handlers, etc.)
+// Nota: Para operações que exigem autenticação do usuário no servidor (ex: RLS com auth), 
+// pode ser necessário usar helpers do pacote `@supabase/ssr` (createClientServerClient).
+// Para leitura de dados públicos como categorias, o cliente básico é suficiente.
 
-  // Verifica se as variáveis de ambiente estão definidas
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error(
-      'Supabase URL ou Anon Key não estão definidos nas variáveis de ambiente.'
-    );
-  }
-
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
-      },
-      set(name: string, value: string, options: CookieOptions) {
-        try {
-          cookieStore.set({ name, value, ...options });
-        } catch (error) {
-          // The `set` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing
-          // user sessions.
-        }
-      },
-      remove(name: string, options: CookieOptions) {
-        try {
-          cookieStore.set({ name, value: '', ...options });
-        } catch (error) {
-          // The `delete` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing
-          // user sessions.
-        }
-      },
-    },
-  });
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Supabase URL ou Anon Key não estão definidos nas variáveis de ambiente.'
+  );
 }
+
+// Exporta uma instância única do cliente Supabase para o servidor
+// Usamos os tipos genéricos <Database> para ter type safety com o schema do seu banco.
+export const supabaseServer = createClient<Database>(supabaseUrl, supabaseAnonKey);

@@ -1,19 +1,31 @@
-// Página "Sobre" do Blog Florescer Humano
+// app/blogflorescerhumano/sobre/page.tsx
+import React from 'react';
 
 export default function SobreBlogPage() {
   return (
-    <div>
-      <h1>Sobre o Blog Florescer Humano</h1>
-      <p>
-        Este espaço é dedicado à exploração do autoconhecimento, bem-estar
-        emocional e aos princípios da Psicologia Humanista, com foco na
-        Abordagem Centrada na Pessoa (ACP) e na Focalização.
-      </p>
-      <p>
-        Aqui você encontrará artigos, reflexões e recursos para auxiliar em sua
-        jornada de crescimento pessoal.
-      </p>
-      {/* Mais detalhes sobre o propósito e o autor podem ser adicionados aqui */}
-    </div>
+    <main className="container mx-auto px-4 py-12">
+      <h1 className="text-4xl font-bold mb-6">Sobre o Blog Florescer Humano</h1>
+      <div className="prose lg:prose-xl max-w-none mx-auto">
+        <p>
+          Bem-vindo ao Florescer Humano, um espaço dedicado à exploração do autoconhecimento,
+          bem-estar e crescimento pessoal através das lentes da psicologia humanista.
+        </p>
+        <p>
+          Aqui, compartilhamos insights, reflexões e práticas inspiradas em abordagens como
+          a Abordagem Centrada na Pessoa (ACP), a Focalização e o Mindfulness, buscando
+          promover uma vida mais autêntica, consciente e plena.
+        </p>
+        <p>
+          Este blog é uma extensão do trabalho de Daniel Dantas, psicólogo clínico com foco
+          na abordagem humanista, que acredita no potencial inato de cada indivíduo para
+          o crescimento e a auto-realização.
+        </p>
+        <p>
+          Explore nossos artigos, participe das discussões e junte-se a nós nesta jornada
+          de florescimento humano.
+        </p>
+        {/* Adicionar mais conteúdo sobre o blog, o autor, a abordagem, etc. */}
+      </div>
+    </main>
   );
 }
