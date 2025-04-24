@@ -4,6 +4,7 @@ import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '@/app/blogflorescerhumano/components/ArticleCardBlog'; // Reutiliza o card
+import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 interface TagPageProps {
   params: {
@@ -16,6 +17,58 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
   categorias: { slug: string } | null; // Apenas o slug da categoria é necessário
 };
 
+// --- Geração de Metadados Dinâmicos para Tag --- //
+export async function generateMetadata(
+  { params }: TagPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const tagSlug = params.slug;
+
+  // Busca nome da tag
+  const { data: tag, error } = await supabaseServer
+    .from('tags')
+    .select('nome') // Seleciona apenas o nome
+    .eq('slug', tagSlug)
+    .maybeSingle();
+
+  // Se não encontrar a tag ou houver erro
+  if (error || !tag) {
+    console.error(`[Metadata] Tag não encontrada para slug: ${tagSlug}`, error);
+    return {
+      title: 'Tag não encontrada | Blog Florescer Humano',
+      description: 'A tag de artigos que você procura não foi encontrada.',
+    };
+  }
+
+  const pageTitle = `Artigos sobre ${tag.nome} | Blog Florescer Humano`;
+  const pageDescription = `Explore artigos marcados com a tag "${tag.nome}" no Blog Florescer Humano.`;
+  const canonicalUrl = `/blogflorescerhumano/tags/${tagSlug}`;
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: canonicalUrl,
+      siteName: 'Blog Florescer Humano',
+      // Não há imagem específica para tag por padrão, herda do layout
+      locale: 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: pageTitle,
+      description: pageDescription,
+      // Não há imagem específica para tag por padrão
+    },
+  };
+}
+
+// --- Componente da Página --- //
 export default async function TagPage({ params }: TagPageProps) {
   const tagSlug = params.slug;
 

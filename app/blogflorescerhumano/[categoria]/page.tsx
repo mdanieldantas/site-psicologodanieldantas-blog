@@ -5,6 +5,7 @@ import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase'; // Ajustado para @/
 import ArticleCardBlog from '../components/ArticleCardBlog'; // Ajustado para ../
+import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
 type Artigo = Database['public']['Tables']['artigos']['Row'];
@@ -15,6 +16,58 @@ interface CategoriaPageProps {
   };
 }
 
+// --- Geração de Metadados Dinâmicos para Categoria --- //
+export async function generateMetadata(
+  { params }: CategoriaPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { categoria: categoriaSlugParam } = params;
+
+  // Busca nome e descrição da categoria
+  const { data: categoria, error } = await supabaseServer
+    .from('categorias')
+    .select('nome, descricao') // Seleciona nome e descrição
+    .eq('slug', categoriaSlugParam)
+    .maybeSingle();
+
+  // Se não encontrar a categoria ou houver erro
+  if (error || !categoria) {
+    console.error(`[Metadata] Categoria não encontrada para slug: ${categoriaSlugParam}`, error);
+    return {
+      title: 'Categoria não encontrada | Blog Florescer Humano',
+      description: 'A categoria de artigos que você procura não foi encontrada.',
+    };
+  }
+
+  const pageTitle = `${categoria.nome} | Blog Florescer Humano`;
+  const pageDescription = categoria.descricao ?? `Explore artigos sobre ${categoria.nome} no Blog Florescer Humano.`;
+  const canonicalUrl = `/blogflorescerhumano/${categoriaSlugParam}`;
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: canonicalUrl,
+      siteName: 'Blog Florescer Humano',
+      // Não há imagem específica para categoria por padrão, herda do layout
+      locale: 'pt_BR',
+      type: 'website', // Ou 'object', dependendo do conteúdo exato
+    },
+    twitter: {
+      card: 'summary',
+      title: pageTitle,
+      description: pageDescription,
+      // Não há imagem específica para categoria por padrão
+    },
+  };
+}
+
+// --- Componente da Página --- //
 export default async function CategoriaEspecificaPage({ params }: CategoriaPageProps) {
   const { categoria: categoriaSlugParam } = params;
 

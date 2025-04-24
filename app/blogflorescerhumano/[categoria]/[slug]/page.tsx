@@ -7,6 +7,7 @@ import Image from 'next/image';
 import type { Database } from '@/types/supabase';
 import GiscusComments from '@/app/blogflorescerhumano/components/GiscusComments';
 import RelatedArticles from '@/app/blogflorescerhumano/components/RelatedArticles'; // Corrigido o import para usar o alias @/
+import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 type Artigo = Database['public']['Tables']['artigos']['Row'];
 type Categoria = Database['public']['Tables']['categorias']['Row'];
@@ -26,6 +27,88 @@ type ArtigoComRelacoes = Database['public']['Tables']['artigos']['Row'] & {
   tags: Pick<Database['public']['Tables']['tags']['Row'], 'id' | 'nome' | 'slug'>[] | null; // Array de tags
 };
 
+// --- Geração de Metadados Dinâmicos --- //
+export async function generateMetadata(
+  { params }: ArtigoPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { categoria: categoriaSlugParam, slug: artigoSlugParam } = params;
+
+  // Busca apenas os dados necessários para metadata
+  const { data: artigo, error } = await supabaseServer
+    .from('artigos')
+    .select('titulo, resumo, imagem_capa_arquivo')
+    .eq('slug', artigoSlugParam)
+    // Adiciona filtro de categoria para garantir que o slug do artigo seja único *dentro* da categoria
+    // Isso requer uma junção, mas vamos simplificar por agora assumindo slug único globalmente
+    // ou aceitando o primeiro que encontrar. Para robustez, a junção seria melhor.
+    // .eq('categorias.slug', categoriaSlugParam) // Idealmente faria join
+    .eq('status', 'publicado')
+    .lte('data_publicacao', new Date().toISOString())
+    .maybeSingle();
+
+  // Se não encontrar o artigo ou houver erro, retorna metadados padrão ou vazios
+  if (error || !artigo) {
+    console.error(`[Metadata] Artigo não encontrado para slug: ${artigoSlugParam}`, error);
+    // Poderia retornar metadados de fallback do layout pai
+    // const previousImages = (await parent).openGraph?.images || []
+    return {
+      title: 'Artigo não encontrado | Blog Florescer Humano',
+      description: 'O artigo que você procura não foi encontrado.',
+      // openGraph: { images: [...previousImages] },
+    };
+  }
+
+  // Gera URL da imagem para Open Graph
+  let ogImageUrl = null;
+  if (artigo.imagem_capa_arquivo) {
+    const { data: imageData } = supabaseServer.storage
+      .from('imagens-blog')
+      .getPublicUrl(artigo.imagem_capa_arquivo);
+    ogImageUrl = imageData?.publicUrl;
+  }
+
+  const pageTitle = `${artigo.titulo ?? 'Artigo'} | Blog Florescer Humano`;
+  const pageDescription = artigo.resumo ?? 'Leia este artigo no Blog Florescer Humano.';
+  // Constrói a URL canônica da página
+  const canonicalUrl = `/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: canonicalUrl, // Adiciona URL canônica
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: canonicalUrl,
+      siteName: 'Blog Florescer Humano',
+      images: ogImageUrl ? [
+        {
+          url: ogImageUrl,
+          width: 1200, // Ajuste conforme necessário
+          height: 630, // Ajuste conforme necessário
+          alt: `Imagem para ${artigo.titulo}`,
+        },
+      ] : [], // Usa imagem padrão do layout pai se não houver específica
+      locale: 'pt_BR',
+      type: 'article', // Define o tipo como artigo para OG
+      // publishedTime: artigo.data_publicacao, // Requer buscar data_publicacao
+      // authors: [nomeAutor], // Requer buscar nomeAutor
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: pageDescription,
+      images: ogImageUrl ? [ogImageUrl] : [], // URL da imagem para Twitter
+      // site: '@seuTwitter', // Opcional: seu handle do Twitter
+      // creator: '@autorTwitter', // Opcional: handle do autor
+    },
+  };
+}
+
+// --- Componente da Página --- //
 export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) {
   const { categoria: categoriaSlugParam, slug: artigoSlugParam } = params;
 
@@ -162,4 +245,4 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   );
 }
 
-// TODO: SEO Dinâmico (metadata)
+// TODO: SEO Dinâmico (metadata) - FEITO para esta página
