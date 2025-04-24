@@ -15,7 +15,6 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
           <div className="space-x-4">
             <Link href="/blogflorescerhumano/categorias" legacyBehavior><a className="hover:text-gray-200">Categorias</a></Link>
             <Link href="/blogflorescerhumano/artigos" legacyBehavior><a className="hover:text-gray-200">Todos os Artigos</a></Link> {/* Adicionado link */}
-            <Link href="/blogflorescerhumano/sobre" legacyBehavior><a className="hover:text-gray-200">Sobre</a></Link>
           </div>
         </nav>
       </header>
