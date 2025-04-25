@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image'; // Garanta que Image está importado
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import {
@@ -8,40 +9,29 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
   LinkedinShareButton,
-  EmailShareButton,
   FacebookIcon,
   TwitterIcon,
   WhatsappIcon,
   LinkedinIcon,
-  EmailIcon,
 } from 'react-share';
 
-// SVG Icon for Copy Link
-const CopyIcon = () => (
+// SVG Icon for Copy Link (Alterado para ícone de Link)
+const LinkIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876V5.25a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0-.75.75v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125Zm-1.5-10.124a.75.75 0 0 0-1.5 0v2.25a.75.75 0 0 0 1.5 0v-2.25Z" />
-  </svg>
-);
-
-// SVG Icon for Instagram (Simplified)
-const InstagramIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
   </svg>
 );
 
 interface ShareButtonsProps {
   url: string;
   title: string;
-  summary?: string; // Opcional para Email
+  summary?: string;
 }
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
-  const iconSize = 32; // Tamanho dos ícones
-  const round = true; // Ícones arredondados
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle'); // Estado para feedback
+  const iconSize = 32;
+  const round = true;
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
 
   const handleCopy = async () => {
     try {
@@ -63,8 +53,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
   console.log("Gmail URL Gerada:", gmailUrl);
 
   return (
-    <div className="flex items-center flex-wrap gap-2 mt-4 mb-6"> {/* Usar flex-wrap e gap */} 
+    <div className="flex items-center flex-wrap gap-2 mt-4 mb-6"> 
       <span className="text-gray-700 font-semibold mr-2">Compartilhe:</span>
+      {/* --- Botões react-share --- */}
       <TwitterShareButton url={url} title={title} data-tooltip-id="tooltip-twitter" data-tooltip-content="Compartilhar no Twitter/X">
         <TwitterIcon size={iconSize} round={round} />
       </TwitterShareButton>
@@ -81,55 +72,71 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
         <LinkedinIcon size={iconSize} round={round} />
       </LinkedinShareButton>
 
-      {/* Link direto para Gmail */}
-      <a
-        href={gmailUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-tooltip-id="tooltip-email"
-        data-tooltip-content="Compartilhar via Gmail"
-        className="flex items-center justify-center p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer"
-        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
-      >
-        <EmailIcon size={iconSize} round={round} />
-      </a>
-
-      {/* Link para Instagram */}
+      {/* --- Botões Customizados --- */}
+      {/* Link para Instagram com Logo PNG (Movido para antes do Gmail) */}
       <a
         href="https://www.instagram.com/"
         target="_blank"
         rel="noopener noreferrer"
         data-tooltip-id="tooltip-instagram"
         data-tooltip-content="Abrir Instagram (copie o link primeiro!)"
-        className="flex items-center justify-center p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer"
+        className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
         style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
       >
-        <InstagramIcon />
+        {/* Usando Image para o logo do Instagram */}
+        <Image
+          src="/blogflorescerhumano/icons-blog/instagram.png" // Caminho atualizado
+          alt="Abrir Instagram"
+          width={iconSize}
+          height={iconSize}
+          className="object-contain"
+        />
+      </a>
+
+      {/* Link direto para Gmail com Logo PNG */}
+      <a
+        href={gmailUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-tooltip-id="tooltip-email"
+        data-tooltip-content="Compartilhar via Gmail"
+        className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
+        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+      >
+        {/* Usando Image para o logo do Gmail */}
+        <Image
+          src="/blogflorescerhumano/icons-blog/gmail.png" // Caminho atualizado
+          alt="Compartilhar via Gmail"
+          width={iconSize}
+          height={iconSize}
+          className="object-contain"
+        />
       </a>
 
       {/* Botão Copiar Link */}
       <button
         onClick={handleCopy}
-        className="flex items-center justify-center p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+         // Removido bg-gray-200, adicionado hover:opacity-80, padding p-1
+        className="flex items-center justify-center p-1 rounded-full hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
         aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
-        style={{ width: `${iconSize}px`, height: `${iconSize}px` }} // Garante tamanho consistente
+        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
         data-tooltip-id="tooltip-copy"
         data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
       >
         {copyStatus === 'idle' ? (
-          <CopyIcon />
+          <LinkIcon /> // Usa o novo ícone de Link
         ) : (
-          <span className="text-xs font-semibold">✓</span> // Feedback visual simples
+          <span className="text-xs font-semibold text-green-600">✓</span> // Feedback visual com cor
         )}
       </button>
 
-      {/* Componente Tooltip (requer instalação de react-tooltip) */}
+      {/* Tooltips (Ordem ajustada) */}
       <Tooltip id="tooltip-twitter" />
       <Tooltip id="tooltip-facebook" />
       <Tooltip id="tooltip-whatsapp" />
       <Tooltip id="tooltip-linkedin" />
-      <Tooltip id="tooltip-email" /> {/* Garantindo que está descomentado */}
-      <Tooltip id="tooltip-instagram" /> {/* Tooltip para Instagram */}
+      <Tooltip id="tooltip-instagram" /> {/* Movido para antes do email */}
+      <Tooltip id="tooltip-email" />
       <Tooltip id="tooltip-copy" />
     </div>
   );
