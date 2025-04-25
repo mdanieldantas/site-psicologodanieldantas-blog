@@ -1,10 +1,33 @@
 // app/blogflorescerhumano/categorias/page.tsx
 import React from 'react';
 import Link from 'next/link';
-import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
-import type { Database } from '@/types/supabase'; // Ajustado para @/
+import { supabaseServer } from '@/lib/supabase/server';
+import type { Database } from '@/types/supabase';
+import type { Metadata } from 'next'; // Importar Metadata
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
+
+// Adicionar Metadados Estáticos
+export const metadata: Metadata = {
+  title: 'Categorias | Blog Florescer Humano',
+  description: 'Explore os artigos do Blog Florescer Humano por categoria, abordando temas como autoconhecimento, bem-estar, relacionamentos e psicologia humanista.',
+  alternates: {
+    canonical: '/blogflorescerhumano/categorias',
+  },
+  openGraph: {
+    title: 'Categorias | Blog Florescer Humano',
+    description: 'Explore os artigos do Blog Florescer Humano por categoria.',
+    url: '/blogflorescerhumano/categorias',
+    siteName: 'Blog Florescer Humano',
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Categorias | Blog Florescer Humano',
+    description: 'Explore os artigos do Blog Florescer Humano por categoria.',
+  },
+};
 
 export default async function CategoriasPage() {
   // --- Busca de Dados das Categorias --- //
