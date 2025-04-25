@@ -3,6 +3,7 @@ import React from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
+import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata } from 'next';
 
 // --- Metadados para a Página de Todos os Artigos --- //
@@ -32,11 +33,37 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
   categorias: { slug: string } | null;
 };
 
-// TODO: Implementar paginação no futuro
-// const ITEMS_PER_PAGE = 9;
+// Define quantos artigos serão exibidos por página
+const ARTICLES_PER_PAGE = 6; // Alterado para 6 para manter consistência
 
-export default async function TodosArtigosPage() {
-  // Por enquanto, busca todos os artigos. Adicionar paginação depois se necessário.
+// Define as props da página, incluindo searchParams para paginação
+interface TodosArtigosPageProps {
+  searchParams: {
+    page?: string; // Parâmetro opcional para a página
+  };
+}
+
+export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
+  // --- Lógica de Paginação --- //
+  const currentPage = parseInt(searchParams.page ?? '1', 10);
+  const from = (currentPage - 1) * ARTICLES_PER_PAGE;
+  const to = from + ARTICLES_PER_PAGE - 1;
+
+  // --- Busca da Contagem Total de Artigos --- //
+  const { count: totalCount, error: countError } = await supabaseServer
+    .from('artigos')
+    .select('* ', { count: 'exact', head: true }) // Conta todos os artigos publicados
+    .eq('status', 'publicado')
+    .lte('data_publicacao', new Date().toISOString());
+
+  if (countError) {
+    console.error('Erro ao contar todos os artigos:', countError);
+    // Considerar como lidar com este erro
+  }
+
+  const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
+
+  // --- Busca de Artigos da Página Atual --- //
   const { data: artigos, error } = await supabaseServer
     .from('artigos')
     .select(`
@@ -51,14 +78,16 @@ export default async function TodosArtigosPage() {
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
     .order('data_publicacao', { ascending: false })
-    // .limit(ITEMS_PER_PAGE) // Descomentar para paginação
-    // .range(startIndex, endIndex) // Para paginação
+    .range(from, to) // Aplica o range para a paginação
     .returns<ArtigoComCategoriaSlug[]>();
 
   if (error) {
-    console.error('Erro ao buscar todos os artigos:', error);
+    console.error(`Erro ao buscar artigos (Página ${currentPage}):`, error);
     // Considerar mostrar um erro mais explícito para o usuário
   }
+
+  // Log para depuração
+  console.log(`Todos Artigos - Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -85,12 +114,20 @@ export default async function TodosArtigosPage() {
           </div>
         ) : (
           <p className="text-center text-gray-500">
-            {error ? 'Não foi possível carregar os artigos no momento.' : 'Nenhum artigo publicado ainda.'}
+            {error
+              ? 'Não foi possível carregar os artigos no momento.'
+              : currentPage > 1 ? 'Não há mais artigos para exibir.' : 'Nenhum artigo publicado ainda.' // Mensagem ajustada
+            }
           </p>
         )}
       </section>
 
-      {/* TODO: Adicionar controles de paginação aqui */}
+      {/* Adiciona controles de paginação */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/blogflorescerhumano/artigos" // Caminho base para esta página
+      />
     </main>
   );
 }

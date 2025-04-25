@@ -5,7 +5,11 @@ import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase'; // Ajustado para @/
 import ArticleCardBlog from '../components/ArticleCardBlog'; // Ajustado para ../
+import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
+
+// Define quantos artigos serão exibidos por página
+const ARTICLES_PER_PAGE = 6;
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
 type Artigo = Database['public']['Tables']['artigos']['Row'];
@@ -13,6 +17,9 @@ type Artigo = Database['public']['Tables']['artigos']['Row'];
 interface CategoriaPageProps {
   params: {
     categoria: string; // slug da categoria
+  };
+  searchParams: {
+    page?: string; // Parâmetro opcional para a página
   };
 }
 
@@ -68,7 +75,7 @@ export async function generateMetadata(
 }
 
 // --- Componente da Página --- //
-export default async function CategoriaEspecificaPage({ params }: CategoriaPageProps) {
+export default async function CategoriaEspecificaPage({ params, searchParams }: CategoriaPageProps) {
   const { categoria: categoriaSlugParam } = params;
 
   // --- 1. Busca de Dados da Categoria --- //
@@ -84,7 +91,27 @@ export default async function CategoriaEspecificaPage({ params }: CategoriaPageP
     notFound();
   }
 
-  // --- 2. Busca de Artigos da Categoria --- //
+  // --- 2. Lógica de Paginação --- //
+  const currentPage = parseInt(searchParams.page ?? '1', 10);
+  const from = (currentPage - 1) * ARTICLES_PER_PAGE;
+  const to = from + ARTICLES_PER_PAGE - 1;
+
+  // --- 3. Busca da Contagem Total de Artigos --- //
+  const { count: totalCount, error: countError } = await supabaseServer
+    .from('artigos')
+    .select('* ', { count: 'exact', head: true }) // Conta todos os artigos da categoria
+    .eq('categoria_id', categoria.id)
+    .eq('status', 'publicado')
+    .lte('data_publicacao', new Date().toISOString());
+
+  if (countError) {
+    console.error(`Erro ao contar artigos para a categoria "${categoria.nome}":`, countError);
+    // Considerar como lidar com este erro, talvez mostrar 0 ou uma mensagem?
+  }
+
+  const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
+
+  // --- 4. Busca de Artigos da Página Atual --- //
   const { data: artigos, error: artigosError } = await supabaseServer
     .from('artigos')
     .select(`
@@ -98,13 +125,17 @@ export default async function CategoriaEspecificaPage({ params }: CategoriaPageP
     .eq('categoria_id', categoria.id)
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
-    .order('data_publicacao', { ascending: false });
+    .order('data_publicacao', { ascending: false })
+    .range(from, to); // Aplica o range para a paginação
 
   // --- Tratamento de Erro (Artigos) --- //
   if (artigosError) {
-    console.error(`Erro ao buscar artigos para a categoria "${categoria.nome}":`, artigosError);
+    console.error(`Erro ao buscar artigos para a categoria "${categoria.nome}" (Página ${currentPage}):`, artigosError);
     // Não chama notFound(), apenas mostra mensagem de erro
   }
+
+  // Log para depuração
+  console.log(`Categoria: ${categoria.nome}, Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -142,10 +173,19 @@ export default async function CategoriaEspecificaPage({ params }: CategoriaPageP
           <p className="text-center text-gray-500">
             {artigosError
               ? 'Não foi possível carregar os artigos desta categoria no momento.'
-              : 'Nenhum artigo publicado nesta categoria ainda.'}
+              : currentPage > 1 ? 'Não há mais artigos nesta categoria.' : 'Nenhum artigo publicado nesta categoria ainda.' // Mensagem ajustada para paginação
+            }
           </p>
         )}
       </section>
+
+      {/* Adiciona o componente de Paginação */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath={`/blogflorescerhumano/${categoria.slug}`}
+      />
+
     </main>
   );
 }
