@@ -7,6 +7,7 @@ import Image from 'next/image';
 import type { Database } from '@/types/supabase';
 import GiscusComments from '@/app/blogflorescerhumano/components/GiscusComments';
 import RelatedArticles from '@/app/blogflorescerhumano/components/RelatedArticles'; // Corrigido o import para usar o alias @/
+import ShareButtons from '@/app/blogflorescerhumano/components/ShareButtons'; // Importa o novo componente
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 type Artigo = Database['public']['Tables']['artigos']['Row'];
@@ -150,8 +151,7 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   }
 
   // --- Extração de Dados --- //
-  // Agora 'artigo' tem o tipo ArtigoComRelacoes, e as propriedades devem ser reconhecidas
-  const { id: currentArticleId, titulo, conteudo: artigoConteudo, data_publicacao, imagem_capa_arquivo, categorias, autores, tags } = artigo; // Extrai o ID também
+  const { id: currentArticleId, titulo, conteudo: artigoConteudo, data_publicacao, imagem_capa_arquivo, categorias, autores, tags, resumo } = artigo; // Extrai o ID e resumo também
   const nomeAutor = autores?.nome ?? 'Autor Desconhecido';
   const nomeCategoria = categorias?.nome ?? 'Categoria Desconhecida';
   const categoriaSlug = categorias?.slug ?? 'sem-categoria';
@@ -173,6 +173,11 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
       .getPublicUrl(imagem_capa_arquivo);
     imageUrl = imageData?.publicUrl;
   }
+
+  // --- Construção da URL Completa para Compartilhamento --- //
+  // ATENÇÃO: Substitua pelo seu domínio real
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.psicologodanieldantas.com';
+  const shareUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
 
   return (
     <article className="container mx-auto px-4 py-12 max-w-4xl">
@@ -205,6 +210,9 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
           </div>
         )}
       </header>
+
+      {/* Botões de Compartilhamento - ADICIONADO AQUI */}
+      <ShareButtons url={shareUrl} title={titulo ?? 'Artigo do Blog Florescer Humano'} summary={resumo ?? undefined} />
 
       {/* Imagem de Capa */}
       {imageUrl && (
