@@ -38,35 +38,29 @@ export async function generateMetadata(
   // Busca apenas os dados necessários para metadata
   const { data: artigo, error } = await supabaseServer
     .from('artigos')
-    .select('titulo, resumo, imagem_capa_arquivo')
+    .select('titulo, resumo, imagem_capa_arquivo, categorias ( slug )') // Seleciona o slug da categoria também
     .eq('slug', artigoSlugParam)
-    // Adiciona filtro de categoria para garantir que o slug do artigo seja único *dentro* da categoria
-    // Isso requer uma junção, mas vamos simplificar por agora assumindo slug único globalmente
-    // ou aceitando o primeiro que encontrar. Para robustez, a junção seria melhor.
-    // .eq('categorias.slug', categoriaSlugParam) // Idealmente faria join
+    .eq('categorias.slug', categoriaSlugParam) // Garante que o artigo pertence à categoria correta
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
     .maybeSingle();
 
   // Se não encontrar o artigo ou houver erro, retorna metadados padrão ou vazios
   if (error || !artigo) {
-    console.error(`[Metadata] Artigo não encontrado para slug: ${artigoSlugParam}`, error);
-    // Poderia retornar metadados de fallback do layout pai
-    // const previousImages = (await parent).openGraph?.images || []
+    console.error(`[Metadata] Artigo não encontrado para slug: ${artigoSlugParam} na categoria ${categoriaSlugParam}`, error);
     return {
       title: 'Artigo não encontrado | Blog Florescer Humano',
       description: 'O artigo que você procura não foi encontrado.',
-      // openGraph: { images: [...previousImages] },
     };
   }
 
-  // Gera URL da imagem para Open Graph
+  // Gera URL da imagem a partir da pasta public
   let ogImageUrl = null;
   if (artigo.imagem_capa_arquivo) {
-    const { data: imageData } = supabaseServer.storage
-      .from('imagens-blog')
-      .getPublicUrl(artigo.imagem_capa_arquivo);
-    ogImageUrl = imageData?.publicUrl;
+    // Constrói o caminho relativo à pasta public
+    // Assumindo que imagem_capa_arquivo contém o caminho completo dentro de blogflorescerhumano
+    // Ex: 'autoconhecimento-desenvolvimento-pessoal/focalizacao-sabedoria-corpo.png'
+    ogImageUrl = `/blogflorescerhumano/${artigo.imagem_capa_arquivo}`;
   }
 
   const pageTitle = `${artigo.titulo ?? 'Artigo'} | Blog Florescer Humano`;
@@ -87,7 +81,8 @@ export async function generateMetadata(
       siteName: 'Blog Florescer Humano',
       images: ogImageUrl ? [
         {
-          url: ogImageUrl,
+          // Para URLs relativas, o Next.js precisa da URL base para gerar a URL absoluta para OG
+          url: new URL(ogImageUrl, process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000').toString(),
           width: 1200, // Ajuste conforme necessário
           height: 630, // Ajuste conforme necessário
           alt: `Imagem para ${artigo.titulo}`,
@@ -102,7 +97,8 @@ export async function generateMetadata(
       card: 'summary_large_image',
       title: pageTitle,
       description: pageDescription,
-      images: ogImageUrl ? [ogImageUrl] : [], // URL da imagem para Twitter
+      // Twitter também precisa de URLs absolutas
+      images: ogImageUrl ? [new URL(ogImageUrl, process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000').toString()] : [], // URL da imagem para Twitter
       // site: '@seuTwitter', // Opcional: seu handle do Twitter
       // creator: '@autorTwitter', // Opcional: handle do autor
     },
@@ -168,10 +164,10 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   // --- Geração de URL da Imagem --- //
   let imageUrl = null;
   if (imagem_capa_arquivo) {
-    const { data: imageData } = supabaseServer.storage
-      .from('imagens-blog')
-      .getPublicUrl(imagem_capa_arquivo);
-    imageUrl = imageData?.publicUrl;
+    // Constrói o caminho relativo à pasta public
+    // Assumindo que imagem_capa_arquivo contém o caminho completo dentro de blogflorescerhumano
+    // Ex: 'autoconhecimento-desenvolvimento-pessoal/focalizacao-sabedoria-corpo.png'
+    imageUrl = `/blogflorescerhumano/${imagem_capa_arquivo}`;
   }
 
   // --- Construção da URL Completa para Compartilhamento --- //
@@ -179,8 +175,42 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.psicologodanieldantas.com';
   const shareUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
 
+  // --- Construção do Schema Markup JSON-LD --- //
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting', // Mais específico que Article
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': shareUrl, // URL canônica da página do artigo
+    },
+    headline: titulo ?? 'Artigo sem título',
+    description: resumo ?? 'Leia este artigo no Blog Florescer Humano.', // Usa o resumo se disponível
+    image: imageUrl ? new URL(imageUrl, baseUrl).toString() : undefined, // URL absoluta da imagem de capa
+    author: {
+      '@type': 'Person',
+      name: nomeAutor, // Nome do autor buscado
+      // url: 'URL_DO_PERFIL_DO_AUTOR' // Opcional: Adicionar se houver página de perfil do autor
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Blog Florescer Humano', // Ou 'Psicólogo Daniel Dantas'
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/navbar-logo-horizontal-navbar.png', baseUrl).toString(), // URL absoluta do logo
+      },
+    },
+    datePublished: data_publicacao ? new Date(data_publicacao).toISOString() : undefined, // Data de publicação em ISO 8601
+    dateModified: data_publicacao ? new Date(data_publicacao).toISOString() : undefined, // Usar data_atualizacao se existir, senão data_publicacao
+  };
+
   return (
     <article className="container mx-auto px-4 py-12 max-w-4xl">
+      {/* --- Injeção do Schema Markup JSON-LD --- */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Navegação Estrutural (Breadcrumbs) */}
       <nav className="mb-6 text-sm text-gray-500">
         <Link href="/blogflorescerhumano" legacyBehavior><a className="hover:underline">Blog</a></Link>
@@ -218,12 +248,12 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
       {imageUrl && (
         <div className="mb-8 relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
           <Image
-            src={imageUrl}
+            src={imageUrl} // Usa o caminho relativo diretamente
             alt={`Imagem de capa para ${titulo ?? 'artigo'}`}
-            fill // Substitui layout="fill"
-            className="object-cover" // Substitui objectFit="cover"
-            priority // Carrega a imagem principal com prioridade
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Opcional: Ajuda o Next.js a otimizar o carregamento
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       )}
