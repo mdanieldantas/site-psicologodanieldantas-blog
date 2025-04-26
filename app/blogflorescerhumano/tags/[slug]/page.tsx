@@ -4,17 +4,22 @@ import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '@/app/blogflorescerhumano/components/ArticleCardBlog'; // Reutiliza o card
+import PaginationControls from '@/app/blogflorescerhumano/components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 interface TagPageProps {
   params: {
     slug: string; // slug da tag
   };
+  // Adiciona searchParams à interface
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 // Tipagem para o artigo com slug da categoria (necessário para o ArticleCardBlog)
 type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
   categorias: { slug: string } | null; // Apenas o slug da categoria é necessário
+  // Adiciona a relação com tags para a query funcionar
+  tags: { id: number }[] | null;
 };
 
 // --- Geração de Metadados Dinâmicos para Tag --- //
@@ -69,8 +74,15 @@ export async function generateMetadata(
 }
 
 // --- Componente da Página --- //
-export default async function TagPage({ params }: TagPageProps) {
+export default async function TagPage({ params, searchParams }: TagPageProps) {
   const tagSlug = params.slug;
+
+  // --- Obter parâmetros de paginação --- //
+  const page = searchParams['page'] ?? '1';
+  const perPage = searchParams['per_page'] ?? '6'; // Define um padrão, ex: 6 artigos por página
+  const pageNumber = parseInt(page as string, 10);
+  const perPageNumber = parseInt(perPage as string, 10);
+  const offset = (pageNumber - 1) * perPageNumber;
 
   // --- 1. Busca da Tag pelo Slug --- //
   const { data: tag, error: tagError } = await supabaseServer
@@ -85,9 +97,29 @@ export default async function TagPage({ params }: TagPageProps) {
     notFound();
   }
 
-  // --- 2. Busca de Artigos Associados à Tag --- //
-  // Usamos a relação reversa (artigos que têm essa tag)
-  // Selecionamos os campos necessários para o ArticleCardBlog, incluindo o slug da categoria
+  // --- 2. Busca de Artigos Associados à Tag (com Paginação) --- //
+
+  // --- 2a. Busca da Contagem Total de Artigos para a Tag --- //
+  // CORREÇÃO: Usar 'artigos_tags' se esse for o nome correto da tabela de junção
+  // CORREÇÃO: Filtrar artigos publicados na tabela 'artigos' via relacionamento
+  const { count, error: countError } = await supabaseServer
+    .from('artigos_tags') // CORRIGIDO: Nome da tabela de junção
+    .select('artigos!inner(status, data_publicacao)', { count: 'exact', head: true }) // Seleciona da tabela relacionada para filtrar
+    .eq('tag_id', tag.id)
+    .eq('artigos.status', 'publicado') // Filtra na tabela relacionada
+    .lte('artigos.data_publicacao', new Date().toISOString()); // Filtra na tabela relacionada
+
+
+  if (countError) {
+    console.error(`Erro ao contar artigos para a tag "${tag.nome}":`, countError);
+    // Lidar com o erro de contagem, talvez mostrar 0 ou uma mensagem
+  }
+
+  // Calcular total de páginas
+  const totalPages = Math.ceil((count ?? 0) / perPageNumber);
+
+  // --- 2b. Busca dos Artigos da Página Atual --- //
+  // CORREÇÃO: Usar 'artigos_tags' na relação se necessário
   const { data: artigos, error: artigosError } = await supabaseServer
     .from('artigos')
     .select(`
@@ -98,14 +130,15 @@ export default async function TagPage({ params }: TagPageProps) {
       imagem_capa_arquivo,
       data_publicacao,
       categorias ( slug ),
-      tags!inner ( id )
+      artigos_tags!inner(tag_id) // CORRIGIDO: Nome da tabela de junção
     `)
-    .eq('tags.id', tag.id) // Filtra artigos que têm a tag com o ID encontrado
+    .eq('artigos_tags.tag_id', tag.id) // Filtra artigos que têm a tag com o ID encontrado via tabela de junção
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
     .order('data_publicacao', { ascending: false })
-    // Especifica o tipo esperado para o array de artigos
+    .range(offset, offset + perPageNumber - 1) // Aplica a paginação com range
     .returns<ArtigoComCategoriaSlug[]>();
+
 
   if (artigosError) {
     console.error(`Erro ao buscar artigos para a tag "${tag.nome}":`, artigosError);
@@ -141,6 +174,16 @@ export default async function TagPage({ params }: TagPageProps) {
           </p>
         )}
       </section>
+
+      {/* --- Controles de Paginação --- */}
+      <div className="mt-12 flex justify-center">
+        <PaginationControls
+          // CORREÇÃO: Passar as props esperadas pelo componente
+          totalPages={totalPages} // Passa o total de páginas calculado
+          currentPage={pageNumber} // Passa a página atual
+          basePath={`/blogflorescerhumano/tags/${tagSlug}`} // Passa o caminho base para os links
+        />
+      </div>
     </main>
   );
 }
