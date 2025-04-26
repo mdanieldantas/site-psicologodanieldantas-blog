@@ -1,101 +1,101 @@
-import { createClient } from './server'; // Importa o cliente Supabase do lado do servidor
-import type { Post, Category } from '@/types/supabase'; // Importa os tipos definidos
+import { supabaseServer } from './server'; // Corrigido: Importa a instância do cliente Supabase do lado do servidor
+import type { Database } from '@/types/supabase'; // Corrigido: Importa o tipo Database principal
 
-// Busca todos os posts publicados, ordenados por data de criação (mais recentes primeiro)
-export async function getPublishedPosts(): Promise<Post[]> {
-  const supabase = createClient();
+// Corrigido: Define tipos locais baseados nos nomes reais das tabelas
+type Artigo = Database['public']['Tables']['artigos']['Row'];
+type Categoria = Database['public']['Tables']['categorias']['Row'];
+
+// Corrigido: Busca todos os ARTIGOS publicados, ordenados por data de publicação
+export async function getPublishedArtigos(): Promise<Artigo[]> {
+  // Corrigido: Usa a instância supabaseServer diretamente
+  const supabase = supabaseServer;
   const { data, error } = await supabase
-    .from('posts')
-    .select('*') // Seleciona todas as colunas
-    .eq('published', true) // Filtra apenas os publicados
-    .order('created_at', { ascending: false }); // Ordena por data de criação
+    .from('artigos') // Corrigido: Nome da tabela
+    .select('*')
+    .eq('status', 'publicado') // Corrigido: Coluna 'status' e valor 'publicado'
+    .order('data_publicacao', { ascending: false }); // Corrigido: Coluna 'data_publicacao'
 
   if (error) {
-    console.error('Erro ao buscar posts:', error);
+    console.error('Erro ao buscar artigos publicados:', error);
     return []; // Retorna array vazio em caso de erro
   }
 
   return data || []; // Retorna os dados ou um array vazio se data for null
 }
 
-// Busca todas as categorias, ordenadas por nome
-export async function getAllCategories(): Promise<Category[]> {
-  const supabase = createClient();
+// Corrigido: Busca todas as CATEGORIAS, ordenadas por nome
+export async function getAllCategorias(): Promise<Categoria[]> {
+  // Corrigido: Usa a instância supabaseServer diretamente
+  const supabase = supabaseServer;
   const { data, error } = await supabase
-    .from('categories')
-    .select('*') // Seleciona todas as colunas
-    .order('name', { ascending: true }); // Ordena por nome
+    .from('categorias') // Corrigido: Nome da tabela
+    .select('*')
+    .order('nome', { ascending: true }); // Corrigido: Coluna 'nome'
 
   if (error) {
-    console.error('Erro ao buscar categorias:', error);
+    console.error('Erro ao buscar todas as categorias:', error);
     return []; // Retorna array vazio em caso de erro
   }
 
   return data || []; // Retorna os dados ou um array vazio se data for null
 }
 
-// Busca um post específico pelo seu slug
-export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const supabase = createClient();
+// Corrigido: Busca um ARTIGO específico pelo seu slug
+export async function getArtigoBySlug(slug: string): Promise<Artigo | null> {
+  // Corrigido: Usa a instância supabaseServer diretamente
+  const supabase = supabaseServer;
   const { data, error } = await supabase
-    .from('posts')
+    .from('artigos') // Corrigido: Nome da tabela
+    // Considerar buscar dados relacionados se necessário: '*, categorias(nome, slug), autores(nome)'
     .select('*')
     .eq('slug', slug)
-    .eq('published', true) // Garante que só busca posts publicados
-    .single(); // Espera um único resultado ou null
+    .eq('status', 'publicado') // Corrigido: Coluna 'status' e valor 'publicado'
+    .maybeSingle(); // Usar maybeSingle para resultado único ou null
 
-  if (error && error.code !== 'PGRST116') { // Ignora erro se for 'nenhum resultado encontrado'
-    console.error('Erro ao buscar post pelo slug:', error);
+  if (error) {
+    // maybeSingle não retorna erro PGRST116 por padrão se não encontrar, apenas data: null
+    console.error('Erro ao buscar artigo pelo slug:', error);
+    return null; // Retorna null em caso de erro real
   }
 
-  return data; // Retorna o post encontrado ou null
+  return data; // Retorna o artigo encontrado ou null
 }
 
-// Busca posts de uma categoria específica pelo slug da categoria
-export async function getPostsByCategorySlug(categorySlug: string): Promise<Post[]> {
-  const supabase = createClient();
+// Corrigido: Busca ARTIGOS de uma categoria específica pelo slug da categoria
+export async function getArtigosByCategoriaSlug(categorySlug: string): Promise<Artigo[]> {
+  // Corrigido: Usa a instância supabaseServer diretamente
+  const supabase = supabaseServer;
 
-  // Primeiro, busca o ID da categoria pelo slug
-  const { data: categoryData, error: categoryError } = await supabase
-    .from('categories')
-    .select('id')
-    .eq('slug', categorySlug)
-    .single();
+  // Abordagem simplificada usando filtro de relacionamento
+  const { data, error } = await supabase
+    .from('artigos')
+    // Seleciona artigos e garante que a categoria relacionada existe e corresponde ao slug
+    .select('*, categorias!inner(slug)')
+    .eq('categorias.slug', categorySlug) // Filtra pelo slug da categoria relacionada
+    .eq('status', 'publicado') // Corrigido: Coluna 'status' e valor 'publicado'
+    .order('data_publicacao', { ascending: false }); // Corrigido: Coluna 'data_publicacao'
 
-  if (categoryError || !categoryData) {
-    console.error('Erro ao buscar categoria pelo slug ou categoria não encontrada:', categoryError);
+  if (error) {
+    console.error('Erro ao buscar artigos pela categoria slug:', error);
     return [];
   }
 
-  const categoryId = categoryData.id;
-
-  // Agora, busca os posts publicados dessa categoria
-  const { data: postsData, error: postsError } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('category_id', categoryId)
-    .eq('published', true)
-    .order('created_at', { ascending: false });
-
-  if (postsError) {
-    console.error('Erro ao buscar posts pela categoria:', postsError);
-    return [];
-  }
-
-  return postsData || [];
+  return data || [];
 }
 
-// Busca uma categoria específica pelo seu slug
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const supabase = createClient();
+// Corrigido: Busca uma CATEGORIA específica pelo seu slug
+export async function getCategoriaBySlug(slug: string): Promise<Categoria | null> {
+  // Corrigido: Usa a instância supabaseServer diretamente
+  const supabase = supabaseServer;
   const { data, error } = await supabase
-    .from('categories')
+    .from('categorias') // Corrigido: Nome da tabela
     .select('*')
     .eq('slug', slug)
-    .single(); // Espera um único resultado ou null
+    .maybeSingle(); // Usar maybeSingle
 
-  if (error && error.code !== 'PGRST116') { // Ignora erro se for 'nenhum resultado encontrado'
+  if (error) {
     console.error('Erro ao buscar categoria pelo slug:', error);
+    return null; // Retorna null em caso de erro real
   }
 
   return data; // Retorna a categoria encontrada ou null
