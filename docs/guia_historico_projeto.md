@@ -67,6 +67,15 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
         *   Artigos podem ser inseridos via Supabase Table Editor.
         *   Artigos são listados na página `/blogflorescerhumano/artigos` com paginação.
         *   Artigos individuais são exibidos corretamente na rota dinâmica `/blogflorescerhumano/[categoria]/[slug]`.
+    *   **Newsletter (Formulário e Backend):** [IMPLEMENTAÇÃO/DEPURAÇÃO] - 28-04-2025 -
+        *   Instalados `react-hook-form` e `zod` para validação e controle do formulário.
+        *   Criado o componente `NewsletterBlogForm.tsx` com integração ao backend via Server Action (`useActionState`).
+        *   Criada a Server Action `subscribeToNewsletter` para validação, verificação de duplicidade e inserção no Supabase.
+        *   Ajustadas as políticas RLS no Supabase para permitir apenas inserção pública (role `anon`) e bloquear leitura pública.
+        *   Corrigidos problemas de importação (`useActionState` de `react` e `useFormStatus` de `react-dom`).
+        *   Refinada a lógica para evitar erro de chave duplicada e exibir mensagem amigável quando o e-mail já está cadastrado.
+        *   Adicionados logs detalhados para depuração do fluxo de verificação e inserção.
+        *   Próximos passos: implementar double opt-in (confirmação por e-mail), refinar feedback ao usuário e documentar o fluxo final.
     *   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
 
 *   **Decisões de Arquitetura/Design Recentes:**

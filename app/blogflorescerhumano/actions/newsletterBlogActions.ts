@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { supabaseServer } from '@/lib/supabase/server'; // Usando alias @/
 import type { Database } from '@/types/supabase'; // Usando alias @/
+import crypto from 'crypto';
 
 // Esquema de validação com Zod
 const NewsletterSchema = z.object({
@@ -52,30 +53,33 @@ export async function subscribeToNewsletter(
     }
 
     if (existingSubscriber) {
-      // TODO: Decidir o que fazer se o email já existe (ex: apenas retornar sucesso, ou indicar que já está inscrito)
-      // Por enquanto, vamos retornar sucesso assumindo que o usuário queria se inscrever
-      console.log(`Email ${email} já cadastrado.`);
-      return { message: 'Obrigado por se inscrever!', type: 'success' };
+      // Se já existe, verificar status
+      // (Opcional: buscar status_confirmacao para feedback mais detalhado)
+      return { message: 'Este e-mail já está cadastrado. Se ainda não confirmou, verifique sua caixa de entrada.', type: 'success' };
     }
 
-    // Inserir o novo assinante (sem double opt-in por enquanto)
+    // Gerar token de confirmação único
+    const token = crypto.randomBytes(32).toString('hex');
+
+    // Inserir novo assinante com status pendente e token
     const { error: insertError } = await supabase
       .from('newsletter_assinantes')
       .insert({
         email: email,
-        status_confirmacao: 'confirmado', // Simplificado por enquanto, sem double opt-in
+        status_confirmacao: 'pendente',
+        token_confirmacao: token,
         data_inscricao: new Date().toISOString(),
-        // token_confirmacao e data_confirmacao seriam usados no double opt-in
       });
 
     if (insertError) {
       console.error('Erro ao inserir novo assinante:', insertError);
-      // TODO: Tratar erros específicos (ex: violação de constraint única, se houver)
       return { message: 'Ocorreu um erro ao salvar seu e-mail. Tente novamente.', type: 'error' };
     }
 
-    console.log(`Novo assinante adicionado: ${email}`);
-    return { message: 'Inscrição realizada com sucesso! Obrigado.', type: 'success' };
+    // TODO: Enviar e-mail de confirmação com o token
+    // Exemplo: await sendConfirmationEmail(email, token);
+
+    return { message: 'Inscrição recebida! Verifique seu e-mail para confirmar a inscrição.', type: 'success' };
 
   } catch (error) {
     console.error('Erro inesperado na Server Action:', error);
