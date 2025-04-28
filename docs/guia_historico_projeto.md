@@ -19,6 +19,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 ## 2. Histórico de Desenvolvimento
 
 *   **Progresso (28-04-2025):**
+    *   **Organização de Assets:** [IMPLEMENTAÇÃO] - 28-04-2025 - Movidos arquivos de imagem da raiz de `public/` para subpastas dedicadas (`public/psicologodanieldantas/` e `public/blogflorescerhumano/`). Atualizadas todas as referências `src` nos componentes e páginas relevantes (`lazy-image.tsx`, `AboutSection.tsx`, `BlogPreviewSection.tsx`, `Footer.tsx`, `HeroSection.tsx`, `Header.tsx`, `ServicesSection.tsx`, `page.tsx`, `schema-markup.tsx`) para apontar para os novos caminhos.
     *   **Paginação na Página de Busca:** [IMPLEMENTAÇÃO/CORREÇÃO] - 28-04-2025 - Adicionada paginação à página de resultados de busca (`/blogflorescerhumano/buscar/page.tsx`) com limite de 6 artigos por página. Isso incluiu:
         *   Criação do componente reutilizável `PaginationControls.tsx`.
         *   Modificação da função RPC `search_articles_paginated` no Supabase para aceitar `page_limit` e `page_offset` e retornar `{ articles: [...], totalCount: number }`.
@@ -76,12 +77,13 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Posicionamento da Lógica de Busca de Dados:** [CLARIFICAÇÃO] - 26-04-2025 - A lógica de busca de dados específica para uma página (ex: buscar um artigo único com base em parâmetros de URL) reside diretamente no componente Server Component (`page.tsx`) dessa página. Funções de busca de dados genéricas e reutilizáveis (ex: buscar todas as categorias, buscar todos os artigos publicados) são centralizadas no arquivo `lib/supabase/queries.ts` para evitar repetição e facilitar a manutenção.
     *   **Localização da Configuração Supabase:** [NOTA] - 26-04-2025 - A pasta `lib/supabase/` (com `client.ts`, `server.ts`, `queries.ts`, `utils.ts`) está localizada na raiz do projeto (`lib/`) e não dentro de `app/blogflorescerhumano/`. Isso é aceitável, pois contém configuração/utilitários que podem ser usados globalmente.
     *   **Estrutura de Arquivos do Blog:** [CRUCIAL] - 25-04-2025 - Todos os arquivos específicos do blog (componentes, páginas, etc.) DEVEM residir dentro da pasta `app/blogflorescerhumano/`. Evitar criar pastas duplicadas fora desta estrutura. Usar sufixos como `Blog` (ex: `BlogHeader.tsx`) em nomes de arquivos quando apropriado para clareza, desde que não conflite com convenções do Next.js.
-    *   **Estrutura de Assets em `public/`:** Adotada estrutura hierárquica com subpastas e sufixos (`-blog`, `-site`).
+    *   **Estrutura de Assets em `public/`:** [IMPLEMENTADO] - 28-04-2025 - Adotada e implementada estrutura hierárquica com subpastas (`public/psicologodanieldantas/`, `public/blogflorescerhumano/`).
     *   **Ícones Customizados (`ShareButtons.tsx`):** Utilizar `next/image` com arquivos PNG específicos.
     *   **Rota de Artigos:** Confirmada a estrutura `/blogflorescerhumano/[categoria]/[slug]` para artigos individuais.
-    *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 26-04-2025]**
+    *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 28-04-2025]**
 
 *   **Desafios e Soluções:**
+    *   **Atualização de Caminhos de Imagem:** [Resolvido] - 28-04-2025 - Garantir que *todas* as referências de imagem no código fossem atualizadas após mover os arquivos para as subpastas em `public/`. Foi necessário revisar múltiplos componentes e páginas.
     *   **Erros de Tipo na Paginação da Busca:** [Resolvido] - 28-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/blogflorescerhumano/buscar/page.tsx`. O problema principal era que os tipos gerados pelo Supabase não refletiam corretamente a estrutura de retorno da função RPC `search_articles_paginated` (retornando `Json` em vez de um objeto tipado). A solução envolveu regenerar os tipos e corrigir manualmente a definição `Returns` em `types/supabase.ts`.
     *   **Campo de Busca Duplicado:** [Resolvido] - 28-04-2025 - Removida a chamada duplicada do `SearchForm` na página de busca.
     *   **Erros de Tipo na Paginação de Tags:** [Resolvido] - 26-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/tags/[slug]/page.tsx`. Os problemas envolviam o nome incorreto da tabela de junção (`artigo_tags` vs `artigos_tags`) e as props esperadas pelo componente `PaginationControls` (`totalCount` vs `totalPages`, `basePath`).
@@ -91,19 +93,19 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Erro Interno React (`No lowest priority node found`):** [Resolvido/Não recorrente] - O erro transitório não ocorreu novamente.
     *   **Localização Incorreta de Componentes:** [Resolvido] - 25-04-2025 - Componentes do blog (`BlogHeader`, `BlogFooter`) foram inicialmente criados fora da pasta `app/blogflorescerhumano/` e movidos para o local correto (`app/blogflorescerhumano/components/`).
     *   **Artigo não listado:** [Resolvido] - 25-04-2025 - Um artigo não aparecia na listagem devido a um `slug` ausente na categoria associada. Corrigido no Supabase.
-    *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 26-04-2025]**
+    *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 28-04-2025]**
 
 *   **Atualizações de Dependências/Integrações:**
     *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.
     *   `react-share`: Utilizada para botões de compartilhamento.
     *   `react-tooltip`: Adicionada para tooltips.
-    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 26-04-2025]**
+    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 28-04-2025]**
 
 ## 3. Próximos Passos (Atualizados)
 
-1.  **[Pendente]** - Mover Assets e Atualizar Referências:
+1.  **[Concluído] - 28-04-2025** - Mover Assets e Atualizar Referências:
     *   Mover todos os arquivos de imagem existentes da raiz de `public/` para as subpastas apropriadas (`/blogflorescerhumano/` ou `/psicologodanieldantas/`).
-    *   Atualizar **todas** as referências `src` no código para refletir os novos caminhos. *(Nota: A página de artigo já usa a nova estrutura para imagem de capa)*.
+    *   Atualizar **todas** as referências `src` no código para refletir os novos caminhos.
 2.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
 3.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas:
     *   **[Concluído] - 25-04-2025** - Finalizar o conteúdo e layout da página `/sobre`.
@@ -135,11 +137,12 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 4. Observações e Notas Importantes (Atualizadas)
 
+*   **[NOTA] Organização de Assets:** [Concluída] - 28-04-2025 - Arquivos de imagem foram movidos para `public/psicologodanieldantas/` e `public/blogflorescerhumano/`, e as referências no código foram atualizadas.
 *   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]` e `/buscar`. Verificar necessidade e implementar na listagem por categoria (`/categorias/[slug]`).
 *   **[NOTA] Correção Manual de Tipos Supabase:** Foi necessário corrigir manualmente o tipo de retorno da RPC `search_articles_paginated` em `types/supabase.ts` após a geração automática. Estar ciente de que isso pode ser necessário para outras RPCs complexas.
 *   **[NOTA] Abordagem Híbrida de Busca de Dados:** Decidiu-se por usar `lib/supabase/queries.ts` para buscas genéricas/reutilizáveis e manter buscas diretas nas páginas (`page.tsx`) para casos muito específicos ou dependentes de múltiplos parâmetros de rota.
 *   **[NOTA] Página de Listagem de Categorias:** A página `app/blogflorescerhumano/categorias/page.tsx` já está implementada e funcional, buscando e exibindo as categorias com links.
-*   **[CRUCIAL] Armazenamento de Imagens:** Imagens do blog agora são carregadas de `/public/blogflorescerhumano/`. O campo `imagem_capa_arquivo` no Supabase deve conter o caminho relativo dentro desta pasta (ex: `categoria/arquivo.png`), preferencialmente usando barras normais (`/`).
+*   **[CRUCIAL] Armazenamento de Imagens:** Imagens do blog agora são carregadas de `/public/blogflorescerhumano/` e imagens do site principal de `/public/psicologodanieldantas/`. O campo `imagem_capa_arquivo` no Supabase deve conter o caminho relativo dentro da pasta do blog (ex: `categoria/arquivo.png`), preferencialmente usando barras normais (`/`).
 *   **[CRUCIAL] Organização de Arquivos do Blog:** Manter **todos** os arquivos específicos do blog (componentes, páginas, hooks, etc.) estritamente dentro da pasta `app/blogflorescerhumano/`. Usar subpastas (`components`, `hooks`, etc.) dentro dela conforme necessário. Utilizar sufixos como `Blog` em nomes de arquivos (ex: `BlogHeader.tsx`, `useFetchBlogPosts.ts`) sempre que possível para clareza, respeitando as convenções do Next.js. **Evitar duplicar estruturas de pastas fora de `app/blogflorescerhumano/`.**
 *   **[NOTA] Lógica de Busca de Dados:** A estratégia adotada é:
     *   Manter a lógica de busca específica da página (ex: buscar artigo por slug da URL) dentro do Server Component (`page.tsx`) correspondente.
@@ -149,16 +152,12 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 *   **[NOTA] Estrutura de Componentes UI:** Componentes de UI básicos (shadcn/ui) estão em `components/ui/` (raiz) para uso global. Componentes específicos do blog estão em `app/blogflorescerhumano/components/`. Não criar `app/blogflorescerhumano/components/ui/` a menos que estritamente necessário para variantes de estilo exclusivas do blog.
 *   **[NOTA] Páginas de Categoria:** As estruturas de página `app/blogflorescerhumano/categorias/page.tsx` (listagem geral) e `app/blogflorescerhumano/[categoria]/` (listagem por categoria) existem.
 *   **[CRUCIAL] Qualidade do Código:** Manter o código limpo, organizado e bem comentado para facilitar a manutenção e colaboração futuras.
-*   [Documentação de Planejamento](c:\DevDriverRepo\landing-page-psiblog-vscode-insiders\docs\doc-integracao-psidanieldantas-florescerhumano.md) - Link para o documento detalhado inicial.
+*   [Documentação de Planejamento](c:\\DevDriverRepo\\landing-page-psiblog-vscode-insiders\\docs\\doc-integracao-psidanieldantas-florescerhumano.md) - Link para o documento detalhado inicial.
 *   O erro na página `/sobre` foi resolvido.
 *   As páginas `/sobre` e `/contato` estão funcionalmente completas.
 *   O `middleware.ts` usa `@supabase/auth-helpers-nextjs` (obsoleto, mas funcional).
-*   **Prioridade:** Mover assets para as novas pastas em `public/` e atualizar todas as referências no código.
+*   **Prioridade Atual:** Implementar paginação na página de categorias (`/blogflorescerhumano/[categoria]/page.tsx`).
 *   O componente `ShareButtons.tsx` está funcional.
-*   A estrutura para páginas de Tags existe e os links a partir dos artigos funcionam; a lógica de busca/exibição por tag precisa ser implementada na página de destino.
-*   A inserção e visualização de artigos individuais e a listagem básica em `/artigos` estão funcionando.
-*   A tipagem Supabase está sendo usada corretamente em `app/blogflorescerhumano/[categoria]/[slug]/page.tsx`.
-*   **[ADICIONAR AQUI NOVAS OBSERVAÇÕES IMPORTANTES DESDE 26-04-2025]**
 
 ## 5. Diretrizes de Arquitetura Fundamentais
 
