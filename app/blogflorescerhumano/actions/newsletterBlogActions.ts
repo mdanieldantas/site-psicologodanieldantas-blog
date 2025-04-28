@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { supabaseServer } from '@/lib/supabase/server'; // Usando alias @/
 import type { Database } from '@/types/supabase'; // Usando alias @/
 import crypto from 'crypto';
+import { sendConfirmationEmail } from '@/lib/sendConfirmationEmail';
 
 // Esquema de validação com Zod
 const NewsletterSchema = z.object({
@@ -43,7 +44,7 @@ export async function subscribeToNewsletter(
     // Verificar se o email já existe (opcional, mas bom para feedback)
     const { data: existingSubscriber, error: checkError } = await supabase
       .from('newsletter_assinantes')
-      .select('id')
+      .select('id, status_confirmacao')
       .eq('email', email)
       .maybeSingle();
 
@@ -53,9 +54,14 @@ export async function subscribeToNewsletter(
     }
 
     if (existingSubscriber) {
-      // Se já existe, verificar status
-      // (Opcional: buscar status_confirmacao para feedback mais detalhado)
-      return { message: 'Este e-mail já está cadastrado. Se ainda não confirmou, verifique sua caixa de entrada.', type: 'success' };
+      if (existingSubscriber.status_confirmacao === 'pendente') {
+        return { message: 'Seu e-mail já está cadastrado, mas ainda não foi confirmado. Verifique sua caixa de entrada para o link de confirmação.', type: 'success' };
+      }
+      if (existingSubscriber.status_confirmacao === 'confirmado') {
+        return { message: 'Este e-mail já está confirmado e inscrito na newsletter.', type: 'success' };
+      }
+      // fallback
+      return { message: 'Este e-mail já está cadastrado.', type: 'success' };
     }
 
     // Gerar token de confirmação único
@@ -78,6 +84,13 @@ export async function subscribeToNewsletter(
 
     // TODO: Enviar e-mail de confirmação com o token
     // Exemplo: await sendConfirmationEmail(email, token);
+    // Enviar e-mail de confirmação com o token
+    try {
+      await sendConfirmationEmail(email, token);
+    } catch (emailError) {
+      console.error('Erro ao enviar e-mail de confirmação:', emailError);
+      // Opcional: retornar mensagem de erro diferente ou seguir normalmente
+    }
 
     return { message: 'Inscrição recebida! Verifique seu e-mail para confirmar a inscrição.', type: 'success' };
 

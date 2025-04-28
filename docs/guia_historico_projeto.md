@@ -76,7 +76,19 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
         *   Refinada a lógica para evitar erro de chave duplicada e exibir mensagem amigável quando o e-mail já está cadastrado.
         *   Adicionados logs detalhados para depuração do fluxo de verificação e inserção.
         *   Próximos passos: implementar double opt-in (confirmação por e-mail), refinar feedback ao usuário e documentar o fluxo final.
-    *   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
+    *   **Newsletter (Double Opt-In - Progresso e Pendências):** [ATUALIZAÇÃO] - 28-04-2025 -
+        *   Fluxo double opt-in implementado: cadastro salva e-mail como 'pendente', gera token e envia link de confirmação por e-mail usando Resend.
+        *   Página de confirmação criada (`/blogflorescerhumano/confirmar-newsletter`) para validar token e atualizar status para 'confirmado'.
+        *   Feedback do formulário aprimorado: mensagens específicas para e-mails pendentes, já confirmados ou aguardando confirmação.
+        *   Documentação do fluxo e código já atualizada neste guia.
+        *   **Pendências para completar a newsletter:**
+            *   Finalizar configuração e validação do domínio de envio no painel do Resend (adicionar registros DNS e verificar domínio).
+            *   Testar entregabilidade real dos e-mails (inclusive fora do ambiente localhost).
+            *   Personalizar layout do e-mail de confirmação (HTML/CSS, logo, assinatura, etc).
+            *   Implementar opção de reenvio do e-mail de confirmação para e-mails pendentes.
+            *   Testar o fluxo completo: inscrição, confirmação, reenvio, mensagens e etapas.
+            *   Revisar e documentar o fluxo final para produção (prints, exemplos, instruções).
+            *   (Opcional) Monitorar entregabilidade e reputação dos e-mails no painel do Resend.
 
 *   **Decisões de Arquitetura/Design Recentes:**
     *   **[NOTA] Avisos Next.js 15 (`params`/`searchParams`):** [DECISÃO] - 28-04-2025 - Manter a versão 15.2.4 do Next.js e ignorar os avisos "should be awaited" no console de desenvolvimento relacionados ao acesso a `params` e `searchParams` em Server Components. A funcionalidade não está comprometida e um downgrade poderia trazer outros problemas ou perda de recursos. Monitorar futuras atualizações do Next.js para possíveis correções.
@@ -148,6 +160,14 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   Implementar lógica de backend na Server Action para salvar e-mails no Supabase (verificação de duplicidade e inserção inicial feita).
     *   Adicionar o `NewsletterBlogForm` ao `BlogFooter.tsx`.
     *   Considerar confirmação de e-mail (double opt-in) - **PENDENTE**. Isso envolve envio de email e API route de confirmação.
+*   **Passo a passo para finalizar a newsletter (double opt-in):**
+            1. Finalizar configuração e validação do domínio de envio no painel do Resend (adicionar registros DNS e verificar domínio).
+            2. Testar entregabilidade real dos e-mails (inclusive fora do ambiente localhost).
+            3. Personalizar layout do e-mail de confirmação (HTML/CSS, logo, assinatura, etc).
+            4. Implementar opção de reenvio do e-mail de confirmação para e-mails pendentes.
+            5. Testar o fluxo completo: inscrição, confirmação, reenvio, mensagens e etapas.
+            6. Revisar e documentar o fluxo final para produção (prints, exemplos, instruções).
+            7. (Opcional) Monitorar entregabilidade e reputação dos e-mails no painel do Resend.
 2.  **Revisar e Implementar RLS (Row Level Security):**
     *   Analisar tabelas (`artigos`, `categorias`, `tags`, `newsletter_assinantes`, etc.).
     *   Definir e aplicar políticas de segurança no Supabase para garantir que apenas dados públicos sejam acessíveis sem autenticação e que operações de escrita/atualização sejam restritas.
@@ -204,3 +224,5 @@ A insistência em manter **todos** os arquivos específicos do blog (componentes
 5.  **Facilita a Colaboração e Integração:** Torna mais fácil para novos desenvolvedores (ou a IA assistente) entenderem a estrutura e contribuírem sem introduzir desorganização.
 
 Em resumo, evitar a duplicação de pastas e centralizar os arquivos do blog em `app/blogflorescerhumano/` não é apenas uma questão de preferência, mas uma prática fundamental para garantir que o projeto seja fácil de entender, manter e escalar de forma organizada e consistente.
+
+*   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
