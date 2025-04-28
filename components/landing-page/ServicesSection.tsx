@@ -38,12 +38,11 @@ const demandas = [
   },
   {
     title: "Autoestima",
-    imgSrc: "/Dificuldades-de-Autoaceitacao-e-Autoestima-image.png",
-    description: "Fortalecer a autoaceitação e a confiança em suas próprias capacidades, cultivando uma relação mais positiva consigo mesmo.",
+    imgSrc: "/Dificuldades-de-Autoaceitacao-e-Autoestima-image.png",    description: "Fortalecer a autoaceitação e a confiança em suas próprias capacidades, cultivando uma relação mais positiva consigo mesmo.",
   },
   {
     title: "Transições de Vida",
-    imgSrc: "/Transicoes-de-Vida-e-Mudancas-image.png",
+    imgSrc: "/psicologodanieldantas/Transicoes-de-Vida-e-Mudancas-image.png",
     description: "Navegar por mudanças importantes (carreira, luto, relacionamentos) com mais segurança e resiliência, encontrando novas perspectivas.",
   },
 ];
