@@ -19,6 +19,8 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 ## 2. Histórico de Desenvolvimento
 
 *   **Progresso (28-04-2025):**
+    *   **Avisos Next.js 15 (`params`/`searchParams`):** [INVESTIGAÇÃO/NOTA] - 28-04-2025 - Investigados avisos no console do Next.js 15.2.4 (`params`/`searchParams` 'should be awaited') nas páginas de categoria (`categorias/page.tsx`) e categoria específica (`[categoria]/page.tsx`). Tentativas de refatoração (mudança na forma de acesso às props, tipagem na assinatura, variáveis intermediárias) não eliminaram os avisos. Decidido manter a versão atual e ignorar os avisos, pois não impactam a funcionalidade.
+    *   **Paginação na Página de Categorias:** [IMPLEMENTAÇÃO] - 28-04-2025 - Adicionada lógica de paginação completa à página de listagem de categorias (`/blogflorescerhumano/categorias/page.tsx`), incluindo busca de contagem total, range na busca principal e uso do componente `PaginationControls`.
     *   **Organização de Assets:** [IMPLEMENTAÇÃO] - 28-04-2025 - Movidos arquivos de imagem da raiz de `public/` para subpastas dedicadas (`public/psicologodanieldantas/` e `public/blogflorescerhumano/`). Atualizadas todas as referências `src` nos componentes e páginas relevantes (`lazy-image.tsx`, `AboutSection.tsx`, `BlogPreviewSection.tsx`, `Footer.tsx`, `HeroSection.tsx`, `Header.tsx`, `ServicesSection.tsx`, `page.tsx`, `schema-markup.tsx`) para apontar para os novos caminhos.
     *   **Paginação na Página de Busca:** [IMPLEMENTAÇÃO/CORREÇÃO] - 28-04-2025 - Adicionada paginação à página de resultados de busca (`/blogflorescerhumano/buscar/page.tsx`) com limite de 6 artigos por página. Isso incluiu:
         *   Criação do componente reutilizável `PaginationControls.tsx`.
@@ -68,12 +70,13 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
 
 *   **Decisões de Arquitetura/Design Recentes:**
+    *   **[NOTA] Avisos Next.js 15 (`params`/`searchParams`):** [DECISÃO] - 28-04-2025 - Manter a versão 15.2.4 do Next.js e ignorar os avisos "should be awaited" no console de desenvolvimento relacionados ao acesso a `params` e `searchParams` em Server Components. A funcionalidade não está comprometida e um downgrade poderia trazer outros problemas ou perda de recursos. Monitorar futuras atualizações do Next.js para possíveis correções.
     *   **[NOTA] Correção Manual de Tipos Supabase:** [DECISÃO] - 28-04-2025 - Foi necessário editar manualmente o arquivo `types/supabase.ts` para corrigir o tipo de retorno (`Returns`) da função RPC `search_articles_paginated` para `{ articles: ArticleSearchResult[], totalCount: number }`, pois a geração automática resultou em `Returns: Json`. Isso pode ser necessário novamente se a função for alterada ou se a ferramenta de geração não inferir tipos complexos corretamente.
     *   **Abordagem de Busca de Dados (Supabase):** [DECISÃO] - 26-04-2025 - Adotar uma **abordagem híbrida** para buscar dados do Supabase:
         *   **Usar `lib/supabase/queries.ts`:** Para funções de busca **genéricas e reutilizáveis** (ex: `getAllCategorias`, `getPublishedArtigos`, `getCategoriaBySlug`, futuras como `getArtigosByTagSlug`). Isso promove DRY e manutenção centralizada.
         *   **Manter Buscas Direto nas Páginas (`page.tsx`):** Quando a busca for **altamente específica** para a página, depender de **múltiplos parâmetros da rota** (ex: `[categoria]/[slug]/page.tsx`), precisar de **relações/campos muito particulares** não cobertos por funções genéricas (ex: buscar `tags` junto com artigo), ou for uma **busca única** sem previsão de reutilização. Isso mantém a clareza e evita complexidade excessiva nas funções genéricas.
     *   **Armazenamento de Imagens:** [CRUCIAL] - 26-04-2025 - Imagens do blog serão servidas diretamente da pasta `public/blogflorescerhumano/`. A coluna `imagem_capa_arquivo` no Supabase armazenará o caminho relativo *dentro* dessa pasta (ex: `categoria-slug/nome-arquivo.png`).
-    *   **Padrão de Caminho de Imagem:** [RECOMENDAÇÃO] - 26-04-2025 - Utilizar barras normais (`/`) em vez de invertidas (`\`) ao salvar caminhos de imagem no Supabase para garantir compatibilidade entre ambientes (Windows/Linux).
+    *   **Padrão de Caminho de Imagem:** [RECOMENDAÇÃO] - 26-04-2025 - Utilizar barras normais (`/`) em vez de invertidas (`\\`) ao salvar caminhos de imagem no Supabase para garantir compatibilidade entre ambientes (Windows/Linux).
     *   **Estrutura de Componentes de UI:** [DECISÃO] - 26-04-2025 - Manter a estrutura atual:
         *   Componentes de UI genéricos (ex: `button`, `card` de shadcn/ui) residem na pasta raiz `components/ui/` e são usados em todo o site (landing page + blog).
         *   Componentes funcionais e específicos do blog (ex: `ArticleCardBlog`, `SearchForm`) residem em `app/blogflorescerhumano/components/`.
@@ -88,6 +91,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 28-04-2025]**
 
 *   **Desafios e Soluções:**
+    *   **Avisos do Next.js 15 (`params`/`searchParams`):** [Não Resolvido/Ignorado] - 28-04-2025 - O Next.js 15.2.4 exibe avisos no console sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Diversas abordagens de refatoração foram tentadas sem sucesso. A solução temporária é ignorar os avisos, pois a funcionalidade não está quebrada.
     *   **Atualização de Caminhos de Imagem:** [Resolvido] - 28-04-2025 - Garantir que *todas* as referências de imagem no código fossem atualizadas após mover os arquivos para as subpastas em `public/`. Foi necessário revisar múltiplos componentes e páginas.
     *   **Erros de Tipo na Paginação da Busca:** [Resolvido] - 28-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/blogflorescerhumano/buscar/page.tsx`. O problema principal era que os tipos gerados pelo Supabase não refletiam corretamente a estrutura de retorno da função RPC `search_articles_paginated` (retornando `Json` em vez de um objeto tipado). A solução envolveu regenerar os tipos e corrigir manualmente a definição `Returns` em `types/supabase.ts`.
     *   **Campo de Busca Duplicado:** [Resolvido] - 28-04-2025 - Removida a chamada duplicada do `SearchForm` na página de busca.
@@ -101,6 +105,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 28-04-2025]**
 
 *   **Atualizações de Dependências/Integrações:**
+    *   **Next.js:** [NOTA] - 28-04-2025 - Mantida a versão 15.2.4 apesar dos avisos sobre `params`/`searchParams`.
     *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.
     *   `react-share`: Utilizada para botões de compartilhamento.
     *   `react-tooltip`: Adicionada para tooltips.
@@ -156,7 +161,8 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 5. Notas e Observações Gerais (Atualizadas)
 
-*   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]`, `/buscar` e `/blogflorescerhumano/[categoria]/page.tsx`.
+*   **[NOTA] Avisos Next.js 15 (`params`/`searchParams`):** [NOTA] - 28-04-2025 - A versão 15.2.4 do Next.js exibe avisos no console de desenvolvimento sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Após tentativas de refatoração sem sucesso, a decisão atual é ignorar esses avisos, pois a funcionalidade do site não está comprometida. Um downgrade foi considerado, mas descartado para evitar perda de recursos e potenciais novos problemas. Monitorar futuras atualizações do Next.js.
+*   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]`, `/buscar`, `/blogflorescerhumano/categorias` e `/blogflorescerhumano/[categoria]/page.tsx`.
 *   **[NOTA] Correção Manual de Tipos Supabase:** Foi necessário corrigir manualmente o tipo de retorno da RPC `search_articles_paginated` em `types/supabase.ts` após a geração automática. Estar ciente de que isso pode ser necessário para outras RPCs complexas.
 *   **[NOTA] Abordagem Híbrida de Busca de Dados:** Decidiu-se por usar `lib/supabase/queries.ts` para buscas genéricas/reutilizáveis e manter buscas diretas nas páginas (`page.tsx`) para casos muito específicos ou dependentes de múltiplos parâmetros de rota.
 *   **[NOTA] Página de Listagem de Categorias:** A página `app/blogflorescerhumano/categorias/page.tsx` já está implementada e funcional, buscando e exibindo as categorias com links.
