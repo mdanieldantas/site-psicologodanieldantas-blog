@@ -104,12 +104,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Artigo não listado:** [Resolvido] - 25-04-2025 - Um artigo não aparecia na listagem devido a um `slug` ausente na categoria associada. Corrigido no Supabase.
     *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 28-04-2025]**
 
-*   **Atualizações de Dependências/Integrações:**
-    *   **Next.js:** [NOTA] - 28-04-2025 - Mantida a versão 15.2.4 apesar dos avisos sobre `params`/`searchParams`.
-    *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.
-    *   `react-share`: Utilizada para botões de compartilhamento.
-    *   `react-tooltip`: Adicionada para tooltips.
-    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 28-04-2025]**
+*   **Atualizações de Dependências/Integrações:**\n    *   **`react-hook-form` e `zod`:** [ADICIONADO] - 28-04-2025 - Instaladas para facilitar a implementação do formulário de newsletter.\n    *   **Next.js:** [NOTA] - 28-04-2025 - Mantida a versão 15.2.4 apesar dos avisos sobre `params`/`searchParams`.\n    *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.\n    *   `react-share`: Utilizada para botões de compartilhamento.\n    *   `react-tooltip`: Adicionada para tooltips.\n    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 28-04-2025]**
 
 ## 3. Próximos Passos (Atualizados)
 
@@ -139,9 +134,11 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 ## 4. Tarefas Pendentes (Priorizadas)
 
 1.  **Funcionalidade de Newsletter:**
-    *   Criar componente de formulário de inscrição.
-    *   Implementar lógica de backend (Supabase Function ou API Route) para salvar e-mails.
-    *   Considerar confirmação de e-mail (double opt-in).
+    *   **[Concluído] - 28-04-2025** - Criar componente de formulário de inscrição (`NewsletterBlogForm.tsx`) usando `react-hook-form` e `zod`.
+    *   **[Concluído] - 28-04-2025** - Criar Server Action (`newsletterBlogActions.ts`) para receber email e validar.
+    *   Implementar lógica de backend na Server Action para salvar e-mails no Supabase (verificação de duplicidade e inserção inicial feita).
+    *   Adicionar o `NewsletterBlogForm` ao `BlogFooter.tsx`.
+    *   Considerar confirmação de e-mail (double opt-in) - **PENDENTE**. Isso envolve envio de email e API route de confirmação.
 2.  **Revisar e Implementar RLS (Row Level Security):**
     *   Analisar tabelas (`artigos`, `categorias`, `tags`, `newsletter_assinantes`, etc.).
     *   Definir e aplicar políticas de segurança no Supabase para garantir que apenas dados públicos sejam acessíveis sem autenticação e que operações de escrita/atualização sejam restritas.
