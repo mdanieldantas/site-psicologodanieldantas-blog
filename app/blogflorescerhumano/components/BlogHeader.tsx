@@ -2,6 +2,7 @@
 // Localização: app/blogflorescerhumano/components/BlogHeader.tsx
 import React from 'react';
 import Link from 'next/link';
+import { Search } from 'lucide-react'; // Importar ícone
 
 const BlogHeader = () => {
   return (
@@ -24,13 +25,22 @@ const BlogHeader = () => {
           <Link href="/blogflorescerhumano/midias" legacyBehavior><a className="hover:text-gray-200">Mídias</a></Link>
           {/* Botão movido para fora deste div */}
         </div>
-        {/* Botão para voltar ao site principal - Empurrado para a direita */}
-        {/* Alterado: adicionado ml-auto */}
-        <Link href="/" legacyBehavior>
-          <a className="ml-auto px-3 py-1 border border-white rounded-md hover:bg-white hover:text-blue-600 transition-colors">
-            Site Psi Daniel Dantas
-          </a>
-        </Link>
+        {/* Container para Botão e Lupa - Empurrado para a direita */}
+        <div className="ml-auto flex items-center space-x-3">
+          {/* Ícone de Lupa para Busca (Agora primeiro) */}
+          <Link href="/blogflorescerhumano/buscar" legacyBehavior>
+            <a className="hover:text-gray-300 cursor-pointer" title="Buscar no blog">
+              <Search size={20} /> {/* Ícone de Lupa */}
+            </a>
+          </Link>
+          {/* Botão para voltar ao site principal */}
+          <Link href="/" legacyBehavior>
+            {/* Removido ml-auto daqui */}
+            <a className="px-3 py-1 border border-white rounded-md hover:bg-white hover:text-blue-600 transition-colors">
+              Site Psi Daniel Dantas
+            </a>
+          </Link>
+        </div>
       </nav>
     </header>
   );
