@@ -18,6 +18,16 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 2. Histórico de Desenvolvimento
 
+*   **Progresso (28-04-2025):**
+    *   **Paginação na Página de Busca:** [IMPLEMENTAÇÃO/CORREÇÃO] - 28-04-2025 - Adicionada paginação à página de resultados de busca (`/blogflorescerhumano/buscar/page.tsx`) com limite de 6 artigos por página. Isso incluiu:
+        *   Criação do componente reutilizável `PaginationControls.tsx`.
+        *   Modificação da função RPC `search_articles_paginated` no Supabase para aceitar `page_limit` e `page_offset` e retornar `{ articles: [...], totalCount: number }`.
+        *   Ajuste da página `buscar/page.tsx` para ler o parâmetro `page` da URL, calcular `offset`, chamar a RPC correta e passar os dados para `PaginationControls`.
+        *   Correção de erros de tipo TypeScript relacionados à função RPC, que envolveu:
+            *   Regeneração dos tipos Supabase (`npx supabase gen types ...`).
+            *   Correção manual do tipo de retorno (`Returns`) da função `search_articles_paginated` no arquivo `types/supabase.ts` para refletir a estrutura correta, pois a geração automática resultou em `Returns: Json`.
+    *   **Remoção de Campo de Busca Duplicado:** [CORREÇÃO] - 28-04-2025 - Removida a instância duplicada do componente `SearchForm` da página `/blogflorescerhumano/buscar/page.tsx`, mantendo apenas o campo de busca presente no layout geral (header).
+
 *   **Progresso (26-04-2025):**
     *   **Schema Markup (Artigo):** [IMPLEMENTAÇÃO] - 26-04-2025 - Adicionado JSON-LD Schema Markup do tipo `BlogPosting` dinamicamente na página de artigo (`.../[slug]/page.tsx`), buscando dados como título, resumo, imagem, autor, etc.
     *   **Paginação na Página de Tags:** [IMPLEMENTAÇÃO] - 26-04-2025 - Adicionada paginação à página de listagem de artigos por tag (`/tags/[slug]/page.tsx`). Isso incluiu:
@@ -52,11 +62,12 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
 
 *   **Decisões de Arquitetura/Design Recentes:**
+    *   **[NOTA] Correção Manual de Tipos Supabase:** [DECISÃO] - 28-04-2025 - Foi necessário editar manualmente o arquivo `types/supabase.ts` para corrigir o tipo de retorno (`Returns`) da função RPC `search_articles_paginated` para `{ articles: ArticleSearchResult[], totalCount: number }`, pois a geração automática resultou em `Returns: Json`. Isso pode ser necessário novamente se a função for alterada ou se a ferramenta de geração não inferir tipos complexos corretamente.
     *   **Abordagem de Busca de Dados (Supabase):** [DECISÃO] - 26-04-2025 - Adotar uma **abordagem híbrida** para buscar dados do Supabase:
         *   **Usar `lib/supabase/queries.ts`:** Para funções de busca **genéricas e reutilizáveis** (ex: `getAllCategorias`, `getPublishedArtigos`, `getCategoriaBySlug`, futuras como `getArtigosByTagSlug`). Isso promove DRY e manutenção centralizada.
         *   **Manter Buscas Direto nas Páginas (`page.tsx`):** Quando a busca for **altamente específica** para a página, depender de **múltiplos parâmetros da rota** (ex: `[categoria]/[slug]/page.tsx`), precisar de **relações/campos muito particulares** não cobertos por funções genéricas (ex: buscar `tags` junto com artigo), ou for uma **busca única** sem previsão de reutilização. Isso mantém a clareza e evita complexidade excessiva nas funções genéricas.
     *   **Armazenamento de Imagens:** [CRUCIAL] - 26-04-2025 - Imagens do blog serão servidas diretamente da pasta `public/blogflorescerhumano/`. A coluna `imagem_capa_arquivo` no Supabase armazenará o caminho relativo *dentro* dessa pasta (ex: `categoria-slug/nome-arquivo.png`).
-    *   **Padrão de Caminho de Imagem:** [RECOMENDAÇÃO] - 26-04-2025 - Utilizar barras normais (`/`) em vez de invertidas (`\\`) ao salvar caminhos de imagem no Supabase para garantir compatibilidade entre ambientes (Windows/Linux).
+    *   **Padrão de Caminho de Imagem:** [RECOMENDAÇÃO] - 26-04-2025 - Utilizar barras normais (`/`) em vez de invertidas (`\`) ao salvar caminhos de imagem no Supabase para garantir compatibilidade entre ambientes (Windows/Linux).
     *   **Estrutura de Componentes de UI:** [DECISÃO] - 26-04-2025 - Manter a estrutura atual:
         *   Componentes de UI genéricos (ex: `button`, `card` de shadcn/ui) residem na pasta raiz `components/ui/` e são usados em todo o site (landing page + blog).
         *   Componentes funcionais e específicos do blog (ex: `ArticleCardBlog`, `SearchForm`) residem em `app/blogflorescerhumano/components/`.
@@ -71,8 +82,10 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 26-04-2025]**
 
 *   **Desafios e Soluções:**
+    *   **Erros de Tipo na Paginação da Busca:** [Resolvido] - 28-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/blogflorescerhumano/buscar/page.tsx`. O problema principal era que os tipos gerados pelo Supabase não refletiam corretamente a estrutura de retorno da função RPC `search_articles_paginated` (retornando `Json` em vez de um objeto tipado). A solução envolveu regenerar os tipos e corrigir manualmente a definição `Returns` em `types/supabase.ts`.
+    *   **Campo de Busca Duplicado:** [Resolvido] - 28-04-2025 - Removida a chamada duplicada do `SearchForm` na página de busca.
     *   **Erros de Tipo na Paginação de Tags:** [Resolvido] - 26-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/tags/[slug]/page.tsx`. Os problemas envolviam o nome incorreto da tabela de junção (`artigo_tags` vs `artigos_tags`) e as props esperadas pelo componente `PaginationControls` (`totalCount` vs `totalPages`, `basePath`).
-    *   **Compatibilidade de Caminhos de Imagem:** [Resolvido/Recomendação] - 26-04-2025 - Discutido o uso de `/` vs `\\` nos caminhos de imagem salvos no Supabase. Recomendado usar `/` para compatibilidade universal, embora `\\` possa funcionar em desenvolvimento Windows.
+    *   **Compatibilidade de Caminhos de Imagem:** [Resolvido/Recomendação] - 26-04-2025 - Discutido o uso de `/` vs `\` nos caminhos de imagem salvos no Supabase. Recomendado usar `/` para compatibilidade universal, embora `\` possa funcionar em desenvolvimento Windows.
     *   **Arquivo `lib/supabase/queries.ts` Desatualizado:** [Resolvido] - 26-04-2025 - O arquivo continha nomes de tabelas/colunas incorretos e não utilizava a instância `supabaseServer` corretamente. Foi corrigido para refletir o esquema atual do banco de dados e a configuração do projeto.
     *   **Erro na Página `/sobre`:** [Resolvido] - 25-04-2025 - O erro "The default export is not a React Component" foi corrigido.
     *   **Erro Interno React (`No lowest priority node found`):** [Resolvido/Não recorrente] - O erro transitório não ocorreu novamente.
@@ -81,7 +94,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 26-04-2025]**
 
 *   **Atualizações de Dependências/Integrações:**
-    *   **Supabase Tipagem:** [Atualizado] - 26-04-2025 - Tipos regenerados com `npx supabase gen types typescript --linked` para refletir o schema atual do banco de dados.
+    *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.
     *   `react-share`: Utilizada para botões de compartilhamento.
     *   `react-tooltip`: Adicionada para tooltips.
     *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 26-04-2025]**
@@ -98,7 +111,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[Concluído] - 26-04-2025** - Criar a página `/materiais`.
     *   **[Concluído] - 26-04-2025** - Criar a página `/midias`.
 4.  **[Em Progresso]** - Implementar Paginação:
-    *   Adicionar paginação às listagens de artigos (`/artigos`, `/categorias`, `/buscar`). *(Nota: Paginação básica implementada em `/artigos`, adicionada em `/tags/[slug]`, verificar outras listagens)*.
+    *   Adicionar paginação às listagens de artigos (`/artigos`, `/categorias/[slug]`). *(Nota: Paginação básica implementada em `/artigos`, adicionada em `/tags/[slug]` e `/buscar`)*.
 5.  **[Pendente]** - Funcionalidade de Newsletter:
     *   Criar o componente `NewsletterFormBlog.tsx`.
     *   Integrar o formulário em locais estratégicos.
@@ -122,7 +135,8 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 4. Observações e Notas Importantes (Atualizadas)
 
-*   **[NOTA] Paginação:** Implementada na página de artigos por tag (`/tags/[slug]`). Verificar necessidade e implementar nas demais listagens (`/categorias`, `/buscar`).
+*   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]` e `/buscar`. Verificar necessidade e implementar na listagem por categoria (`/categorias/[slug]`).
+*   **[NOTA] Correção Manual de Tipos Supabase:** Foi necessário corrigir manualmente o tipo de retorno da RPC `search_articles_paginated` em `types/supabase.ts` após a geração automática. Estar ciente de que isso pode ser necessário para outras RPCs complexas.
 *   **[NOTA] Abordagem Híbrida de Busca de Dados:** Decidiu-se por usar `lib/supabase/queries.ts` para buscas genéricas/reutilizáveis e manter buscas diretas nas páginas (`page.tsx`) para casos muito específicos ou dependentes de múltiplos parâmetros de rota.
 *   **[NOTA] Página de Listagem de Categorias:** A página `app/blogflorescerhumano/categorias/page.tsx` já está implementada e funcional, buscando e exibindo as categorias com links.
 *   **[CRUCIAL] Armazenamento de Imagens:** Imagens do blog agora são carregadas de `/public/blogflorescerhumano/`. O campo `imagem_capa_arquivo` no Supabase deve conter o caminho relativo dentro desta pasta (ex: `categoria/arquivo.png`), preferencialmente usando barras normais (`/`).
@@ -135,7 +149,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 *   **[NOTA] Estrutura de Componentes UI:** Componentes de UI básicos (shadcn/ui) estão em `components/ui/` (raiz) para uso global. Componentes específicos do blog estão em `app/blogflorescerhumano/components/`. Não criar `app/blogflorescerhumano/components/ui/` a menos que estritamente necessário para variantes de estilo exclusivas do blog.
 *   **[NOTA] Páginas de Categoria:** As estruturas de página `app/blogflorescerhumano/categorias/page.tsx` (listagem geral) e `app/blogflorescerhumano/[categoria]/` (listagem por categoria) existem.
 *   **[CRUCIAL] Qualidade do Código:** Manter o código limpo, organizado e bem comentado para facilitar a manutenção e colaboração futuras.
-*   [Documentação de Planejamento](c:\\DevDriverRepo\\landing-page-psiblog-vscode-insiders\\docs\\doc-integracao-psidanieldantas-florescerhumano.md) - Link para o documento detalhado inicial.
+*   [Documentação de Planejamento](c:\DevDriverRepo\landing-page-psiblog-vscode-insiders\docs\doc-integracao-psidanieldantas-florescerhumano.md) - Link para o documento detalhado inicial.
 *   O erro na página `/sobre` foi resolvido.
 *   As páginas `/sobre` e `/contato` estão funcionalmente completas.
 *   O `middleware.ts` usa `@supabase/auth-helpers-nextjs` (obsoleto, mas funcional).
