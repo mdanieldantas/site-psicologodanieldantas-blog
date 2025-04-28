@@ -33,18 +33,16 @@ export const metadata: Metadata = {
 // Define quantas categorias serão exibidas por página
 const CATEGORIES_PER_PAGE = 9; // Ajuste conforme necessário
 
-// Define as props da página, incluindo searchParams para paginação
-interface CategoriasPageProps {
-  searchParams: {
-    page?: string; // Parâmetro opcional para a página
-  };
-}
-
-export default async function CategoriasPage({ searchParams }: CategoriasPageProps) {
+// Cria uma função estática para processar a página no build time (em vez de usar searchParams diretamente)
+export default async function CategoriasPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
   // --- Lógica de Paginação --- //
-  // Acessa searchParams.page diretamente
-  const pageParam = searchParams.page;
-  const currentPage = parseInt(pageParam ?? '1', 10);
+  // Colocamos o valor em uma variável temporária para evitar acessar a propriedade diretamente
+  const page = searchParams?.page ?? "1";
+  const currentPage = parseInt(page, 10);
   const from = (currentPage - 1) * CATEGORIES_PER_PAGE;
   const to = from + CATEGORIES_PER_PAGE - 1;
 

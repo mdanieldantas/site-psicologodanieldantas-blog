@@ -26,22 +26,22 @@ interface CategoriaPageProps {
 
 // --- Geração de Metadados Dinâmicos para Categoria --- //
 export async function generateMetadata(
-  { params }: CategoriaPageProps,
+  { params }: { params: { categoria: string } }, 
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Acessa params.categoria diretamente
-  const categoriaSlugParam = params.categoria;
+  // Colocamos o valor em uma variável temporária para evitar acessar a propriedade diretamente
+  const categoriaSlug = params?.categoria;
 
   // Busca nome e descrição da categoria
   const { data: categoria, error } = await supabaseServer
     .from('categorias')
     .select('nome, descricao') // Seleciona nome e descrição
-    .eq('slug', categoriaSlugParam)
+    .eq('slug', categoriaSlug)
     .maybeSingle();
 
   // Se não encontrar a categoria ou houver erro
   if (error || !categoria) {
-    console.error(`[Metadata] Categoria não encontrada para slug: ${categoriaSlugParam}`, error);
+    console.error(`[Metadata] Categoria não encontrada para slug: ${categoriaSlug}`, error);
     return {
       title: 'Categoria não encontrada | Blog Florescer Humano',
       description: 'A categoria de artigos que você procura não foi encontrada.',
@@ -50,7 +50,7 @@ export async function generateMetadata(
 
   const pageTitle = `${categoria.nome} | Blog Florescer Humano`;
   const pageDescription = categoria.descricao ?? `Explore artigos sobre ${categoria.nome} no Blog Florescer Humano.`;
-  const canonicalUrl = `/blogflorescerhumano/${categoriaSlugParam}`;
+  const canonicalUrl = `/blogflorescerhumano/${categoriaSlug}`;
 
   return {
     title: pageTitle,
@@ -77,27 +77,32 @@ export async function generateMetadata(
 }
 
 // --- Componente da Página --- //
-export default async function CategoriaEspecificaPage({ params, searchParams }: CategoriaPageProps) {
-  // Acessa params.categoria diretamente
-  const categoriaSlugParam = params.categoria;
+export default async function CategoriaEspecificaPage({
+  params,
+  searchParams,
+}: {
+  params: { categoria: string };
+  searchParams: { page?: string };
+}) {
+  // Colocamos os valores em variáveis temporárias para evitar acessar as propriedades diretamente
+  const categoriaSlug = params?.categoria;
+  const page = searchParams?.page ?? "1";
 
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer
     .from('categorias')
     .select('id, nome, slug, descricao')
-    .eq('slug', categoriaSlugParam)
+    .eq('slug', categoriaSlug)
     .single<Categoria>();
 
   // --- Validação da Categoria --- //
   if (categoriaError || !categoria) {
-    console.error(`Erro ao buscar categoria com slug "${categoriaSlugParam}" ou categoria não encontrada:`, categoriaError);
+    console.error(`Erro ao buscar categoria com slug \"${categoriaSlug}\" ou categoria não encontrada:`, categoriaError);
     notFound();
   }
 
   // --- 2. Lógica de Paginação --- //
-  // Acessa searchParams.page diretamente
-  const pageParam = searchParams.page;
-  const currentPage = parseInt(pageParam ?? '1', 10);
+  const currentPage = parseInt(page, 10);
   const from = (currentPage - 1) * ARTICLES_PER_PAGE;
   const to = from + ARTICLES_PER_PAGE - 1;
 
