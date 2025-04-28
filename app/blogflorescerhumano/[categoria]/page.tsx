@@ -9,7 +9,8 @@ import PaginationControls from '../components/PaginationControls'; // Importa o 
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
 // Define quantos artigos serão exibidos por página
-const ARTICLES_PER_PAGE = 6;
+const ARTICLES_PER_PAGE = 6; // Valor original
+// const ARTICLES_PER_PAGE = 2; // TEMPORÁRIO PARA TESTE DE PAGINAÇÃO
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
 type Artigo = Database['public']['Tables']['artigos']['Row'];
@@ -182,7 +183,8 @@ export default async function CategoriaEspecificaPage({ params, searchParams }: 
       {/* Adiciona o componente de Paginação */}
       <PaginationControls
         currentPage={currentPage}
-        totalPages={totalPages}
+        totalCount={totalCount ?? 0} // Passa o número total de artigos
+        pageSize={ARTICLES_PER_PAGE} // Passa o tamanho da página
         basePath={`/blogflorescerhumano/${categoria.slug}`}
       />
 

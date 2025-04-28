@@ -28,6 +28,11 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
             *   Regeneração dos tipos Supabase (`npx supabase gen types ...`).
             *   Correção manual do tipo de retorno (`Returns`) da função `search_articles_paginated` no arquivo `types/supabase.ts` para refletir a estrutura correta, pois a geração automática resultou em `Returns: Json`.
     *   **Remoção de Campo de Busca Duplicado:** [CORREÇÃO] - 28-04-2025 - Removida a instância duplicada do componente `SearchForm` da página `/blogflorescerhumano/buscar/page.tsx`, mantendo apenas o campo de busca presente no layout geral (header).
+    *   **Ajustes no Cabeçalho do Blog (`BlogHeader.tsx`):** [IMPLEMENTAÇÃO] - 28-04-2025 - Realizadas modificações no layout do cabeçalho do blog:
+        *   Links de navegação principais ("Categorias", "Artigos", etc.) foram centralizados.
+        *   Adicionado um botão "Site Psi Daniel Dantas" linkando para a home (`/`).
+        *   Adicionado um ícone de lupa (Search) linkando para a página de busca do blog (`/blogflorescerhumano/buscar`).
+        *   A lupa e o botão "Site Psi Daniel Dantas" foram agrupados e alinhados à direita do cabeçalho, com a lupa posicionada à esquerda do botão.
 
 *   **Progresso (26-04-2025):**
     *   **Schema Markup (Artigo):** [IMPLEMENTAÇÃO] - 26-04-2025 - Adicionado JSON-LD Schema Markup do tipo `BlogPosting` dinamicamente na página de artigo (`.../[slug]/page.tsx`), buscando dados como título, resumo, imagem, autor, etc.
@@ -103,42 +108,55 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 3. Próximos Passos (Atualizados)
 
-1.  **[Concluído] - 28-04-2025** - Mover Assets e Atualizar Referências:
-    *   Mover todos os arquivos de imagem existentes da raiz de `public/` para as subpastas apropriadas (`/blogflorescerhumano/` ou `/psicologodanieldantas/`).
-    *   Atualizar **todas** as referências `src` no código para refletir os novos caminhos.
-2.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
-3.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas:
-    *   **[Concluído] - 25-04-2025** - Finalizar o conteúdo e layout da página `/sobre`.
-    *   **[Concluído] - 25-04-2025** - Finalizar a página `/contato` (estrutura e formulário funcional).
-    *   **[Concluído] - 26-04-2025** - Criar a página `/materiais`.
-    *   **[Concluído] - 26-04-2025** - Criar a página `/midias`.
-4.  **[Em Progresso]** - Implementar Paginação:
-    *   Adicionar paginação às listagens de artigos (`/artigos`, `/categorias/[slug]`). *(Nota: Paginação básica implementada em `/artigos`, adicionada em `/tags/[slug]` e `/buscar`)*.
-5.  **[Pendente]** - Funcionalidade de Newsletter:
-    *   Criar o componente `NewsletterFormBlog.tsx`.
-    *   Integrar o formulário em locais estratégicos.
-    *   Implementar a lógica de backend.
-6.  **[Pendente]** - Refinar Navegação:
-    *   Ajustar links na `Navbar` e `Footer` do blog (incluindo `/sobre`, `/contato`, `/materiais`, `/midias`).
-7.  **[Concluído] - 26-04-2025** - Páginas de Tags:
-    *   Estrutura de rota dinâmica (`/blogflorescerhumano/tags/[slug]`) criada e acessível via links na página de artigo.
-    *   Implementar a lógica de busca e exibição de artigos por tag nesta página (`/tags/[slug]/page.tsx`). *(Busca e exibição concluídas, Paginação adicionada)*.
-8.  **[Em Progresso]** - Finalizar SEO:
-    *   Implementar/Integrar Schema Markup (`schema-markup.tsx`).
-    *   Verificar e garantir que `sitemap.ts` e `robots.ts` incluam URLs do blog.
-    *   Metadados dinâmicos (`generateMetadata`) implementados para páginas de artigo.
-9.  **[Pendente]** - Revisar e Implementar RLS:
-    *   Aplicar as políticas de Row Level Security definidas no Supabase.
-10. **[Em Progresso]** - Estudar Página Dinâmica de Artigos (`app/blogflorescerhumano/[categoria]/[slug]/page.tsx`):
-    *   Analisar o código atual para buscar e exibir artigos. *(Verificação de tipagem concluída)*.
-    *   Identificar oportunidades de melhoria (ex: tratamento de erros, otimização de busca, componentes reutilizáveis).
-    *   Verificar se todos os campos relevantes do artigo estão sendo exibidos (autor, data, tags, etc.). *(Verificado)*.
-    *   Considerar a implementação de funcionalidades adicionais (ex: artigos relacionados, comentários Giscus). *(Giscus e Relacionados já presentes)*.
+1.  **[Concluído] - 28-04-2025** - Implementar Paginação na Página de Categorias (`/blogflorescerhumano/[categoria]/page.tsx`):
+    *   Validado o parâmetro `page` da URL para evitar `NaN`.
+    *   Corrigida a chamada ao componente `PaginationControls` para passar `totalCount` e `pageSize` corretamente.
+    *   Testado funcionalmente com valor temporário de `ARTICLES_PER_PAGE` e restaurado para o valor original (6).
+2.  **[Concluído] - 28-04-2025** - Ajustes no Cabeçalho do Blog (`BlogHeader.tsx`):
+    *   Centralização dos links de navegação.
+    *   Adição do botão "Site Psi Daniel Dantas" e ícone de busca, alinhados à direita.
+3.  **[Concluído] - 28-04-2025** - Organização de Assets:
+    *   Movidos arquivos de imagem da raiz de `public/` para subpastas dedicadas (`public/psicologodanieldantas/` e `public/blogflorescerhumano/`).
+    *   Atualizadas todas as referências `src` no código.
+4.  **[Concluído] - 28-04-2025** - Paginação na Página de Busca (`/blogflorescerhumano/buscar/page.tsx`):
+    *   Implementada paginação com limite de 6 artigos por página.
+    *   Criado componente `PaginationControls.tsx`.
+    *   Corrigido tipo de retorno da RPC `search_articles_paginated`.
+5.  **[Concluído] - 28-04-2025** - Remoção de Campo de Busca Duplicado.
+6.  **[Concluído] - 26-04-2025** - Schema Markup (Artigo).
+7.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas (`/sobre`, `/contato`, `/politica-de-privacidade`).
+8.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
+9.  **[Concluído] - 25-04-2025** - Implementar Página de Listagem de Categorias (`/categorias`).
+10. **[Concluído] - 25-04-2025** - Implementar Página de Artigo Individual (`/[categoria]/[slug]`).
+11. **[Concluído] - 25-04-2025** - Implementar Página de Listagem Geral de Artigos (`/artigos`).
+12. **[Concluído] - 25-04-2025** - Configuração Inicial do Blog (Estrutura de pastas, layout básico).
 
-## 4. Observações e Notas Importantes (Atualizadas)
+## 4. Tarefas Pendentes (Priorizadas)
 
-*   **[NOTA] Organização de Assets:** [Concluída] - 28-04-2025 - Arquivos de imagem foram movidos para `public/psicologodanieldantas/` e `public/blogflorescerhumano/`, e as referências no código foram atualizadas.
-*   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]` e `/buscar`. Verificar necessidade e implementar na listagem por categoria (`/categorias/[slug]`).
+1.  **Funcionalidade de Newsletter:**
+    *   Criar componente de formulário de inscrição.
+    *   Implementar lógica de backend (Supabase Function ou API Route) para salvar e-mails.
+    *   Considerar confirmação de e-mail (double opt-in).
+2.  **Revisar e Implementar RLS (Row Level Security):**
+    *   Analisar tabelas (`artigos`, `categorias`, `tags`, `newsletter_assinantes`, etc.).
+    *   Definir e aplicar políticas de segurança no Supabase para garantir que apenas dados públicos sejam acessíveis sem autenticação e que operações de escrita/atualização sejam restritas.
+3.  **Finalizar SEO:**
+    *   Verificar e ajustar `sitemap.ts` para incluir todas as páginas relevantes (categorias, artigos, tags, etc.).
+    *   Verificar e ajustar `robots.ts`.
+    *   Garantir metadados dinâmicos (título, descrição, Open Graph) em todas as páginas que ainda não os possuem (ex: `/artigos`, `/tags`, `/materiais`, `/midias`).
+4.  **Refinar Navegação (Footer):**
+    *   Revisar os links no `BlogFooter.tsx` e garantir que apontem para as seções corretas do blog ou do site principal, conforme apropriado.
+5.  **Refatorar/Melhorar Página de Artigo (`/[categoria]/[slug]/page.tsx`):**
+    *   Analisar o código em busca de oportunidades de otimização, melhor legibilidade ou funcionalidades adicionais (ex: artigos relacionados, comentários - se planejado).
+6.  **Páginas `/materiais` e `/midias`:**
+    *   Definir o conteúdo e a estrutura exata dessas páginas.
+    *   Implementar a busca de dados (se necessário) e a interface.
+7.  **Página de Tags (`/tags/[slug]`):**
+    *   Verificar se a paginação está implementada e funcionando corretamente (similar à página de categorias).
+
+## 5. Notas e Observações Gerais (Atualizadas)
+
+*   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]`, `/buscar` e `/blogflorescerhumano/[categoria]/page.tsx`.
 *   **[NOTA] Correção Manual de Tipos Supabase:** Foi necessário corrigir manualmente o tipo de retorno da RPC `search_articles_paginated` em `types/supabase.ts` após a geração automática. Estar ciente de que isso pode ser necessário para outras RPCs complexas.
 *   **[NOTA] Abordagem Híbrida de Busca de Dados:** Decidiu-se por usar `lib/supabase/queries.ts` para buscas genéricas/reutilizáveis e manter buscas diretas nas páginas (`page.tsx`) para casos muito específicos ou dependentes de múltiplos parâmetros de rota.
 *   **[NOTA] Página de Listagem de Categorias:** A página `app/blogflorescerhumano/categorias/page.tsx` já está implementada e funcional, buscando e exibindo as categorias com links.
