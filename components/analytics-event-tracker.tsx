@@ -48,7 +48,8 @@ export default function AnalyticsEventTracker({ children }: AnalyticsEventTracke
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.getAttribute("id")
-            trackEvent("Engagement", "Section_View", sectionId)
+            // Garante que sectionId seja string ou undefined (usando ?? '')
+            trackEvent("Engagement", "Section_View", sectionId ?? 'unknown_section_id')
           }
         })
       },

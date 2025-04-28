@@ -29,7 +29,8 @@ export async function generateMetadata(
   { params }: CategoriaPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { categoria: categoriaSlugParam } = params;
+  // Acessa params.categoria diretamente
+  const categoriaSlugParam = params.categoria;
 
   // Busca nome e descrição da categoria
   const { data: categoria, error } = await supabaseServer
@@ -77,7 +78,8 @@ export async function generateMetadata(
 
 // --- Componente da Página --- //
 export default async function CategoriaEspecificaPage({ params, searchParams }: CategoriaPageProps) {
-  const { categoria: categoriaSlugParam } = params;
+  // Acessa params.categoria diretamente
+  const categoriaSlugParam = params.categoria;
 
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer
@@ -93,7 +95,9 @@ export default async function CategoriaEspecificaPage({ params, searchParams }: 
   }
 
   // --- 2. Lógica de Paginação --- //
-  const currentPage = parseInt(searchParams.page ?? '1', 10);
+  // Acessa searchParams.page diretamente
+  const pageParam = searchParams.page;
+  const currentPage = parseInt(pageParam ?? '1', 10);
   const from = (currentPage - 1) * ARTICLES_PER_PAGE;
   const to = from + ARTICLES_PER_PAGE - 1;
 

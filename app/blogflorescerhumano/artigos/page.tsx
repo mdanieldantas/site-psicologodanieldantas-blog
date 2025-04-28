@@ -125,7 +125,8 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       {/* Adiciona controles de paginação */}
       <PaginationControls
         currentPage={currentPage}
-        totalPages={totalPages}
+        totalCount={totalCount ?? 0} // Passa o número total de artigos
+        pageSize={ARTICLES_PER_PAGE} // Passa o número de artigos por página
         basePath="/blogflorescerhumano/artigos" // Caminho base para esta página
       />
     </main>

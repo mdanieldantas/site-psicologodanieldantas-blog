@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import type { Metadata } from 'next'; // Importar Metadata
+import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
 
@@ -29,18 +30,52 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CategoriasPage() {
-  // --- Busca de Dados das Categorias --- //
+// Define quantas categorias serão exibidas por página
+const CATEGORIES_PER_PAGE = 9; // Ajuste conforme necessário
+
+// Define as props da página, incluindo searchParams para paginação
+interface CategoriasPageProps {
+  searchParams: {
+    page?: string; // Parâmetro opcional para a página
+  };
+}
+
+export default async function CategoriasPage({ searchParams }: CategoriasPageProps) {
+  // --- Lógica de Paginação --- //
+  // Acessa searchParams.page diretamente
+  const pageParam = searchParams.page;
+  const currentPage = parseInt(pageParam ?? '1', 10);
+  const from = (currentPage - 1) * CATEGORIES_PER_PAGE;
+  const to = from + CATEGORIES_PER_PAGE - 1;
+
+  // --- Busca da Contagem Total de Categorias --- //
+  const { count: totalCount, error: countError } = await supabaseServer
+    .from('categorias')
+    .select('*', { count: 'exact', head: true }); // Conta todas as categorias
+
+  if (countError) {
+    console.error('Erro ao contar categorias:', countError);
+    // Considerar como lidar com este erro
+  }
+
+  const totalPages = totalCount ? Math.ceil(totalCount / CATEGORIES_PER_PAGE) : 1;
+
+  // --- Busca de Categorias da Página Atual --- //
   const { data: categorias, error } = await supabaseServer
     .from('categorias')
     .select('id, nome, slug, descricao') // Busca nome, slug e descrição
-    .order('nome', { ascending: true }); // Ordena por nome
+    .order('nome', { ascending: true }) // Ordena por nome
+    .range(from, to); // Aplica o range para a paginação
 
   // --- Tratamento de Erro --- //
   if (error) {
-    console.error('Erro ao buscar categorias:', error);
+    console.error(`Erro ao buscar categorias (Página ${currentPage}):`, error);
     // Poderia retornar uma mensagem de erro mais explícita aqui
   }
+
+  // Log para depuração
+  console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);
+
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -61,8 +96,23 @@ export default async function CategoriasPage() {
         </div>
       ) : (
         <p className="text-center text-gray-500">
-          {error ? 'Não foi possível carregar as categorias no momento.' : 'Nenhuma categoria encontrada.'}
+          {error
+            ? 'Não foi possível carregar as categorias no momento.'
+            : currentPage > 1 ? 'Não há mais categorias para exibir.' : 'Nenhuma categoria encontrada.' // Mensagem ajustada
+          }
         </p>
+      )}
+
+      {/* Adiciona controles de paginação se houver mais de uma página */}
+      {totalPages > 1 && (
+        <div className="mt-12">
+          <PaginationControls
+            currentPage={currentPage}
+            totalCount={totalCount ?? 0}
+            pageSize={CATEGORIES_PER_PAGE}
+            basePath="/blogflorescerhumano/categorias" // Caminho base para esta página
+          />
+        </div>
       )}
     </main>
   );
