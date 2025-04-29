@@ -10,6 +10,7 @@ import CookieConsent from "@/components/cookie-consent"; // Componente para bann
 import { GoogleTagManager } from '@next/third-parties/google'; // Componente para Google Tag Manager
 import GoogleSiteVerification from "./google-site-verification"; // Componente para verificação do Google Search Console
 import SchemaMarkup from "./schema-markup"; // Componente para adicionar dados estruturados (Schema.org)
+import { Suspense } from "react";
 
 // Configuração da fonte principal (Inter) com subset latino e como variável CSS
 const fontSans = FontSans({
@@ -70,7 +71,9 @@ export default function RootLayout({
           {/* Componente para o banner de consentimento de cookies */}
           <CookieConsent />
           {/* Componente para Analytics da Vercel */}
-          <Analytics />
+          <Suspense fallback={null}>
+            <Analytics />
+          </Suspense>
           {/* Componente para Speed Insights da Vercel */}
           <SpeedInsights />
         </ThemeProvider>

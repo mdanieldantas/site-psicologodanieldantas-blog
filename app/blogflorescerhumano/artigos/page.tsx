@@ -1,5 +1,5 @@
 // app/blogflorescerhumano/artigos/page.tsx
-import React from 'react';
+import React, { Suspense } from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
@@ -144,12 +144,14 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       </section>
 
       {/* Adiciona controles de paginação */}
-      <PaginationControls
-        currentPage={currentPage}
-        totalCount={totalCount ?? 0} // Passa o número total de artigos
-        pageSize={ARTICLES_PER_PAGE} // Passa o número de artigos por página
-        basePath="/blogflorescerhumano/artigos" // Caminho base para esta página
-      />
+      <Suspense fallback={null}>
+        <PaginationControls
+          currentPage={currentPage}
+          totalCount={totalCount ?? 0}
+          pageSize={ARTICLES_PER_PAGE}
+          basePath="/blogflorescerhumano/artigos"
+        />
+      </Suspense>
     </main>
   );
 }

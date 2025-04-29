@@ -1,0 +1,147 @@
+/* globalsBlog.css - Estilos globais e tokens exclusivos do blog Florescer Humano */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --blog-background: 340 100% 90%; /* rosa claro */
+    --blog-foreground: 30 45% 23%;
+    --blog-card: 36 33% 97%;
+    --blog-card-foreground: 30 45% 23%;
+    --blog-popover: 36 33% 97%;
+    --blog-popover-foreground: 30 45% 23%;
+    --blog-primary: 30 45% 23%;
+    --blog-primary-foreground: 36 33% 97%;
+    --blog-secondary: 36 33% 97%;
+    --blog-secondary-foreground: 30 45% 23%;
+    --blog-muted: 36 33% 97%;
+    --blog-muted-foreground: 30 30% 36%;
+    --blog-accent: 36 33% 97%;
+    --blog-accent-foreground: 30 45% 23%;
+    --blog-destructive: 0 84.2% 60.2%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 76%;
+    --blog-input: 30 30% 76%;
+    --blog-ring: 30 45% 23%;
+    --blog-radius: 0.5rem;
+  }
+  .dark {
+    --blog-background: 30 45% 23%;
+    --blog-foreground: 36 33% 97%;
+    --blog-card: 30 45% 23%;
+    --blog-card-foreground: 36 33% 97%;
+    --blog-popover: 30 45% 23%;
+    --blog-popover-foreground: 36 33% 97%;
+    --blog-primary: 36 33% 97%;
+    --blog-primary-foreground: 30 45% 23%;
+    --blog-secondary: 30 30% 36%;
+    --blog-secondary-foreground: 36 33% 97%;
+    --blog-muted: 30 30% 36%;
+    --blog-muted-foreground: 36 20% 80%;
+    --blog-accent: 30 30% 36%;
+    --blog-accent-foreground: 36 33% 97%;
+    --blog-destructive: 0 62.8% 30.6%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 36%;
+    --blog-input: 30 30% 36%;
+    --blog-ring: 36 33% 97%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-[color:var(--blog-border)];
+  }
+  body {
+    @apply bg-[color:var(--blog-background)] text-[color:var(--blog-foreground)];
+    background-color: hsl(var(--blog-background)) !important;
+    color: hsl(var(--blog-foreground)) !important;
+  }
+}
+
+@font-face {
+  font-family: "Kaisei Opti";
+  src: url("https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@400;500;700&display=swap");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus-visible {
+  outline: 3px solid #583b1f;
+  outline-offset: 3px;
+}
+
+.text-enhanced-contrast {
+  color: #4a3114;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.navbar-scrolled {
+  background-color: rgba(248, 245, 240, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.5rem 1rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  .touch-target {
+    padding: 0.75rem;
+  }
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+}
+
+.image-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-loaded {
+  opacity: 1;
+}

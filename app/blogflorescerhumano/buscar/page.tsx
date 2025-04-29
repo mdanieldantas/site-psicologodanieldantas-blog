@@ -104,12 +104,14 @@ async function SearchResults({ query, currentPage }: { query: string | undefined
       </div>
 
       {/* Adiciona os controles de paginação */}
-      <PaginationControls
-        totalCount={totalCount} // Passa totalCount
-        pageSize={PAGE_SIZE}
-        currentPage={currentPage}
-        basePath="/blogflorescerhumano/buscar"
-      />
+      <Suspense fallback={null}>
+        <PaginationControls
+          totalCount={totalCount}
+          pageSize={PAGE_SIZE}
+          currentPage={currentPage}
+          basePath="/blogflorescerhumano/buscar"
+        />
+      </Suspense>
     </>
   );
 }

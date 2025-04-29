@@ -1,0 +1,47 @@
+/* Tokens de cor do blog Florescer Humano - baseados no site principal, mas isolados para o blog */
+
+@layer base {
+  :root {
+    --blog-background: 36 33% 97%;
+    --blog-foreground: 30 45% 23%;
+    --blog-card: 36 33% 97%;
+    --blog-card-foreground: 30 45% 23%;
+    --blog-popover: 36 33% 97%;
+    --blog-popover-foreground: 30 45% 23%;
+    --blog-primary: 30 45% 23%;
+    --blog-primary-foreground: 36 33% 97%;
+    --blog-secondary: 36 33% 97%;
+    --blog-secondary-foreground: 30 45% 23%;
+    --blog-muted: 36 33% 97%;
+    --blog-muted-foreground: 30 30% 36%;
+    --blog-accent: 36 33% 97%;
+    --blog-accent-foreground: 30 45% 23%;
+    --blog-destructive: 0 84.2% 60.2%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 76%;
+    --blog-input: 30 30% 76%;
+    --blog-ring: 30 45% 23%;
+    --blog-radius: 0.5rem;
+  }
+  .dark {
+    --blog-background: 30 45% 23%;
+    --blog-foreground: 36 33% 97%;
+    --blog-card: 30 45% 23%;
+    --blog-card-foreground: 36 33% 97%;
+    --blog-popover: 30 45% 23%;
+    --blog-popover-foreground: 36 33% 97%;
+    --blog-primary: 36 33% 97%;
+    --blog-primary-foreground: 30 45% 23%;
+    --blog-secondary: 30 30% 36%;
+    --blog-secondary-foreground: 36 33% 97%;
+    --blog-muted: 30 30% 36%;
+    --blog-muted-foreground: 36 20% 80%;
+    --blog-accent: 30 30% 36%;
+    --blog-accent-foreground: 36 33% 97%;
+    --blog-destructive: 0 62.8% 30.6%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 36%;
+    --blog-input: 30 30% 36%;
+    --blog-ring: 36 33% 97%;
+  }
+}

@@ -1,5 +1,5 @@
 // app/blogflorescerhumano/[categoria]/page.tsx
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
 import { notFound } from 'next/navigation';
@@ -190,12 +190,14 @@ export default async function CategoriaEspecificaPage({
       </section>
 
       {/* Adiciona o componente de Paginação */}
-      <PaginationControls
-        currentPage={currentPage}
-        totalCount={totalCount ?? 0} // Passa o número total de artigos
-        pageSize={ARTICLES_PER_PAGE} // Passa o tamanho da página
-        basePath={`/blogflorescerhumano/${categoria.slug}`}
-      />
+      <Suspense fallback={null}>
+        <PaginationControls
+          currentPage={currentPage}
+          totalCount={totalCount ?? 0}
+          pageSize={ARTICLES_PER_PAGE}
+          basePath={`/blogflorescerhumano/${categoria.slug}`}
+        />
+      </Suspense>
 
     </main>
   );

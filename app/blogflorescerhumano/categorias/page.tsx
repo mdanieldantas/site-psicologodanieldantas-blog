@@ -1,5 +1,5 @@
 // app/blogflorescerhumano/categorias/page.tsx
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
@@ -104,12 +104,14 @@ export default async function CategoriasPage({
       {/* Adiciona controles de paginação se houver mais de uma página */}
       {totalPages > 1 && (
         <div className="mt-12">
-          <PaginationControls
-            currentPage={currentPage}
-            totalCount={totalCount ?? 0}
-            pageSize={CATEGORIES_PER_PAGE}
-            basePath="/blogflorescerhumano/categorias" // Caminho base para esta página
-          />
+          <Suspense fallback={null}>
+            <PaginationControls
+              currentPage={currentPage}
+              totalCount={totalCount ?? 0}
+              pageSize={CATEGORIES_PER_PAGE}
+              basePath="/blogflorescerhumano/categorias"
+            />
+          </Suspense>
         </div>
       )}
     </main>

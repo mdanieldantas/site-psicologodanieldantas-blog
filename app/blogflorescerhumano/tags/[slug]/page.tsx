@@ -1,5 +1,5 @@
 // app/blogflorescerhumano/tags/[slug]/page.tsx
-import React from 'react';
+import React, { Suspense } from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase';
@@ -177,12 +177,14 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
 
       {/* --- Controles de Paginação --- */}
       <div className="mt-12 flex justify-center">
-        <PaginationControls
-          totalCount={count ?? 0} // Passa o total de itens
-          pageSize={perPageNumber} // Passa o tamanho da página
-          currentPage={pageNumber} // Passa a página atual
-          basePath={`/blogflorescerhumano/tags/${tagSlug}`} // Passa o caminho base para os links
-        />
+        <Suspense fallback={null}>
+          <PaginationControls
+            totalCount={count ?? 0}
+            pageSize={perPageNumber}
+            currentPage={pageNumber}
+            basePath={`/blogflorescerhumano/tags/${tagSlug}`}
+          />
+        </Suspense>
       </div>
     </main>
   );
