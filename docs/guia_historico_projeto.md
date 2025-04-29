@@ -261,3 +261,40 @@ Estas diretrizes consolidam as regras e recomendações para o Design System do 
 - O objetivo é garantir que a experiência visual do usuário seja idêntica entre blog e site, mesmo com tokens separados, conforme solicitado.
 - O restante do Design System do blog permanece independente, mas os cards do carrossel agora são 100% fiéis ao padrão do site.
 - Decisão registrada para futuras manutenções: sempre que houver atualização visual nos cards do site principal, o carrossel do blog deve ser atualizado para refletir essas mudanças.
+
+# [29-04-2025] Atualização: Independência e Padronização Visual do Blog, Busca Expansível e Responsividade
+
+## Progresso desde a última atualização:
+- **Isolamento total do Design System do blog:** O blog agora possui tokens, componentes e CSS totalmente independentes do site principal, mas visualmente idênticos onde necessário. O arquivo `globalsBlog.css` é importado apenas no layout do blog, e todos os tokens usam prefixo exclusivo `--blog-`.
+- **Refatoração dos cards do blog:** Os cards do carrossel BlogPreviewSection e o componente ArticleCardBlog foram refatorados para usar o componente `Card` do site principal, eliminando tokens exclusivos do blog e garantindo fidelidade visual.
+- **Padronização do rodapé:** O rodapé do blog agora utiliza as mesmas cores do footer do site principal.
+- **Campo de busca global e header:** O campo de busca do blog foi padronizado para um visual minimalista, centralizado e moderno, com placeholder informativo e largura responsiva.
+- **Busca expansível no header:** Implementado campo de busca expansível no header do blog, que aparece como popover flutuante ao clicar na lupa, fecha ao perder o foco e ocupa o espaço à esquerda da lupa, com foco automático e responsividade aprimorada.
+- **Correção de erro React hook:** Adicionada a diretiva 'use client' ao HeaderSearchInline para suportar hooks React.
+- **Aprimoramento de responsividade:** O campo de busca expansível agora se adapta a diferentes tamanhos de tela (90vw em mobile, 320px em desktop), com transição suave e UX consistente.
+
+## Decisões de arquitetura e design recentes:
+- **Busca expansível e UX:** Decidido que o campo de busca do header deve ser expansível, abrir ao lado esquerdo da lupa, ocupar o espaço livre, ter foco automático e fechar ao clicar fora, garantindo experiência moderna e harmônica.
+- **Responsividade do campo de busca:** Definido que a largura do campo de busca deve ser adaptativa (90vw em mobile, 320px em desktop), com padding e animação ajustados para UX consistente.
+- **Padronização visual:** Todos os componentes visuais do blog que replicam o site principal devem seguir fielmente o padrão visual, mas mantendo tokens e CSS isolados.
+
+## Desafios e soluções:
+- **Desafio:** Garantir independência total do Design System do blog sem perder a identidade visual do site principal.
+  - **Solução:** Isolamento de tokens, CSS e componentes, testes práticos de alteração de tokens e documentação do processo.
+- **Desafio:** Campo de busca expansível sobrepondo elementos ou com largura inadequada em telas pequenas.
+  - **Solução:** Refatoração do componente para largura responsiva, posicionamento ao lado esquerdo da lupa e transição suave.
+- **Desafio:** Erro de React hook (use client) no HeaderSearchInline.
+  - **Solução:** Adição da diretiva 'use client' no componente.
+
+## Atualizações de dependências e integrações:
+- Nenhuma dependência nova adicionada nesta etapa. Ajustes foram realizados apenas em componentes internos e CSS.
+
+## Próximos Passos (Atualizados):
+- **[Em Progresso] - 2025-04-29** - Validar responsividade e experiência do campo de busca expansível no header em diferentes tamanhos de tela.
+- **[Pendente]** - Refinar animação, largura ou comportamento do campo de busca do header conforme feedback visual/UX.
+- **[Pendente]** - Documentar as decisões e padrões finais no guia histórico do projeto, se necessário.
+
+## Observações e Notas Importantes (Atualizadas):
+- O campo de busca expansível do header está funcional, responsivo e harmônico, mas recomenda-se revisão visual em dispositivos reais para ajustes finos.
+- Sempre que houver atualização visual no site principal, revisar os componentes do blog para garantir alinhamento visual, mantendo a independência estrutural.
+- O histórico completo de decisões, desafios e soluções está preservado neste documento para rastreabilidade.
