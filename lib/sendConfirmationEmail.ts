@@ -14,7 +14,7 @@ export async function sendConfirmationEmail(email: string, token: string) {
   `;
 
   return resend.emails.send({
-    from: 'no-reply@florescerhumano.com', // Altere para seu domínio verificado no Resend
+  from: 'newsletter@no-reply.psicologodanieldantas.com',  // Altere para seu domínio verificado no Resend
     to: email,
     subject,
     html,
