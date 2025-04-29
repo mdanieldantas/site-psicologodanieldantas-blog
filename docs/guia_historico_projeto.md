@@ -109,30 +109,45 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Ajuste dos Logs de Envio:** [MELHORIA] - 29-04-2025 - O script de envio em massa agora exibe apenas erros no terminal, tornando o uso mais limpo e seguro para produção.
     *   **Documentação de Uso:** [MELHORIA] - 29-04-2025 - O guia de uso da newsletter foi atualizado com exemplos práticos, melhores práticas de entregabilidade e instruções para execução dos scripts.
 
+*   **Progresso (29-04-2025 - Final do dia):**
+    *   **Isolamento e Independência Visual do Blog:** [IMPLEMENTAÇÃO] - 29-04-2025 - Finalizado o processo de isolamento total do Design System do blog em relação ao site principal:
+        *   Criada e padronizada a importação do arquivo `globalsBlog.css` exclusivamente no layout do blog (`app/blogflorescerhumano/layout.tsx`), garantindo que tokens e estilos do blog não afetam o site principal.
+        *   Garantido que o CSS global do site principal (`globals.css`) é importado apenas no layout do site principal.
+        *   Todos os tokens do blog usam prefixo `--blog-` e não sobrescrevem variáveis globais.
+        *   Testes práticos: alteração de tokens do blog (ex: cor de fundo) afeta apenas o blog, comprovando a independência visual.
+        *   Componentes, utilitários e estilos exclusivos do blog estão restritos à pasta `app/blogflorescerhumano/`.
+        *   Criada documentação detalhada do processo de independência, incluindo recomendações para futuras evoluções do Design System.
+    *   **Correção de Build e Suspense:** [CORREÇÃO] - 29-04-2025 - Corrigido erro de build relacionado ao uso de hooks de navegação do Next.js (`useSearchParams`, `usePathname`) fora de `<Suspense>`. Todos os componentes afetados (ex: `Analytics`, `PaginationControls`, `SearchForm`) foram devidamente envolvidos em `<Suspense>`, garantindo compatibilidade com Next.js 15+.
+    *   **Padronização de Nomenclatura:** [MELHORIA] - 29-04-2025 - Todos os arquivos, componentes e tokens exclusivos do blog agora utilizam o sufixo/prefixo `Blog` para facilitar manutenção e busca. Exemplo: `globalsBlog.css`, `ButtonBlog.tsx`, `NewsletterBlogForm.tsx`.
+    *   **Testes de Independência Visual:** [TESTE] - 29-04-2025 - Realizados testes práticos alterando variáveis como `--blog-background` para cores chamativas (ex: rosa claro) e confirmando que apenas o blog era afetado, sem impacto no site principal. Após o teste, os valores originais foram restaurados.
+    *   **Documentação do Processo de Independência:** [MELHORIA] - 29-04-2025 - Registrado no guia o passo a passo para garantir a independência visual e estrutural do blog, incluindo testes práticos e recomendações para futuras evoluções do Design System.
+    *   **Ajuste de Importação de CSS:** [CORREÇÃO] - 29-04-2025 - Garantido que `globalsBlog.css` não é importado em nenhum local fora do blog e que `globals.css` não é importado no blog, evitando conflitos de escopo.
+    *   **Build Limpo e Restauração do Layout:** [CORREÇÃO] - 29-04-2025 - Realizado build limpo e reinicialização do servidor para eliminar resíduos de builds antigos e garantir que o layout do site principal e do blog fossem restaurados corretamente após o isolamento dos estilos.
+    *   **Revisão de Componentes:** [MELHORIA] - 29-04-2025 - Confirmado que todos os componentes do blog utilizam apenas tokens e estilos do blog, e que componentes do site principal não dependem de nada do blog.
+    *   **Recomendação para Evolução Futura:** [NOTA] - 29-04-2025 - Sempre que evoluir o Design System do blog, realizar testes práticos alterando tokens exclusivos do blog para garantir que o site principal não seja afetado. Manter a separação de CSS, tokens e componentes.
+
 *   **Decisões de Arquitetura/Design Recentes:**
     *   **Padronização do Remetente de E-mails:** [DECISÃO] - 29-04-2025 - Definido que todos os envios de e-mail do projeto devem utilizar o formato "Florescer Humano Blog <newsletter@no-reply.psicologodanieldantas.com>" para reforçar a identidade do blog e facilitar o reconhecimento pelo usuário.
     *   **Separação de Scripts de Desenvolvimento:** [DECISÃO] - 29-04-2025 - Criada a pasta `dev-scripts/newsletter-scripts/` para armazenar scripts de envio e exemplos, garantindo que não sejam enviados para produção ou versionados no git.
     *   **Conteúdo Humanizado e Links Úteis:** [DECISÃO] - 29-04-2025 - Todos os e-mails em massa devem conter links para o blog, sessão de contato e orientações para melhorar a entregabilidade, além de uma assinatura pessoal.
+    *   **Independência do Design System do Blog:** [DECISÃO] - 29-04-2025 - Definido que todo o Design System, tokens, componentes e utilitários exclusivos do blog devem ser mantidos e evoluídos apenas dentro da pasta `app/blogflorescerhumano/`, com nomes exclusivos (ex: `globalsBlog.css`, `ButtonBlog.tsx`). O site principal e o blog devem ser totalmente independentes em termos de estilos e tokens, mesmo mantendo a coesão visual.
+    *   **Uso de Suspense para Hooks de Navegação:** [DECISÃO] - 29-04-2025 - Todos os componentes que utilizam hooks de navegação do Next.js (ex: `useSearchParams`, `usePathname`) devem ser obrigatoriamente envolvidos em `<Suspense>` para evitar erros de build e garantir compatibilidade com o Next.js 15+.
+    *   **Padronização de Nomenclatura de Arquivos do Blog:** [DECISÃO] - 29-04-2025 - Todos os arquivos, componentes e utilitários exclusivos do blog devem conter "Blog" no nome para facilitar busca, manutenção e rastreabilidade.
+    *   **Recomendação de Estrutura de Pastas:** [DECISÃO] - 29-04-2025 - Todos os arquivos do blog devem estar dentro de `app/blogflorescerhumano/`, com subpastas como `components/`, `ui/`, `actions/` e nomes claros para cada contexto.
 
 *   **Desafios e Soluções:**
     *   **Avisos do Next.js 15 (`params`/`searchParams`):** [Não Resolvido/Ignorado] - 28-04-2025 - O Next.js 15.2.4 exibe avisos no console sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Diversas abordagens de refatoração foram tentadas sem sucesso. A solução temporária é ignorar os avisos, pois a funcionalidade não está quebrada.
     *   **Atualização de Caminhos de Imagem:** [Resolvido] - 28-04-2025 - Garantir que *todas* as referências de imagem no código fossem atualizadas após mover os arquivos para as subpastas em `public/`. Foi necessário revisar múltiplos componentes e páginas.
-    *   **Erros de Tipo na Paginação da Busca:** [Resolvido] - 28-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/blogflorescerhumano/buscar/page.tsx`. O problema principal era que os tipos gerados pelo Supabase não refletiam corretamente a estrutura de retorno da função RPC `search_articles_paginated` (retornando `Json` em vez de um objeto tipado). A solução envolveu regenerar os tipos e corrigir manualmente a definição `Returns` em `types/supabase.ts`.
-    *   **Campo de Busca Duplicado:** [Resolvido] - 28-04-2025 - Removida a chamada duplicada do `SearchForm` na página de busca.
-    *   **Erros de Tipo na Paginação de Tags:** [Resolvido] - 26-04-2025 - Corrigidos erros de tipo ao implementar a paginação em `/tags/[slug]/page.tsx`. Os problemas envolviam o nome incorreto da tabela de junção (`artigo_tags` vs `artigos_tags`) e as props esperadas pelo componente `PaginationControls` (`totalCount` vs `totalPages`, `basePath`).
-    *   **Compatibilidade de Caminhos de Imagem:** [Resolvido/Recomendação] - 26-04-2025 - Discutido o uso de `/` vs `\` nos caminhos de imagem salvos no Supabase. Recomendado usar `/` para compatibilidade universal, embora `\` possa funcionar em desenvolvimento Windows.
-    *   **Arquivo `lib/supabase/queries.ts` Desatualizado:** [Resolvido] - 26-04-2025 - O arquivo continha nomes de tabelas/colunas incorretos e não utilizava a instância `supabaseServer` corretamente. Foi corrigido para refletir o esquema atual do banco de dados e a configuração do projeto.
-    *   **Erro na Página `/sobre`:** [Resolvido] - 25-04-2025 - O erro "The default export is not a React Component" foi corrigido.
-    *   **Erro Interno React (`No lowest priority node found`):** [Resolvido/Não recorrente] - O erro transitório não ocorreu novamente.
-    *   **Localização Incorreta de Componentes:** [Resolvido] - 25-04-2025 - Componentes do blog (`BlogHeader`, `BlogFooter`) foram inicialmente criados fora da pasta `app/blogflorescerhumano/` e movidos para o local correto (`app/blogflorescerhumano/components/`).
-    *   **Artigo não listado:** [Resolvido] - 25-04-2025 - Um artigo não aparecia na listagem devido a um `slug` ausente na categoria associada. Corrigido no Supabase.
-    *   **E-mails não entregues ou caindo em Promoções:** [Resolvido/Parcial] - 29-04-2025 - Ajustado o conteúdo dos e-mails para ser mais pessoal, adicionado orientações para o usuário e revisado o remetente. A entrega melhorou, mas a classificação em "Promoções" pode continuar ocorrendo devido a políticas do Gmail. Monitoramento contínuo recomendado.
-    *   **Logs Expostos em Produção:** [Resolvido] - 29-04-2025 - Removidos logs detalhados de sucesso dos scripts de envio em massa, mantendo apenas logs de erro e um resumo final.
-    *   **Variáveis de Ambiente em Scripts:** [Resolvido] - 29-04-2025 - Garantido o carregamento correto das variáveis do `.env.local` nos scripts de desenvolvimento usando o pacote `dotenv`.
+    *   **Desafio: Layout do Site Principal Quebrado após Isolamento do Blog:** [Resolvido] - 29-04-2025 - Após a implementação do isolamento do CSS do blog, o site principal apresentou layout quebrado devido a resíduos de build e possíveis conflitos de escopo de variáveis. Solução: revisão dos imports de CSS, build limpo e reforço do uso de tokens exclusivos do blog, restaurando o layout do site principal sem perda de progresso.
+    *   **Desafio: Hooks de Navegação fora de Suspense:** [Resolvido] - 29-04-2025 - O uso de hooks como `useSearchParams` e `usePathname` fora de `<Suspense>` causava erro de build em várias páginas. Solução: envolver todos os componentes afetados em `<Suspense>`, tanto no blog quanto no layout global.
+    *   **Desafio: Teste de Independência Visual do Blog:** [Resolvido] - 29-04-2025 - Realizados testes práticos alterando tokens do blog para garantir que apenas o blog fosse afetado, comprovando a independência visual e estrutural.
+    *   **Desafio: Padronização de Nomenclatura:** [Resolvido] - 29-04-2025 - Garantido que todos os arquivos, componentes e utilitários exclusivos do blog contenham "Blog" no nome, facilitando manutenção e busca.
+    *   **Desafio: Build Limpo e Cache:** [Resolvido] - 29-04-2025 - Realizado build limpo e reinicialização do servidor para eliminar resíduos de builds antigos e garantir que o layout do site principal e do blog fossem restaurados corretamente após o isolamento dos estilos.
 
 *   **Atualizações de Dependências/Integrações:**
     *   **Adição do pacote `tsx`:** [ADICIONADO] - 29-04-2025 - Instalado o pacote `tsx` para facilitar a execução de scripts TypeScript no terminal sem necessidade de compilação prévia.
     *   **Adição do pacote `dotenv`:** [ADICIONADO] - 29-04-2025 - Instalado e utilizado para garantir o carregamento das variáveis de ambiente nos scripts de desenvolvimento.
+    *   **Atualização de dependências do Next.js:** [ATUALIZADO] - 29-04-2025 - Confirmada a compatibilidade do projeto com Next.js 15.2.4 após ajustes de Suspense e isolamento de CSS. Nenhuma dependência removida, mas reforçada a necessidade de manter as versões atualizadas para evitar conflitos futuros.
 
 ## 3. Próximos Passos (Atualizados)
 
@@ -141,6 +156,7 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 3.  **[Pendente]** - Monitorar entregabilidade e reputação dos e-mails no painel do Resend e ajustar conteúdo conforme necessário.
 4.  **[Pendente]** - Finalizar personalização do layout dos e-mails de confirmação e cancelamento (HTML/CSS, logo, assinatura, etc).
 5.  **[Pendente]** - Revisar e documentar o fluxo final da newsletter para produção (prints, exemplos, instruções).
+6.  **[Pendente]** - Criar documentação visual (prints, exemplos) demonstrando a independência do blog e do site principal para futuras manutenções.
 
 ## 4. Tarefas Pendentes (Priorizadas)
 
