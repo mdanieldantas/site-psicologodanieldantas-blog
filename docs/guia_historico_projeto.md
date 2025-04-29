@@ -203,20 +203,33 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 *   **Prioridade Atual:** Implementar paginação na página de categorias (`/blogflorescerhumano/[categoria]/page.tsx`).
 *   O componente `ShareButtons.tsx` está funcional.
 
-## 5. Diretrizes de Arquitetura Fundamentais
+## 6. Diretrizes do Design System do Blog Florescer Humano
 
-Esta seção detalha decisões arquiteturais cruciais que devem ser sempre seguidas para manter a organização e manutenibilidade do projeto.
+Estas diretrizes consolidam as regras e recomendações para o Design System do blog, baseadas no documento de integração. Servem como referência para desenvolvimento, revisão e evolução dos componentes visuais do módulo.
 
-### 5.1. Centralização dos Arquivos do Blog em `app/blogflorescerhumano/`
+### 6.1. Filosofia Visual e Princípios
+- Humanista, acolhedor, claro, intuitivo, acessível, consistente, modular e coeso.
+- Herda identidade visual do site principal, mas com autonomia para componentes e tokens próprios do blog.
 
-A insistência em manter **todos** os arquivos específicos do blog (componentes, páginas, hooks, utils, etc.) estritamente dentro da pasta `app/blogflorescerhumano/` é crucial pelas seguintes razões:
+### 6.2. Tokens Visuais
+- **Cores:** Paleta definida em `globals.css` (bege, marrom escuro/médio), temas claro/escuro, uso via Tailwind.
+- **Tipografia:** Kaisei Opti (serifada), fallback Arial, hierarquia via Tailwind.
+- **Espaçamento:** Escala Tailwind, consistente com o site.
+- **Bordas/Raios:** Usar variáveis globais, raio padrão 0.5rem.
+- **Sombras:** Replicar padrões do site principal.
 
-1.  **Clareza e Organização:** Define um limite claro. Qualquer pessoa (incluindo a IA assistente) que trabalhe no blog saberá que *tudo* relacionado a ele está contido nessa pasta. Não há necessidade de procurar em outros diretórios (`components/` raiz, `hooks/` raiz, etc.) por arquivos do blog. Isso torna a navegação no projeto muito mais rápida e intuitiva.
-2.  **Manutenção Simplificada:** Se precisarmos alterar um componente usado apenas no blog (como o `BlogHeader`), sabemos exatamente onde ele está (`app/blogflorescerhumano/components/BlogHeader.tsx`). Se tivéssemos uma estrutura duplicada (por exemplo, `components/blogflorescerhumano/`), poderíamos acidentalmente editar o arquivo errado ou esquecer de atualizar uma cópia, levando a inconsistências e bugs difíceis de rastrear.
-3.  **Prevenção de Ambiguidade:** Evita a confusão sobre qual versão de um arquivo ou componente deve ser usada. Se existissem duas pastas `components` para o blog, qual delas conteria a versão mais recente ou correta? Manter uma única fonte de verdade elimina essa ambiguidade.
-4.  **Consistência Arquitetural:** Garante que o módulo do blog permaneça coeso e logicamente separado do resto da aplicação (o site principal do psicólogo Daniel Dantas). Isso reforça a separação de conceitos e ajuda a manter a arquitetura do projeto limpa.
-5.  **Facilita a Colaboração e Integração:** Torna mais fácil para novos desenvolvedores (ou a IA assistente) entenderem a estrutura e contribuírem sem introduzir desorganização.
+### 6.3. Componentes de UI
+- **Globais:** Em `components/ui/` (Button, Card, Input, etc.), padrão shadcn/ui (Radix + Tailwind + CVA + cn).
+- **Blog:** Em `app/blogflorescerhumano/components/` (usar sufixo Blog, ex: ButtonBlog.tsx), replicando lógica dos globais, mas isolados.
+- **Essenciais:** ButtonBlog, CardBlog, InputBlog, TextareaBlog, LabelBlog, TagBlog/BadgeBlog, ArticleMetadataBlog, AuthorInfoBlog, SeparatorBlog, PaginationBlog, SearchBarBlog, GiscusComments, NewsletterFormBlog, ContactFormBlog, SkeletonBlog.
 
-Em resumo, evitar a duplicação de pastas e centralizar os arquivos do blog em `app/blogflorescerhumano/` não é apenas uma questão de preferência, mas uma prática fundamental para garantir que o projeto seja fácil de entender, manter e escalar de forma organizada e consistente.
+### 6.4. Layout e Responsividade
+- Mobile-first, breakpoints Tailwind, uso de Flexbox/Grid, containers com max-w-, templates para estrutura de páginas.
 
-*   **[ADICIONAR AQUI NOVAS FUNCIONALIDADES IMPLEMENTADAS DESDE 25-04-2025]**
+### 6.5. Acessibilidade
+- Seguir WCAG 2.1 AA, HTML semântico, navegação por teclado, contraste, alt text, ARIA, formulários acessíveis, legibilidade.
+
+### 6.6. Iconografia
+- Usar lucide-react, boas práticas de acessibilidade para ícones.
+
+**Obs:** Sempre consultar e atualizar estas diretrizes ao evoluir o Design System do blog.
