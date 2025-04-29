@@ -18,6 +18,18 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 2. Histórico de Desenvolvimento
 
+*   **Progresso (29-04-2025):**
+    *   **Cancelamento de Inscrição da Newsletter (Unsubscribe):** [IMPLEMENTAÇÃO] - 29-04-2025 - Implementado fluxo completo de descadastro da newsletter:
+        * Adicionada coluna `unsubscribe_token` na tabela `newsletter_assinantes`.
+        * Gerado token único de descadastro para cada novo assinante.
+        * Link de cancelamento incluído no rodapé dos e-mails de confirmação.
+        * Criada página `/blogflorescerhumano/cancelar-newsletter` com validação de token, confirmação visual do e-mail e botão de cancelamento.
+        * Implementada Server Action para processar o descadastro, atualizar o status para `cancelado` e invalidar tokens.
+        * Ajustada a constraint do banco para permitir o status `cancelado` em `status_confirmacao`.
+        * Testado: após cancelar, o usuário não recebe mais e-mails.
+    *   **Ajuste de Código para React 19/Next.js 15:** [CORREÇÃO] - 29-04-2025 - Refatorado o formulário de cancelamento para usar `useActionState` (React 19) e corrigidas importações de hooks (`useActionState` de `react`, `useFormStatus` de `react-dom`).
+    *   **Segurança e Boas Práticas:** [REVISÃO] - 29-04-2025 - Revisado o fluxo de newsletter para garantir que apenas usuários com `status_confirmacao = 'confirmado'` recebam e-mails. Confirmado que tokens de confirmação e descadastro são sempre invalidados após uso.
+
 *   **Progresso (28-04-2025):**
     *   **Avisos Next.js 15 (`params`/`searchParams`):** [INVESTIGAÇÃO/NOTA] - 28-04-2025 - Investigados avisos no console do Next.js 15.2.4 (`params`/`searchParams` 'should be awaited') nas páginas de categoria (`categorias/page.tsx`) e categoria específica (`[categoria]/page.tsx`). Tentativas de refatoração (mudança na forma de acesso às props, tipagem na assinatura, variáveis intermediárias) não eliminaram os avisos. Decidido manter a versão atual e ignorar os avisos, pois não impactam a funcionalidade.
     *   **Paginação na Página de Categorias:** [IMPLEMENTAÇÃO] - 28-04-2025 - Adicionada lógica de paginação completa à página de listagem de categorias (`/blogflorescerhumano/categorias/page.tsx`), incluindo busca de contagem total, range na busca principal e uso do componente `PaginationControls`.
@@ -110,6 +122,8 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Ícones Customizados (`ShareButtons.tsx`):** Utilizar `next/image` com arquivos PNG específicos.
     *   **Rota de Artigos:** Confirmada a estrutura `/blogflorescerhumano/[categoria]/[slug]` para artigos individuais.
     *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 28-04-2025]**
+    *   **Status de Cancelamento na Newsletter:** [DECISÃO] - 29-04-2025 - Adotado o valor `cancelado` como status válido em `status_confirmacao` para permitir descadastro seguro e rastreável. Constraint do banco ajustada para aceitar `'pendente'`, `'confirmado'` e `'cancelado'`.
+    *   **Fluxo de Descadastro Seguro:** [DECISÃO] - 29-04-2025 - O link de descadastro enviado por e-mail utiliza token único, é validado no backend e, após uso, é invalidado. O status do assinante é atualizado para `cancelado` e todos os tokens são limpos.
 
 *   **Desafios e Soluções:**
     *   **Avisos do Next.js 15 (`params`/`searchParams`):** [Não Resolvido/Ignorado] - 28-04-2025 - O Next.js 15.2.4 exibe avisos no console sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Diversas abordagens de refatoração foram tentadas sem sucesso. A solução temporária é ignorar os avisos, pois a funcionalidade não está quebrada.
@@ -126,31 +140,38 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 28-04-2025]**
 
 *   **Atualizações de Dependências/Integrações:**\n    *   **`react-hook-form` e `zod`:** [ADICIONADO] - 28-04-2025 - Instaladas para facilitar a implementação do formulário de newsletter.\n    *   **Next.js:** [NOTA] - 28-04-2025 - Mantida a versão 15.2.4 apesar dos avisos sobre `params`/`searchParams`.\n    *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.\n    *   `react-share`: Utilizada para botões de compartilhamento.\n    *   `react-tooltip`: Adicionada para tooltips.\n    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 28-04-2025]**
+    *   **Atualização de Constraint no Supabase:** [APLICADO] - 29-04-2025 - Constraint da coluna `status_confirmacao` da tabela `newsletter_assinantes` ajustada para aceitar `'cancelado'`.
 
 ## 3. Próximos Passos (Atualizados)
 
-1.  **[Concluído] - 28-04-2025** - Implementar Paginação na Página de Categorias (`/blogflorescerhumano/[categoria]/page.tsx`):
+1.  **[Concluído] - 29-04-2025** - Implementar fluxo completo de cancelamento de inscrição da newsletter (unsubscribe):
+    *   Adicionar coluna `unsubscribe_token`.
+    *   Gerar token e link de descadastro.
+    *   Criar página de confirmação e Server Action.
+    *   Ajustar constraint do banco.
+    *   Testar e documentar o fluxo.
+2.  **[Concluído] - 28-04-2025** - Implementar Paginação na Página de Categorias (`/blogflorescerhumano/[categoria]/page.tsx`):
     *   Validado o parâmetro `page` da URL para evitar `NaN`.
     *   Corrigida a chamada ao componente `PaginationControls` para passar `totalCount` e `pageSize` corretamente.
     *   Testado funcionalmente com valor temporário de `ARTICLES_PER_PAGE` e restaurado para o valor original (6).
-2.  **[Concluído] - 28-04-2025** - Ajustes no Cabeçalho do Blog (`BlogHeader.tsx`):
+3.  **[Concluído] - 28-04-2025** - Ajustes no Cabeçalho do Blog (`BlogHeader.tsx`):
     *   Centralização dos links de navegação.
     *   Adição do botão "Site Psi Daniel Dantas" e ícone de busca, alinhados à direita.
-3.  **[Concluído] - 28-04-2025** - Organização de Assets:
+4.  **[Concluído] - 28-04-2025** - Organização de Assets:
     *   Movidos arquivos de imagem da raiz de `public/` para subpastas dedicadas (`public/psicologodanieldantas/` e `public/blogflorescerhumano/`).
     *   Atualizadas todas as referências `src` no código.
-4.  **[Concluído] - 28-04-2025** - Paginação na Página de Busca (`/blogflorescerhumano/buscar/page.tsx`):
+5.  **[Concluído] - 28-04-2025** - Paginação na Página de Busca (`/blogflorescerhumano/buscar/page.tsx`):
     *   Implementada paginação com limite de 6 artigos por página.
     *   Criado componente `PaginationControls.tsx`.
     *   Corrigido tipo de retorno da RPC `search_articles_paginated`.
-5.  **[Concluído] - 28-04-2025** - Remoção de Campo de Busca Duplicado.
-6.  **[Concluído] - 26-04-2025** - Schema Markup (Artigo).
-7.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas (`/sobre`, `/contato`, `/politica-de-privacidade`).
-8.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
-9.  **[Concluído] - 25-04-2025** - Implementar Página de Listagem de Categorias (`/categorias`).
-10. **[Concluído] - 25-04-2025** - Implementar Página de Artigo Individual (`/[categoria]/[slug]`).
-11. **[Concluído] - 25-04-2025** - Implementar Página de Listagem Geral de Artigos (`/artigos`).
-12. **[Concluído] - 25-04-2025** - Configuração Inicial do Blog (Estrutura de pastas, layout básico).
+6.  **[Concluído] - 28-04-2025** - Remoção de Campo de Busca Duplicado.
+7.  **[Concluído] - 26-04-2025** - Schema Markup (Artigo).
+8.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas (`/sobre`, `/contato`, `/politica-de-privacidade`).
+9.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
+10. **[Concluído] - 25-04-2025** - Implementar Página de Listagem de Categorias (`/categorias`).
+11. **[Concluído] - 25-04-2025** - Implementar Página de Artigo Individual (`/[categoria]/[slug]`).
+12. **[Concluído] - 25-04-2025** - Implementar Página de Listagem Geral de Artigos (`/artigos`).
+13. **[Concluído] - 25-04-2025** - Configuração Inicial do Blog (Estrutura de pastas, layout básico).
 
 ## 4. Tarefas Pendentes (Priorizadas)
 

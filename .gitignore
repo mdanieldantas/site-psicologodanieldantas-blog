@@ -26,4 +26,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# scripts de desenvolvimento (não vão para o git nem produção)
+dev-scripts/
+
 # docs

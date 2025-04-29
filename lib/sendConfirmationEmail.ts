@@ -19,7 +19,7 @@ export async function sendConfirmationEmail(email: string, confirmationToken: st
   `;
 
   return resend.emails.send({
-    from: 'newsletter@no-reply.psicologodanieldantas.com', // Usando domínio verificado no Resend
+    from: 'Florescer Humano Blog <newsletter@no-reply.psicologodanieldantas.com>', // Usando domínio verificado no Resend
     to: email,
     subject,
     html,
