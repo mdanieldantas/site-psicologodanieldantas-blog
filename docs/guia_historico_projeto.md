@@ -1,6 +1,6 @@
 # Guia e Histórico do Projeto: Blog Florescer Humano
 
-**Data:** 26-04-2025 <!-- Data da Última Atualização -->
+**Data:** 29-04-2025 <!-- Data da Última Atualização -->
 
 ## 1. Visão Geral e Objetivos
 
@@ -102,28 +102,17 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
             *   Revisar e documentar o fluxo final para produção (prints, exemplos, instruções).
             *   (Opcional) Monitorar entregabilidade e reputação dos e-mails no painel do Resend.
 
+*   **Progresso (29-04-2025):**
+    *   **Envio em Massa de E-mails da Newsletter:** [IMPLEMENTAÇÃO] - 29-04-2025 - Implementado e testado o script de envio em massa para todos os assinantes confirmados da newsletter, utilizando o Resend e o template oficial do projeto. O conteúdo do e-mail foi personalizado para ser mais humano, incluindo links para o blog, sessão de contato e orientações para melhorar a entregabilidade (ex: arrastar para a aba Principal do Gmail). O campo "from" foi padronizado para "Florescer Humano Blog <newsletter@no-reply.psicologodanieldantas.com>" em todos os envios.
+    *   **Aprimoramento do Template de E-mail:** [MELHORIA] - 29-04-2025 - O template de e-mail foi revisado para incluir assinatura personalizada, links úteis e orientações para o usuário, tornando a comunicação mais clara e profissional.
+    *   **Padronização dos Remetentes:** [MELHORIA] - 29-04-2025 - Todos os envios de e-mail (inscrição, confirmação, cancelamento e massa) agora utilizam o mesmo padrão de remetente, facilitando a identificação pelo usuário.
+    *   **Ajuste dos Logs de Envio:** [MELHORIA] - 29-04-2025 - O script de envio em massa agora exibe apenas erros no terminal, tornando o uso mais limpo e seguro para produção.
+    *   **Documentação de Uso:** [MELHORIA] - 29-04-2025 - O guia de uso da newsletter foi atualizado com exemplos práticos, melhores práticas de entregabilidade e instruções para execução dos scripts.
+
 *   **Decisões de Arquitetura/Design Recentes:**
-    *   **[NOTA] Avisos Next.js 15 (`params`/`searchParams`):** [DECISÃO] - 28-04-2025 - Manter a versão 15.2.4 do Next.js e ignorar os avisos "should be awaited" no console de desenvolvimento relacionados ao acesso a `params` e `searchParams` em Server Components. A funcionalidade não está comprometida e um downgrade poderia trazer outros problemas ou perda de recursos. Monitorar futuras atualizações do Next.js para possíveis correções.
-    *   **[NOTA] Correção Manual de Tipos Supabase:** [DECISÃO] - 28-04-2025 - Foi necessário editar manualmente o arquivo `types/supabase.ts` para corrigir o tipo de retorno (`Returns`) da função RPC `search_articles_paginated` para `{ articles: ArticleSearchResult[], totalCount: number }`, pois a geração automática resultou em `Returns: Json`. Isso pode ser necessário novamente se a função for alterada ou se a ferramenta de geração não inferir tipos complexos corretamente.
-    *   **Abordagem de Busca de Dados (Supabase):** [DECISÃO] - 26-04-2025 - Adotar uma **abordagem híbrida** para buscar dados do Supabase:
-        *   **Usar `lib/supabase/queries.ts`:** Para funções de busca **genéricas e reutilizáveis** (ex: `getAllCategorias`, `getPublishedArtigos`, `getCategoriaBySlug`, futuras como `getArtigosByTagSlug`). Isso promove DRY e manutenção centralizada.
-        *   **Manter Buscas Direto nas Páginas (`page.tsx`):** Quando a busca for **altamente específica** para a página, depender de **múltiplos parâmetros da rota** (ex: `[categoria]/[slug]/page.tsx`), precisar de **relações/campos muito particulares** não cobertos por funções genéricas (ex: buscar `tags` junto com artigo), ou for uma **busca única** sem previsão de reutilização. Isso mantém a clareza e evita complexidade excessiva nas funções genéricas.
-    *   **Armazenamento de Imagens:** [CRUCIAL] - 26-04-2025 - Imagens do blog serão servidas diretamente da pasta `public/blogflorescerhumano/`. A coluna `imagem_capa_arquivo` no Supabase armazenará o caminho relativo *dentro* dessa pasta (ex: `categoria-slug/nome-arquivo.png`).
-    *   **Padrão de Caminho de Imagem:** [RECOMENDAÇÃO] - 26-04-2025 - Utilizar barras normais (`/`) em vez de invertidas (`\\`) ao salvar caminhos de imagem no Supabase para garantir compatibilidade entre ambientes (Windows/Linux).
-    *   **Estrutura de Componentes de UI:** [DECISÃO] - 26-04-2025 - Manter a estrutura atual:
-        *   Componentes de UI genéricos (ex: `button`, `card` de shadcn/ui) residem na pasta raiz `components/ui/` e são usados em todo o site (landing page + blog).
-        *   Componentes funcionais e específicos do blog (ex: `ArticleCardBlog`, `SearchForm`) residem em `app/blogflorescerhumano/components/`.
-        *   **Não** criar uma pasta `app/blogflorescerhumano/components/ui/` neste momento. Ela só será criada se houver necessidade de variantes de estilo de componentes básicos *exclusivas* para o blog.
-    *   **Estrutura Interna do Módulo Blog:** [NOTA] - 26-04-2025 - A estrutura interna detalhada no `doc-integracao...` (com subpastas como `services`, `components/Category`, `hooks` específicos do blog) não foi seguida estritamente. A lógica de busca de dados (serviços) está integrada diretamente nos arquivos `page.tsx` (Server Components), e os componentes específicos do blog estão agrupados em `app/blogflorescerhumano/components/`.
-    *   **Posicionamento da Lógica de Busca de Dados:** [CLARIFICAÇÃO] - 26-04-2025 - A lógica de busca de dados específica para uma página (ex: buscar um artigo único com base em parâmetros de URL) reside diretamente no componente Server Component (`page.tsx`) dessa página. Funções de busca de dados genéricas e reutilizáveis (ex: buscar todas as categorias, buscar todos os artigos publicados) são centralizadas no arquivo `lib/supabase/queries.ts` para evitar repetição e facilitar a manutenção.
-    *   **Localização da Configuração Supabase:** [NOTA] - 26-04-2025 - A pasta `lib/supabase/` (com `client.ts`, `server.ts`, `queries.ts`, `utils.ts`) está localizada na raiz do projeto (`lib/`) e não dentro de `app/blogflorescerhumano/`. Isso é aceitável, pois contém configuração/utilitários que podem ser usados globalmente.
-    *   **Estrutura de Arquivos do Blog:** [CRUCIAL] - 25-04-2025 - Todos os arquivos específicos do blog (componentes, páginas, etc.) DEVEM residir dentro da pasta `app/blogflorescerhumano/`. Evitar criar pastas duplicadas fora desta estrutura. Usar sufixos como `Blog` (ex: `BlogHeader.tsx`) em nomes de arquivos quando apropriado para clareza, desde que não conflite com convenções do Next.js.
-    *   **Estrutura de Assets em `public/`:** [IMPLEMENTADO] - 28-04-2025 - Adotada e implementada estrutura hierárquica com subpastas (`public/psicologodanieldantas/`, `public/blogflorescerhumano/`).
-    *   **Ícones Customizados (`ShareButtons.tsx`):** Utilizar `next/image` com arquivos PNG específicos.
-    *   **Rota de Artigos:** Confirmada a estrutura `/blogflorescerhumano/[categoria]/[slug]` para artigos individuais.
-    *   **[ADICIONAR AQUI NOVAS DECISÕES DE ARQUITETURA/DESIGN DESDE 28-04-2025]**
-    *   **Status de Cancelamento na Newsletter:** [DECISÃO] - 29-04-2025 - Adotado o valor `cancelado` como status válido em `status_confirmacao` para permitir descadastro seguro e rastreável. Constraint do banco ajustada para aceitar `'pendente'`, `'confirmado'` e `'cancelado'`.
-    *   **Fluxo de Descadastro Seguro:** [DECISÃO] - 29-04-2025 - O link de descadastro enviado por e-mail utiliza token único, é validado no backend e, após uso, é invalidado. O status do assinante é atualizado para `cancelado` e todos os tokens são limpos.
+    *   **Padronização do Remetente de E-mails:** [DECISÃO] - 29-04-2025 - Definido que todos os envios de e-mail do projeto devem utilizar o formato "Florescer Humano Blog <newsletter@no-reply.psicologodanieldantas.com>" para reforçar a identidade do blog e facilitar o reconhecimento pelo usuário.
+    *   **Separação de Scripts de Desenvolvimento:** [DECISÃO] - 29-04-2025 - Criada a pasta `dev-scripts/newsletter-scripts/` para armazenar scripts de envio e exemplos, garantindo que não sejam enviados para produção ou versionados no git.
+    *   **Conteúdo Humanizado e Links Úteis:** [DECISÃO] - 29-04-2025 - Todos os e-mails em massa devem conter links para o blog, sessão de contato e orientações para melhorar a entregabilidade, além de uma assinatura pessoal.
 
 *   **Desafios e Soluções:**
     *   **Avisos do Next.js 15 (`params`/`searchParams`):** [Não Resolvido/Ignorado] - 28-04-2025 - O Next.js 15.2.4 exibe avisos no console sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Diversas abordagens de refatoração foram tentadas sem sucesso. A solução temporária é ignorar os avisos, pois a funcionalidade não está quebrada.
@@ -137,74 +126,54 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
     *   **Erro Interno React (`No lowest priority node found`):** [Resolvido/Não recorrente] - O erro transitório não ocorreu novamente.
     *   **Localização Incorreta de Componentes:** [Resolvido] - 25-04-2025 - Componentes do blog (`BlogHeader`, `BlogFooter`) foram inicialmente criados fora da pasta `app/blogflorescerhumano/` e movidos para o local correto (`app/blogflorescerhumano/components/`).
     *   **Artigo não listado:** [Resolvido] - 25-04-2025 - Um artigo não aparecia na listagem devido a um `slug` ausente na categoria associada. Corrigido no Supabase.
-    *   **[ADICIONAR AQUI NOVOS DESAFIOS E SOLUÇÕES DESDE 28-04-2025]**
+    *   **E-mails não entregues ou caindo em Promoções:** [Resolvido/Parcial] - 29-04-2025 - Ajustado o conteúdo dos e-mails para ser mais pessoal, adicionado orientações para o usuário e revisado o remetente. A entrega melhorou, mas a classificação em "Promoções" pode continuar ocorrendo devido a políticas do Gmail. Monitoramento contínuo recomendado.
+    *   **Logs Expostos em Produção:** [Resolvido] - 29-04-2025 - Removidos logs detalhados de sucesso dos scripts de envio em massa, mantendo apenas logs de erro e um resumo final.
+    *   **Variáveis de Ambiente em Scripts:** [Resolvido] - 29-04-2025 - Garantido o carregamento correto das variáveis do `.env.local` nos scripts de desenvolvimento usando o pacote `dotenv`.
 
-*   **Atualizações de Dependências/Integrações:**\n    *   **`react-hook-form` e `zod`:** [ADICIONADO] - 28-04-2025 - Instaladas para facilitar a implementação do formulário de newsletter.\n    *   **Next.js:** [NOTA] - 28-04-2025 - Mantida a versão 15.2.4 apesar dos avisos sobre `params`/`searchParams`.\n    *   **Supabase Tipagem:** [Atualizado/Corrigido Manualmente] - 28-04-2025 - Tipos regenerados com `npx supabase gen types ...` e corrigidos manualmente em `types/supabase.ts` para a função `search_articles_paginated`.\n    *   `react-share`: Utilizada para botões de compartilhamento.\n    *   `react-tooltip`: Adicionada para tooltips.\n    *   **[ADICIONAR AQUI NOVAS ATUALIZAÇÕES DE DEPENDÊNCIAS/INTEGRAÇÕES DESDE 28-04-2025]**
-    *   **Atualização de Constraint no Supabase:** [APLICADO] - 29-04-2025 - Constraint da coluna `status_confirmacao` da tabela `newsletter_assinantes` ajustada para aceitar `'cancelado'`.
+*   **Atualizações de Dependências/Integrações:**
+    *   **Adição do pacote `tsx`:** [ADICIONADO] - 29-04-2025 - Instalado o pacote `tsx` para facilitar a execução de scripts TypeScript no terminal sem necessidade de compilação prévia.
+    *   **Adição do pacote `dotenv`:** [ADICIONADO] - 29-04-2025 - Instalado e utilizado para garantir o carregamento das variáveis de ambiente nos scripts de desenvolvimento.
 
 ## 3. Próximos Passos (Atualizados)
 
-1.  **[Concluído] - 29-04-2025** - Implementar fluxo completo de cancelamento de inscrição da newsletter (unsubscribe):
-    *   Adicionar coluna `unsubscribe_token`.
-    *   Gerar token e link de descadastro.
-    *   Criar página de confirmação e Server Action.
-    *   Ajustar constraint do banco.
-    *   Testar e documentar o fluxo.
-2.  **[Concluído] - 28-04-2025** - Implementar Paginação na Página de Categorias (`/blogflorescerhumano/[categoria]/page.tsx`):
-    *   Validado o parâmetro `page` da URL para evitar `NaN`.
-    *   Corrigida a chamada ao componente `PaginationControls` para passar `totalCount` e `pageSize` corretamente.
-    *   Testado funcionalmente com valor temporário de `ARTICLES_PER_PAGE` e restaurado para o valor original (6).
-3.  **[Concluído] - 28-04-2025** - Ajustes no Cabeçalho do Blog (`BlogHeader.tsx`):
-    *   Centralização dos links de navegação.
-    *   Adição do botão "Site Psi Daniel Dantas" e ícone de busca, alinhados à direita.
-4.  **[Concluído] - 28-04-2025** - Organização de Assets:
-    *   Movidos arquivos de imagem da raiz de `public/` para subpastas dedicadas (`public/psicologodanieldantas/` e `public/blogflorescerhumano/`).
-    *   Atualizadas todas as referências `src` no código.
-5.  **[Concluído] - 28-04-2025** - Paginação na Página de Busca (`/blogflorescerhumano/buscar/page.tsx`):
-    *   Implementada paginação com limite de 6 artigos por página.
-    *   Criado componente `PaginationControls.tsx`.
-    *   Corrigido tipo de retorno da RPC `search_articles_paginated`.
-6.  **[Concluído] - 28-04-2025** - Remoção de Campo de Busca Duplicado.
-7.  **[Concluído] - 26-04-2025** - Schema Markup (Artigo).
-8.  **[Concluído] - 26-04-2025** - Criar/Finalizar Páginas Estáticas/Informativas (`/sobre`, `/contato`, `/politica-de-privacidade`).
-9.  **[Concluído] - 25-04-2025** - Resolver Erro da Página `/sobre`.
-10. **[Concluído] - 25-04-2025** - Implementar Página de Listagem de Categorias (`/categorias`).
-11. **[Concluído] - 25-04-2025** - Implementar Página de Artigo Individual (`/[categoria]/[slug]`).
-12. **[Concluído] - 25-04-2025** - Implementar Página de Listagem Geral de Artigos (`/artigos`).
-13. **[Concluído] - 25-04-2025** - Configuração Inicial do Blog (Estrutura de pastas, layout básico).
+1.  **[Concluído] - 2025-04-29** - Implementar e documentar o envio em massa de e-mails da newsletter, com template humanizado e logs ajustados.
+2.  **[Em Progresso] - 2025-04-29** - Implementar opção de reenvio do e-mail de confirmação para e-mails pendentes.
+3.  **[Pendente]** - Monitorar entregabilidade e reputação dos e-mails no painel do Resend e ajustar conteúdo conforme necessário.
+4.  **[Pendente]** - Finalizar personalização do layout dos e-mails de confirmação e cancelamento (HTML/CSS, logo, assinatura, etc).
+5.  **[Pendente]** - Revisar e documentar o fluxo final da newsletter para produção (prints, exemplos, instruções).
 
 ## 4. Tarefas Pendentes (Priorizadas)
 
 1.  **Funcionalidade de Newsletter:**
     *   **[Concluído] - 28-04-2025** - Criar componente de formulário de inscrição (`NewsletterBlogForm.tsx`) usando `react-hook-form` e `zod`.
     *   **[Concluído] - 28-04-2025** - Criar Server Action (`newsletterBlogActions.ts`) para receber email e validar.
-    *   Implementar lógica de backend na Server Action para salvar e-mails no Supabase (verificação de duplicidade e inserção inicial feita).
-    *   Adicionar o `NewsletterBlogForm` ao `BlogFooter.tsx`.
-    *   Considerar confirmação de e-mail (double opt-in) - **PENDENTE**. Isso envolve envio de email e API route de confirmação.
+    *   **[Concluído] - 29-04-2025** - Implementar lógica de backend na Server Action para salvar e-mails no Supabase (verificação de duplicidade e inserção inicial feita).
+    *   **[Concluído] - 29-04-2025** - Adicionar o `NewsletterBlogForm` ao `BlogFooter.tsx`.
+    *   **[Em Progresso] - 29-04-2025** - Considerar confirmação de e-mail (double opt-in). Isso envolve envio de email e API route de confirmação.
 *   **Passo a passo para finalizar a newsletter (double opt-in):**
-            1. Finalizar configuração e validação do domínio de envio no painel do Resend (adicionar registros DNS e verificar domínio).
-            2. Testar entregabilidade real dos e-mails (inclusive fora do ambiente localhost).
-            3. Personalizar layout do e-mail de confirmação (HTML/CSS, logo, assinatura, etc).
-            4. Implementar opção de reenvio do e-mail de confirmação para e-mails pendentes.
-            5. Testar o fluxo completo: inscrição, confirmação, reenvio, mensagens e etapas.
-            6. Revisar e documentar o fluxo final para produção (prints, exemplos, instruções).
-            7. (Opcional) Monitorar entregabilidade e reputação dos e-mails no painel do Resend.
+            1. **[Concluído] - 29-04-2025** - Finalizar configuração e validação do domínio de envio no painel do Resend (adicionar registros DNS e verificar domínio).
+            2. **[Concluído] - 29-04-2025** - Testar entregabilidade real dos e-mails (inclusive fora do ambiente localhost).
+            3. **[Em Progresso] - 29-04-2025** - Personalizar layout do e-mail de confirmação (HTML/CSS, logo, assinatura, etc).
+            4. **[Pendente]** - Implementar opção de reenvio do e-mail de confirmação para e-mails pendentes.
+            5. **[Pendente]** - Testar o fluxo completo: inscrição, confirmação, reenvio, mensagens e etapas.
+            6. **[Pendente]** - Revisar e documentar o fluxo final para produção (prints, exemplos, instruções).
+            7. **[Pendente]** - (Opcional) Monitorar entregabilidade e reputação dos e-mails no painel do Resend.
 2.  **Revisar e Implementar RLS (Row Level Security):**
-    *   Analisar tabelas (`artigos`, `categorias`, `tags`, `newsletter_assinantes`, etc.).
-    *   Definir e aplicar políticas de segurança no Supabase para garantir que apenas dados públicos sejam acessíveis sem autenticação e que operações de escrita/atualização sejam restritas.
+    *   **[Em Progresso] - 29-04-2025** - Analisar tabelas (`artigos`, `categorias`, `tags`, `newsletter_assinantes`, etc.).
+    *   **[Pendente]** - Definir e aplicar políticas de segurança no Supabase para garantir que apenas dados públicos sejam acessíveis sem autenticação e que operações de escrita/atualização sejam restritas.
 3.  **Finalizar SEO:**
-    *   Verificar e ajustar `sitemap.ts` para incluir todas as páginas relevantes (categorias, artigos, tags, etc.).
-    *   Verificar e ajustar `robots.ts`.
-    *   Garantir metadados dinâmicos (título, descrição, Open Graph) em todas as páginas que ainda não os possuem (ex: `/artigos`, `/tags`, `/materiais`, `/midias`).
+    *   **[Em Progresso] - 29-04-2025** - Verificar e ajustar `sitemap.ts` para incluir todas as páginas relevantes (categorias, artigos, tags, etc.).
+    *   **[Pendente]** - Verificar e ajustar `robots.ts`.
+    *   **[Pendente]** - Garantir metadados dinâmicos (título, descrição, Open Graph) em todas as páginas que ainda não os possuem (ex: `/artigos`, `/tags`, `/materiais`, `/midias`).
 4.  **Refinar Navegação (Footer):**
-    *   Revisar os links no `BlogFooter.tsx` e garantir que apontem para as seções corretas do blog ou do site principal, conforme apropriado.
+    *   **[Pendente]** - Revisar os links no `BlogFooter.tsx` e garantir que apontem para as seções corretas do blog ou do site principal, conforme apropriado.
 5.  **Refatorar/Melhorar Página de Artigo (`/[categoria]/[slug]/page.tsx`):**
-    *   Analisar o código em busca de oportunidades de otimização, melhor legibilidade ou funcionalidades adicionais (ex: artigos relacionados, comentários - se planejado).
+    *   **[Pendente]** - Analisar o código em busca de oportunidades de otimização, melhor legibilidade ou funcionalidades adicionais (ex: artigos relacionados, comentários - se planejado).
 6.  **Páginas `/materiais` e `/midias`:**
-    *   Definir o conteúdo e a estrutura exata dessas páginas.
-    *   Implementar a busca de dados (se necessário) e a interface.
+    *   **[Pendente]** - Definir o conteúdo e a estrutura exata dessas páginas.
+    *   **[Pendente]** - Implementar a busca de dados (se necessário) e a interface.
 7.  **Página de Tags (`/tags/[slug]`):**
-    *   Verificar se a paginação está implementada e funcionando corretamente (similar à página de categorias).
+    *   **[Pendente]** - Verificar se a paginação está implementada e funcionando corretamente (similar à página de categorias).
 
 ## 5. Notas e Observações Gerais (Atualizadas)
 

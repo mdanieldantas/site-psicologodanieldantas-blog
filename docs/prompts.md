@@ -18,27 +18,45 @@ O objetivo deste documento é servir como um guia rápido e completo para entend
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-Atualize o documento `guia_historico_projeto.md` localizado na pasta `docs` com as informações mais recentes sobre o progresso do projeto. Mantenha a estrutura de seções existente e adicione ou modifique as informações conforme necessário, focando nos seguintes pontos desde a última atualização:
+Atualize o documento guia_historico_projeto.md localizado na pasta docs com as informações mais recentes sobre o progresso do projeto.  
+**Atenção:** Mantenha a estrutura de seções existente e adicione ou modifique as informações conforme necessário, SEM NUNCA APAGAR OU SUBSTITUIR informações históricas já registradas.  
+O objetivo é construir um histórico contínuo e transparente do projeto, preservando todos os registros de progresso, decisões, desafios, soluções e próximos passos, mesmo que já tenham sido concluídos ou superados.
 
-1.  **Progresso desde a última atualização:** Detalhe as novas funcionalidades que foram implementadas e estão funcionando corretamente. Mencione também quaisquer funcionalidades que foram modificadas ou removidas.
+Siga estas diretrizes:
 
-2.  **Decisões de arquitetura e design recentes:** Registre quaisquer novas decisões importantes tomadas em relação à arquitetura do projeto, design de componentes ou tecnologias utilizadas. Justifique brevemente essas decisões, se relevante.
+1.  **Progresso desde a última atualização:**  
+    - Detalhe as novas funcionalidades implementadas e que estão funcionando corretamente.
+    - Mencione quaisquer funcionalidades modificadas ou removidas.
+    - **Nunca apague registros de funcionalidades anteriores; apenas adicione novas entradas ou atualize o status das existentes.**
 
-3.  **Desafios e soluções:** Informe sobre quaisquer desafios que surgiram durante este período e como eles foram abordados e solucionados. Se algum desafio ainda estiver pendente, mencione-o e indique o status atual.
+2.  **Decisões de arquitetura e design recentes:**  
+    - Registre quaisquer novas decisões importantes tomadas em relação à arquitetura do projeto, design de componentes ou tecnologias utilizadas.
+    - Justifique brevemente essas decisões, se relevante.
+    - **Mantenha todas as decisões anteriores no histórico, adicionando as novas ao final ou início da lista, conforme o padrão do documento.**
 
-4.  **Atualizações de dependências e integrações:** Se houve a adição, remoção ou atualização de dependências externas ou integrações com outros sistemas, registre essas mudanças e suas implicações.
+3.  **Desafios e soluções:**  
+    - Informe sobre quaisquer desafios que surgiram durante este período e como foram abordados e solucionados.
+    - Se algum desafio ainda estiver pendente, mencione-o e indique o status atual.
+    - **Nunca remova desafios antigos, mesmo que já tenham sido resolvidos. O histórico completo deve ser preservado para rastreabilidade.**
+
+4.  **Atualizações de dependências e integrações:**  
+    - Registre toda adição, remoção ou atualização de dependências externas ou integrações com outros sistemas, incluindo suas implicações.
+    - **Mantenha o registro de todas as atualizações anteriores, adicionando as novas em ordem cronológica.**
 
 5.  **Próximos Passos (Atualizados):**
-    * Revise a lista de próximos passos planejados.
-    * Para cada passo listado anteriormente que foi concluído, atualize seu status para 'Concluído' e adicione a data de conclusão (formato AAAA-MM-DD).
-    * Para os passos que estão atualmente sendo trabalhados, atualize o status para 'Em Progresso' e, inclua a data de início.
-    * Adicione quaisquer novos próximos passos planejados desde a última atualização, listando-os com o status 'Pendente'.
-    * Modifique a descrição de quaisquer próximos passos que tenham sido alterados em seu escopo ou prioridade, mantendo o status original (a menos que tenha sido atualizado para 'Em Progresso' ou 'Concluído').
+    - Revise a lista de próximos passos planejados.
+    - Para cada passo listado anteriormente que foi concluído, atualize seu status para 'Concluído' e adicione a data de conclusão (formato AAAA-MM-DD), mas **NUNCA remova passos concluídos do documento**.
+    - Para os passos que estão atualmente sendo trabalhados, atualize o status para 'Em Progresso' e inclua a data de início.
+    - Adicione quaisquer novos próximos passos planejados desde a última atualização, listando-os com o status 'Pendente'.
+    - Modifique a descrição de quaisquer próximos passos que tenham sido alterados em seu escopo ou prioridade, mantendo o status original (a menos que tenha sido atualizado para 'Em Progresso' ou 'Concluído').
+    - **O histórico de todos os passos (concluídos, em andamento e pendentes) deve ser mantido para referência futura.**
 
-6.  **Observações e Notas Importantes (Atualizadas):** Adicione quaisquer novas observações relevantes, como links para novas documentações, pontos que precisam de revisão futura, áreas do código que exigem atenção ou novas considerações importantes para o projeto.
+6.  **Observações e Notas Importantes (Atualizadas):**  
+    - Adicione quaisquer novas observações relevantes, como links para novas documentações, pontos que precisam de revisão futura, áreas do código que exigem atenção ou novas considerações importantes para o projeto.
+    - **Nunca remova observações antigas, apenas adicione novas informações ou atualize o status das existentes.**
 
-Mantenha a linguagem clara e objetiva, focando em fornecer um panorama atualizado e preciso do estado do projeto para futuras consultas.
-
+Mantenha a linguagem clara e objetiva, focando em fornecer um panorama atualizado e preciso do estado do projeto para futuras consultas.  
+**Jamais apague ou sobrescreva informações históricas já registradas no documento. O histórico completo é fundamental para a rastreabilidade e evolução do projeto.**
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
