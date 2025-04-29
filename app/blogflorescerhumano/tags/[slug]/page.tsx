@@ -22,7 +22,7 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
   tags: { id: number }[] | null;
 };
 
-// --- Geração de Metadados Dinâmicos para Tag --- //
+// --- Geração de Metadados Dinâmicas para Tag --- //
 export async function generateMetadata(
   { params }: TagPageProps,
   parent: ResolvingMetadata
@@ -80,8 +80,8 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   // --- Obter parâmetros de paginação --- //
   const page = searchParams['page'] ?? '1';
   const perPage = searchParams['per_page'] ?? '6'; // Define um padrão, ex: 6 artigos por página
-  const pageNumber = parseInt(page as string, 10);
-  const perPageNumber = parseInt(perPage as string, 10);
+  const pageNumber = Math.max(1, parseInt(page as string, 10) || 1);
+  const perPageNumber = Math.max(1, parseInt(perPage as string, 10) || 6);
   const offset = (pageNumber - 1) * perPageNumber;
 
   // --- 1. Busca da Tag pelo Slug --- //
@@ -116,7 +116,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   }
 
   // Calcular total de páginas
-  const totalPages = Math.ceil((count ?? 0) / perPageNumber);
+  const totalPages = Math.max(1, Math.ceil((count ?? 0) / perPageNumber));
 
   // --- 2b. Busca dos Artigos da Página Atual --- //
   // CORREÇÃO: Usar 'artigos_tags' na relação se necessário
@@ -178,8 +178,8 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
       {/* --- Controles de Paginação --- */}
       <div className="mt-12 flex justify-center">
         <PaginationControls
-          // CORREÇÃO: Passar as props esperadas pelo componente
-          totalPages={totalPages} // Passa o total de páginas calculado
+          totalCount={count ?? 0} // Passa o total de itens
+          pageSize={perPageNumber} // Passa o tamanho da página
           currentPage={pageNumber} // Passa a página atual
           basePath={`/blogflorescerhumano/tags/${tagSlug}`} // Passa o caminho base para os links
         />
