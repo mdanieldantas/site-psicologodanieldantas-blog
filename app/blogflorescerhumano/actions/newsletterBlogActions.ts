@@ -5,6 +5,7 @@ import { supabaseServer } from '@/lib/supabase/server'; // Usando alias @/
 import type { Database } from '@/types/supabase'; // Usando alias @/
 import crypto from 'crypto';
 import { sendConfirmationEmail } from '@/lib/sendConfirmationEmail';
+// Importações duplicadas removidas
 
 // Esquema de validação com Zod
 const NewsletterSchema = z.object({
@@ -36,9 +37,7 @@ export async function subscribeToNewsletter(
   }
 
   const { email } = validatedFields.data;
-
-  // 2. Interagir com o Supabase
-  const supabase = supabaseServer; // Usando a instância do servidor
+  const supabase = supabaseServer;
 
   try {
     // Verificar se o email já existe (opcional, mas bom para feedback)
@@ -66,14 +65,18 @@ export async function subscribeToNewsletter(
 
     // Gerar token de confirmação único
     const token = crypto.randomBytes(32).toString('hex');
+    // Calcular data de expiração (24 horas a partir de agora)
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
 
-    // Inserir novo assinante com status pendente e token
+    // Inserir novo assinante com status pendente, token e data de expiração
     const { error: insertError } = await supabase
       .from('newsletter_assinantes')
       .insert({
         email: email,
         status_confirmacao: 'pendente',
         token_confirmacao: token,
+        token_expires_at: expiresAt.toISOString(), // <-- Salvar expiração
         data_inscricao: new Date().toISOString(),
       });
 
@@ -82,20 +85,22 @@ export async function subscribeToNewsletter(
       return { message: 'Ocorreu um erro ao salvar seu e-mail. Tente novamente.', type: 'error' };
     }
 
-    // TODO: Enviar e-mail de confirmação com o token
-    // Exemplo: await sendConfirmationEmail(email, token);
-    // Enviar e-mail de confirmação com o token
+    // Enviar e-mail de confirmação
     try {
       await sendConfirmationEmail(email, token);
     } catch (emailError) {
+      // ... tratamento de erro de e-mail ...
       console.error('Erro ao enviar e-mail de confirmação:', emailError);
-      // Opcional: retornar mensagem de erro diferente ou seguir normalmente
+      return { message: 'Inscrição pendente, mas houve um erro ao enviar o e-mail de confirmação. Tente novamente mais tarde ou contate o suporte.', type: 'error' };
     }
 
-    return { message: 'Inscrição recebida! Verifique seu e-mail para confirmar a inscrição.', type: 'success' };
+    return {
+      message: 'Quase lá! Enviamos um link de confirmação para o seu e-mail. Verifique sua caixa de entrada (e spam).',
+      type: 'success',
+    };
 
   } catch (error) {
-    console.error('Erro inesperado na Server Action:', error);
-    return { message: 'Ocorreu um erro inesperado. Por favor, tente mais tarde.', type: 'error' };
+    console.error('Erro inesperado na inscrição:', error);
+    return { message: 'Ocorreu um erro inesperado. Tente novamente.', type: 'error' };
   }
 }

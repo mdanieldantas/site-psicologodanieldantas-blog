@@ -1,39 +1,52 @@
 import { getSupabaseServiceRoleClient } from '@/lib/supabase/server'; // Importa o helper
 import { notFound, redirect } from 'next/navigation';
 
-export default async function ConfirmarNewsletterPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) { // Corrige tipo de searchParams
-  const { token } = await searchParams; // Usa await para obter o token
+export default async function ConfirmarNewsletterPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
+  const { token } = await searchParams;
 
   if (!token) {
     return <div>Token de confirmação ausente. Verifique o link enviado por e-mail.</div>;
   }
 
-  // Buscar assinante pelo token usando o cliente com service_role
-  const supabase = getSupabaseServiceRoleClient(); // Usa o cliente que bypassa RLS
+  const supabase = getSupabaseServiceRoleClient();
   const { data: subscriber, error } = await supabase
     .from('newsletter_assinantes')
-    .select('id, status_confirmacao, token_confirmacao') // Adiciona token_confirmacao ao select para debug
+    .select('id, status_confirmacao, token_confirmacao, token_expires_at') // <-- Selecionar expiração
     .eq('token_confirmacao', token)
     .maybeSingle();
 
-  console.log('DEBUG NEWSLETTER (Service Role):', { token, subscriber, error }); // Log atualizado
+  // Log de debug removido
 
   if (error) {
     return <div>Erro ao validar o token. Tente novamente mais tarde.</div>;
   }
 
-  if (!subscriber) {
-    return <div>Token inválido ou já utilizado.</div>;
+  // Verifica se o assinante existe E se o token não expirou
+  if (!subscriber || (subscriber.token_expires_at && new Date(subscriber.token_expires_at) < new Date())) {
+    // Se expirou ou não existe, invalida o token no banco para segurança (se existir)
+    if (subscriber) {
+        await supabase
+            .from('newsletter_assinantes')
+            .update({ token_confirmacao: null, token_expires_at: null })
+            .eq('id', subscriber.id);
+    }
+    return <div>Token inválido, expirado ou já utilizado. Por favor, inscreva-se novamente.</div>; // Mensagem unificada
   }
+
 
   if (subscriber.status_confirmacao === 'confirmado') {
     return <div>Seu e-mail já está confirmado! Obrigado por participar da newsletter.</div>;
   }
 
-  // Atualizar status para confirmado (também usa o cliente service_role)
+  // Atualizar status para confirmado e limpar token/expiração
   const { error: updateError } = await supabase
     .from('newsletter_assinantes')
-    .update({ status_confirmacao: 'confirmado', data_confirmacao: new Date().toISOString(), token_confirmacao: null })
+    .update({
+      status_confirmacao: 'confirmado',
+      data_confirmacao: new Date().toISOString(),
+      token_confirmacao: null,
+      token_expires_at: null // <-- Limpar expiração
+     })
     .eq('id', subscriber.id);
 
   if (updateError) {
