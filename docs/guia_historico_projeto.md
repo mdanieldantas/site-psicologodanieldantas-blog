@@ -251,3 +251,13 @@ Estas diretrizes consolidam as regras e recomendações para o Design System do 
 **Obs:** Sempre consultar e atualizar estas diretrizes ao evoluir o Design System do blog.
 
 *   **Correção de Cores Customizadas com Tailwind:** [SOLUÇÃO] - 29-04-2025 - Identificado que o Tailwind não reconhecia utilitários como `bg-[color:var(--blog-background)]` porque as cores customizadas do blog não estavam definidas em `theme.extend.colors` no `tailwind.config.ts`. A solução foi adicionar `blogBackground` e `blogForeground` ao `theme.extend.colors`, permitindo o uso de `bg-blogBackground` e `text-blogForeground` nos containers do blog. Isso garante que o fundo e o texto do blog usem sempre os tokens corretos, tanto no modo claro quanto no escuro, sem hacks ou !important. O resultado é um Design System limpo, sustentável e fácil de manter.
+
+*   **Padronização Visual de Botões e Cards:** [MELHORIA] - 29-04-2025 - Criado o componente `ButtonBlog` para padronizar todos os botões do blog, utilizando apenas tokens do Design System do blog (ex: `bg-blogPrimary`, `text-blogPrimary-foreground`). Todos os botões de ação do blog (ex: buscar, ler mais, ver todos os artigos) foram substituídos por `<ButtonBlog>`, eliminando o uso de cores fixas do Tailwind. O componente `ArticleCardBlog` também foi ajustado para usar tokens em fundo, borda, título, resumo e botão/link, garantindo total alinhamento visual com o site principal e fácil manutenção futura.
+
+## [29-04-2025] Refatoração dos cards do carrossel BlogPreviewSection
+
+- Os cards do carrossel BlogPreviewSection do blog foram refatorados para usar o componente `Card` do site principal (`components/ui/card.tsx`), seguindo exatamente o modelo visual do site principal.
+- Foram removidas classes e tokens exclusivos do blog nos cards do carrossel, garantindo que a estrutura, espaçamento, tipografia e cores sigam o padrão do site principal.
+- O objetivo é garantir que a experiência visual do usuário seja idêntica entre blog e site, mesmo com tokens separados, conforme solicitado.
+- O restante do Design System do blog permanece independente, mas os cards do carrossel agora são 100% fiéis ao padrão do site.
+- Decisão registrada para futuras manutenções: sempre que houver atualização visual nos cards do site principal, o carrossel do blog deve ser atualizado para refletir essas mudanças.

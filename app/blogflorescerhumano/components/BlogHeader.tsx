@@ -3,15 +3,24 @@
 import React from 'react';
 import Link from 'next/link';
 import { Search } from 'lucide-react'; // Importar ícone
+import Image from 'next/image';
 
 const BlogHeader = () => {
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-teal-500 text-white shadow-md">
-      {/* Alterado: removido justify-between, adicionado relative */}
+    <header className="bg-[color:var(--blog-background)] text-[color:var(--blog-foreground)] shadow-md border-b border-[color:var(--blog-border)]">
       <nav className="container mx-auto px-4 py-4 flex items-center relative">
         {/* Link para a página inicial do blog */}
         <Link href="/blogflorescerhumano" legacyBehavior>
-          <a className="text-2xl font-bold hover:text-gray-200">Blog Florescer Humano</a>
+          <a className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image
+              src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
+              alt="Logo Florescer Humano"
+              width={160}
+              height={40}
+              priority
+            />
+            <span className="sr-only">Blog Florescer Humano</span>
+          </a>
         </Link>
         {/* Links de navegação do blog - Centralizados */}
         {/* Alterado: adicionado absolute, left-1/2, transform, -translate-x-1/2 */}

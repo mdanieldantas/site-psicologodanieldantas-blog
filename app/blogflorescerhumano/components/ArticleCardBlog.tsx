@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowRight } from "lucide-react";
 
 interface ArticleCardBlogProps {
   titulo: string;
@@ -23,22 +24,23 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
 
   return (
     <Link href={linkArtigo} legacyBehavior>
-      <a className="block border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+      <a className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col border-l-4 border-[#C19A6B] transition-shadow duration-300 hover:shadow-lg">
         <div className="relative w-full h-48">
           <Image
             src={imagemUrl || fallbackImage}
             alt={`Imagem para ${titulo}`}
             layout="fill"
             objectFit="cover"
+            className="object-cover"
           />
         </div>
-        <div className="p-4">
-          <h3 className="text-xl font-semibold mb-2 line-clamp-2">{titulo}</h3>
+        <div className="p-6 flex flex-col flex-grow">
+          <h3 className="text-xl font-light mb-3 text-[#583B1F]">{titulo}</h3>
           {resumo && (
-            <p className="text-gray-600 text-sm mb-3 line-clamp-3">{resumo}</p>
+            <p className="text-[#735B43] font-light mb-4 line-clamp-3 flex-grow">{resumo}</p>
           )}
-          <span className="text-teal-600 hover:underline text-sm font-medium">
-            Leia mais →
+          <span className="inline-flex items-center text-sm text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 self-start mt-auto">
+            Ler mais <ArrowRight className="ml-2 h-4 w-4" />
           </span>
         </div>
       </a>

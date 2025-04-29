@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"; // Importar componentes do carrossel
+import ButtonBlog from '@/app/blogflorescerhumano/components/ButtonBlog';
 
 // Define a estrutura esperada para cada post do blog
 // Adicionada a propriedade 'date' e 'id' (opcional, mas presente nos dados de exemplo)
@@ -92,10 +93,10 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
 
         {/* Botão para ver todos os posts */}
         <div className="mt-12 flex justify-center"> {/* Aumentado mt */}
-          <Link href="/blogflorescerhumano" passHref> {/* Link para a página do blog */}
-            <span className="px-6 py-2 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 inline-flex items-center rounded-md cursor-pointer">
+          <Link href="/blogflorescerhumano" passHref>
+            <ButtonBlog className="text-sm px-6 py-2 inline-flex items-center">
               Ver todos os artigos <ArrowRight className="ml-2 h-4 w-4" />
-            </span>
+            </ButtonBlog>
           </Link>
         </div>
       </div>

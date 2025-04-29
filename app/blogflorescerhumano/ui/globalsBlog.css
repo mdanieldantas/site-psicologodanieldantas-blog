@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --blog-background: 340 100% 90%; /* rosa claro */
+    --blog-background: 36 33% 97%; /* bege claro igual ao site principal */
     --blog-foreground: 30 45% 23%;
     --blog-card: 36 33% 97%;
     --blog-card-foreground: 30 45% 23%;
@@ -25,12 +25,11 @@
     --blog-input: 30 30% 76%;
     --blog-ring: 30 45% 23%;
     --blog-radius: 0.5rem;
-  }
-  .dark {
-    --blog-background: 30 45% 23%;
-    --blog-foreground: 36 33% 97%;
-    --blog-card: 30 45% 23%;
-    --blog-card-foreground: 36 33% 97%;
+  }  .dark {
+    --blog-background: 36 33% 97%; /* SEM dark mode no fundo do blog */
+    --blog-foreground: 30 45% 23%;
+    --blog-card: 36 33% 97%;
+    --blog-card-foreground: 30 45% 23%;
     --blog-popover: 30 45% 23%;
     --blog-popover-foreground: 36 33% 97%;
     --blog-primary: 36 33% 97%;
@@ -52,11 +51,8 @@
 @layer base {
   * {
     @apply border-[color:var(--blog-border)];
-  }
-  body {
+  }  body {
     @apply bg-[color:var(--blog-background)] text-[color:var(--blog-foreground)];
-    background-color: hsl(var(--blog-background)) !important;
-    color: hsl(var(--blog-foreground)) !important;
   }
 }
 

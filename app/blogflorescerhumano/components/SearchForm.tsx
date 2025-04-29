@@ -2,6 +2,7 @@
 
 import React, { useState, FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ButtonBlog from './ButtonBlog';
 
 export default function SearchForm() {
   const router = useRouter();
@@ -21,9 +22,9 @@ export default function SearchForm() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="mb-8">
+    <form onSubmit={handleSearch} className="mb-12 w-full max-w-lg mx-auto mt-8">
       <label htmlFor="searchQuery" className="sr-only">
-        Buscar artigos
+        Buscar artigos, autores, categorias...
       </label>
       <div className="relative">
         <input
@@ -32,15 +33,14 @@ export default function SearchForm() {
           name="q"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar artigos por título ou conteúdo..."
-          className="block w-full p-4 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
+          className="block w-full py-2 pl-4 pr-28 text-base border border-[#C19A6B] rounded-md bg-[#F8F5F0] text-[#583B1F] placeholder:text-[#735B43]/70 shadow-sm font-light focus:ring-2 focus:ring-[#735B43] focus:border-[#735B43] transition-all"
         />
-        <button
-          type="submit"
-          className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Buscar
-        </button>
+        <span className="absolute right-2 top-1/2 -translate-y-1/2">
+          <ButtonBlog type="submit" className="text-sm px-4 py-1 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
+            Buscar
+          </ButtonBlog>
+        </span>
       </div>
     </form>
   );

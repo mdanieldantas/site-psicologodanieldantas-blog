@@ -60,7 +60,9 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+  			blogBackground: 'hsl(var(--blog-background))',
+  			blogForeground: 'hsl(var(--blog-foreground))'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
