@@ -249,3 +249,5 @@ Estas diretrizes consolidam as regras e recomendações para o Design System do 
 - Usar lucide-react, boas práticas de acessibilidade para ícones.
 
 **Obs:** Sempre consultar e atualizar estas diretrizes ao evoluir o Design System do blog.
+
+*   **Correção de Cores Customizadas com Tailwind:** [SOLUÇÃO] - 29-04-2025 - Identificado que o Tailwind não reconhecia utilitários como `bg-[color:var(--blog-background)]` porque as cores customizadas do blog não estavam definidas em `theme.extend.colors` no `tailwind.config.ts`. A solução foi adicionar `blogBackground` e `blogForeground` ao `theme.extend.colors`, permitindo o uso de `bg-blogBackground` e `text-blogForeground` nos containers do blog. Isso garante que o fundo e o texto do blog usem sempre os tokens corretos, tanto no modo claro quanto no escuro, sem hacks ou !important. O resultado é um Design System limpo, sustentável e fácil de manter.
