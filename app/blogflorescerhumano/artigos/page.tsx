@@ -5,28 +5,49 @@ import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
 import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata } from 'next';
+import { ResolvingMetadata } from 'next';
 
 // --- Metadados para a Página de Todos os Artigos --- //
-export const metadata: Metadata = {
-  title: 'Todos os Artigos | Blog Florescer Humano',
-  description: 'Navegue por todos os artigos publicados no Blog Florescer Humano sobre psicologia humanista, autoconhecimento e bem-estar.',
-  alternates: {
-    canonical: '/blogflorescerhumano/artigos',
-  },
-  openGraph: {
-    title: 'Todos os Artigos | Blog Florescer Humano',
-    description: 'Navegue por todos os artigos publicados no Blog Florescer Humano.',
-    url: '/blogflorescerhumano/artigos',
-    siteName: 'Blog Florescer Humano',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Todos os Artigos | Blog Florescer Humano',
-    description: 'Navegue por todos os artigos publicados no Blog Florescer Humano.',
-  },
-};
+// (Removido export const metadata para evitar conflito com generateMetadata)
+
+// --- Metadados dinâmicos para SEO conforme paginação --- //
+export async function generateMetadata(
+  { searchParams }: { searchParams?: { page?: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const currentPage = parseInt(searchParams?.page ?? '1', 10);
+  const isFirstPage = currentPage === 1;
+  const pageTitle = isFirstPage
+    ? 'Todos os Artigos | Blog Florescer Humano'
+    : `Todos os Artigos - Página ${currentPage} | Blog Florescer Humano`;
+  const pageDescription = isFirstPage
+    ? 'Navegue por todos os artigos publicados no Blog Florescer Humano sobre psicologia humanista, autoconhecimento e bem-estar.'
+    : `Página ${currentPage} da lista de artigos publicados no Blog Florescer Humano sobre psicologia humanista, autoconhecimento e bem-estar.`;
+  const canonicalUrl = isFirstPage
+    ? '/blogflorescerhumano/artigos'
+    : `/blogflorescerhumano/artigos?page=${currentPage}`;
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: canonicalUrl,
+      siteName: 'Blog Florescer Humano',
+      locale: 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: pageTitle,
+      description: pageDescription,
+    },
+  };
+}
 
 // Tipagem para o artigo com slug da categoria
 type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {

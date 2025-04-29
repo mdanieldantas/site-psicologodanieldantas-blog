@@ -2,12 +2,34 @@
 // Localização: app/blogflorescerhumano/materiais/page.tsx
 import { Metadata } from 'next';
 
-// Define os metadados da página para SEO
-export const metadata: Metadata = {
-  title: 'Materiais | Blog Florescer Humano',
-  description: 'Explore nossos e-books, guias, vídeos e outros recursos sobre psicologia humanista, autoconhecimento e bem-estar.',
-  // Outros metadados podem ser adicionados aqui (keywords, openGraph, etc.)
-};
+// Metadados dinâmicos para SEO (Next.js App Router)
+import { ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  _props: any,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  return {
+    title: 'Materiais | Blog Florescer Humano',
+    description: 'Explore nossos e-books, guias, vídeos e outros recursos sobre psicologia humanista, autoconhecimento e bem-estar.',
+    alternates: {
+      canonical: '/blogflorescerhumano/materiais',
+    },
+    openGraph: {
+      title: 'Materiais | Blog Florescer Humano',
+      description: 'Explore nossos e-books, guias, vídeos e outros recursos sobre psicologia humanista, autoconhecimento e bem-estar.',
+      url: '/blogflorescerhumano/materiais',
+      siteName: 'Blog Florescer Humano',
+      locale: 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: 'Materiais | Blog Florescer Humano',
+      description: 'Explore nossos e-books, guias, vídeos e outros recursos sobre psicologia humanista, autoconhecimento e bem-estar.',
+    },
+  };
+}
 
 // Componente da página de Materiais
 export default function MateriaisPage() {

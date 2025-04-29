@@ -2,12 +2,34 @@
 // Localização: app/blogflorescerhumano/midias/page.tsx
 import { Metadata } from 'next';
 
-// Define os metadados da página para SEO
-export const metadata: Metadata = {
-  title: 'Mídias Recomendadas | Blog Florescer Humano',
-  description: 'Descubra livros, filmes, documentários e outras mídias que inspiram o autoconhecimento e o bem-estar.',
-  // Outros metadados podem ser adicionados aqui
-};
+// Metadados dinâmicos para SEO (Next.js App Router)
+import { ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  _props: any,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  return {
+    title: 'Mídias Recomendadas | Blog Florescer Humano',
+    description: 'Descubra livros, filmes, documentários e outras mídias que inspiram o autoconhecimento e o bem-estar.',
+    alternates: {
+      canonical: '/blogflorescerhumano/midias',
+    },
+    openGraph: {
+      title: 'Mídias Recomendadas | Blog Florescer Humano',
+      description: 'Descubra livros, filmes, documentários e outras mídias que inspiram o autoconhecimento e o bem-estar.',
+      url: '/blogflorescerhumano/midias',
+      siteName: 'Blog Florescer Humano',
+      locale: 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: 'Mídias Recomendadas | Blog Florescer Humano',
+      description: 'Descubra livros, filmes, documentários e outras mídias que inspiram o autoconhecimento e o bem-estar.',
+    },
+  };
+}
 
 // Componente da página de Mídias
 export default function MidiasPage() {
