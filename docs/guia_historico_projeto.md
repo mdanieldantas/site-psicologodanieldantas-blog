@@ -177,6 +177,10 @@ Este documento serve como um guia rápido e histórico do desenvolvimento do mó
 
 ## 5. Notas e Observações Gerais (Atualizadas)
 
+*   **[NOTA] SEO Dinâmico:** Todas as páginas principais do blog agora utilizam a função `generateMetadata` para metadados dinâmicos, evitando conflitos e seguindo o padrão do Next.js App Router.
+*   **[NOTA] Sitemap:** O arquivo `sitemap.ts` está correto, incluindo URLs dinâmicas e estáticas, e compatível com Next.js.
+*   **[NOTA] Robots.txt:** O arquivo `robots.ts` está revisado e correto.
+*   **[NOTA] Paginação de Tags:** A paginação na página de tags foi corrigida e validada, não apresentando mais o erro "1 de nan".
 *   **[NOTA] Avisos Next.js 15 (`params`/`searchParams`):** [NOTA] - 28-04-2025 - A versão 15.2.4 do Next.js exibe avisos no console de desenvolvimento sobre `params` e `searchParams` precisarem ser 'awaited' em Server Components. Após tentativas de refatoração sem sucesso, a decisão atual é ignorar esses avisos, pois a funcionalidade do site não está comprometida. Um downgrade foi considerado, mas descartado para evitar perda de recursos e potenciais novos problemas. Monitorar futuras atualizações do Next.js.
 *   **[NOTA] Paginação:** Implementada nas páginas `/artigos`, `/tags/[slug]`, `/buscar`, `/blogflorescerhumano/categorias` e `/blogflorescerhumano/[categoria]/page.tsx`.
 *   **[NOTA] Correção Manual de Tipos Supabase:** Foi necessário corrigir manualmente o tipo de retorno da RPC `search_articles_paginated` em `types/supabase.ts` após a geração automática. Estar ciente de que isso pode ser necessário para outras RPCs complexas.
