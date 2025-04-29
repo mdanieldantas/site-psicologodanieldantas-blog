@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Search } from 'lucide-react'; // Importar ícone
 import Image from 'next/image';
+import HeaderSearchInline from './HeaderSearchInline';
 
 const BlogHeader = () => {
   return (
@@ -36,15 +37,10 @@ const BlogHeader = () => {
         </div>
         {/* Container para Botão e Lupa - Empurrado para a direita */}
         <div className="ml-auto flex items-center space-x-3">
-          {/* Ícone de Lupa para Busca (Agora primeiro) */}
-          <Link href="/blogflorescerhumano/buscar" legacyBehavior>
-            <a className="hover:text-gray-300 cursor-pointer" title="Buscar no blog">
-              <Search size={20} /> {/* Ícone de Lupa */}
-            </a>
-          </Link>
+          {/* Ícone de Lupa para Busca (Agora inline e expansível) */}
+          <HeaderSearchInline />
           {/* Botão para voltar ao site principal */}
           <Link href="/" legacyBehavior>
-            {/* Removido ml-auto daqui */}
             <a className="px-3 py-1 border border-white rounded-md hover:bg-white hover:text-blue-600 transition-colors">
               Site Psi Daniel Dantas
             </a>
