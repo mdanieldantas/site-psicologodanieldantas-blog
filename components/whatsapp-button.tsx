@@ -29,6 +29,11 @@ export default function WhatsAppButton({ isOpen, onClose }: WhatsAppButtonProps 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Dispara evento para o Google Tag Manager
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'whatsapp_formulario_enviado' });
+    }
     const message = `Olá, Daniel! Meu nome é ${formData.name}.\n\nE-mail: ${formData.email}\nTelefone: ${formData.phone || "Não informado"}\n\nMensagem: ${formData.message}`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/5585986013431?text=${encodedMessage}`, "_blank");

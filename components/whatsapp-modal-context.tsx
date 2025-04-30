@@ -10,7 +10,14 @@ const WhatsAppModalContext = createContext<WhatsAppModalContextType | undefined>
 export function WhatsAppModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = () => setIsOpen(true);
+  const openModal = () => {
+    // Dispara evento para o Google Tag Manager
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'whatsapp_modal_aberto' });
+    }
+    setIsOpen(true);
+  };
   const closeModal = () => setIsOpen(false);
 
   return (
