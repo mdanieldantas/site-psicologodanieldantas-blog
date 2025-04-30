@@ -56,23 +56,23 @@ const FakeBlogPreviewSection: React.FC = () => {
             {fakePosts.map((post, index) => (
               <CarouselItem key={post.slug || index} className="pl-4 basis-full lg:basis-4/5 xl:basis-3/4">
                 <div className="p-1 h-full">
-                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-row border-l-4 border-[#C19A6B] min-h-[400px]">
+                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#C19A6B] min-h-[400px]">
                     {/* Link único envolvendo todo o card para /em-construcao */}
-                    <Link href="/em-construcao" passHref className="cursor-pointer h-full flex flex-row w-full">
-                      <div className="relative min-w-[340px] w-2/5 h-[280px] md:h-[360px] mt-8 mb-8 ml-4">
+                    <Link href="/em-construcao" passHref className="cursor-pointer h-full flex flex-col sm:flex-row w-full">
+                      <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[220px] sm:h-[280px] md:h-[360px] mt-4 sm:mt-8 mb-4 sm:mb-8 mx-auto sm:ml-4">
                         <Image
                           src={post.imageUrl || "/placeholder.svg"}
                           alt={post.title}
                           fill
-                          className="object-cover rounded-l-lg"
-                          sizes="(max-width: 1024px) 100vw, 33vw"
+                          className="object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       </div>
-                      <div className="p-10 flex flex-col flex-grow w-3/5 justify-center">
-                        <h3 className="text-3xl font-light mb-4 text-[#583B1F]">{post.title}</h3>
-                        <p className="text-[#735B43] font-light mb-6 line-clamp-3 flex-grow text-lg">{post.excerpt}</p>
-                        <span className="inline-flex items-center text-lg text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 self-start mt-auto">
-                          Ler mais <ArrowRight className="ml-2 h-6 w-6" />
+                      <div className="p-6 sm:p-10 flex flex-col flex-grow w-full sm:w-3/5 justify-center">
+                        <h3 className="text-2xl sm:text-3xl font-light mb-3 sm:mb-4 text-[#583B1F]">{post.title}</h3>
+                        <p className="text-[#735B43] font-light mb-4 sm:mb-6 line-clamp-4 sm:line-clamp-3 flex-grow text-base sm:text-lg">{post.excerpt}</p>
+                        <span className="inline-flex items-center text-base sm:text-lg text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 self-start mt-auto">
+                          Ler mais <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6" />
                         </span>
                       </div>
                     </Link>
