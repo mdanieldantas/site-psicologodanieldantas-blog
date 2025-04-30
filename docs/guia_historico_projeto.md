@@ -1,5 +1,37 @@
 # Guia e Histórico do Projeto: Blog Florescer Humano
 
+## [30-04-2025] Padronização Global dos Botões de Contato (Site Principal)
+
+### Progresso desde a última atualização:
+- **Padronização dos botões de contato:** Todos os botões de contato reais do site principal (Header, HeroSection, WorkSection, ServicesSection, FaqSection, Footer, MobileMenu) agora abrem o modal do WhatsApp via contexto global (`WhatsAppModalProvider`), garantindo experiência uniforme e facilitando o rastreamento de eventos.
+- **Aprimoramento do modal WhatsApp:** O modal fecha ao clicar fora (overlay) e pode ser controlado globalmente por qualquer botão de contato.
+- **Rastreamento e padronização:** Abertura do modal centralizada facilita a implementação de eventos de rastreamento (ex: Google Tag Manager/GA4).
+- **Ajuste de botões do MobileMenu:** O botão "Contato" do menu mobile agora faz scroll suave até o rodapé (footer), enquanto "Agendar Consulta" abre o modal do WhatsApp.
+- **Ajuste visual:** Aumentado o tamanho da foto na AboutSection (mobile e desktop).
+- **Atualização de links do BlogPreviewSection:** Todos os links de cards e botão "Ver todos os artigos" agora apontam para "/em-construcao".
+- **Testes e validação:** Realizados testes manuais para garantir que todos os botões de contato abrem corretamente o modal do WhatsApp, sem afetar botões de navegação, carrossel ou redes sociais.
+
+### Decisões de arquitetura e design recentes:
+- **Centralização do controle do modal WhatsApp:** Decidido que todos os botões de contato do site principal devem abrir o modal do WhatsApp via contexto global, eliminando múltiplas implementações e facilitando rastreamento de eventos.
+- **Separação de funções no MobileMenu:** O botão "Contato" deve apenas rolar até o rodapé, enquanto "Agendar Consulta" abre o modal, evitando sobreposição de funções.
+- **Padronização de links em construção:** Todos os links de artigos e botão "Ver todos os artigos" do BlogPreviewSection devem apontar para "/em-construcao" até a publicação do blog.
+
+### Desafios e soluções:
+- **Desafio:** Garantir que apenas botões de contato reais abram o modal, sem afetar botões de navegação, carrossel ou redes sociais.
+  - **Solução:** Revisão manual de todos os componentes e uso seletivo do contexto global apenas nos botões de contato.
+- **Desafio:** UX consistente no fechamento do modal WhatsApp.
+  - **Solução:** Implementação do fechamento ao clicar fora (overlay) e controle via contexto global.
+
+### Próximos Passos (Atualizados):
+1. **[Em Progresso] - 2025-04-30** - Validar o funcionamento global do modal do WhatsApp em todos os dispositivos e navegadores.
+2. **[Pendente]** - Implementar eventos de rastreamento (GTM/GA4) para abertura do modal WhatsApp em todos os botões de contato.
+3. **[Pendente]** - Refinar feedback visual/UX do modal WhatsApp conforme testes de usuários.
+4. **[Pendente]** - Documentar o padrão de uso do contexto global do modal WhatsApp para futuras manutenções.
+
+### Observações e Notas Importantes (Atualizadas):
+- Todos os botões de contato reais do site principal agora abrem o modal do WhatsApp de forma padronizada e rastreável.
+- O histórico completo de decisões, desafios e soluções está preservado neste documento para rastreabilidade.
+
 **Data:** 29-04-2025 <!-- Data da Última Atualização -->
 
 ## 1. Visão Geral e Objetivos
