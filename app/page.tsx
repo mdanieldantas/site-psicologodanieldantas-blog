@@ -2,25 +2,28 @@
 
 // Importações de bibliotecas e ícones
 import { useState, useEffect, useRef } from "react"
+import { Suspense } from 'react';
 
 // Importações de Componentes da Página
 import SchemaMarkup from "./schema-markup"
+import HeroSection from '@/components/landing-page/HeroSection';
 
 // Importações dos Componentes de Seção Refatorados
 import Header from "@/components/landing-page/Header";
 import MobileMenu from "@/components/landing-page/MobileMenu";
-import HeroSection from "@/components/landing-page/HeroSection";
 import AboutSection from "@/components/landing-page/AboutSection";
 import WorkSection from "@/components/landing-page/WorkSection";
 import ChallengesSection from "@/components/landing-page/ChallengesSection";
 import ServicesSection from "@/components/landing-page/ServicesSection";
+import FakeBlogPreviewSection from '@/components/landing-page/FakeBlogPreviewSection'; // Importação descomentada e correta
 import FaqSection from "@/components/landing-page/FaqSection";
-import BlogPreviewSection from "@/components/landing-page/BlogPreviewSection";
 import ContactSection from "@/components/landing-page/ContactSection";
-import ScrollTopButton from "@/components/landing-page/ScrollTopButton";
 import Footer from "@/components/landing-page/Footer";
-// Corrigido: Importa usando o nome do arquivo (minúsculo) e a sintaxe padrão
+import WaveTransition from '@/components/wave-transition'; // Importação corrigida
+
 import WhatsAppButton from "@/components/whatsapp-button";
+import { WhatsAppModalProvider } from '@/components/whatsapp-modal-context';
+import CookieConsentBanner from '@/components/cookie-consent';
 
 // Dados dos posts do blog (mantidos aqui ou movidos para um local de dados)
 // NOTA: Idealmente, esses dados viriam de uma API ou CMS.
@@ -149,7 +152,8 @@ export default function LandingPage() {
 
         {/* Componente Seção Prévia do Blog - MOVIDO PARA ANTES DO FAQ */}
         {/* Passa os dados dos posts */}
-        <BlogPreviewSection posts={featuredPosts} />
+        {/* <BlogPreviewSection posts={featuredPosts} /> */}
+        <FakeBlogPreviewSection /> {/* Uso correto */}
 
         {/* Componente Seção FAQ */}
         <FaqSection />
@@ -162,10 +166,15 @@ export default function LandingPage() {
       <Footer />
 
       {/* Componente Botão Scroll Top (renderizado condicionalmente) */}
-      <ScrollTopButton
-        show={showScrollTop}
-        scrollToTop={scrollToTop}
-      />
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 z-50 p-3 bg-[#583B1F] text-white rounded-full shadow-lg transition-opacity duration-300 ease-in-out"
+          style={{ opacity: showScrollTop ? 1 : 0 }}
+        >
+          ↑
+        </button>
+      )}
 
       {/* Botão Flutuante do WhatsApp */}
       <WhatsAppButton />
