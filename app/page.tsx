@@ -160,17 +160,15 @@ export default function LandingPage() {
 
         {/* Componente Seção Contato */}
         {/* <ContactSection /> */}
-      </main>
-
-      {/* Componente Footer */}
+      </main>      {/* Componente Footer */}
       <Footer />
-
+      
       {/* Componente Botão Scroll Top (renderizado condicionalmente) */}
       {showScrollTop && (
         <button
-          onClick={scrollToTop}
-          className="fixed bottom-4 right-4 z-50 p-3 bg-[#583B1F] text-white rounded-full shadow-lg transition-opacity duration-300 ease-in-out"
+          onClick={scrollToTop}          className="fixed bottom-6 left-6 z-[60] p-3 bg-[#583B1F] text-white rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300"
           style={{ opacity: showScrollTop ? 1 : 0 }}
+          aria-label="Voltar ao topo"
         >
           ↑
         </button>
