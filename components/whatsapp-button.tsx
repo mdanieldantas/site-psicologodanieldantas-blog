@@ -2,8 +2,16 @@
 
 import React, { useState } from "react";
 
-export default function WhatsAppButton() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+interface WhatsAppButtonProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function WhatsAppButton({ isOpen, onClose }: WhatsAppButtonProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isFormOpen = typeof isOpen === 'boolean' ? isOpen : internalOpen;
+  const handleOpen = () => (typeof isOpen === 'boolean' ? (onClose && onClose()) : setInternalOpen(true));
+  const handleClose = () => (typeof isOpen === 'boolean' ? (onClose && onClose()) : setInternalOpen(false));
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,13 +29,10 @@ export default function WhatsAppButton() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     const message = `Olá, Daniel! Meu nome é ${formData.name}.\n\nE-mail: ${formData.email}\nTelefone: ${formData.phone || "Não informado"}\n\nMensagem: ${formData.message}`;
     const encodedMessage = encodeURIComponent(message);
-    
     window.open(`https://wa.me/5585986013431?text=${encodedMessage}`, "_blank");
-    
-    setIsFormOpen(false);
+    handleClose();
     setFormData({
       name: "",
       email: "",
@@ -38,30 +43,34 @@ export default function WhatsAppButton() {
 
   return (
     <div className="whatsapp-button-container">
-      {/* Botão principal do WhatsApp */}
-      <button
-        onClick={() => setIsFormOpen(true)}
-        className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-lg hover:bg-[#128C7E] transition-colors z-50"
-        aria-label="Contato via WhatsApp"
-      >
-        <WhatsAppIcon />
-      </button>
-
+      {/* Botão principal do WhatsApp só aparece se for controle interno */}
+      {typeof isOpen !== 'boolean' && (
+        <button
+          onClick={handleOpen}
+          className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-lg hover:bg-[#128C7E] transition-colors z-50"
+          aria-label="Contato via WhatsApp"
+        >
+          <WhatsAppIcon />
+        </button>
+      )}
       {/* Modal do formulário */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100]">
-          <div className="bg-white rounded-lg shadow-xl max-w-sm w-full mx-4 overflow-hidden">
-            <ModalHeader onClose={() => setIsFormOpen(false)} />
-            
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100]"
+          onClick={handleClose}
+        >
+          <div
+            className="bg-white rounded-lg shadow-xl max-w-sm w-full mx-4 overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <ModalHeader onClose={handleClose} />
             <div className="bg-gray-100 p-4">
               <div className="bg-white p-3 rounded-lg shadow-sm">
                 <p className="text-gray-700">Olá, tudo bem? Seja bem vindo! 😊</p>
               </div>
             </div>
-
             <div className="p-4">
               <p className="text-gray-700 font-medium mb-4">Por gentileza preencha os campos abaixo 👇</p>
-              
               <ContactForm 
                 formData={formData}
                 handleChange={handleChange}

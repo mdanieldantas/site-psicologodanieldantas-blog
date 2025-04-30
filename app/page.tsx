@@ -155,7 +155,7 @@ export default function LandingPage() {
         <FaqSection />
 
         {/* Componente Seção Contato */}
-        <ContactSection />
+        {/* <ContactSection /> */}
       </main>
 
       {/* Componente Footer */}

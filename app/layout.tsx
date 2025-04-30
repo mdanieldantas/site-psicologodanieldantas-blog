@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "../styles/globals.css"; // Importa estilos globais
 import { cn } from "@/lib/utils"; // Utilitário para mesclar classes CSS
 import { ThemeProvider } from "@/components/theme-provider"; // Provedor para gerenciamento de tema (dark/light)
+import { WhatsAppModalProvider } from "@/components/whatsapp-modal-context";
 // Corrigido: Importação padrão para Analytics
 import Analytics from "@/components/analytics"; // Componente para analytics (ex: Vercel Analytics)
 import { SpeedInsights } from "@vercel/speed-insights/next"; // Componente para Vercel Speed Insights
@@ -59,24 +60,26 @@ export default function RootLayout({
           fontSans.variable // Aplica a variável da fonte Inter
         )}
       >
-        {/* Provedor de Tema: Habilita a troca entre modo claro e escuro */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* Conteúdo principal da página renderizado aqui */}
-          {children}
-          {/* Componente para o banner de consentimento de cookies */}
-          <CookieConsent />
-          {/* Componente para Analytics da Vercel */}
-          <Suspense fallback={null}>
-            <Analytics />
-          </Suspense>
-          {/* Componente para Speed Insights da Vercel */}
-          <SpeedInsights />
-        </ThemeProvider>
+        <WhatsAppModalProvider>
+          {/* Provedor de Tema: Habilita a troca entre modo claro e escuro */}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* Conteúdo principal da página renderizado aqui */}
+            {children}
+            {/* Componente para o banner de consentimento de cookies */}
+            <CookieConsent />
+            {/* Componente para Analytics da Vercel */}
+            <Suspense fallback={null}>
+              <Analytics />
+            </Suspense>
+            {/* Componente para Speed Insights da Vercel */}
+            <SpeedInsights />
+          </ThemeProvider>
+        </WhatsAppModalProvider>
       </body>
     </html>
   );

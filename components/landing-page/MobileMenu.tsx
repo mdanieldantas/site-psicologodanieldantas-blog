@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 // Define as propriedades esperadas pelo componente MobileMenu
 interface MobileMenuProps {
@@ -17,7 +18,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
   if (!isOpen) {
     return null;
   }
-
+const { openModal } = useWhatsAppModal();
   return (
     <div className="fixed inset-0 bg-[#F8F5F0] z-[100] flex flex-col items-center justify-center">
       {/* Botão para fechar o menu */}
@@ -66,20 +67,20 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
           Blog
         </a>
         <a
-          href="#contato"
+          href="#footer"
           className="text-xl text-[#583B1F] hover:text-[#735B43]"
           onClick={handleLinkClick}
         >
           Contato
         </a>
         {/* Botão de Agendar Consulta */}
-        <a
-          href="#contato"
-          className="mt-4 rounded-md border border-[#735B43] px-8 py-3 text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0]"
-          onClick={handleLinkClick}
-        >
-          Agendar Consulta
-        </a>
+<button
+  type="button"
+  className="mt-4 rounded-md border border-[#735B43] px-8 py-3 text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0]"
+  onClick={() => { closeMenu(); openModal(); }}
+>
+  Agendar Consulta
+</button>
       </div>
     </div>
   );

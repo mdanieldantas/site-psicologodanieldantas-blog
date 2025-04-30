@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import React from "react";
+import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 // Componente HeroSection: A primeira seção visível da página
 // Usamos forwardRef para permitir que o componente pai passe uma ref para o elemento <section>
 const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
+  const { openModal } = useWhatsAppModal();
   return (
     <section ref={ref} id="inicio" className="relative min-h-screen flex items-center pt-24">
       {/* Imagem de fundo com opacidade condicional */}
@@ -24,12 +26,13 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
             autoconhecimento, onde quer que você esteja.
           </p>
           {/* Botão de chamada para ação */}
-          <a
-            href="#contato"
+          <button
+            type="button"
+            onClick={openModal}
             className="mt-8 px-8 py-3 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md inline-block"
           >
             Vamos conversar?
-          </a>
+          </button>
         </div>
       </div>
       {/* Ícone de seta para baixo indicando scroll */}

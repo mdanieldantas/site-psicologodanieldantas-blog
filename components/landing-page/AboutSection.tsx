@@ -14,7 +14,7 @@ const AboutSection = () => {
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Imagem - Visível apenas em Mobile (aparece antes do texto) */}
           <div className="lg:hidden w-full flex justify-center mb-6">
-            <div className="relative w-[250px] h-[250px]">
+            <div className="relative w-[320px] h-[320px]"> {/* Aumentado de 300px para 320px */}
               <Image
                 src="/foto-psicologo-daniel-dantas.png"
                 alt="Daniel Dantas - Psicólogo"
@@ -58,7 +58,7 @@ const AboutSection = () => {
 
           {/* Imagem - Visível apenas em Desktop (aparece à direita) */}
           <div className="hidden lg:flex lg:w-1/3 justify-end lg:pl-8">
-            <div className="relative w-[350px] h-[350px]">
+            <div className="relative w-[450px] h-[450px]"> {/* Aumentado de 400px para 450px */}
               <Image
                 src="/foto-psicologo-daniel-dantas.png"
                 alt="Daniel Dantas - Psicólogo"

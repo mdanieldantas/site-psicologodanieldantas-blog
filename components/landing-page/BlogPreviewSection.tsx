@@ -58,7 +58,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
                 <div className="p-1 h-full"> {/* Wrapper para espaçamento se necessário */}
                   {/* Card com borda esquerda */}
                   <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col border-l-4 border-[#C19A6B]">
-                    <Link href={`/blogflorescerhumano/artigos/${post.slug}`} passHref> {/* Link para o post real */}
+                    <Link href="/em-construcao" passHref> {/* Alterado href para /em-construcao */}
                       <div className="cursor-pointer h-full flex flex-col">
                         <div className="relative h-48"> {/* Altura da imagem */}
                           <Image
@@ -93,7 +93,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
 
         {/* Botão para ver todos os posts */}
         <div className="mt-12 flex justify-center"> {/* Aumentado mt */}
-          <Link href="/blogflorescerhumano" passHref>
+          <Link href="/em-construcao" passHref> {/* Alterado href para /em-construcao */}
             <ButtonBlog className="text-sm px-6 py-2 inline-flex items-center">
               Ver todos os artigos <ArrowRight className="ml-2 h-4 w-4" />
             </ButtonBlog>

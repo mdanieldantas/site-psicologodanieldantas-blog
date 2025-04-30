@@ -1,8 +1,10 @@
 // Componente FaqSection: Exibe perguntas frequentes usando um acordeão
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { MessageSquare } from "lucide-react"; // Importa o ícone
+import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 const FaqSection = () => {
+  const { openModal } = useWhatsAppModal();
   // Array com os dados das perguntas e respostas CORRIGIDO conforme texto fornecido
   const faqItems = [
     {
@@ -77,12 +79,15 @@ const FaqSection = () => {
 
         {/* Botão de Contato Abaixo do Container */}
         <div className="mt-12 text-center">
-          <a
-            href="#contato"
-            className="px-8 py-3 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md inline-block"
-          >
-            Ainda tem dúvidas? Entre em contato
-          </a>
+<div className="mt-12 text-center">
+  <button
+    type="button"
+    onClick={openModal}
+    className="px-8 py-3 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md inline-block"
+  >
+    Ainda tem dúvidas? Entre em contato
+  </button>
+</div>
         </div>
       </div>
     </section>

@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel"; // Importar componentes do shadcn/ui
+import { useWhatsAppModal } from "../whatsapp-modal-context"; // Importar o hook
 
 // Define as propriedades esperadas pelo componente ServicesSection
 interface ServicesSectionProps {
@@ -49,6 +50,7 @@ const demandas = [
 
 // Componente ServicesSection: Detalha os serviços oferecidos
 const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
+  const { openModal } = useWhatsAppModal(); // Obter a função openModal
   return (
     <section id="servicos" className="py-20 bg-[#F5F2EE]">
       <div className="container mx-auto px-[10%]">
@@ -90,13 +92,14 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
                   <span>Mesmo acolhimento e eficácia da terapia presencial</span>
                 </li>
               </ul>
-              <a
-                href="#contato"
+              <button
+                type="button"
+                onClick={openModal} // Chamar openModal no clique
                 className="mt-4 px-8 py-3 bg-[#C19A6B] text-[#F8F5F0] hover:bg-[#D1AA7B] transition-colors duration-300 flex items-center rounded-md text-sm"
               >
                 <Calendar className="mr-2 h-5 w-5" />
                 Agendar primeira sessão
-              </a>
+              </button>
             </div>
             {/* Imagem */}
             <div className="relative h-64 md:h-auto">

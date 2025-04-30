@@ -1,7 +1,9 @@
 // filepath: c:\DevDriverRepo\landing-page-psiblog-vscode-insiders\components\landing-page\WorkSection.tsx
+import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 // Componente WorkSection: Apresenta o vídeo sobre o trabalho do psicólogo
 const WorkSection = () => {
+  const { openModal } = useWhatsAppModal();
   return (
     <section className="py-20 bg-[#F5F2EE]">
       <div className="container mx-auto px-6 md:px-[10%]">
@@ -37,12 +39,13 @@ const WorkSection = () => {
               </li>
             </ul>
             {/* Botão de CTA - Visível apenas em Desktop */}
-            <a
-              href="#contato"
+            <button
+              type="button"
+              onClick={openModal}
               className="hidden md:inline-block px-6 py-2 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md mt-2"
             >
               Vamos iniciar sua jornada terapêutica?
-            </a>
+            </button>
           </div>
 
           {/* Coluna do Vídeo e Botão Mobile */}
@@ -63,12 +66,13 @@ const WorkSection = () => {
             </div>
             {/* Botão de CTA - Visível apenas em Mobile */}
             <div className="mt-6 md:hidden text-center">
-              <a
-                href="#contato"
+              <button
+                type="button"
+                onClick={openModal}
                 className="px-6 py-2 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md inline-block"
               >
                 Vamos iniciar sua jornada terapêutica?
-              </a>
+              </button>
             </div>
           </div>
         </div>

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Calendar } from "lucide-react"; // Adicionado Calendar
+import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 // Componente Footer: Renderiza o rodapé da página com informações de contato, links e copyright
 const Footer = () => {
+  const { openModal } = useWhatsAppModal();
   // --- INÍCIO: INFORMAÇÕES ATUALIZADAS ---
   const whatsappNumber = "5585986013431"; // Número do WhatsApp com código do país
   const formattedPhoneNumber = "+55 (85) 98601-3431"; // Número formatado para exibição
@@ -11,14 +13,14 @@ const Footer = () => {
   const facebookUrl = "https://www.facebook.com/psicologodanieldantas"; // Link do Facebook
   const instagramUrl = "https://www.instagram.com/psidanieldantas"; // Link do Instagram
   const youtubeUrl = "https://www.youtube.com/@psidanieldantas"; // Link do YouTube
-  const crpNumber = "11/11859"; // Número de CRP
+  const crpNumber = "11/11854"; // Número de CRP
   // --- FIM: INFORMAÇÕES ATUALIZADAS ---
 
   const currentYear = new Date().getFullYear(); // Pega o ano atual dinamicamente
 
   return (
     // Cor de fundo e texto principal ajustados
-    <footer className="bg-[#583B1F] text-[#F8F5F0] py-12 mt-16">
+    <footer id="footer" className="bg-[#583B1F] text-[#F8F5F0] py-12 mt-16">
       {/* Padding ajustado para mobile-first */}
       <div className="container mx-auto px-6 md:px-[10%]">
         {/* Alterado para grid de 3 colunas em telas médias e maiores */}
@@ -98,13 +100,16 @@ const Footer = () => {
             </ul>
             {/* Botão Agende sua Consulta (centralizado) */}
             <div className="mt-6 flex justify-center"> {/* Adicionado flex justify-center */}
-              <a
-                href="#contato"
-                className="inline-flex items-center px-6 py-3 bg-[#C19A6B] text-[#583B1F] hover:bg-[#D1AA7B] transition-colors duration-300 rounded-md text-sm font-medium"
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                Agende sua Consulta
-              </a>
+<div className="mt-6 flex justify-center">
+  <button
+    type="button"
+    onClick={openModal}
+    className="inline-flex items-center px-6 py-3 bg-[#C19A6B] text-[#583B1F] hover:bg-[#D1AA7B] transition-colors duration-300 rounded-md text-sm font-medium"
+  >
+    <Calendar className="mr-2 h-4 w-4" />
+    Agende sua Consulta
+  </button>
+</div>
             </div>
           </div>
         </div>
@@ -112,7 +117,7 @@ const Footer = () => {
         {/* Linha de Copyright */}
         {/* Cor da borda e texto ajustados */}
         <div className="border-t border-[#735B43] pt-6 text-center text-sm font-light text-[#EAE6E1]">
-          &copy; {currentYear} Psicólogo Daniel Dantas. Todos os direitos reservados. CRP {crpNumber}.
+          &copy; {currentYear} Site criado por Psicólogo Marcos Daniel Gomes Dantas. Todos os direitos reservados. CRP {crpNumber}.
         </div>
       </div>
     </footer>
