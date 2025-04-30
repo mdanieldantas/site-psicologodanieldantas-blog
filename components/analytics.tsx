@@ -11,7 +11,7 @@ export default function Analytics() {
   useEffect(() => {
     if (pathname && window.gtag) {
       // Quando a rota muda, registra uma visualização de página
-      window.gtag("config", "G-XXXXXXXXXX", {
+      window.gtag("config", "G-V8D9NKCXGS", {
         page_path: pathname,
       })
     }
@@ -19,8 +19,7 @@ export default function Analytics() {
 
   return (
     <>
-      {/* Script do Google Analytics */}
-      <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`} />
+      <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-V8D9NKCXGS`} />
       <Script
         id="google-analytics"
         strategy="afterInteractive"
@@ -29,7 +28,7 @@ export default function Analytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX', {
+            gtag('config', 'G-V8D9NKCXGS', {
               page_path: window.location.pathname,
             });
           `,
