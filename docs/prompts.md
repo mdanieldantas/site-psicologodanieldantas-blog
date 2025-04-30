@@ -93,4 +93,4 @@ Olá! Preciso da sua ajuda para preparar os dados de um novo artigo para inserç
 **Abaixo está o texto completo do artigo:**
 
 ```markdown
-[COLE O TEXTO COMPLETO DO ARTIGO AQUI, incluindo título, parágrafos, cabeçalhos Markdown/HTML e a linha da imagem como ![descrição](nome-arquivo.png)]
+[COLE O TEXTO COMPLETO DO ARTIGO AQUI, incluindo título, parágrafos, cabeçalhos Markdown/HTML e a linha da imagem como ![descrição](nome-arquivo.png)].
