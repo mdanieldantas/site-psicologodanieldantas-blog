@@ -79,4 +79,4 @@ Este guia descreve os passos para configurar e iniciar o ambiente de desenvolvim
     *   O servidor recarregará automaticamente a página ao detectar alterações no código.
 
 6.  **Parar o Servidor de Desenvolvimento:**
-    *   Para parar o servidor, volte ao terminal onde ele está rodando e pressione `Ctrl + C`.
+    *   Para parar o servidor, volte ao terminal onde ele está rodando e pressione `Ctrl + C`..

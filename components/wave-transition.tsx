@@ -1,3 +1,4 @@
+// components/wave-transition.tsx
 export default function WaveTransition({ color = "#583B1F" }) {
   return (
     <div className="w-full overflow-hidden">
@@ -7,4 +8,3 @@ export default function WaveTransition({ color = "#583B1F" }) {
     </div>
   )
 }
-
