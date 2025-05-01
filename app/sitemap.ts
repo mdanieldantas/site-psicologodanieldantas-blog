@@ -7,7 +7,7 @@ const supabase = createClient(
 );
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.psicologodanieldantas.com.br';
+  const baseUrl = 'https://psicologodanieldantas.com';
 
   // Busca categorias, artigos e tags publicados
   const { data: categorias } = await supabase.from('categorias').select('slug');
@@ -20,11 +20,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // URLs estáticas principais
   const staticUrls = [
     { url: baseUrl, changeFrequency: 'weekly' as const, priority: 1 },
+    { url: `${baseUrl}/politica-de-privacidade`, changeFrequency: 'yearly' as const, priority: 0.3 },
     { url: `${baseUrl}/blogflorescerhumano`, changeFrequency: 'weekly' as const, priority: 0.9 },
+    { url: `${baseUrl}/blogflorescerhumano/contato`, changeFrequency: 'yearly' as const, priority: 0.5 },
+    { url: `${baseUrl}/blogflorescerhumano/sobre`, changeFrequency: 'yearly' as const, priority: 0.5 },
+    { url: `${baseUrl}/blogflorescerhumano/materiais`, changeFrequency: 'monthly' as const, priority: 0.5 },
+    { url: `${baseUrl}/blogflorescerhumano/midias`, changeFrequency: 'monthly' as const, priority: 0.5 },
+    { url: `${baseUrl}/blogflorescerhumano/buscar`, changeFrequency: 'monthly' as const, priority: 0.4 },
+    { url: `${baseUrl}/blogflorescerhumano/cancelar-newsletter`, changeFrequency: 'yearly' as const, priority: 0.2 },
+    { url: `${baseUrl}/blogflorescerhumano/confirmar-newsletter`, changeFrequency: 'yearly' as const, priority: 0.2 },
     { url: `${baseUrl}/blogflorescerhumano/artigos`, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${baseUrl}/blogflorescerhumano/categorias`, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/blogflorescerhumano/tags`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    // ...adicione outras páginas estáticas relevantes
+    // Adicione aqui apenas páginas reais e indexáveis
   ];
 
   // URLs dinâmicas de categorias
