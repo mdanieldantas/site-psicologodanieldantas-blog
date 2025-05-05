@@ -48,42 +48,44 @@ export default function HeaderSearchInline() {
   };
 
   return (
-    <div className="relative flex items-center gap-2">
+    <div className="relative">
+      {/* Botão de busca */}
+      <button
+        onClick={() => setShowInput((v) => !v)}
+        className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+        aria-label="Abrir busca"
+      >
+        <Search className="h-5 w-5 text-gray-600" />
+      </button>
+
+      {/* Modal de busca */}
       {showInput && (
-        <div
-          className="absolute right-0 top-full mt-6 z-30 w-[90vw] max-w-sm sm:w-[350px] transition-all duration-200"
-          style={{ minWidth: 260 }}
-        >
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center gap-2 bg-[#F8F5F0] border border-[#C19A6B] rounded-md shadow-lg px-3 py-3 animate-fade-in"
-          >
-            <input
-              ref={inputRef}
-              type="search"
-              id="headerSearchQuery"
-              name="q"
-              autoFocus
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
-              className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-transparent text-[#583B1F] placeholder:text-[#735B43]/70 font-light focus:outline-none"
-              onBlur={() => setShowInput(false)}
-            />
-            <ButtonBlog type="submit" className="text-xs px-3 sm:px-4 py-1.5 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
-              Buscar
-            </ButtonBlog>
-          </form>
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-20" onClick={() => setShowInput(false)}>
+          <div className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4">
+            <form
+              className="flex items-center gap-2 bg-[#F8F5F0]/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-200"
+              onClick={(e) => e.stopPropagation()}
+              onSubmit={handleSearch}
+            >
+              <input
+                ref={inputRef}
+                type="search"
+                id="headerSearchQuery"
+                name="q"
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
+                className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-transparent text-[#583B1F] placeholder:text-[#735B43]/70 font-light focus:outline-none"
+                onBlur={() => setShowInput(false)}
+              />
+              <ButtonBlog type="submit" className="text-xs px-3 sm:px-4 py-1.5 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
+                Buscar
+              </ButtonBlog>
+            </form>
+          </div>
         </div>
       )}
-      <button
-        type="button"
-        aria-label="Abrir busca"
-        className="p-2 rounded-full border border-transparent hover:border-[#C19A6B] bg-[#F8F5F0] text-[#583B1F] focus:outline-none focus:ring-2 focus:ring-[#735B43] transition-all z-20"
-        onClick={() => setShowInput((v) => !v)}
-      >
-        <Search className="h-5 w-5" />
-      </button>
     </div>
   );
 }

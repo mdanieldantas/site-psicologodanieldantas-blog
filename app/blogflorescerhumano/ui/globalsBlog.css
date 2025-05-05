@@ -66,8 +66,7 @@
 
 @font-face {
   font-family: "Old Roman";
-  src: url("/fonts/OldRoman.woff2") format("woff2"),
-       url("/fonts/OldRoman.woff") format("woff");
+  src: url("/fonts/OldRoman.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
