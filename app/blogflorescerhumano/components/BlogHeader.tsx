@@ -28,17 +28,19 @@ const BlogHeader = () => {
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isHome 
           ? isMobileMenuOpen 
-            ? 'bg-[#F8F5F0]' // Quando menu aberto, fundo sólido
+            ? 'bg-[#F8F5F0]'
             : isScrolled
-              ? 'md:bg-[#F8F5F0]/95 md:backdrop-blur-md md:shadow-md bg-transparent' 
+              ? 'md:bg-[#F8F5F0]/95 md:backdrop-blur-md md:shadow-sm bg-transparent' 
               : 'bg-[#F8F5F0]'
           : 'bg-[#F8F5F0]'
       }`}>
-        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <nav className="container mx-auto px-4 py-5 flex items-center justify-between">
           {/* Logo do Blog */}
           <Link href="/blogflorescerhumano" legacyBehavior>
             <a className={`flex items-center gap-2 hover:opacity-80 transition-all duration-300 ${
-              isScrolled && !isMobileMenuOpen ? 'opacity-0 md:opacity-100 invisible md:visible' : 'opacity-100 visible'
+              isScrolled && !isMobileMenuOpen 
+                ? 'opacity-0 md:opacity-100 invisible md:visible drop-shadow-sm' 
+                : 'opacity-100 visible drop-shadow-sm'
             }`}>
               <Image
                 src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
@@ -52,13 +54,12 @@ const BlogHeader = () => {
           </Link>
 
           {/* Links de navegação - Desktop */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-8">
             {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
               <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
-                <a className={`transition-colors duration-300 ${
-                  'text-[#583B1F] hover:text-[#C19A6B]'
-                }`}>
+                <a className="relative transition-colors duration-300 text-[#583B1F] hover:text-[#C19A6B] group">
                   {item.charAt(0).toUpperCase() + item.slice(1)}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
                 </a>
               </Link>
             ))}
