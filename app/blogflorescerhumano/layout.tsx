@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import BlogHeader from './components/BlogHeader';
 import BlogFooter from './components/BlogFooter';
 import ContentWrapper from './components/ContentWrapper';
+import ScrollButton from './components/ScrollButton';
 import './ui/globalsBlog.css';
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
@@ -26,6 +27,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer */}
       <BlogFooter />
+      
+      {/* Botão de Scroll */}
+      <ScrollButton />
     </div>
   );
 }
