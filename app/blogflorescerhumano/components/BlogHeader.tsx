@@ -1,62 +1,120 @@
+'use client';
+
 // Componente Header específico para o Blog
 // Localização: app/blogflorescerhumano/components/BlogHeader.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Search } from 'lucide-react';
 import Image from 'next/image';
+import { Menu, X, Search } from 'lucide-react';
 import HeaderSearchInline from './HeaderSearchInline';
+import { useIsHomePage } from '../hooks/useIsHomePage';
 
 const BlogHeader = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isHome = useIsHomePage();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="bg-[color:var(--blog-background)] text-[color:var(--blog-foreground)] shadow-md border-b border-[color:var(--blog-border)]">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo do Blog */}
-        <Link href="/blogflorescerhumano" legacyBehavior>
-          <a className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image
-              src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
-              alt="Logo Florescer Humano"
-              width={160}
-              height={40}
-              priority
-            />
-            <span className="sr-only">Blog Florescer Humano</span>
-          </a>
-        </Link>
-
-        {/* Links de navegação */}
-        <div className="hidden md:flex space-x-6">
-          <Link href="/blogflorescerhumano/categorias" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Categorias</a>
-          </Link>
-          <Link href="/blogflorescerhumano/artigos" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Artigos</a>
-          </Link>
-          <Link href="/blogflorescerhumano/sobre" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Sobre</a>
-          </Link>
-          <Link href="/blogflorescerhumano/contato" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Contato</a>
-          </Link>
-          <Link href="/blogflorescerhumano/materiais" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Materiais</a>
-          </Link>
-          <Link href="/blogflorescerhumano/midias" legacyBehavior>
-            <a className="hover:text-[color:var(--blog-accent)]">Mídias</a>
-          </Link>
-        </div>
-
-        {/* Botão e Busca */}
-        <div className="flex items-center space-x-4">
-          <HeaderSearchInline />
-          <Link href="/" legacyBehavior>
-            <a className="px-4 py-2 bg-[color:var(--blog-primary)] text-[color:var(--blog-primary-foreground)] rounded-md hover:bg-[color:var(--blog-accent)] transition-colors">
-              Voltar ao Site Principal
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        isHome 
+          ? isScrolled 
+            ? 'bg-[#F8F5F0]/95 backdrop-blur-md shadow-md' 
+            : 'bg-transparent'
+          : 'bg-[#F8F5F0] shadow-sm'
+      }`}>
+        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+          {/* Logo do Blog */}
+          <Link href="/blogflorescerhumano" legacyBehavior>
+            <a className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Image
+                src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
+                alt="Logo Florescer Humano"
+                width={160}
+                height={40}
+                priority
+                className={`transition-opacity duration-300 ${
+                  (isHome && !isScrolled) ? 'opacity-90' : 'opacity-100'
+                }`}
+              />
             </a>
           </Link>
+
+          {/* Links de navegação - Desktop */}
+          <div className="hidden md:flex space-x-6">
+            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
+              <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
+                <a className={`transition-colors duration-300 ${
+                  (isHome && !isScrolled)
+                    ? 'text-white hover:text-[#C19A6B]'
+                    : 'text-[#583B1F] hover:text-[#C19A6B]'
+                }`}>
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </a>
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile: Lupa e Menu Hambúrguer */}
+          <div className="flex md:hidden items-center space-x-4">
+            <div className="relative">
+              <HeaderSearchInline />
+            </div>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`p-2 transition-colors duration-300 ${
+                (isHome && !isScrolled) ? 'text-white' : 'text-[#583B1F]'
+              }`}
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+          {/* Desktop: Busca e Botão */}
+          <div className="hidden md:flex items-center space-x-4">
+            <HeaderSearchInline />
+            <Link href="/" legacyBehavior>
+              <a className={`px-4 py-2 rounded-md transition-all duration-300 ${
+                (isHome && !isScrolled)
+                  ? 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+                  : 'bg-[#583B1F] text-white hover:bg-[#735B43]'
+              }`}>
+                Voltar ao Site Principal
+              </a>
+            </Link>
+          </div>
+        </nav>
+
+        {/* Menu Mobile */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isMobileMenuOpen ? 'max-h-screen bg-[#F8F5F0]' : 'max-h-0'
+        }`}>
+          <div className="container mx-auto px-4 py-4 space-y-4">
+            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
+              <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
+                <a className="block py-2 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300">
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </a>
+              </Link>
+            ))}
+            <Link href="/" legacyBehavior>
+              <a className="block py-2 px-4 bg-[#583B1F] text-white rounded-md hover:bg-[#735B43] transition-colors duration-300">
+                Voltar ao Site Principal
+              </a>
+            </Link>
+          </div>
         </div>
-      </nav>
-    </header>
+      </header>
+    </>
   );
 };
 

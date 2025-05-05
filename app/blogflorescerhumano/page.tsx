@@ -41,26 +41,29 @@ export default async function BlogHomePage() {
   const { data: featuredArticles } = articlesResponse;
 
   return (
-    <main className="flex-1 bg-[#F8F5F0]">
-      {/* Hero Section */}
-      <section className="relative h-[90vh] bg-[url('/blogflorescerhumano/banners-blog/hero-home-mulher-blog.png')] bg-cover bg-center">
-        {/* Overlay com cor similar ao site principal */}
-        <div className="absolute inset-0 bg-[#F8F5F0]/70" />
+    <main className="flex-1">
+      {/* Hero Section - Ocupando toda a altura */}
+      <section className="relative h-screen bg-[url('/blogflorescerhumano/banners-blog/hero-home-mulher-blog.png')] bg-cover bg-center">
+        {/* Overlay com gradiente suave */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#F8F5F0]/70" />
         
         <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center relative z-10">
           <div className="text-center max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-light mb-6 font-['Old Roman']">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white font-light mb-6 font-['Old Roman']">
               Florescer Humano
             </h1>
-            <div className="w-24 h-0.5 bg-[#C19A6B] mx-auto mb-6" />
-            <p className="text-xl md:text-2xl text-[#735B43] font-light leading-relaxed max-w-2xl mx-auto">
+            <div className="w-24 h-0.5 bg-white/70 mx-auto mb-6" />
+            <p className="text-xl md:text-2xl text-white/90 font-light leading-relaxed max-w-2xl mx-auto">
               Explorando o potencial humano através da psicologia humanista, arte, educação e filosofia.
             </p>
           </div>
         </div>
+
+        {/* Gradiente de transição na parte inferior */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F8F5F0] to-transparent" />
       </section>
 
-      <div className="space-y-12">
+      <div className="space-y-12 bg-[#F8F5F0]">
         {/* Artigos em Destaque */}
         {featuredArticles && featuredArticles.length > 0 && (
           <FeaturedArticles articles={featuredArticles} />

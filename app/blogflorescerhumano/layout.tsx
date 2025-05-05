@@ -1,30 +1,30 @@
 // app/blogflorescerhumano/layout.tsx
-import React, { Suspense } from 'react';
-import SearchForm from './components/SearchForm'; // Importa o formulário de busca
-import BlogHeader from './components/BlogHeader'; // Importa o componente Header refatorado
-import BlogFooter from './components/BlogFooter'; // Importa o componente Footer refatorado
-import './ui/globalsBlog.css'; // Importa o CSS global exclusivo do blog
+'use client';
+
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import BlogHeader from './components/BlogHeader';
+import BlogFooter from './components/BlogFooter';
+import ContentWrapper from './components/ContentWrapper';
+import './ui/globalsBlog.css';
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
-  return (    <div className="min-h-screen flex flex-col bg-blogBackground text-blogForeground">
-      {/* Usa o componente Header refatorado */}
+  const pathname = usePathname();
+  const isHome = pathname === '/blogflorescerhumano';
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#F8F5F0]">
+      {/* Navbar */}
       <BlogHeader />
 
-      {/* Adiciona o formulário de busca 
-      <div className="mb-8">
-        <Suspense fallback={null}>
-          <SearchForm />
-        </Suspense>
-      </div>
-      */}
-      
-      {/* Conteúdo Principal */}
-      <main className="flex-grow container mx-auto px-4 py-8">
-        {/* Renderiza o conteúdo da página específica */}
-        {children}
-      </main>
+      {/* Conteúdo Principal com wrapper para controle de padding */}
+      <ContentWrapper isHome={isHome}>
+        <main className="flex-grow">
+          {children}
+        </main>
+      </ContentWrapper>
 
-      {/* Usa o componente Footer refatorado */}
+      {/* Footer */}
       <BlogFooter />
     </div>
   );
