@@ -41,7 +41,7 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
                   {/* Imagem do artigo */}
                   <div className="relative w-full md:w-2/5 h-64 md:h-auto">
                     <Image
-                      src={article.imagem_capa_arquivo || '/blogflorescerhumano/placeholder.jpg'}
+                      src={`/blogflorescerhumano/${article.imagem_capa_arquivo}` || '/blogflorescerhumano/placeholder.jpg'}
                       alt={article.titulo || 'Artigo em destaque'}
                       fill
                       className="object-cover"
