@@ -10,6 +10,7 @@ export default function HeaderSearchInline() {
   const [showInput, setShowInput] = useState(false);
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const formContainerRef = useRef<HTMLDivElement>(null); // <-- Adiciona ref para o container do form
 
   // Foca no input ao abrir
   useEffect(() => {
@@ -21,10 +22,11 @@ export default function HeaderSearchInline() {
   // Fecha ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      // Verifica se o clique foi fora do container do formulário
       if (
         showInput &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target as Node)
+        formContainerRef.current && // <-- Usa a ref do container
+        !formContainerRef.current.contains(event.target as Node)
       ) {
         setShowInput(false);
       }
@@ -60,9 +62,14 @@ export default function HeaderSearchInline() {
       {/* Modal de busca */}
       {showInput && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-20" onClick={() => setShowInput(false)}>
-          <div className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4">            <form
+          {/* Adiciona a ref e stopPropagation ao container do formulário */}
+          <div 
+            ref={formContainerRef} 
+            onClick={(e) => e.stopPropagation()} // <-- Adiciona stopPropagation aqui
+            className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4"
+          >
+            <form
               className="flex items-center gap-2 bg-[#F8F5F0]/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-[#C19A6B]"
-              onClick={(e) => e.stopPropagation()}
               onSubmit={handleSearch}
             >              <input
                 ref={inputRef}
@@ -72,9 +79,10 @@ export default function HeaderSearchInline() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
+                placeholder="Pesquisar no blog..." // Placeholder simplificado
+                aria-label="Campo de busca no blog" // Adicionado aria-label
                 className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-white/90 text-[#583B1F] placeholder:text-[#C19A6B] font-medium border border-[#C19A6B] rounded focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:border-[#735B43]"
-                onBlur={() => setShowInput(false)}
+                // Removido onBlur={() => setShowInput(false)}
               />
               <ButtonBlog type="submit" className="text-xs px-3 sm:px-4 py-1.5 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
                 Buscar
