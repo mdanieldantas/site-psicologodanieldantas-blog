@@ -43,15 +43,20 @@ export default async function BlogHomePage() {
   return (
     <main className="flex-1 bg-[#F8F5F0]">
       {/* Hero Section */}
-      <section className="relative h-[70vh] min-h-[600px] bg-[url('/blogflorescerhumano/banner-bg-florescer-humano.jpg')] bg-cover bg-center flex items-center">
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl text-white font-light mb-6 font-['Old Roman']">
-            Florescer Humano
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-2xl font-light">
-            Explorando o potencial humano através da psicologia humanista, arte, educação e filosofia.
-          </p>
+      <section className="relative h-[90vh] bg-[url('/blogflorescerhumano/banners-blog/hero-home-mulher-blog.png')] bg-cover bg-center">
+        {/* Overlay com cor similar ao site principal */}
+        <div className="absolute inset-0 bg-[#F8F5F0]/70" />
+        
+        <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center relative z-10">
+          <div className="text-center max-w-3xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-light mb-6 font-['Old Roman']">
+              Florescer Humano
+            </h1>
+            <div className="w-24 h-0.5 bg-[#C19A6B] mx-auto mb-6" />
+            <p className="text-xl md:text-2xl text-[#735B43] font-light leading-relaxed max-w-2xl mx-auto">
+              Explorando o potencial humano através da psicologia humanista, arte, educação e filosofia.
+            </p>
+          </div>
         </div>
       </section>
 
