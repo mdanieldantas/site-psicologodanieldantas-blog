@@ -1,0 +1,10 @@
+// filepath: c:\Users\conta\Desktop\blog-stand-alone\.vscode\mcp.json
+{
+  "servers": {
+    "Context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}
