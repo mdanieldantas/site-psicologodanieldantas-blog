@@ -1,10 +1,10 @@
 // app/blogflorescerhumano/buscar/page.tsx
 import React, { Suspense } from 'react';
-import { supabaseServer } from '@/lib/supabase/server';
+import { supabaseServer } from '@/lib/supabase/server'; // Importa a instância do cliente
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
-import PaginationControls from '../components/PaginationControls'; // Importar o novo componente
-import type { Metadata } from 'next'; // Importar Metadata
+import PaginationControls from '../components/PaginationControls';
+import type { Metadata, ResolvingMetadata } from 'next';
 
 // Interface para os parâmetros de busca (vem da URL)
 interface SearchParams {
@@ -12,27 +12,67 @@ interface SearchParams {
   page?: string; // Adicionar parâmetro de página
 }
 
-// Adicionar Metadados Estáticos
-export const metadata: Metadata = {
-  title: 'Buscar Artigos | Blog Florescer Humano',
-  description: 'Encontre artigos sobre psicologia humanista, autoconhecimento, bem-estar e relacionamentos no Blog Florescer Humano.',
-  alternates: {
-    canonical: '/blogflorescerhumano/buscar',
-  },
-  openGraph: {
-    title: 'Buscar Artigos | Blog Florescer Humano',
-    description: 'Encontre artigos sobre psicologia humanista, autoconhecimento e bem-estar.',
-    url: '/blogflorescerhumano/buscar',
-    siteName: 'Blog Florescer Humano',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Buscar Artigos | Blog Florescer Humano',
-    description: 'Encontre artigos sobre psicologia humanista, autoconhecimento e bem-estar.',
-  },
-};
+// Interface para props da página
+interface BuscarPageProps {
+  searchParams: SearchParams;
+}
+
+// --- ATUALIZADO: Gerar Metadados Dinâmicos ---
+export async function generateMetadata(
+  { searchParams }: BuscarPageProps,
+  parent: ResolvingMetadata // Mantém o parâmetro parent
+): Promise<Metadata> {
+  const query = searchParams.q;
+  const baseTitle = 'Blog Florescer Humano';
+  const baseDescription = 'Encontre artigos sobre psicologia humanista, autoconhecimento, bem-estar e relacionamentos.';
+  const baseUrl = '/blogflorescerhumano/buscar';
+  // CORRIGIDO: Usar a instância diretamente, sem chamar ()
+  const supabase = supabaseServer;
+
+  let title = `Buscar Artigos | ${baseTitle}`;
+  let description = `Resultados da busca por "${query}" no ${baseTitle}. ${baseDescription}`;
+  let url = `${baseUrl}?q=${encodeURIComponent(query || '')}`;
+
+  if (!query) {
+    title = `Buscar Artigos | ${baseTitle}`;
+    description = `Use a busca para encontrar artigos no ${baseTitle}. ${baseDescription}`;
+    url = baseUrl;
+  } else {
+     // Tenta encontrar a categoria correspondente ao query
+     const { data: categoryData } = await supabase
+       .from('categorias')
+       .select('nome') // Só precisa do nome para os metadados
+       .ilike('nome', query) // Busca case-insensitive
+       .maybeSingle();
+
+     if (categoryData) {
+       title = `Artigos sobre ${categoryData.nome} | ${baseTitle}`;
+       description = `Explore artigos sobre ${categoryData.nome} no ${baseTitle}. ${baseDescription}`;
+     }
+  }
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: baseTitle,
+      locale: 'pt_BR',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
+  };
+}
+
 
 // --- ATENÇÃO: Definir o tipo de retorno da RPC --- AJUSTADO PARA PAGINAÇÃO
 // Ajuste este tipo para corresponder EXATAMENTE aos campos retornados pela função RPC
@@ -44,7 +84,7 @@ type ArticleSearchResult = {
   resumo: string | null;
   imagem_capa_arquivo: string | null;
   data_publicacao: string | null; // Supabase retorna como string
-  categoria_slug: string | null; // Campo vindo da função SQL
+  categoria_slug: string | null; // Campo vindo da função SQL ou da query direta
 };
 
 // --- ATUALIZADO: Corresponde ao retorno da função SQL 'search_articles_paginated' ---
@@ -53,38 +93,97 @@ type PaginatedArticlesResponse = {
   totalCount: number; // Corresponde ao 'totalCount' retornado pela função SQL
 };
 
+// Tipo para o artigo retornado pela busca de categoria (com relação)
+// Ajuste conforme a estrutura exata retornada pelo Supabase
+type ArticleWithCategorySlug = Database['public']['Tables']['artigos']['Row'] & {
+    categorias: { slug: string | null } | null; // Ou { slug: string }[] se for many-to-many
+};
+
+
 const PAGE_SIZE = 6; // Definir o número de artigos por página
 
-// Componente para exibir os resultados da busca
-async function SearchResults({ query, currentPage }: { query: string | undefined, currentPage: number }) {
-  if (!query) {
-    return <p className="text-center text-gray-500">Digite algo para buscar.</p>;
-  }
-
-  // Calcula o offset para a consulta SQL
+// --- MODIFICADO: Componente para exibir os resultados da busca ---
+async function SearchResults({
+  query,
+  categoryId,
+  currentPage
+}: {
+  query: string | undefined,
+  categoryId: number | undefined,
+  currentPage: number
+}) {
+  // CORRIGIDO: Usar a instância diretamente, sem chamar ()
+  const supabase = supabaseServer;
   const offset = (currentPage - 1) * PAGE_SIZE;
 
-  // --- MODIFICADO: Chama a função RPC CORRETA com parâmetros CORRETOS ---
-  // Certifique-se que os tipos do Supabase foram regenerados!
-  const { data, error } = await supabaseServer
-    .rpc('search_articles_paginated', { // Nome CORRETO da função SQL
-      search_term: query,       // Parâmetro da função SQL
-      page_limit: PAGE_SIZE,    // Parâmetro da função SQL
-      page_offset: offset       // Parâmetro da função SQL
-    })
-    .returns<PaginatedArticlesResponse>(); // Especifica o tipo de retorno ATUALIZADO
+  let artigos: ArticleSearchResult[] = [];
+  let totalCount = 0;
+  let error: any = null;
+
+  if (categoryId) {
+    // --- LÓGICA PARA BUSCA POR CATEGORIA (USA categoryId) ---
+    const { data: categoryArticles, error: categoryError, count } = await supabase
+      .from('artigos')
+      .select(`
+        id,
+        titulo,
+        slug,
+        resumo,
+        imagem_capa_arquivo,
+        data_publicacao,
+        categorias ( slug )
+      `, { count: 'exact' })
+      .eq('categoria_id', categoryId)
+      .eq('status', 'publicado')
+      .order('data_publicacao', { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1);
+
+      if (categoryArticles) {
+        // CORRIGIDO: Mapeamento mais seguro e remoção da tipagem explícita de 'a'
+        artigos = categoryArticles.map(a => ({
+            id: a.id,
+            titulo: a.titulo,
+            slug: a.slug, // Slug do artigo
+            resumo: a.resumo,
+            imagem_capa_arquivo: a.imagem_capa_arquivo,
+            data_publicacao: a.data_publicacao,
+            // Verifica explicitamente se 'categorias' existe e tem 'slug'
+            categoria_slug: (a.categorias && typeof a.categorias === 'object' && 'slug' in a.categorias)
+                              ? a.categorias.slug
+                              : 'sem-categoria'
+        }));
+      }
+      totalCount = count ?? 0;
+      error = categoryError;
+
+  } else if (query) {
+    // --- LÓGICA PARA BUSCA TEXTUAL (EXISTENTE) ---
+    const { data: rpcData, error: rpcError } = await supabase
+      .rpc('search_articles_paginated', {
+        search_term: query,
+        page_limit: PAGE_SIZE,
+        page_offset: offset
+      })
+      .returns<PaginatedArticlesResponse>();
+
+    artigos = rpcData?.articles ?? [];
+    totalCount = rpcData?.totalCount ?? 0;
+    error = rpcError;
+  } else {
+    // Nenhum query e nenhuma categoria
+    return <p className="text-center text-gray-500">Digite algo para buscar ou selecione uma categoria.</p>;
+  }
 
   if (error) {
-    console.error('Erro ao buscar artigos paginados via RPC:', JSON.stringify(error, null, 2));
+    console.error('Erro ao buscar artigos:', JSON.stringify(error, null, 2)); // Log do erro
     return <p className="text-center text-red-500">Erro ao buscar artigos. Tente novamente mais tarde.</p>;
   }
 
-  // --- ATUALIZADO: Usa totalCount (camelCase) conforme definido no tipo e retornado pela SQL ---
-  const artigos = data?.articles ?? [];
-  const totalCount = data?.totalCount ?? 0;
-
   if (totalCount === 0) {
-    return <p className="text-center text-gray-500">Nenhum artigo encontrado para "{query}".</p>;
+    const message = categoryId
+      ? `Nenhum artigo encontrado na categoria especificada.`
+      : `Nenhum artigo encontrado para "${query}".`;
+    return <p className="text-center text-gray-500">{message}</p>;
   }
 
   return (
@@ -97,41 +196,64 @@ async function SearchResults({ query, currentPage }: { query: string | undefined
             titulo={artigo.titulo ?? 'Artigo sem título'}
             resumo={artigo.resumo ?? undefined}
             slug={artigo.slug ?? ''}
-            categoriaSlug={artigo.categoria_slug ?? 'sem-categoria'}
+            categoriaSlug={artigo.categoria_slug ?? 'sem-categoria'} // Usa o slug mapeado
             imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
           />
         ))}
       </div>
 
       {/* Adiciona os controles de paginação */}
-      <Suspense fallback={null}>
-        <PaginationControls
-          totalCount={totalCount}
-          pageSize={PAGE_SIZE}
-          currentPage={currentPage}
-          basePath="/blogflorescerhumano/buscar"
-        />
-      </Suspense>
+      {/* Suspense não é estritamente necessário aqui se PaginationControls não fizer fetch */}
+      <PaginationControls
+        totalCount={totalCount}
+        pageSize={PAGE_SIZE}
+        currentPage={currentPage}
+        // A basePath deve sempre usar o parâmetro 'q' original da URL
+        basePath={`/blogflorescerhumano/buscar?q=${encodeURIComponent(query || '')}`}
+      />
     </>
   );
 }
 
-// Componente principal da página de busca (MODIFICADO para ler a página)
-export default function BuscarPage({ searchParams }: { searchParams: SearchParams }) {
+// --- MODIFICADO: Componente principal da página de busca ---
+export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   const query = searchParams.q;
-  // Lê o parâmetro 'page' da URL, converte para número, padrão é 1
   const currentPage = parseInt(searchParams.page || '1', 10);
+  // CORRIGIDO: Usar a instância diretamente, sem chamar ()
+  const supabase = supabaseServer;
+
+  let categoryId: number | undefined = undefined;
+  let categoryName: string | undefined = undefined;
+  let searchTitle = `Resultados para "${query}"`;
+
+  if (query) {
+    // Verificar se o 'query' corresponde a um nome de categoria
+    const { data: categoryData } = await supabase
+      .from('categorias')
+      .select('id, nome') // CORRIGIDO: Selecionar também o ID
+      .ilike('nome', query)
+      .maybeSingle();
+
+    if (categoryData) {
+      categoryId = categoryData.id; // CORRIGIDO: Armazenar o ID
+      categoryName = categoryData.nome;
+      searchTitle = `Artigos na categoria "${categoryName}"`;
+    }
+  }
 
   return (
     <main className="container mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold mb-8 text-center">Buscar Artigos</h1>
-      {/* Resultados da Busca (renderizados no servidor com Suspense) */}
       <h2 className="text-2xl font-semibold mb-6">
-        {query ? `Resultados para "${query}"` : 'Digite algo para buscar'}
+        {query ? searchTitle : 'Digite algo para buscar'}
       </h2>
       <Suspense fallback={<p className="text-center">Carregando resultados...</p>}>
-        {/* Passa a query e a página atual para SearchResults */}
-        <SearchResults query={query} currentPage={currentPage} />
+        {/* Passa query E categoryId (se encontrado) para SearchResults */}
+        <SearchResults
+          query={query} // Passa a query original
+          categoryId={categoryId} // CORRIGIDO: Passa o ID da categoria
+          currentPage={currentPage}
+        />
       </Suspense>
     </main>
   );
