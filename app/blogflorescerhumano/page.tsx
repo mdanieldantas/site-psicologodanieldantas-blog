@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import ExploreCategoriesGrid from './components/ExploreCategoriesGrid';
 import FeaturedArticles from './components/FeaturedArticles';
 import RecentMaterials from './components/RecentMaterials';
+import Link from 'next/link';
 
 // --- Metadados Estáticos para a Página Inicial do Blog --- //
 export const metadata: Metadata = {
@@ -48,19 +49,27 @@ export default async function BlogHomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#F8F5F0]/70" />
         
         <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center relative z-10">
-          <div className="text-center max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white font-light mb-8 font-['Old Roman'] tracking-wide drop-shadow-lg">
+          <div className="text-center max-w-3xl animate-fade-in">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white font-light mb-8 font-['Old Roman'] tracking-wide drop-shadow-lg animate-slide-up">
               Florescer Humano
             </h1>
-            <div className="w-24 h-0.5 bg-[#C19A6B] mx-auto mb-8" />
-            <p className="text-xl md:text-2xl text-white/95 font-light leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+            <div className="w-24 h-0.5 bg-[#C19A6B] mx-auto mb-8 animate-scale-x" />
+            <p className="text-xl md:text-2xl text-white/95 font-light leading-relaxed max-w-2xl mx-auto drop-shadow-md mb-12 animate-slide-up delay-200">
               Explorando o potencial humano através da psicologia humanista, arte, educação e filosofia.
             </p>
+            
+            {/* CTA Button */}
+            <Link 
+              href="/blogflorescerhumano/artigos"
+              className="inline-block px-8 py-3 bg-[#C19A6B] text-white rounded-md hover:bg-[#735B43] transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in delay-400"
+            >
+              Explorar Artigos
+            </Link>
           </div>
         </div>
 
-        {/* Seta indicativa de scroll */}
-        <div className="absolute bottom-12 left-0 right-0 z-10 flex justify-center">
+        {/* Seta indicativa de scroll com animação melhorada */}
+        <div className="absolute bottom-12 left-0 right-0 z-10 flex justify-center animate-fade-in delay-600">
           <div className="w-8 h-16 text-[#C19A6B] animate-bounce cursor-pointer hover:text-[#735B43] transition-colors duration-300">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 

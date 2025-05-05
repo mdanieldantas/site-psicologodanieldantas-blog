@@ -49,25 +49,22 @@ export default function HeaderSearchInline() {
 
   return (
     <div className="relative">
-      {/* Botão de busca */}
-      <button
+      {/* Botão de busca */}      <button
         onClick={() => setShowInput((v) => !v)}
-        className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+        className="p-2 rounded-full hover:bg-[#C19A6B]/10 transition-colors duration-200"
         aria-label="Abrir busca"
       >
-        <Search className="h-5 w-5 text-gray-600" />
+        <Search className="h-5 w-5 text-[#583B1F]" />
       </button>
 
       {/* Modal de busca */}
       {showInput && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-20" onClick={() => setShowInput(false)}>
-          <div className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4">
-            <form
-              className="flex items-center gap-2 bg-[#F8F5F0]/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-200"
+          <div className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4">            <form
+              className="flex items-center gap-2 bg-[#F8F5F0]/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-[#C19A6B]"
               onClick={(e) => e.stopPropagation()}
               onSubmit={handleSearch}
-            >
-              <input
+            >              <input
                 ref={inputRef}
                 type="search"
                 id="headerSearchQuery"
@@ -76,7 +73,7 @@ export default function HeaderSearchInline() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
-                className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-transparent text-[#583B1F] placeholder:text-[#735B43]/70 font-light focus:outline-none"
+                className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-white/90 text-[#583B1F] placeholder:text-[#C19A6B] font-medium border border-[#C19A6B] rounded focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:border-[#735B43]"
                 onBlur={() => setShowInput(false)}
               />
               <ButtonBlog type="submit" className="text-xs px-3 sm:px-4 py-1.5 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">

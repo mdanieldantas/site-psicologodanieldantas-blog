@@ -33,15 +33,24 @@ const BlogHeader = () => {
               ? 'md:bg-[#F8F5F0]/95 md:backdrop-blur-md md:shadow-sm bg-transparent' 
               : 'bg-[#F8F5F0]'
           : 'bg-[#F8F5F0]'
-      }`}>
-        <nav className="container mx-auto px-4 py-5 flex items-center justify-between">
+      }`}
+      role="banner"
+      aria-label="Cabeçalho do blog">
+        <nav 
+          className="container mx-auto px-4 py-5 flex items-center justify-between"
+          role="navigation"
+          aria-label="Navegação principal"
+        >
           {/* Logo do Blog */}
           <Link href="/blogflorescerhumano" legacyBehavior>
-            <a className={`flex items-center gap-2 hover:opacity-80 transition-all duration-300 ${
-              isScrolled && !isMobileMenuOpen 
-                ? 'opacity-0 md:opacity-100 invisible md:visible drop-shadow-sm' 
-                : 'opacity-100 visible drop-shadow-sm'
-            }`}>
+            <a 
+              className={`flex items-center gap-2 hover:opacity-80 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md ${
+                isScrolled && !isMobileMenuOpen 
+                  ? 'opacity-0 md:opacity-100 invisible md:visible drop-shadow-sm' 
+                  : 'opacity-100 visible drop-shadow-sm'
+              }`}
+              aria-label="Ir para página inicial do blog"
+            >
               <Image
                 src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
                 alt="Logo Florescer Humano"
@@ -54,10 +63,13 @@ const BlogHeader = () => {
           </Link>
 
           {/* Links de navegação - Desktop */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-8" role="menubar">
             {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
               <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
-                <a className="relative transition-colors duration-300 text-[#583B1F] hover:text-[#C19A6B] group">
+                <a 
+                  className="relative transition-colors duration-300 text-[#583B1F] hover:text-[#C19A6B] group focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md px-2 py-1"
+                  role="menuitem"
+                >
                   {item.charAt(0).toUpperCase() + item.slice(1)}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
                 </a>
@@ -74,9 +86,11 @@ const BlogHeader = () => {
             </div>
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 transition-all duration-300 text-[#583B1F] rounded-full ${
+              className={`p-2 transition-all duration-300 text-[#583B1F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#C19A6B] ${
                 isScrolled && !isMobileMenuOpen ? 'bg-[#F8F5F0]/60 backdrop-blur-sm hover:bg-[#F8F5F0]/80' : ''
               }`}
+              aria-expanded={isMobileMenuOpen}
+              aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
