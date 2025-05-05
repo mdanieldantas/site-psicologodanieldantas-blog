@@ -2,15 +2,15 @@
 // Localização: app/blogflorescerhumano/components/BlogHeader.tsx
 import React from 'react';
 import Link from 'next/link';
-import { Search } from 'lucide-react'; // Importar ícone
+import { Search } from 'lucide-react';
 import Image from 'next/image';
 import HeaderSearchInline from './HeaderSearchInline';
 
 const BlogHeader = () => {
   return (
     <header className="bg-[color:var(--blog-background)] text-[color:var(--blog-foreground)] shadow-md border-b border-[color:var(--blog-border)]">
-      <nav className="container mx-auto px-4 py-4 flex items-center relative">
-        {/* Link para a página inicial do blog */}
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* Logo do Blog */}
         <Link href="/blogflorescerhumano" legacyBehavior>
           <a className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Image
@@ -23,26 +23,35 @@ const BlogHeader = () => {
             <span className="sr-only">Blog Florescer Humano</span>
           </a>
         </Link>
-        {/* Links de navegação do blog - Centralizados */}
-        {/* Alterado: adicionado absolute, left-1/2, transform, -translate-x-1/2 */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 space-x-4">
-          <Link href="/blogflorescerhumano/categorias" legacyBehavior><a className="hover:text-gray-200">Categorias</a></Link>
-          <Link href="/blogflorescerhumano/artigos" legacyBehavior><a className="hover:text-gray-200">Artigos</a></Link>
-          <Link href="/blogflorescerhumano/sobre" legacyBehavior><a className="hover:text-gray-200">Sobre</a></Link>
-          <Link href="/blogflorescerhumano/contato" legacyBehavior><a className="hover:text-gray-200">Contato</a></Link>
-          {/* Adiciona links para as novas páginas */}
-          <Link href="/blogflorescerhumano/materiais" legacyBehavior><a className="hover:text-gray-200">Materiais</a></Link>
-          <Link href="/blogflorescerhumano/midias" legacyBehavior><a className="hover:text-gray-200">Mídias</a></Link>
-          {/* Botão movido para fora deste div */}
+
+        {/* Links de navegação */}
+        <div className="hidden md:flex space-x-6">
+          <Link href="/blogflorescerhumano/categorias" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Categorias</a>
+          </Link>
+          <Link href="/blogflorescerhumano/artigos" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Artigos</a>
+          </Link>
+          <Link href="/blogflorescerhumano/sobre" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Sobre</a>
+          </Link>
+          <Link href="/blogflorescerhumano/contato" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Contato</a>
+          </Link>
+          <Link href="/blogflorescerhumano/materiais" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Materiais</a>
+          </Link>
+          <Link href="/blogflorescerhumano/midias" legacyBehavior>
+            <a className="hover:text-[color:var(--blog-accent)]">Mídias</a>
+          </Link>
         </div>
-        {/* Container para Botão e Lupa - Empurrado para a direita */}
-        <div className="ml-auto flex items-center space-x-3">
-          {/* Ícone de Lupa para Busca (Agora inline e expansível) */}
+
+        {/* Botão e Busca */}
+        <div className="flex items-center space-x-4">
           <HeaderSearchInline />
-          {/* Botão para voltar ao site principal */}
           <Link href="/" legacyBehavior>
-            <a className="px-3 py-1 border border-white rounded-md hover:bg-white hover:text-blue-600 transition-colors">
-              Site Psi Daniel Dantas
+            <a className="px-4 py-2 bg-[color:var(--blog-primary)] text-[color:var(--blog-primary-foreground)] rounded-md hover:bg-[color:var(--blog-accent)] transition-colors">
+              Voltar ao Site Principal
             </a>
           </Link>
         </div>

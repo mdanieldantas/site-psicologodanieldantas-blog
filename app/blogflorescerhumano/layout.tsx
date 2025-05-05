@@ -10,13 +10,14 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       {/* Usa o componente Header refatorado */}
       <BlogHeader />
 
-      {/* Adiciona o formulário de busca */}
+      {/* Adiciona o formulário de busca 
       <div className="mb-8">
         <Suspense fallback={null}>
           <SearchForm />
         </Suspense>
       </div>
-
+      */}
+      
       {/* Conteúdo Principal */}
       <main className="flex-grow container mx-auto px-4 py-8">
         {/* Renderiza o conteúdo da página específica */}
