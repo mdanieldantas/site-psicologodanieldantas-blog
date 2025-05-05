@@ -85,7 +85,7 @@ const BlogHeader = () => {
           <div className="hidden md:flex items-center space-x-4">
             <HeaderSearchInline />
             <Link href="/" legacyBehavior>
-              <a className="px-4 py-2 rounded-md transition-all duration-300 bg-[#583B1F] text-white hover:bg-[#735B43]">
+              <a className="px-8 py-2 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors duration-300">
                 Voltar ao Site Principal
               </a>
             </Link>
@@ -105,7 +105,7 @@ const BlogHeader = () => {
               </Link>
             ))}
             <Link href="/" legacyBehavior>
-              <a className="block py-2 px-4 bg-[#583B1F] text-white rounded-md hover:bg-[#735B43] transition-colors duration-300">
+              <a className="block py-2 px-8 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors duration-300">
                 Voltar ao Site Principal
               </a>
             </Link>
