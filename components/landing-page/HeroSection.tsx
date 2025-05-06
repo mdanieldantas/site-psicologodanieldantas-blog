@@ -21,7 +21,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
   }, []);
   
   return (
-    <section ref={ref} id="inicio" className="relative min-h-screen flex items-center pt-10 md:pt-12">
+    <section ref={ref} id="inicio" className="relative min-h-screen flex items-center pt-4 md:pt-6 pb-12 md:pb-0">
       {/* Imagem de fundo com opacidade média para equilíbrio visual */}
       {/* Aplicado opacity-30 por padrão (mobile) e md:opacity-35 para telas maiores */}
       <div className="absolute inset-0 z-0 opacity-30 md:opacity-35">
@@ -38,18 +38,17 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
       <div className="absolute inset-0 bg-gradient-to-b from-[#F8F5F0]/60 to-[#F8F5F0]/40 z-[1]"></div>
       
       {/* Conteúdo principal da seção Hero (mantém z-[5]) */}
-      <div className="relative z-[5] container mx-auto px-[5%] md:px-[10%] pt-25">
-        {/* Layout flexível: coluna em mobile, linha em desktop */}
+      <div className="relative z-[5] container mx-auto px-[5%] md:px-[10%] pt-16 md:pt-20">
+        {/* Layout flexível: coluna em mobile, linha em desktop */}        {/* Layout flexível: coluna em mobile, linha em desktop */}
         <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 
           ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
           
           {/* Coluna da imagem - visível sempre, primeiro em mobile e segundo em desktop */}
-          <div className={`w-full lg:w-auto flex justify-center order-1 lg:order-2 
+          <div className={`w-full lg:w-auto flex justify-center order-1 lg:order-2 mt-4 md:mt-8
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
             transition-all duration-1000 delay-300`}>
             <div className="relative group">
-              {/* Container principal com animação e efeitos */}
-              <div className="w-[280px] h-[280px] md:w-[350px] md:h-[350px] rounded-full border-4 border-[#C19A6B] shadow-xl 
+              {/* Container principal com animação e efeitos */}              <div className="w-[260px] h-[260px] md:w-[350px] md:h-[350px] rounded-full border-4 border-[#C19A6B] shadow-xl 
                   relative z-10 overflow-hidden transition-all duration-500 
                   hover:shadow-2xl hover:scale-[1.02] hover:border-[#D1AA7B]">
                 
@@ -68,30 +67,26 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                 </AvatarPrimitive.Root>
               </div>
               
-              {/* Elemento decorativo de fundo */}
-              <div className="absolute -bottom-3 -right-3 w-[280px] h-[280px] md:w-[350px] md:h-[350px] 
+              {/* Elemento decorativo de fundo */}              <div className="absolute -bottom-3 -right-3 w-[260px] h-[260px] md:w-[350px] md:h-[350px] 
                   rounded-full border-2 border-[#C19A6B]/30 z-0 
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
           </div>
-          
-          {/* Coluna do texto - segundo em mobile e primeiro em desktop */}
-          <div className={`lg:max-w-[55%] order-2 lg:order-1 
+            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}
+          <div className={`mt-0 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
             transition-all duration-1000 delay-100`}>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-4 tracking-tight relative">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-3 tracking-tight relative">
               <span className="text-[#583B1F] block">Psicólogo</span>
               <span className="text-[#583B1F] font-medium">Daniel Dantas</span>
               <span className="absolute left-0 bottom-0 w-16 h-1 bg-[#C19A6B] rounded-full mt-2 transform translate-y-2"></span>
             </h1>
-            
-            <p className="text-xl text-[#583B1F] border-b border-[#583B1F]/30 pb-6 mb-6 md:pb-8 md:mb-8 leading-relaxed drop-shadow-sm font-light">
+              <p className="text-lg md:text-xl text-[#583B1F] border-b border-[#583B1F]/30 pb-5 mb-5 md:pb-6 md:mb-6 leading-relaxed drop-shadow-sm font-light">
               Psicólogo Clínico Online - <span className="font-normal">Criando um espaço de acolhimento e transformação</span> para sua jornada de
               autoconhecimento, onde quer que você esteja.
             </p>
-            
-            {/* Elementos de credibilidade */}
-            <div className={`flex flex-col md:flex-row gap-4 md:gap-8 mb-6 md:mb-10 text-[#583B1F]/90 text-sm
+              {/* Elementos de credibilidade */}
+            <div className={`flex flex-col md:flex-row gap-4 md:gap-8 mb-4 md:mb-5 text-[#583B1F]/90 text-sm
               ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} 
               transition-all duration-1000 delay-300`}>
               <div className="flex items-center transition-all duration-500 hover:translate-x-1">
@@ -102,7 +97,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                 </div>
                 <span>CRP: 11/11854</span>
               </div>
-              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
+              {/* <div className="flex items-center transition-all duration-500 hover:translate-x-1">
                 <div className="mr-2 bg-[#C19A6B]/20 p-2 rounded-full transition-all duration-300 group-hover:bg-[#C19A6B]/30">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#583B1F]">
                     <circle cx="12" cy="8" r="5"></circle>
@@ -110,8 +105,9 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   </svg>
                 </div>
                 <span>+8 anos de experiência</span>
-              </div>
-              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
+              </div> */}
+
+              {/* <div className="flex items-center transition-all duration-500 hover:translate-x-1">
                 <div className="mr-2 bg-[#C19A6B]/20 p-2 rounded-full transition-all duration-300 group-hover:bg-[#C19A6B]/30">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#583B1F]">
                     <path d="M12 20h9"></path>
@@ -119,14 +115,15 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   </svg>
                 </div>
                 <span>Formação pela Unifanor Wyden </span>
-              </div>
+              </div> */}
+
             </div>
             
             {/* Botão de chamada para ação aprimorado */}
             <button
               type="button"
               onClick={openModal}
-              className={`mt-4 md:mt-8 px-8 py-3 font-medium bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] group 
+              className={`mt-2 md:mt-4 mb-10 md:mb-16 px-8 py-3 font-medium bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] group 
                 relative overflow-hidden rounded-md transition-all duration-300 shadow-md hover:shadow-lg
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} transition-all duration-1000 delay-500`}
             >
@@ -138,9 +135,8 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
           </div>
         </div>
       </div>
-      
-      {/* Indicador de rolagem refinado */}
-      <div className={`absolute bottom-10 left-0 right-0 flex justify-center z-[5] 
+        {/* Indicador de rolagem refinado - visível em todas as resoluções */}
+      <div className={`absolute bottom-6 md:bottom-10 left-0 right-0 flex justify-center z-[5] 
         ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-700`}>
         <a 
           href="#sobre" 
