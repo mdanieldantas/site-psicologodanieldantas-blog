@@ -25,14 +25,14 @@ const GiscusComments: React.FC<GiscusCommentsProps> = () => {
       repoId={repoId}
       category={categoryName}
       categoryId={categoryId}
-      mapping="pathname" // Mapeia discussões pelo caminho da URL da página
-      strict="0" // Não exige correspondência estrita
-      reactionsEnabled="1" // Habilita reações
-      emitMetadata="1" // Emite metadados
-      inputPosition="top" // Posição do input de comentário
-      theme="preferred_color_scheme" // Usa o tema do sistema
-      lang="pt" // Define o idioma para Português
-      loading="lazy" // Carrega Giscus de forma preguiçosa
+      mapping="pathname"
+      strict="0"
+      reactionsEnabled="1"
+      emitMetadata="1"
+      inputPosition="top"
+      theme="light"
+      lang="pt"
+      loading="lazy"
     />
   );
 };
