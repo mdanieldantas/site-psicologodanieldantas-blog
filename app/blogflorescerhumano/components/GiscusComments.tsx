@@ -12,10 +12,10 @@ interface GiscusCommentsProps {
 
 const GiscusComments: React.FC<GiscusCommentsProps> = () => {
   // --- Configurações obtidas do exemplo fornecido anteriormente --- //
-  const repoName = "mdanieldantas/estudo-Giscus-blog";
-  const repoId = "R_kgDOOeCRuQ";
-  const categoryName = "General";
-  const categoryId = "DIC_kwDOOeCRuc4CpW8L";
+  const repoName = "mdanieldantas/giscus-site-psidanieldantas-blog-1.0";
+  const repoId = "R_kgDOOlpo4w";
+  const categoryName = "Comentários do Blog Florescer Humano";
+  const categoryId = "DIC_kwDOOlpo484Cp2HM";
   // --- Fim das Configurações --- //
 
   return (
@@ -26,11 +26,12 @@ const GiscusComments: React.FC<GiscusCommentsProps> = () => {
       category={categoryName}
       categoryId={categoryId}
       mapping="pathname" // Mapeia discussões pelo caminho da URL da página
-      reactionsEnabled="1" // Habilita reações (conforme exemplo)
-      emitMetadata="0" // Não emite metadados (conforme exemplo)
-      inputPosition="bottom" // Posição do input de comentário (conforme exemplo)
-      theme="light" // Usa o tema light (conforme exemplo)
-      lang="pt" // Define o idioma para Português (conforme exemplo)
+      strict="0" // Não exige correspondência estrita
+      reactionsEnabled="1" // Habilita reações
+      emitMetadata="1" // Emite metadados
+      inputPosition="top" // Posição do input de comentário
+      theme="preferred_color_scheme" // Usa o tema do sistema
+      lang="pt" // Define o idioma para Português
       loading="lazy" // Carrega Giscus de forma preguiçosa
     />
   );
