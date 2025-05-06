@@ -55,10 +55,10 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   rounded-full border-2 border-[#C19A6B]/30 z-0 
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
-          </div>          {/* Coluna do texto - segundo em mobile e primeiro em desktop */}
-          <div className="lg:max-w-[55%] order-2 lg:order-1">
+          </div>          {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className="lg:max-w-[55%] order-2 lg:order-1">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-4">
-              Psicólogo Daniel Dantas
+              <span className="text-[#583B1F] block">Psicólogo</span>
+              <span className="text-[#583B1F] font-medium">Daniel Dantas</span>
             </h1>
             
             <p className="text-xl text-[#735B43] border-b border-[#583B1F] pb-6 mb-6 md:pb-12 md:mb-12">
