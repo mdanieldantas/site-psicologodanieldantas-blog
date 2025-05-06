@@ -166,7 +166,8 @@ export default function LandingPage() {
       {/* Componente Botão Scroll Top (renderizado condicionalmente) */}
       {showScrollTop && (
         <button
-          onClick={scrollToTop}          className="fixed bottom-6 left-6 z-[60] p-3 bg-[#583B1F] text-white rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300"
+          onClick={scrollToTop}
+          className="fixed bottom-6 left-6 z-[60] p-3 bg-[#583B1F]/60 text-white rounded-full shadow-lg hover:bg-[#735B43]/80 transition-all duration-300"
           style={{ opacity: showScrollTop ? 1 : 0 }}
           aria-label="Voltar ao topo"
         >
