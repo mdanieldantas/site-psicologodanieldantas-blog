@@ -5,7 +5,7 @@ import { useWhatsAppModal } from "../whatsapp-modal-context";
 const WorkSection = () => {
   const { openModal } = useWhatsAppModal();
   return (
-    <section className="py-20 bg-[#F5F2EE]">
+    <section id="trabalho" className="py-20 bg-[#F5F2EE]">
       <div className="container mx-auto px-6 md:px-[10%]">
         {/* Título da seção */}
         <h2 className="text-3xl font-light mb-4 text-[#583B1F]">Conheça Meu Trabalho</h2>

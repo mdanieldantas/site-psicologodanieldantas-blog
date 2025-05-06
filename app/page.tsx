@@ -116,13 +116,44 @@ export default function LandingPage() {  // Estados para controle da UI
       }
     }
   }, []) // Dependência vazia, executa apenas uma vez na montagem e limpeza
-
-  // Função para rolar a página para o topo suavemente
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
+  // Array com os IDs das seções em ordem
+  const sectionIds = ["inicio", "sobre", "trabalho", "desafios", "servicos", "blog", "faq", "contato"];
+  
+  // Função para rolar para a seção anterior
+  const scrollToPreviousSection = () => {
+    // Obtém a posição atual de scroll
+    const currentScrollY = window.scrollY;
+    
+    // Encontra a seção atual comparando posições
+    let currentSectionIndex = -1;
+    let previousSectionId = "inicio"; // Padrão para o topo
+    
+    // Percorre as seções em ordem inversa para encontrar a atual
+    for (let i = sectionIds.length - 1; i >= 0; i--) {
+      const sectionElement = document.getElementById(sectionIds[i]);
+      if (sectionElement) {
+        const sectionTop = sectionElement.offsetTop - 100; // Margem de 100px para considerar a seção atual
+        
+        if (currentScrollY > sectionTop) {
+          currentSectionIndex = i;
+          // Se encontrou a seção atual, a anterior é o índice - 1 (ou o topo se for a primeira seção)
+          previousSectionId = i > 0 ? sectionIds[i - 1] : "inicio";
+          break;
+        }
+      }
+    }
+    
+    // Rola para a seção anterior ou para o topo
+    const previousSection = document.getElementById(previousSectionId);
+    if (previousSection) {
+      previousSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Fallback para o topo se a seção não for encontrada
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   }
 
   // Função para abrir/fechar o menu mobile
@@ -184,16 +215,16 @@ export default function LandingPage() {  // Estados para controle da UI
         {/* Componente Seção Contato */}
         {/* <ContactSection /> */}
       </main>      {/* Componente Footer */}
-      <Footer />      {/* Componente Botão Scroll Top (renderizado condicionalmente) com temporização */}
+      <Footer />      {/* Componente Botão Scroll para Seção Anterior (renderizado condicionalmente) com temporização */}
       {showScrollTop && (
         <button
-          onClick={scrollToTop}
+          onClick={scrollToPreviousSection}
           className="fixed bottom-4 left-0 z-[60] py-1.5 px-4 bg-[#583B1F]/40 text-white text-xs font-light rounded-r-md shadow-sm hover:bg-[#735B43]/60 transition-all duration-300 flex items-center"
           style={{ opacity: scrollActive ? 0.9 : 0.3 }}
-          aria-label="Voltar ao topo"
+          aria-label="Voltar para a seção anterior"
         >
           <span className="mr-1 text-[10px]">↑</span>
-          <span>topo</span>
+          <span>voltar</span>
         </button>
       )}
 
