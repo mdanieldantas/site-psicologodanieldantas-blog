@@ -19,6 +19,39 @@
   @apply text-[#EAE6E1] bg-[#735B43] p-2 rounded-full transition-all duration-300 shadow-md;
   box-shadow: 0 2px 8px 0 rgba(88,59,31,0.10);
 }
+
+/* Animações para fade-in-up */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-fill-forwards {
+  animation-fill-mode: forwards;
+}
+
+/* Adiciona suporte a atrasos de animação */
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
 .icon-social:hover {
   color: #C19A6B !important;
   background: #8d6a3e !important;
