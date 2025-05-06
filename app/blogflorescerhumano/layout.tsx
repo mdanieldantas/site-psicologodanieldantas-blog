@@ -7,6 +7,7 @@ import BlogHeader from './components/BlogHeader';
 import BlogFooter from './components/BlogFooter';
 import ContentWrapper from './components/ContentWrapper';
 import ScrollButton from './components/ScrollButton';
+import BlogSchema from './components/BlogSchema';
 import './ui/globalsBlog.css';
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
@@ -27,9 +28,11 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer */}
       <BlogFooter />
-      
-      {/* Botão de Scroll */}
+        {/* Botão de Scroll */}
       <ScrollButton />
+      
+      {/* Schema JSON-LD do Blog */}
+      <BlogSchema />
     </div>
   );
 }

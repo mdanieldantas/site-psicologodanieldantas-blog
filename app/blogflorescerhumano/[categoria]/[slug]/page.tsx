@@ -9,6 +9,7 @@ import GiscusComments from '@/app/blogflorescerhumano/components/GiscusComments'
 import RelatedArticles from '@/app/blogflorescerhumano/components/RelatedArticles'; // Corrigido o import para usar o alias @/
 import ShareButtons from '@/app/blogflorescerhumano/components/ShareButtons'; // Importa o novo componente
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
+import ArticleSchema from '@/app/blogflorescerhumano/components/ArticleSchema'; // Importa o componente de Schema JSON-LD
 
 type Artigo = Database['public']['Tables']['artigos']['Row'];
 type Categoria = Database['public']['Tables']['categorias']['Row'];
@@ -165,122 +166,97 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   let imageUrl = null;
   if (imagem_capa_arquivo) {
     // Constrói o caminho relativo à pasta public
-    // Assumindo que imagem_capa_arquivo contém o caminho completo dentro de blogflorescerhumano
-    // Ex: 'autoconhecimento-desenvolvimento-pessoal/focalizacao-sabedoria-corpo.png'
     imageUrl = `/blogflorescerhumano/${imagem_capa_arquivo}`;
   }
 
   // --- Construção da URL Completa para Compartilhamento --- //
-  // ATENÇÃO: Substitua pelo seu domínio real
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.psicologodanieldantas.com';
   const shareUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
 
-  // --- Construção do Schema Markup JSON-LD --- //
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting', // Mais específico que Article
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': shareUrl, // URL canônica da página do artigo
-    },
-    headline: titulo ?? 'Artigo sem título',
-    description: resumo ?? 'Leia este artigo no Blog Florescer Humano.', // Usa o resumo se disponível
-    image: imageUrl ? new URL(imageUrl, baseUrl).toString() : undefined, // URL absoluta da imagem de capa
-    author: {
-      '@type': 'Person',
-      name: nomeAutor, // Nome do autor buscado
-      // url: 'URL_DO_PERFIL_DO_AUTOR' // Opcional: Adicionar se houver página de perfil do autor
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Blog Florescer Humano', // Ou 'Psicólogo Daniel Dantas'
-      logo: {
-        '@type': 'ImageObject',
-        url: new URL('/navbar-logo-horizontal-navbar.png', baseUrl).toString(), // URL absoluta do logo
-      },
-    },
-    datePublished: data_publicacao ? new Date(data_publicacao).toISOString() : undefined, // Data de publicação em ISO 8601
-    dateModified: data_publicacao ? new Date(data_publicacao).toISOString() : undefined, // Usar data_atualizacao se existir, senão data_publicacao
-  };
-
   return (
-    <article className="container mx-auto px-4 py-12 max-w-4xl">
-      {/* --- Injeção do Schema Markup JSON-LD --- */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    <>
+      {/* Componente ArticleSchema para gerar Schema.org markup para artigos */}
+      <ArticleSchema
+        title={titulo}
+        description={resumo || ''}
+        publishDate={data_publicacao || ''}
+        authorName={nomeAutor}
+        imagePath={imagem_capa_arquivo ? `/blogflorescerhumano/${imagem_capa_arquivo}` : undefined}
+        categoryName={categorias?.nome || ''}
+        tags={tags || []}
+        url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
       />
 
-      {/* Navegação Estrutural (Breadcrumbs) */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <Link href="/blogflorescerhumano" legacyBehavior><a className="hover:underline">Blog</a></Link>
-        <span className="mx-2">/</span>
-        <Link href={`/blogflorescerhumano/categorias`} legacyBehavior><a className="hover:underline">Categorias</a></Link>
-        <span className="mx-2">/</span>
-        <Link href={`/blogflorescerhumano/${categoriaSlug}`} legacyBehavior><a className="hover:underline">{nomeCategoria}</a></Link>
-      </nav>
+      <article className="container mx-auto px-4 py-12 max-w-4xl">
+        {/* Navegação Estrutural (Breadcrumbs) */}
+        <nav className="mb-6 text-sm text-gray-500">
+          <Link href="/blogflorescerhumano" legacyBehavior><a className="hover:underline">Blog</a></Link>
+          <span className="mx-2">/</span>
+          <Link href={`/blogflorescerhumano/categorias`} legacyBehavior><a className="hover:underline">Categorias</a></Link>
+          <span className="mx-2">/</span>
+          <Link href={`/blogflorescerhumano/${categoriaSlug}`} legacyBehavior><a className="hover:underline">{nomeCategoria}</a></Link>
+        </nav>
 
-      {/* Cabeçalho do Artigo */}
-      <header className="mb-8 border-b pb-4">
-        <h1 className="text-4xl md:text-5xl font-bold mb-3">{titulo ?? 'Artigo sem título'}</h1>
-        <p className="text-gray-600">
-          Publicado em {dataFormatada} por {nomeAutor}
-        </p>
-        {/* Exibição das Tags */}
-        {tags && Array.isArray(tags) && tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="font-semibold text-gray-700">Tags:</span>
-            {tags.map((tag) => (
-              <Link key={tag.id} href={`/blogflorescerhumano/tags/${tag.slug}`} legacyBehavior>
-                <a className="text-sm bg-gray-200 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-300 transition-colors duration-200">
-                  {tag.nome}
-                </a>
-              </Link>
-            ))}
+        {/* Cabeçalho do Artigo */}
+        <header className="mb-8 border-b pb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">{titulo ?? 'Artigo sem título'}</h1>
+          <p className="text-gray-600">
+            Publicado em {dataFormatada} por {nomeAutor}
+          </p>
+          {/* Exibição das Tags */}
+          {tags && Array.isArray(tags) && tags.length > 0 && (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="font-semibold text-gray-700">Tags:</span>
+              {tags.map((tag) => (
+                <Link key={tag.id} href={`/blogflorescerhumano/tags/${tag.slug}`} legacyBehavior>
+                  <a className="text-sm bg-gray-200 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-300 transition-colors duration-200">
+                    {tag.nome}
+                  </a>
+                </Link>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* Botões de Compartilhamento */}
+        <ShareButtons url={shareUrl} title={titulo ?? 'Artigo do Blog Florescer Humano'} summary={resumo ?? undefined} />
+
+        {/* Imagem de Capa */}
+        {imageUrl && (
+          <div className="mb-8 relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+            <Image
+              src={imageUrl}
+              alt={`Imagem de capa para ${titulo ?? 'artigo'}`}
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
           </div>
         )}
-      </header>
 
-      {/* Botões de Compartilhamento - ADICIONADO AQUI */}
-      <ShareButtons url={shareUrl} title={titulo ?? 'Artigo do Blog Florescer Humano'} summary={resumo ?? undefined} />
-
-      {/* Imagem de Capa */}
-      {imageUrl && (
-        <div className="mb-8 relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
-          <Image
-            src={imageUrl} // Usa o caminho relativo diretamente
-            alt={`Imagem de capa para ${titulo ?? 'artigo'}`}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        {/* Conteúdo Principal do Artigo */}
+        {artigoConteudo ? (
+          <div
+            className="prose lg:prose-xl max-w-none mx-auto"
+            dangerouslySetInnerHTML={{ __html: artigoConteudo }}
           />
-        </div>
-      )}
+        ) : (
+          <p className="text-center text-gray-500">Conteúdo do artigo indisponível.</p>
+        )}
 
-      {/* Conteúdo Principal do Artigo */}
-      {artigoConteudo ? (
-        <div
-          className="prose lg:prose-xl max-w-none mx-auto"
-          dangerouslySetInnerHTML={{ __html: artigoConteudo }}
-        />
-      ) : (
-        <p className="text-center text-gray-500">Conteúdo do artigo indisponível.</p>
-      )}
-
-      {/* Seção de Comentários com Giscus */}
-      <section className="mt-12 pt-8 border-t">
-        <h2 className="text-2xl font-semibold mb-6">Comentários</h2>
-        {/* Renderiza o componente Giscus */}
-        <GiscusComments />
-      </section>
-
-      {/* Seção de Artigos Relacionados */}
-      {/* Passa o ID do artigo atual e suas tags para o componente */}
-      <RelatedArticles currentArticleId={currentArticleId} tags={tags} />
-
-    </article>
+        {/* Seção de Comentários com Giscus */}
+        <section className="mt-12 pt-8 border-t">
+          <h2 className="text-2xl font-semibold mb-6">Comentários</h2>
+          {/* Renderiza o componente Giscus */}
+          <GiscusComments />
+        </section>
+        
+        {/* Seção de Artigos Relacionados */}
+        <RelatedArticles currentArticleId={currentArticleId} tags={tags} />
+      </article>
+    </>
   );
 }
 
-// TODO: SEO Dinâmico (metadata) - FEITO para esta página
+// SEO Dinâmico implementado com metadata e schema

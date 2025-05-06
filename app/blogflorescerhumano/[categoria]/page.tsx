@@ -7,6 +7,7 @@ import type { Database } from '@/types/supabase'; // Ajustado para @/
 import ArticleCardBlog from '../components/ArticleCardBlog'; // Ajustado para ../
 import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
+import CategorySchema from '../components/CategorySchema'; // Importa o componente Schema JSON-LD para categorias
 
 // Define quantos artigos serão exibidos por página
 const ARTICLES_PER_PAGE = 6; // Valor original
@@ -197,7 +198,15 @@ export default async function CategoriaEspecificaPage({
           pageSize={ARTICLES_PER_PAGE}
           basePath={`/blogflorescerhumano/${categoria.slug}`}
         />
-      </Suspense>
+      </Suspense>      {/* Schema da Categoria (JSON-LD) */}
+      <CategorySchema
+        nome={categoria.nome}
+        descricao={categoria.descricao ?? ''}
+        slug={categoria.slug}
+        url={`/blogflorescerhumano/${categoria.slug}`}
+        imagemUrl={(artigos && artigos.length > 0) ? artigos[0].imagem_capa_arquivo : null} // Usa a imagem do primeiro artigo como imagem da categoria
+        artigosCount={totalCount}
+      />
 
     </main>
   );
