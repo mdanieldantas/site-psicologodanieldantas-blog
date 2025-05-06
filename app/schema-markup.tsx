@@ -29,13 +29,18 @@ export default function SchemaMarkup() {
               closes: "18:00",
             },
             sameAs: [
+              "https://www.instagram.com/psicologodanieldantas",
+              "https://www.facebook.com/psicologodanieldantas",
+              "https://twitter.com/psidanieldantas",
+              "https://www.linkedin.com/in/psicologodanieldantas",
+              "https://www.youtube.com/c/psicologodanieldantas",
+              "https://www.tiktok.com/@psidanieldantas",
               "https://www.facebook.com/psicologodanieldantas",
               "https://www.instagram.com/psidanieldantas",
               "https://www.youtube.com/@psidanieldantas",
             ],
-            priceRange: "$$",
-            description:
-              "Psicoterapia online humanizada e acolhedora com Daniel Dantas. Atendimento em português para ansiedade, depressão e autoconhecimento, onde quer que você esteja.",
+            priceRange: "$$",            description:
+              "Psicoterapia online humanizada e acolhedora com Daniel Dantas (CRP 11/11854). Atendimento em português para ansiedade, depressão e autoconhecimento, com ambiente seguro e acolhedor para a comunidade LGBTQIA+ (lésbicas, gays, bissexuais, transgêneros, queer, intersexo, assexuais e outras identidades de gênero e orientações sexuais). Psicólogo especializado em terapia afirmativa e inclusiva, onde quer que você esteja.",
             serviceArea: {
               "@type": "GeoCircle",
               geoMidpoint: {
@@ -110,13 +115,20 @@ export default function SchemaMarkup() {
                   "@type": "Answer",
                   text: "A duração do processo terapêutico varia conforme as necessidades e objetivos de cada pessoa. Alguns processos podem durar alguns meses, enquanto outros podem se estender por mais tempo. O importante é respeitar o tempo e o ritmo de cada indivíduo.",
                 },
-              },
-              {
+              },              {
                 "@type": "Question",
                 name: "Como agendar uma consulta?",
                 acceptedAnswer: {
                   "@type": "Answer",
                   text: "Você pode agendar uma consulta através do formulário de contato neste site, por telefone ou WhatsApp. Após o contato inicial, agendaremos um horário que seja conveniente para você.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Você atende a comunidade LGBTQIA+?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Sim, ofereço um espaço seguro, acolhedor e afirmativo para pessoas lésbicas, gays, bissexuais, transgêneros, queer, intersexo, assexuais e qualquer pessoa da comunidade LGBTQIA+. Sou psicólogo com formação em terapia afirmativa e trabalho respeitando a diversidade de identidades de gênero e orientações sexuais.",
                 },
               },
             ],

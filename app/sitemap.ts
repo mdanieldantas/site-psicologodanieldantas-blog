@@ -16,10 +16,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .select('slug, categorias ( slug )')
     .eq('status', 'publicado')
     .not('data_publicacao', 'is', null);
-  const { data: tags } = await supabase.from('tags').select('slug');
-  // URLs estáticas principais
+  const { data: tags } = await supabase.from('tags').select('slug');  // URLs estáticas principais
   const staticUrls = [
     { url: baseUrl, changeFrequency: 'weekly' as const, priority: 1 },
+    { url: `${baseUrl}/sobre`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/servicos`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/faq`, changeFrequency: 'monthly' as const, priority: 0.7 },
+    { url: `${baseUrl}/contato`, changeFrequency: 'yearly' as const, priority: 0.6 },
+    { url: `${baseUrl}/agendamento`, changeFrequency: 'weekly' as const, priority: 0.9 },
+    { url: `${baseUrl}/atendimento-online`, changeFrequency: 'weekly' as const, priority: 0.9 },
+    { url: `${baseUrl}/atendimento-lgbtqia`, changeFrequency: 'weekly' as const, priority: 0.9 },
+    { url: `${baseUrl}/ansiedade`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/depressao`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/autoconhecimento`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/avaliacao-psicologica`, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/politica-de-privacidade`, changeFrequency: 'yearly' as const, priority: 0.3 },
     { url: `${baseUrl}/blogflorescerhumano`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/blogflorescerhumano/contato`, changeFrequency: 'yearly' as const, priority: 0.5 },
@@ -32,6 +42,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blogflorescerhumano/artigos`, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${baseUrl}/blogflorescerhumano/categorias`, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${baseUrl}/blogflorescerhumano/tags`, changeFrequency: 'monthly' as const, priority: 0.7 },
+    // URLs específicas para atendimento à comunidade LGBTQIA+
+    { url: `${baseUrl}/psicoterapia-lgbtqia`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/terapia-afirmativa`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/identidade-de-genero`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/orientacao-sexual`, changeFrequency: 'monthly' as const, priority: 0.8 },
     // Adicione aqui apenas páginas reais e indexáveis
   ];
 
