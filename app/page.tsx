@@ -52,13 +52,14 @@ const featuredPosts = [
 ]
 
 // Componente principal da Landing Page
-export default function LandingPage() {
-  // Estados para controle da UI
+export default function LandingPage() {  // Estados para controle da UI
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [scrollActive, setScrollActive] = useState(false)
   const [scrolledPastHero, setScrolledPastHero] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null) // Referência para a seção Hero
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Efeito para verificar se a tela é mobile ao carregar e redimensionar
   useEffect(() => {
@@ -71,12 +72,17 @@ export default function LandingPage() {
       window.removeEventListener("resize", checkIfMobile) // Limpa o listener ao desmontar
     }
   }, [])
-
   // Efeito para controlar a visibilidade do botão ScrollTop e o estado do header
   useEffect(() => {
     const handleScroll = () => {
+      // Ativa o estado de rolagem
+      setScrollActive(true)
+      
       // Mostra o botão ScrollTop após rolar 300px
-      setShowScrollTop(window.scrollY > 300)
+      const shouldShow = window.scrollY > 300
+      if (shouldShow) {
+        setShowScrollTop(true)
+      }
 
       // Verifica se o scroll passou da seção Hero (com uma pequena margem)
       if (heroRef.current) {
@@ -86,11 +92,28 @@ export default function LandingPage() {
         // Fallback caso a ref não esteja pronta, considera que passou após 50px
         setScrolledPastHero(window.scrollY > 50)
       }
+      
+      // Limpa qualquer timeout existente
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+      
+      // Define novo timeout para esconder o botão após 2.5 segundos de inatividade
+      scrollTimeoutRef.current = setTimeout(() => {
+        setScrollActive(false)
+        if (!shouldShow) {
+          setShowScrollTop(false)
+        }
+      }, 2500)
     }
 
     window.addEventListener("scroll", handleScroll) // Adiciona listener de scroll
     return () => {
       window.removeEventListener("scroll", handleScroll) // Limpa o listener ao desmontar
+      // Limpa qualquer timeout pendente
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
     }
   }, []) // Dependência vazia, executa apenas uma vez na montagem e limpeza
 
@@ -161,17 +184,16 @@ export default function LandingPage() {
         {/* Componente Seção Contato */}
         {/* <ContactSection /> */}
       </main>      {/* Componente Footer */}
-      <Footer />
-      
-      {/* Componente Botão Scroll Top (renderizado condicionalmente) */}
+      <Footer />      {/* Componente Botão Scroll Top (renderizado condicionalmente) com temporização */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 left-6 z-[60] p-3 bg-[#583B1F]/60 text-white rounded-full shadow-lg hover:bg-[#735B43]/80 transition-all duration-300"
-          style={{ opacity: showScrollTop ? 1 : 0 }}
+          className="fixed bottom-4 left-0 z-[60] py-1.5 px-4 bg-[#583B1F]/40 text-white text-xs font-light rounded-r-md shadow-sm hover:bg-[#735B43]/60 transition-all duration-300 flex items-center"
+          style={{ opacity: scrollActive ? 0.9 : 0.3 }}
           aria-label="Voltar ao topo"
         >
-          ↑
+          <span className="mr-1 text-[10px]">↑</span>
+          <span>topo</span>
         </button>
       )}
 
