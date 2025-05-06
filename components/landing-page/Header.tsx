@@ -60,19 +60,9 @@ const Header: React.FC<HeaderProps> = ({
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
-            </div>
-          )}
+            </div>          )}          
           
-          {/* Botão do Menu apenas após scroll em desktop */}
-          {!isMobile && scrolledPastHero && (
-            <button
-              onClick={toggleMobileMenu}
-              className={`text-[#583B1F] focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:ring-opacity-50 rounded-md p-1 z-[101] hover:bg-[#F5F2EE] transition-all`}
-              aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          )}          {/* Navegação Desktop: Sempre visível em desktop, com design adaptado ao scroll */}
+          {/* Navegação Desktop: Sempre visível em desktop, com design adaptado ao scroll */}
           {!isMobile && (
             <div className="flex items-center space-x-6">
               <a href="#inicio" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
