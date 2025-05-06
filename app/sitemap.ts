@@ -41,12 +41,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blogflorescerhumano/confirmar-newsletter`, changeFrequency: 'yearly' as const, priority: 0.2 },
     { url: `${baseUrl}/blogflorescerhumano/artigos`, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${baseUrl}/blogflorescerhumano/categorias`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/blogflorescerhumano/tags`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    // URLs específicas para atendimento à comunidade LGBTQIA+
+    { url: `${baseUrl}/blogflorescerhumano/tags`, changeFrequency: 'monthly' as const, priority: 0.7 },    // URLs específicas para atendimento à comunidade LGBTQIA+
     { url: `${baseUrl}/psicoterapia-lgbtqia`, changeFrequency: 'monthly' as const, priority: 0.9 },
     { url: `${baseUrl}/terapia-afirmativa`, changeFrequency: 'monthly' as const, priority: 0.9 },
     { url: `${baseUrl}/identidade-de-genero`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/orientacao-sexual`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    
+    // URLs específicas para psicologia racial
+    { url: `${baseUrl}/psicologia-racial`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/letramento-racial`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/psicologia-antirracista`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    
+    // URLs específicas para atendimento internacional
+    { url: `${baseUrl}/atendimento-internacional`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/brasileiros-no-exterior`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/psicoterapia-online-portugues`, changeFrequency: 'monthly' as const, priority: 0.8 },
     // Adicione aqui apenas páginas reais e indexáveis
   ];
 
