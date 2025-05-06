@@ -38,7 +38,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
       <div className="absolute inset-0 bg-gradient-to-b from-[#F8F5F0]/60 to-[#F8F5F0]/40 z-[1]"></div>
       
       {/* Conteúdo principal da seção Hero (mantém z-[5]) */}
-      <div className="relative z-[5] container mx-auto px-[5%] md:px-[10%] pt-16 md:pt-20">
+      <div className="relative z-[5] container mx-auto px-[5%] md:px-[10%] pt-10 md:pt-14">
         {/* Layout flexível: coluna em mobile, linha em desktop */}        {/* Layout flexível: coluna em mobile, linha em desktop */}
         <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 
           ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
@@ -72,8 +72,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
           </div>
-            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}
-          <div className={`mt-0 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 
+            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className={`-mt-8 md:-mt-14 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
             transition-all duration-1000 delay-100`}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-3 tracking-tight relative">
@@ -88,15 +87,14 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
               {/* Elementos de credibilidade */}
             <div className={`flex flex-col md:flex-row gap-4 md:gap-8 mb-4 md:mb-5 text-[#583B1F]/90 text-sm
               ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} 
-              transition-all duration-1000 delay-300`}>
-              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
+              transition-all duration-1000 delay-300`}>              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
                 <div className="mr-2 bg-[#C19A6B]/20 p-2 rounded-full transition-all duration-300 group-hover:bg-[#C19A6B]/30">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#583B1F]">
                     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
                   </svg>
                 </div>
                 <span>CRP: 11/11854</span>
-              </div>
+              </div>              
               {/* <div className="flex items-center transition-all duration-500 hover:translate-x-1">
                 <div className="mr-2 bg-[#C19A6B]/20 p-2 rounded-full transition-all duration-300 group-hover:bg-[#C19A6B]/30">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#583B1F]">
