@@ -7,9 +7,10 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from "@/components/ui/carousel"; // Importar componentes do shadcn/ui
 import { useWhatsAppModal } from "../whatsapp-modal-context"; // Importar o hook
-import { useState } from "react"; // Importar useState para efeitos interativos
+import { useState, useRef, useCallback, useEffect } from "react"; // Importações React
 
 // Componente decorativo para separação visual
 const Divider = () => (
@@ -45,8 +46,7 @@ const demandas = [
     title: "Regulação Emocional",
     imgSrc: "/Regulacao-Emocional-image.png",
     description: "Desenvolver habilidades para lidar com emoções intensas, compreendendo seus gatilhos e aprendendo estratégias saudáveis de enfrentamento.",
-  },
-  {
+  },  {
     title: "Autoconhecimento",
     imgSrc: "/Autoconhecimento-e-Crescimento-Pessoal-image.png",
     description: "Explorar seus valores, crenças e padrões de comportamento para promover um maior entendimento de si mesmo e facilitar o crescimento pessoal.",
@@ -58,7 +58,8 @@ const demandas = [
   },
   {
     title: "Autoestima",
-    imgSrc: "/Dificuldades-de-Autoaceitacao-e-Autoestima-image.png",    description: "Fortalecer a autoaceitação e a confiança em suas próprias capacidades, cultivando uma relação mais positiva consigo mesmo.",
+    imgSrc: "/Dificuldades-de-Autoaceitacao-e-Autoestima-image.png",
+    description: "Fortalecer a autoaceitação e a confiança em suas próprias capacidades, cultivando uma relação mais positiva consigo mesmo.",
   },
   {
     title: "Transições de Vida",
@@ -71,6 +72,36 @@ const demandas = [
 const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
   const { openModal } = useWhatsAppModal(); // Obter a função openModal
   const [isHovered, setIsHovered] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+    // Referência para a API do carrossel
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  
+  // Função para navegar diretamente para um slide específico
+  const goToSlide = useCallback((index: number) => {
+    if (carouselApi) {
+      carouselApi.scrollTo(index);
+    }
+  }, [carouselApi]);
+  
+  // Atualiza o índice ativo quando o carrossel muda
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+    
+    // Define o slide inicial
+    onSelect();
+
+    // Registra o listener para eventos de mudança
+    carouselApi.on("select", onSelect);
+    
+    // Limpa o listener quando o componente for desmontado
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
 
   return (
     <section id="servicos" className="py-14 md:py-24 bg-[#F5F2EE]">
@@ -182,14 +213,14 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
           
           <Divider />
 
-          {/* Carrossel shadcn/ui aprimorado */}
-          <div className="mt-8">
-            <Carousel
+          {/* Carrossel shadcn/ui aprimorado */}          <div className="mt-8">            <Carousel
               opts={{
                 align: "start",
                 loop: true,
               }}
               className="w-full max-w-6xl mx-auto"
+              setApi={setCarouselApi}
+              data-carousel-container
             >
               <CarouselContent>
                 {demandas.map((demanda, index) => (
@@ -224,19 +255,39 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
                 ))}
               </CarouselContent>
               
-              {/* Botões de navegação aprimorados */}
-              <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110" />
-              <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110" />
+              {/* Botões de navegação aprimorados */}              <CarouselPrevious 
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110"
+                data-carousel-prev
+              />
+              <CarouselNext 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110"
+                data-carousel-next
+              />
             </Carousel>
-            
-            {/* Indicador de navegação desktop */}
-            <div className="hidden md:flex justify-center mt-8">
-              <div className="flex items-center space-x-1">
-                <div className="h-1.5 w-12 rounded-full bg-[#C19A6B]"></div>
-                <div className="h-1.5 w-6 rounded-full bg-[#C19A6B]/50"></div>
-                <div className="h-1.5 w-6 rounded-full bg-[#C19A6B]/50"></div>
+              {/* Indicadores dinâmicos de navegação */}
+            <div className="flex justify-center mt-8">
+              <div className="flex items-center space-x-2">
+                {demandas.map((_, index) => (
+                  <div 
+                    key={index} 
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      index === currentSlide ? "w-12 bg-[#C19A6B]" : "w-6 bg-[#C19A6B]/50 hover:bg-[#C19A6B]/70"
+                    }`}
+                    role="button"
+                    aria-label={`Ir para o slide ${index + 1}`}
+                    tabIndex={0}                    onClick={() => {
+                      // Usa a função de navegação direta que criamos
+                      goToSlide(index);
+                    }}
+                  ></div>
+                ))}
               </div>
             </div>
+            
+            {/* Adiciona dicas de acessibilidade para usuários de dispositivos móveis */}
+            <p className="text-center text-xs text-[#735B43]/70 mt-4 md:hidden">
+              Deslize para navegar entre os serviços
+            </p>
           </div>
         </div>        {/* Seção Outros Serviços - Aprimorada */}
         <div className="mt-16 relative">
