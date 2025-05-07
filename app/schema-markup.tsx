@@ -28,15 +28,12 @@ export default function SchemaMarkup() {
               closes: "18:00",
             },
             sameAs: [
-              "https://www.instagram.com/psicologodanieldantas",
+             "https://www.instagram.com/psicologodanieldantas",
               "https://www.facebook.com/psicologodanieldantas",
               "https://twitter.com/psidanieldantas",
               "https://www.linkedin.com/in/psicologodanieldantas",
-              "https://www.youtube.com/c/psicologodanieldantas",
+              "https://www.youtube.com/@psidanieldantas", // URL correta e atual do YouTube
               "https://www.tiktok.com/@psidanieldantas",
-              "https://www.facebook.com/psicologodanieldantas",
-              "https://www.instagram.com/psidanieldantas",
-              "https://www.youtube.com/@psidanieldantas",
             ],            priceRange: "$$",            description:
               "Psicoterapia online humanizada e acolhedora com Daniel Dantas (CRP 11/11854). Atendimento em português para ansiedade, depressão e autoconhecimento para brasileiros em qualquer parte do mundo. Especialista em psicologia racial e ambiente seguro e acolhedor para a comunidade LGBTQIA+ (lésbicas, gays, bissexuais, transgêneros, queer, intersexo, assexuais e outras identidades de gênero e orientações sexuais). Psicólogo especializado em terapia afirmativa, inclusiva e culturalmente sensível, onde quer que você esteja.",
             serviceArea: {
