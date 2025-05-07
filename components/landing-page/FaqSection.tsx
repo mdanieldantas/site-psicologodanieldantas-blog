@@ -1,11 +1,12 @@
 // Componente FaqSection: Exibe perguntas frequentes usando um acordeão
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { MessageSquare } from "lucide-react"; // Importa o ícone
+import { MessageSquare, MessageCircle } from "lucide-react"; // Importa ícones adicionais
 import { useWhatsAppModal } from "../whatsapp-modal-context";
 
 const FaqSection = () => {
   const { openModal } = useWhatsAppModal();
-  // Array com os dados das perguntas e respostas CORRIGIDO conforme texto fornecido
+
+  // Array com os dados das perguntas e respostas
   const faqItems = [
     {
       value: "item-1",
@@ -38,38 +39,47 @@ const FaqSection = () => {
         "Você pode agendar uma consulta através do formulário de contato neste site, por telefone ou WhatsApp. Após o contato inicial, agendaremos um horário que seja conveniente para você.",
     },
   ];
-
   return (
     <section id="faq" className="py-20 bg-[#F8F5F0]">
-      <div className="container mx-auto px-[10%] max-w-4xl"> {/* Aumentada a largura máxima */}
+      <div className="container mx-auto px-4 sm:px-[10%] max-w-4xl">
         {/* Título da seção */}
         <h2 className="text-3xl font-light mb-4 text-center">Perguntas Frequentes</h2>
-        {/* Subtítulo Corrigido */}
-        <p className="text-xl text-[#735B43] mb-12 text-center max-w-2xl mx-auto font-light">
+        {/* Subtítulo */}
+        <p className="text-xl text-[#583B1F] mb-12 text-center max-w-2xl mx-auto font-light">
           Tire suas dúvidas sobre meus serviços e abordagem terapêutica.
-        </p>
-
-        {/* Container Principal do FAQ */}
-        <div className="bg-[#F0EBE6] rounded-lg shadow-lg p-8 relative">
-          {/* Ícone Centralizado */}
-          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-[#583B1F] p-3 rounded-full shadow-md"> {/* Corrigida a cor de fundo do ícone */}
-            <MessageSquare className="h-6 w-6 text-[#F8F5F0]" />
+        </p>        {/* Container Principal do FAQ */}
+        <div className="bg-[#F0EBE6] shadow-md p-6 sm:p-8 relative">
+          {/* Ícone Centralizado - Maior e mais destacado */}
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-[#583B1F] p-4 rounded-full shadow-lg">
+            <MessageSquare className="h-8 w-8 text-[#F8F5F0]" />
           </div>
-
-          {/* Componente Acordeão */}
-          <Accordion type="single" collapsible className="w-full space-y-0 pt-8"> {/* Ajuste no padding top e space-y */}
+          
+          {/* Componente Acordeão com transição melhorada */}
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full space-y-0 pt-10"
+          >
             {/* Mapeia os itens do FAQ */}
-            {faqItems.map((item, index) => (
-              <AccordionItem
+            {faqItems.map((item, index) => (                <AccordionItem
                 key={item.value}
                 value={item.value}
-                className={`px-6 ${index < faqItems.length - 1 ? 'border-b border-[#C19A6B]' : 'border-b-0'}`} // Corrigida a cor da borda
-                 // Remove bg e shadow individuais, adiciona borda inferior
+                className={`px-4 sm:px-6 ${
+                  index < faqItems.length - 1
+                    ? "border-b border-[#C19A6B]/40"
+                    : "border-b-0"
+                } transition-all duration-300`}
               >
-                <AccordionTrigger className="text-lg font-medium text-[#583B1F] hover:no-underline text-left py-4">
+                <AccordionTrigger
+                  className="text-base sm:text-lg font-medium text-[#583B1F] hover:text-[#C19A6B] hover:no-underline text-left py-5 
+                    focus:outline-none transition-all duration-300 data-[state=open]:text-[#C19A6B]"
+                >
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-[#735B43] pt-0 pb-4 font-light">
+                <AccordionContent
+                  className="text-[#583B1F] pt-0 pb-5 font-light text-base sm:text-lg
+                    leading-relaxed transition-all duration-500"
+                >
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -77,17 +87,17 @@ const FaqSection = () => {
           </Accordion>
         </div>
 
-        {/* Botão de Contato Abaixo do Container */}
-        <div className="mt-12 text-center">
-<div className="mt-12 text-center">
-  <button
-    type="button"
-    onClick={openModal}
-    className="px-8 py-3 text-sm bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-colors duration-300 rounded-md inline-block"
-  >
-    Ainda tem dúvidas? Entre em contato
-  </button>
-</div>
+        {/* Botão de Contato Abaixo do Container - Melhorado com ícone */}
+        <div className="mt-12 text-center">          <button
+            type="button"
+            onClick={openModal}
+            className="px-4 py-2 sm:px-6 md:px-8 sm:py-3 md:py-4 text-sm sm:text-base bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-all duration-300 
+              rounded-lg inline-flex items-center justify-center gap-1 sm:gap-2 shadow-md
+              border border-transparent hover:border-[#C19A6B] focus:outline-none focus:ring-2 focus:ring-[#C19A6B]"
+          >
+            <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span>Ainda tem dúvidas? Entre em contato</span>
+          </button>
         </div>
       </div>
     </section>
