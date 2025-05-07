@@ -134,7 +134,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
         </div>
       </div>
         {/* Indicador de rolagem refinado - visível em todas as resoluções */}
-      <div className={`absolute bottom-6 md:bottom-10 left-0 right-0 flex justify-center z-[5] 
+      <div className={`absolute bottom-10 md:bottom-14 left-0 right-0 flex justify-center z-[5] 
         ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-700`}>
         <a 
           href="#sobre" 
@@ -144,8 +144,8 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
           <span className="text-xs mb-1 opacity-0 transform translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
             Role para saber mais
           </span>
-          <div className="bg-[#F8F5F0]/70 backdrop-blur-sm p-2 rounded-full shadow-sm animate-bounce transition-all duration-300 group-hover:shadow-md group-hover:bg-[#F8F5F0]">
-            <ChevronDown size={24} />
+          <div className="bg-[#F8F5F0]/70 backdrop-blur-sm p-1.5 rounded-full shadow-sm animate-bounce transition-all duration-300 group-hover:shadow-md group-hover:bg-[#F8F5F0]">
+            <ChevronDown size={20} />
           </div>
         </a>
       </div>
