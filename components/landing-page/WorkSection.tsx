@@ -113,16 +113,16 @@ const WorkSection = () => {
                   ></iframe>
                 </div>
               </div>
-            </div>{/* Botão de CTA - Visível apenas em Mobile */}
-            <div className="mt-8 md:hidden text-center">
+            </div>            {/* Botão de CTA - Visível apenas em Mobile */}
+            <div className="mt-6 md:hidden text-center">
               <button
                 type="button"
                 onClick={openModal}
-                className="inline-flex items-center px-7 py-3 text-base bg-[#583B1F] text-[#F8F5F0] active:bg-[#735B43] transition-all duration-300 rounded-md shadow-sm"
+                className="inline-flex items-center px-5 py-2 text-sm bg-[#583B1F] text-[#F8F5F0] active:bg-[#735B43] transition-all duration-300 rounded-md shadow-sm"
               >
-                <span>Vamos iniciar sua jornada terapêutica?</span>
+                <span>Iniciar jornada terapêutica</span>
                 <svg 
-                  className="ml-2 w-4 h-4" 
+                  className="ml-1 w-3.5 h-3.5" 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24" 
