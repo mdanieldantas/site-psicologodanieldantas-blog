@@ -55,7 +55,41 @@ export const metadata: Metadata = {  // Metadados básicos
     images: ["https://psicologodanieldantas.com/foto-psicologo-daniel-dantas.png"],
     creator: "@psidanieldantas", // Se tiver um perfil no Twitter, incluir aqui
   },
-    // Site já verificado via provedor de domínio no Google Search Console
+  // Site já verificado via provedor de domínio no Google Search Console
+
+  // Favicons, Manifest and Other related meta for the main site
+  icons: {
+    icon: [
+      { url: '/favicons-site-principal/favicon.ico', sizes: 'any', type: 'image/x-icon' },
+      { url: '/favicons-site-principal/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicons-site-principal/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicons-site-principal/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+      { url: '/favicons-site-principal/android-icon-36x36.png', type: 'image/png', sizes: '36x36' },
+      { url: '/favicons-site-principal/android-icon-48x48.png', type: 'image/png', sizes: '48x48' },
+      { url: '/favicons-site-principal/android-icon-72x72.png', type: 'image/png', sizes: '72x72' },
+      { url: '/favicons-site-principal/android-icon-96x96.png', type: 'image/png', sizes: '96x96' },
+      { url: '/favicons-site-principal/android-icon-144x144.png', type: 'image/png', sizes: '144x144' },
+      { url: '/favicons-site-principal/android-icon-192x192.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: [
+      { url: '/favicons-site-principal/apple-icon.png', type: 'image/png' },
+      { url: '/favicons-site-principal/apple-icon-57x57.png', type: 'image/png', sizes: '57x57' },
+      { url: '/favicons-site-principal/apple-icon-60x60.png', type: 'image/png', sizes: '60x60' },
+      { url: '/favicons-site-principal/apple-icon-72x72.png', type: 'image/png', sizes: '72x72' },
+      { url: '/favicons-site-principal/apple-icon-76x76.png', type: 'image/png', sizes: '76x76' },
+      { url: '/favicons-site-principal/apple-icon-114x114.png', type: 'image/png', sizes: '114x114' },
+      { url: '/favicons-site-principal/apple-icon-120x120.png', type: 'image/png', sizes: '120x120' },
+      { url: '/favicons-site-principal/apple-icon-144x144.png', type: 'image/png', sizes: '144x144' },
+      { url: '/favicons-site-principal/apple-icon-152x152.png', type: 'image/png', sizes: '152x152' },
+      { url: '/favicons-site-principal/apple-icon-180x180.png', type: 'image/png', sizes: '180x180' },
+      { url: '/favicons-site-principal/apple-icon-precomposed.png', type: 'image/png', rel: 'apple-touch-icon-precomposed' },
+    ],
+    shortcut: ['/favicons-site-principal/favicon.ico'],
+  },
+  manifest: '/favicons-site-principal/manifest.json',
+  other: {
+    'msapplication-config': '/favicons-site-principal/browserconfig.xml',
+  },
   
   // Outros metadados
   category: "Psicologia",
