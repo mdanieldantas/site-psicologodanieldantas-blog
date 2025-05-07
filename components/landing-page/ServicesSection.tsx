@@ -9,6 +9,25 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel"; // Importar componentes do shadcn/ui
 import { useWhatsAppModal } from "../whatsapp-modal-context"; // Importar o hook
+import { useState } from "react"; // Importar useState para efeitos interativos
+
+// Componente decorativo para separação visual
+const Divider = () => (
+  <div className="flex justify-center my-3">
+    <div className="flex items-center space-x-1">
+      <div className="h-1 w-1 rounded-full bg-[#C19A6B]/80"></div>
+      <div className="h-1 w-3 rounded-full bg-[#C19A6B]/80"></div>
+      <div className="h-1 w-1 rounded-full bg-[#C19A6B]/80"></div>
+    </div>
+  </div>
+);
+
+// Componente para os ícones personalizados da lista
+const ListIcon = () => (
+  <div className="bg-[#C19A6B]/20 p-1.5 rounded-full min-w-[28px] h-7 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-[#C19A6B]/40">
+    <span className="text-[#C19A6B] text-xs">✦</span>
+  </div>
+);
 
 // Define as propriedades esperadas pelo componente ServicesSection
 interface ServicesSectionProps {
@@ -51,163 +70,251 @@ const demandas = [
 // Componente ServicesSection: Detalha os serviços oferecidos
 const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
   const { openModal } = useWhatsAppModal(); // Obter a função openModal
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <section id="servicos" className="py-20 bg-[#F5F2EE]">
-      <div className="container mx-auto px-[10%]">
+    <section id="servicos" className="py-14 md:py-24 bg-[#F5F2EE]">
+      <div className="container mx-auto px-6 sm:px-8 md:px-[10%]">
         {/* Título e subtítulo */}
-        <h2 className="text-3xl font-light mb-4 text-center">Serviços</h2>
-        <p className="text-xl text-[#735B43] mb-12 text-center max-w-2xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block">
+          Serviços
+        </h2>
+          <p className="text-base md:text-lg text-[#735B43] mb-8 md:mb-10 max-w-2xl font-light leading-relaxed">
           Ofereço atendimento personalizado para ajudar você a encontrar equilíbrio e bem-estar.
         </p>
 
-        {/* Banner Psicoterapia Online (sem alterações) */}
-        <div className="bg-[#583B1F] rounded-lg shadow-xl mb-16 overflow-hidden">
-          {/* ... conteúdo do banner ... */}
+        <Divider />
+
+        {/* Banner Psicoterapia Online - Redesenhado */}
+        <div className="bg-[#583B1F] rounded-lg shadow-xl mb-16 overflow-hidden relative">
+          {/* Elementos decorativos */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#C19A6B] opacity-5 rounded-full hidden md:block"></div>
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#C19A6B] opacity-5 rounded-full hidden md:block"></div>          {/* Grid adaptativo para melhor responsividade - Proporção equalizada 50/50 */}
           <div className="grid md:grid-cols-2">
-            {/* Conteúdo Texto */}
-            <div className="p-8 md:p-10 text-[#F8F5F0]">
-              <div className="flex items-center mb-6">
-                <div className="bg-[#C19A6B] p-3 rounded-full mr-4">
-                  <Video className="h-6 w-6 text-[#F8F5F0]" />
+            {/* Conteúdo Texto - Ocupa metade (1/2) em desktop */}
+            <div className="p-8 md:p-10 text-[#F8F5F0] relative z-10">
+              <div className="flex items-center mb-6 md:mb-8">
+                <div className="bg-[#C19A6B] p-3 rounded-full mr-5 shadow-md flex-shrink-0 transform transition-all duration-300 hover:scale-110">
+                  <Video className="h-6 w-6 md:h-7 md:w-7 text-[#F8F5F0]" />
                 </div>
-                <h3 className="text-2xl font-medium">Psicoterapia Online</h3>
-              </div>
-              <p className="mb-6 font-light leading-relaxed">
+                <h3 className="text-2xl md:text-3xl font-medium border-b border-[#C19A6B]/30 pb-2">
+                  Psicoterapia Online
+                </h3>              </div>
+              <p className="mb-6 font-light leading-relaxed text-base">
                 A terapia online elimina barreiras geográficas e oferece a mesma qualidade e profundidade do
                 atendimento presencial. No conforto do seu espaço, podemos estabelecer uma conexão significativa e
-                trabalhar questões importantes para seu bem-estar e desenvolvimento pessoal - independentemente da
-                distância.
+                trabalhar questões importantes para seu bem-estar.
               </p>
-              <ul className="mb-6 space-y-2 font-light">
-                <li className="flex items-center">
-                  <span className="mr-2 text-[#C19A6B]">•</span>
-                  <span>Sessões por videochamada em plataformas seguras</span>
+              
+              <Divider />
+              
+              {/* Lista com ícones personalizados */}
+              <ul className="mb-8 space-y-4 font-light">
+                <li className="flex items-start group">
+                  <ListIcon />
+                  <span className="pt-1 group-hover:text-white transition-colors duration-300">
+                    Sessões por videochamada em plataformas seguras
+                  </span>
                 </li>
-                <li className="flex items-center">
-                  <span className="mr-2 text-[#C19A6B]">•</span>
-                  <span>Flexibilidade de horários e localização</span>
+                <li className="flex items-start group">
+                  <ListIcon />
+                  <span className="pt-1 group-hover:text-white transition-colors duration-300">
+                    Flexibilidade de horários e localização
+                  </span>
                 </li>
-                <li className="flex items-center">
-                  <span className="mr-2 text-[#C19A6B]">•</span>
-                  <span>Mesmo acolhimento e eficácia da terapia presencial</span>
+                <li className="flex items-start group">
+                  <ListIcon />
+                  <span className="pt-1 group-hover:text-white transition-colors duration-300">
+                    Mesmo acolhimento e eficácia da terapia presencial
+                  </span>
                 </li>
               </ul>
+              
+              {/* Botão CTA aprimorado */}
               <button
                 type="button"
-                onClick={openModal} // Chamar openModal no clique
-                className="mt-4 px-8 py-3 bg-[#C19A6B] text-[#F8F5F0] hover:bg-[#D1AA7B] transition-colors duration-300 flex items-center rounded-md text-sm"
+                onClick={openModal}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="mt-4 px-8 py-4 bg-[#C19A6B] text-[#F8F5F0] rounded-md shadow-md flex items-center justify-center group transition-all duration-300 hover:bg-[#D1AA7B] hover:shadow-lg hover:transform hover:-translate-y-1 w-full md:w-auto relative overflow-hidden"
               >
-                <Calendar className="mr-2 h-5 w-5" />
-                Agendar primeira sessão
-              </button>
-            </div>
-            {/* Imagem */}
-            <div className="relative h-64 md:h-auto">
-              <Image src="/atendimento-online-image.png" alt="Psicoterapia Online" fill className="object-cover" />
+                <span className="absolute inset-0 bg-[#735B43] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                <Calendar className="mr-3 h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                <span className="text-base font-medium relative z-10">Agendar primeira sessão</span>
+                <span className={`ml-2 relative z-10 transform transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-1' : 'opacity-0 -translate-x-2'}`}>→</span>
+              </button>            </div>              {/* Imagem - Ocupa metade (1/2) em desktop, escondida em mobile onde é substituída por versão abaixo */}            <div className="relative h-auto min-h-[300px] hidden md:block">
+              <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image 
+                src="/atendimento-online-image.png" 
+                alt="Psicoterapia Online" 
+                fill 
+                className="object-cover transition-transform duration-700 hover:scale-105" 
+                priority={true}
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
             </div>
           </div>
-        </div>
-
-        {/* Seção Demandas com Carrossel shadcn/ui */}
-        <div className="bg-[#F5F2EE] rounded-lg shadow-lg p-8 mb-16">
-          <h3 className="text-2xl font-medium text-[#583B1F] text-center mb-4">
+          
+          {/* Versão mobile da imagem - melhor integração */}          <div className="md:hidden relative h-64 overflow-hidden">
+            <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image 
+              src="/atendimento-online-image.png" 
+              alt="Psicoterapia Online" 
+              fill 
+              className="object-cover" 
+              priority={true}
+              sizes="100vw"
+            />
+          </div>
+        </div>        {/* Seção Demandas com Carrossel shadcn/ui */}
+        <div className="bg-white rounded-lg shadow-xl p-8 md:p-10 mb-16 relative">
+          {/* Elementos decorativos */}
+          <div className="absolute -top-6 -right-6 w-28 h-28 bg-[#C19A6B] opacity-5 rounded-full"></div>
+          <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-[#C19A6B] opacity-5 rounded-full"></div>
+          
+          <h3 className="text-2xl md:text-3xl font-light mb-6 border-b border-[#583B1F] pb-4 inline-block">
             Eu posso te ajudar na travessia de demandas como:
           </h3>
-          <p className="text-[#735B43] text-center mb-12 max-w-3xl mx-auto font-light">
+          
+          <p className="text-[#735B43] text-base md:text-lg mb-8 max-w-3xl font-light leading-relaxed">
             Utilizando a Abordagem Centrada na Pessoa (ACP) e a Focalização, ofereço um espaço seguro e acolhedor
             para que você possa explorar suas emoções, superar desafios e encontrar caminhos para uma vida mais
             equilibrada e significativa.
           </p>
+          
+          <Divider />
 
-          {/* Carrossel shadcn/ui */}
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full max-w-6xl mx-auto"
-          >
-            <CarouselContent>
-              {demandas.map((demanda, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-4">
-                  {/* Card com borda esquerda adicionada */}
-                  <div className="bg-[#F8F5F0] p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border-l-4 border-[#C19A6B] h-full flex flex-col">
-                    <div className="flex flex-col items-center mb-4">
-                      <div className="w-full h-40 relative mb-4 rounded-lg overflow-hidden"> {/* Adicionado overflow-hidden */}
-                        <Image
-                          src={demanda.imgSrc}
-                          alt={demanda.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
+          {/* Carrossel shadcn/ui aprimorado */}
+          <div className="mt-8">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full max-w-6xl mx-auto"
+            >
+              <CarouselContent>
+                {demandas.map((demanda, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-4">
+                    {/* Card com design aprimorado */}
+                    <div className="bg-[#F8F5F0] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 border-l-4 border-[#C19A6B] h-full flex flex-col group relative overflow-hidden">
+                      {/* Elemento decorativo que aparece em hover */}
+                      <div className="absolute -top-16 -right-16 w-32 h-32 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+                      
+                      <div className="flex flex-col items-center mb-4 relative z-10">
+                        <div className="w-full h-40 relative mb-4 rounded-lg overflow-hidden shadow-md transform transition-all duration-500 group-hover:shadow-lg">
+                          <Image
+                            src={demanda.imgSrc}
+                            alt={demanda.title}
+                            fill
+                            className="object-cover transition-all duration-700 group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        <h4 className="text-lg font-medium text-[#583B1F] text-center transition-colors duration-300 group-hover:text-[#735B43]">
+                          {demanda.title}
+                        </h4>
                       </div>
-                      <h4 className="text-lg font-medium text-[#583B1F] text-center">{demanda.title}</h4>
+                      
+                      <Divider />
+                      
+                      <p className="text-[#735B43] text-base leading-relaxed flex-grow relative z-10">
+                        {demanda.description}
+                      </p>
                     </div>
-                    <p className="text-[#735B43] text-sm flex-grow">{demanda.description}</p> {/* Adicionado flex-grow */}
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-colors duration-300 focus:outline-none" />
-            <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-colors duration-300 focus:outline-none" />
-          </Carousel>
-        </div>
-
-        {/* Seção Outros Serviços - Adicionada */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-medium text-[#583B1F] text-center mb-12">
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              
+              {/* Botões de navegação aprimorados */}
+              <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110" />
+              <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-[#583B1F] text-[#F8F5F0] p-2 rounded-full shadow-lg hover:bg-[#735B43] transition-all duration-300 focus:outline-none hover:scale-110" />
+            </Carousel>
+            
+            {/* Indicador de navegação desktop */}
+            <div className="hidden md:flex justify-center mt-8">
+              <div className="flex items-center space-x-1">
+                <div className="h-1.5 w-12 rounded-full bg-[#C19A6B]"></div>
+                <div className="h-1.5 w-6 rounded-full bg-[#C19A6B]/50"></div>
+                <div className="h-1.5 w-6 rounded-full bg-[#C19A6B]/50"></div>
+              </div>
+            </div>
+          </div>
+        </div>        {/* Seção Outros Serviços - Aprimorada */}
+        <div className="mt-16 relative">
+          {/* Elementos decorativos */}
+          <div className="absolute -top-10 -left-10 w-36 h-36 bg-[#C19A6B] opacity-5 rounded-full"></div>
+          <div className="absolute -bottom-10 -right-10 w-36 h-36 bg-[#C19A6B] opacity-5 rounded-full"></div>
+          
+          <h3 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block">
             Outros Serviços
           </h3>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          
+          <Divider />
+          
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 mt-8">
             {/* Card 1: Psicoterapia Individual */}
-            <div className="bg-[#F8F5F0] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center">
+            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+              <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              
               <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full">
+                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
                   <Heart className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-2">Psicoterapia Individual</h4>
-              <p className="text-[#735B43] text-sm font-light">
+              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+                Psicoterapia Individual
+              </h4>
+              <p className="text-[#735B43] text-base font-light leading-relaxed">
                 Atendimento focado nas suas necessidades, promovendo autoconhecimento e bem-estar.
               </p>
             </div>
 
             {/* Card 2: Grupos Psicoterapêuticos */}
-            <div className="bg-[#F8F5F0] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center">
+            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+              <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              
               <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full">
+                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
                   <Users className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-2">Grupos Psicoterapêuticos</h4>
-              <p className="text-[#735B43] text-sm font-light">
+              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+                Grupos Psicoterapêuticos
+              </h4>
+              <p className="text-[#735B43] text-base font-light leading-relaxed">
                 Espaços de troca e crescimento coletivo, abordando temas específicos em um ambiente seguro.
               </p>
             </div>
 
             {/* Card 3: Atendimento Comunitário */}
-            <div className="bg-[#F8F5F0] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center">
+            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+              <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              
               <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full">
-                  <Home className="h-7 w-7 text-[#F8F5F0]" /> {/* Usando Home como ícone */}
+                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
+                  <Home className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-2">Atendimento Comunitário</h4>
-              <p className="text-[#735B43] text-sm font-light">
+              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+                Atendimento Comunitário
+              </h4>
+              <p className="text-[#735B43] text-base font-light leading-relaxed">
                 Projetos e parcerias para levar o cuidado psicológico a diferentes comunidades.
               </p>
             </div>
 
             {/* Card 4: Workshops e Palestras */}
-            <div className="bg-[#F8F5F0] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center">
+            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+              <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              
               <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full">
+                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
                   <Presentation className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-2">Workshops e Palestras</h4>
-              <p className="text-[#735B43] text-sm font-light">
+              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+                Workshops e Palestras
+              </h4>
+              <p className="text-[#735B43] text-base font-light leading-relaxed">
                 Eventos educativos sobre saúde mental, bem-estar e desenvolvimento pessoal.
               </p>
             </div>
