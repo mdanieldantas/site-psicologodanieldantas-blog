@@ -289,83 +289,116 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
               Deslize para navegar entre os serviços
             </p>
           </div>
-        </div>        {/* Seção Outros Serviços - Aprimorada */}
-        <div className="mt-16 relative">
-          {/* Elementos decorativos */}
+        </div>        {/* Seção Outros Serviços - Aprimorada */}        <div className="mt-16 relative pb-12">
+          {/* Elementos decorativos aprimorados */}
           <div className="absolute -top-10 -left-10 w-36 h-36 bg-[#C19A6B] opacity-5 rounded-full"></div>
           <div className="absolute -bottom-10 -right-10 w-36 h-36 bg-[#C19A6B] opacity-5 rounded-full"></div>
+          <div className="absolute top-20 right-20 w-24 h-24 bg-[#583B1F] opacity-5 rounded-full hidden lg:block"></div>
+          <div className="absolute bottom-20 left-20 w-16 h-16 bg-[#583B1F] opacity-5 rounded-full hidden lg:block"></div>
           
-          <h3 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block">
-            Outros Serviços
+          {/* Título com design aprimorado */}
+          <h3 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block relative">
+            <span className="relative z-10">Outros Serviços</span>
+            <span className="absolute -bottom-1 left-0 w-1/3 h-[3px] bg-[#C19A6B]"></span>
           </h3>
+          
+          <p className="text-[#735B43] text-base md:text-lg mb-8 max-w-3xl font-light leading-relaxed">
+            Além da psicoterapia individual, ofereço outras modalidades de atendimento e serviços para promover o bem-estar psicológico.
+          </p>
           
           <Divider />
           
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 mt-8">
-            {/* Card 1: Psicoterapia Individual */}
-            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+          {/* Grid com melhor aproveitamento de espaço e design mais moderno */}
+          <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-4 mt-10">
+            {/* Card 1: Psicoterapia Individual - Agora com melhor contraste e interatividade */}
+            <div className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-2 hover:bg-[#FFFAF5] cursor-pointer">
+              {/* Elementos decorativos aprimorados */}
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C19A6B]/30 to-transparent transform scaleX-0 group-hover:scaleX-100 transition-transform duration-500 origin-left"></div>
               
-              <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
+              {/* Ícone com efeito de foco melhorado */}
+              <div className="flex justify-center mb-5">
+                <div className="bg-[#C19A6B] p-4 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:bg-[#B38A5B]">
                   <Heart className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+
+              {/* Título com melhor hierarquia visual */}
+              <h4 className="text-xl font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#583B1F]">
                 Psicoterapia Individual
               </h4>
-              <p className="text-[#735B43] text-base font-light leading-relaxed">
+              
+              {/* Linha decorativa para separação visual */}
+              <div className="h-[2px] w-16 bg-gradient-to-r from-transparent via-[#C19A6B] to-transparent mx-auto mb-4 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Texto com melhor leiturabilidade */}
+              <p className="text-[#735B43] text-base font-light leading-relaxed mx-auto">
                 Atendimento focado nas suas necessidades, promovendo autoconhecimento e bem-estar.
               </p>
             </div>
 
-            {/* Card 2: Grupos Psicoterapêuticos */}
-            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+            {/* Card 2: Grupos Psicoterapêuticos - Com mesmo padrão de design aprimorado */}
+            <div className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-2 hover:bg-[#FFFAF5] cursor-pointer">
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C19A6B]/30 to-transparent transform scaleX-0 group-hover:scaleX-100 transition-transform duration-500 origin-left"></div>
               
-              <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
+              <div className="flex justify-center mb-5">
+                <div className="bg-[#C19A6B] p-4 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:bg-[#B38A5B]">
                   <Users className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+
+              <h4 className="text-xl font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#583B1F]">
                 Grupos Psicoterapêuticos
               </h4>
-              <p className="text-[#735B43] text-base font-light leading-relaxed">
+              
+              <div className="h-[2px] w-16 bg-gradient-to-r from-transparent via-[#C19A6B] to-transparent mx-auto mb-4 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <p className="text-[#735B43] text-base font-light leading-relaxed mx-auto">
                 Espaços de troca e crescimento coletivo, abordando temas específicos em um ambiente seguro.
               </p>
             </div>
 
             {/* Card 3: Atendimento Comunitário */}
-            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+            <div className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-2 hover:bg-[#FFFAF5] cursor-pointer">
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C19A6B]/30 to-transparent transform scaleX-0 group-hover:scaleX-100 transition-transform duration-500 origin-left"></div>
               
-              <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
+              <div className="flex justify-center mb-5">
+                <div className="bg-[#C19A6B] p-4 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:bg-[#B38A5B]">
                   <Home className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+
+              <h4 className="text-xl font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#583B1F]">
                 Atendimento Comunitário
               </h4>
-              <p className="text-[#735B43] text-base font-light leading-relaxed">
+              
+              <div className="h-[2px] w-16 bg-gradient-to-r from-transparent via-[#C19A6B] to-transparent mx-auto mb-4 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <p className="text-[#735B43] text-base font-light leading-relaxed mx-auto">
                 Projetos e parcerias para levar o cuidado psicológico a diferentes comunidades.
               </p>
             </div>
 
             {/* Card 4: Workshops e Palestras */}
-            <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-1">
+            <div className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 text-center group border-t-4 border-[#C19A6B] relative overflow-hidden transform hover:-translate-y-2 hover:bg-[#FFFAF5] cursor-pointer">
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C19A6B]/30 to-transparent transform scaleX-0 group-hover:scaleX-100 transition-transform duration-500 origin-left"></div>
               
-              <div className="flex justify-center mb-4">
-                <div className="bg-[#C19A6B] p-3 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110">
+              <div className="flex justify-center mb-5">
+                <div className="bg-[#C19A6B] p-4 rounded-full shadow-md transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:bg-[#B38A5B]">
                   <Presentation className="h-7 w-7 text-[#F8F5F0]" />
                 </div>
               </div>
-              <h4 className="text-lg font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#735B43]">
+
+              <h4 className="text-xl font-medium text-[#583B1F] mb-4 transition-colors duration-300 group-hover:text-[#583B1F]">
                 Workshops e Palestras
               </h4>
-              <p className="text-[#735B43] text-base font-light leading-relaxed">
+              
+              <div className="h-[2px] w-16 bg-gradient-to-r from-transparent via-[#C19A6B] to-transparent mx-auto mb-4 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <p className="text-[#735B43] text-base font-light leading-relaxed mx-auto">
                 Eventos educativos sobre saúde mental, bem-estar e desenvolvimento pessoal.
               </p>
             </div>
