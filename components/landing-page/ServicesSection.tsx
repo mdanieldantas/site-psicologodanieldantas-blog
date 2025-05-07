@@ -296,17 +296,14 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
           <div className="absolute top-20 right-20 w-24 h-24 bg-[#583B1F] opacity-5 rounded-full hidden lg:block"></div>
           <div className="absolute bottom-20 left-20 w-16 h-16 bg-[#583B1F] opacity-5 rounded-full hidden lg:block"></div>
           
-          {/* Título com design aprimorado */}
-          <h3 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block relative">
+          {/* Título com design aprimorado */}          <h3 className="text-2xl md:text-3xl font-light mb-6 md:mb-8 border-b border-[#583B1F] pb-4 inline-block relative">
             <span className="relative z-10">Outros Serviços</span>
-            <span className="absolute -bottom-1 left-0 w-1/3 h-[3px] bg-[#C19A6B]"></span>
+            
           </h3>
           
           <p className="text-[#735B43] text-base md:text-lg mb-8 max-w-3xl font-light leading-relaxed">
             Além da psicoterapia individual, ofereço outras modalidades de atendimento e serviços para promover o bem-estar psicológico.
           </p>
-          
-          <Divider />
           
           {/* Grid com melhor aproveitamento de espaço e design mais moderno */}
           <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-4 mt-10">
