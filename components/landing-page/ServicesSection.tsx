@@ -43,7 +43,7 @@ const demandas = [
   },
   {
     title: "Transições de Vida",
-    imgSrc: "/psicologodanieldantas/Transicoes-de-Vida-e-Mudancas-image.png",
+    imgSrc: "/Transicoes-de-Vida-e-Mudancas-image.png", // Caminho corrigido
     description: "Navegar por mudanças importantes (carreira, luto, relacionamentos) com mais segurança e resiliência, encontrando novas perspectivas.",
   },
 ];

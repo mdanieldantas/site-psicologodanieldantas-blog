@@ -219,7 +219,7 @@ export default function LandingPage() {  // Estados para controle da UI
       {showScrollTop && (
         <button
           onClick={scrollToPreviousSection}
-          className="fixed bottom-4 left-0 z-[60] py-1.5 px-4 bg-[#583B1F]/40 text-white text-xs font-light rounded-r-md shadow-sm hover:bg-[#735B43]/60 transition-all duration-300 flex items-center"
+          className="fixed bottom-10 left-0 z-[60] py-1.5 px-4 bg-[#583B1F]/40 text-white text-xs font-light rounded-r-md shadow-sm hover:bg-[#735B43]/60 transition-all duration-300 flex items-center"
           style={{ opacity: scrollActive ? 0.9 : 0.3 }}
           aria-label="Voltar para a seção anterior"
         >
