@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Share2 } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -8,35 +8,39 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Badge } from "@/components/ui/badge";
 import ButtonBlog from '@/app/blogflorescerhumano/components/ButtonBlog'; // Reutilizando o botão
+import { useState } from "react";
 
-// Dados estáticos para os posts fake
+// Dados estáticos para os posts fake com categorias adicionadas
 const fakePosts = [
   {
     slug: "fake-post-1",
     title: "A importância da empatia na terapia humanista",
     excerpt: "Explorando como a empatia genuína forma a base da relação terapêutica na abordagem centrada na pessoa...",
-    // Use os nomes de arquivo que você tem na pasta /public
     imageUrl: "/importância-da-empatia-image-site.png",
+    category: "Terapia Humanista"
   },
   {
     slug: "fake-post-2",
-    title: "Focalização: conectando-se com a sabedoria do corpo", // Título da imagem
+    title: "Focalização: conectando-se com a sabedoria do corpo",
     excerpt: "Como a técnica de Focalização desenvolvida por Eugene Gendlin pode nos ajudar a acessar conhecimentos implícitos...",
-    // Use os nomes de arquivo que você tem na pasta /public
-    imageUrl: "/focalizacao-imagem.png", // Ajuste se tiver uma imagem melhor
+    imageUrl: "/focalizacao-imagem.png",
+    category: "Técnicas Terapêuticas"
   },
   {
     slug: "fake-post-3",
     title: "Mindfulness e autorregulação emocional",
     excerpt: "Práticas de atenção plena que podem ajudar no processo de regulação das emoções e redução do estresse...",
-    // Use os nomes de arquivo que você tem na pasta /public
     imageUrl: "/mindfulness-imagem.png",
+    category: "Mindfulness"
   },
 ];
 
 // Componente FakeBlogPreviewSection
 const FakeBlogPreviewSection: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   return (
     <section id="blog" className="py-16 bg-[#F5F2EE]">
       <div className="container mx-auto px-[10%]">
@@ -51,44 +55,90 @@ const FakeBlogPreviewSection: React.FC = () => {
             loop: true,
           }}
           className="w-full mx-auto relative"
+          setApi={(api) => {
+            api?.on("select", () => {
+              setCurrentIndex(api?.selectedScrollSnap() || 0);
+            });
+          }}
         >
           <CarouselContent className="-ml-4">
             {fakePosts.map((post, index) => (
               <CarouselItem key={post.slug || index} className="pl-4 basis-full lg:basis-4/5 xl:basis-3/4">
                 <div className="p-1 h-full">
-                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#C19A6B] min-h-[400px]">
-                    {/* Link único envolvendo todo o card para /em-construcao */}
-                    <Link href="/em-construcao" passHref className="cursor-pointer h-full flex flex-col sm:flex-row w-full">
-                      <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[220px] sm:h-[280px] md:h-[360px] mt-4 sm:mt-8 mb-4 sm:mb-8 mx-auto sm:ml-4">
-                        <Image
-                          src={post.imageUrl || "/placeholder.svg"}
-                          alt={post.title}
-                          fill
-                          className="object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
+                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#C19A6B] min-h-[400px] hover:shadow-lg transition-all duration-300">
+                    {/* Link principal para /em-construcao */}
+                    <div className="cursor-pointer h-full flex flex-col sm:flex-row w-full">
+                      <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[240px] sm:h-[280px] md:h-[360px] mx-auto">
+                        <Link href="/em-construcao" passHref className="block w-full h-full">
+                          <Image
+                            src={post.imageUrl || "/placeholder.svg"}
+                            alt={post.title}
+                            fill
+                            className="object-cover rounded-t-lg sm:rounded-tr-none sm:rounded-l-lg"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                          <div className="absolute top-4 left-4">
+                            <Badge className="bg-[#583B1F]/90 text-white hover:bg-[#735B43] px-3 py-1 text-xs">
+                              {post.category}
+                            </Badge>
+                          </div>
+                        </Link>
                       </div>
-                      <div className="p-6 sm:p-10 flex flex-col flex-grow w-full sm:w-3/5 justify-center">
-                        <h3 className="text-2xl sm:text-3xl font-light mb-3 sm:mb-4 text-[#583B1F]">{post.title}</h3>
-                        <p className="text-[#735B43] font-light mb-4 sm:mb-6 line-clamp-4 sm:line-clamp-3 flex-grow text-base sm:text-lg">{post.excerpt}</p>
-                        <span className="inline-flex items-center text-base sm:text-lg text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 self-start mt-auto">
-                          Ler mais <ArrowRight className="ml-2 h-5 w-5 sm:h-6 sm:w-6" />
-                        </span>
+                      <div className="p-6 sm:p-8 flex flex-col flex-grow w-full sm:w-3/5 justify-center">
+                        <Link href="/em-construcao" passHref>
+                          <h3 className="text-2xl sm:text-3xl font-light mb-3 sm:mb-4 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300">{post.title}</h3>
+                        </Link>
+                        <p className="text-[#735B43] font-light mb-6 sm:mb-8 line-clamp-4 sm:line-clamp-3 flex-grow text-base sm:text-lg">{post.excerpt}</p>
+                        <div className="flex justify-between items-center mt-auto">
+                          <Link href="/em-construcao" passHref>
+                            <ButtonBlog 
+                              className="text-sm px-4 py-1.5 inline-flex items-center bg-[#583B1F] text-white hover:bg-[#735B43] rounded-full"
+                            >
+                              Ler mais <ArrowRight className="ml-2 h-4 w-4" />
+                            </ButtonBlog>
+                          </Link>
+                          <button 
+                            aria-label="Compartilhar artigo"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              alert("Funcionalidade de compartilhar em desenvolvimento");
+                            }}
+                            className="p-2 rounded-full hover:bg-[#C19A6B]/20 transition-colors"
+                          >
+                            <Share2 className="h-5 w-5 text-[#583B1F]" />
+                          </button>
+                        </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-[-15px] sm:left-[-20px] md:left-[-30px] lg:left-[-40px] top-1/2 -translate-y-1/2 fill-[#583B1F] text-[#F8F5F0] bg-[#583B1F]/80 hover:bg-[#735B43] p-1 sm:p-2 rounded-full z-10 transition-all duration-200" />
-          <CarouselNext className="absolute right-[-15px] sm:right-[-20px] md:right-[-30px] lg:right-[-40px] top-1/2 -translate-y-1/2 fill-[#583B1F] text-[#F8F5F0] bg-[#583B1F]/80 hover:bg-[#735B43] p-1 sm:p-2 rounded-full z-10 transition-all duration-200" />
+          
+          <CarouselPrevious className="absolute left-[-15px] sm:left-[-20px] md:left-[-30px] lg:left-[-40px] top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
+          <CarouselNext className="absolute right-[-15px] sm:right-[-20px] md:right-[-30px] lg:right-[-40px] top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
         </Carousel>
+
+        {/* Indicadores de posição do carrossel */}
+        <div className="flex justify-center gap-2 mt-6">
+          {fakePosts.map((_, index) => (
+            <div 
+              key={index} 
+              className={`h-2 rounded-full transition-all duration-300 ${
+                currentIndex === index 
+                  ? "w-8 bg-[#C19A6B]" 
+                  : "w-2 bg-[#C19A6B]/40"
+              }`}
+              aria-label={`Slide ${index + 1} de ${fakePosts.length}`}
+            />
+          ))}
+        </div>
 
         <div className="mt-12 flex justify-center">
           <Link href="/em-construcao" passHref>
-            <ButtonBlog className="text-sm px-6 py-2 inline-flex items-center">
-              Ver todos os artigos <ArrowRight className="ml-2 h-4 w-4" />
+            <ButtonBlog className="text-base px-8 py-3 inline-flex items-center shadow-md">
+              Ver todos os artigos <ArrowRight className="ml-2 h-5 w-5" />
             </ButtonBlog>
           </Link>
         </div>
