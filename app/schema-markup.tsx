@@ -25,26 +25,33 @@ export default function SchemaMarkup() {
               "@type": "OpeningHoursSpecification",
               dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
               opens: "08:00",
-              closes: "18:00",
+              closes: "21:00",
             },
             sameAs: [
              "https://www.instagram.com/psicologodanieldantas",
               "https://www.facebook.com/psicologodanieldantas",
               "https://twitter.com/psidanieldantas",
               "https://www.linkedin.com/in/psicologodanieldantas",
-              "https://www.youtube.com/@psidanieldantas", // URL correta e atual do YouTube
+              "https://www.youtube.com/@psidanieldantas",
               "https://www.tiktok.com/@psidanieldantas",
-            ],            priceRange: "$$",            description:
-              "Psicoterapia online humanizada e acolhedora com Daniel Dantas (CRP 11/11854). Atendimento em português para ansiedade, depressão e autoconhecimento para brasileiros em qualquer parte do mundo. Especialista em psicologia racial e ambiente seguro e acolhedor para a comunidade LGBTQIA+ (lésbicas, gays, bissexuais, transgêneros, queer, intersexo, assexuais e outras identidades de gênero e orientações sexuais). Psicólogo especializado em terapia afirmativa, inclusiva e culturalmente sensível, onde quer que você esteja.",
-            serviceArea: {
-              "@type": "GeoCircle",
-              geoMidpoint: {
-                "@type": "GeoCoordinates",
-                latitude: -3.7319,
-                longitude: -38.5267,
+            ],
+            priceRange: "$$",
+            description:
+              "Psicólogo humanista online Daniel Dantas (CRP 11/11854). Oferece psicoterapia online em um espaço acolhedor e inclusivo para ajudar com ansiedade, estresse e na jornada de autoconhecimento. Sua prática é fundamentada na Abordagem Centrada na Pessoa (ACP), Focalização e Mindfulness. Atendimento em português para brasileiros em qualquer lugar do mundo, com sensibilidade a questões étnico-raciais e para a comunidade LGBTQIA+.",
+            serviceArea: [
+              {
+                "@type": "Country",
+                "name": "BR"
               },
-              geoRadius: "5000",
-            },
+              {
+                "@type": "Place",
+                "name": "Atendimento online para brasileiros no exterior"
+              },
+              {
+                "@type": "Place",
+                "name": "Atendimento online para falantes de língua portuguesa globalmente"
+              }
+            ],
             hasOfferCatalog: {
               "@type": "OfferCatalog",
               name: "Serviços de Psicoterapia",
