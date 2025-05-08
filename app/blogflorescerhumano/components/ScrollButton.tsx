@@ -36,21 +36,43 @@ export default function ScrollButton() {
       top: targetPosition,
       behavior: 'smooth'
     });
-  };
+  };  const [scrollActive, setScrollActive] = useState(true);
+
+  // Efeito para controlar a opacidade do botão baseado na atividade de scroll
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScrollActivity = () => {
+      setScrollActive(true);
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setScrollActive(false);
+      }, 2500);
+    };
+    
+    window.addEventListener('scroll', handleScrollActivity);
+    
+    // Inicia o timeout para diminuir a opacidade após montar
+    handleScrollActivity();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScrollActivity);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   return (
-    <div
-      className={`fixed bottom-8 left-8 z-50 transition-all duration-300 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+    <button
+      onClick={scrollToPreviousSection}
+      className={`fixed bottom-10 left-0 z-[60] py-1.5 px-4 bg-[#583B1F]/40 text-white text-xs font-light rounded-r-md shadow-sm hover:bg-[#735B43]/60 transition-all duration-300 flex items-center ${
+        isVisible ? 'translate-x-0' : '-translate-x-full pointer-events-none'
       }`}
+      style={{ opacity: scrollActive ? 0.9 : 0.3 }}
+      aria-label="Voltar para a seção anterior"
     >
-      <button
-        onClick={scrollToPreviousSection}
-        className="group h-[52px] w-[32px] bg-[#583B1F] hover:bg-[#735B43] rounded-[20px] flex items-center justify-center shadow-lg transition-colors duration-300"
-        aria-label="Rolar para seção anterior"
-      >
-        <MoveUp className="text-[#F8F5F0] w-4 h-4 group-hover:text-white" />
-      </button>
-    </div>
+      <span className="mr-1 text-[10px]">↑</span>
+      <span>voltar</span>
+    </button>
   );
 }
