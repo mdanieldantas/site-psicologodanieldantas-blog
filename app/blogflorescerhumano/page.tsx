@@ -62,7 +62,7 @@ export default async function BlogHomePage() {
         {/* Container principal com layout flexível */}
         <div className="container mx-auto px-4 h-full flex flex-col-reverse md:flex-row items-center justify-between relative z-10">
           {/* Coluna de texto - à esquerda em desktop */}{" "}
-          <div className="w-full md:w-1/2 text-left md:pr-8 mb-6 md:mb-0 mt-0 sm:mt-6 md:mt-0 animate-[fadeIn_1s_ease_forwards] hero-container">
+          <div className="w-full md:w-1/2 text-left md:pr-8 mb-6 md:mb-0 mt-8 md:mt-0 animate-[fadeIn_1s_ease_forwards] hero-container">
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-normal mb-2 md:mb-4 font-['Old Roman'] tracking-wide animate-[slideUp_1s_ease_forwards] relative drop-shadow-sm hero-title">
               Blog Florescer Humano
               <span className="absolute left-0 bottom-0 w-20 h-0.5 bg-[#C19A6B] rounded-full mt-2 transform -translate-y-2"></span>
@@ -104,7 +104,7 @@ export default async function BlogHomePage() {
               </svg>
             </Link>
             {/* Assinatura visual */}{" "}
-            <div className="mt-4 md:mt-10 flex items-center animate-[fadeIn_1s_ease_forwards] delay-500">
+            <div className="hidden md:flex mt-4 md:mt-10 items-center justify-center md:justify-start animate-[fadeIn_1s_ease_forwards] delay-500">
               <div className="h-[2px] w-10 bg-[#C19A6B] mr-4"></div>
               <p className="text-sm text-[#583B1F] italic high-contrast-text">
                 Acompanhe essa jornada.
@@ -114,7 +114,7 @@ export default async function BlogHomePage() {
           {/* Coluna da imagem - à direita em desktop */}{" "}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center mt-0 md:mt-4 mb-0">
             {/* Contêiner do grupo da imagem para animação e padding */}
-            <div className="group animate-[fadeIn_1s_ease_forwards] delay-300 content-visibility-auto pt-5 px-5 pb-2">
+            <div className="group animate-[fadeIn_1s_ease_forwards] delay-300 content-visibility-auto p-8 relative translate-y-[50px] md:translate-y-0">
               {/* Moldura orgânica com elementos botânicos */}
               <div className="relative z-10 transform transition-all duration-500 md:hover:scale-[1.02]">
                 {/* Forma orgânica de fundo */}
