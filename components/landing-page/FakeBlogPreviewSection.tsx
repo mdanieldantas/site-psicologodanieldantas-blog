@@ -41,20 +41,17 @@ const fakePosts = [
 const FakeBlogPreviewSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  return (
-    <section id="blog" className="py-16 bg-[#F5F2EE]">
-      <div className="container mx-auto px-[10%]">
+  return (    <section id="blog" className="py-16 bg-[#F5F2EE] overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-[5%] md:px-[8%] lg:px-[10%]">
         <h2 className="text-3xl font-light mb-4 text-center">Blog Florescer Humano</h2>
         <p className="text-lg text-[#735B43] mb-12 text-center max-w-2xl mx-auto font-light">
           Artigos, reflexões e ferramentas práticas para apoiar seu bem-estar emocional, onde quer que você esteja.
-        </p>
-
-        <Carousel
+        </p>        <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-full mx-auto relative"
+          className="w-full mx-auto relative overflow-hidden"
           setApi={(api) => {
             api?.on("select", () => {
               setCurrentIndex(api?.selectedScrollSnap() || 0);
@@ -115,9 +112,8 @@ const FakeBlogPreviewSection: React.FC = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          
-          <CarouselPrevious className="absolute left-[-15px] sm:left-[-20px] md:left-[-30px] lg:left-[-40px] top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
-          <CarouselNext className="absolute right-[-15px] sm:right-[-20px] md:right-[-30px] lg:right-[-40px] top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
+            <CarouselPrevious className="absolute left-0 sm:left-2 md:left-2 top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
+          <CarouselNext className="absolute right-0 sm:right-2 md:right-2 top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
         </Carousel>
 
         {/* Indicadores de posição do carrossel */}

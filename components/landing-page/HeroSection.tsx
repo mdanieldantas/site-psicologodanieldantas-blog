@@ -21,7 +21,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
   }, []);
   
   return (
-    <section ref={ref} id="inicio" className="relative min-h-screen flex items-center pt-4 md:pt-6 pb-12 md:pb-0">
+    <section ref={ref} id="inicio" className="relative min-h-screen flex items-center pt-4 md:pt-6 pb-12 md:pb-0 overflow-hidden">
       {/* Imagem de fundo com opacidade média para equilíbrio visual */}
       {/* Aplicado opacity-30 por padrão (mobile) e md:opacity-35 para telas maiores */}
       <div className="absolute inset-0 z-0 opacity-30 md:opacity-35">
