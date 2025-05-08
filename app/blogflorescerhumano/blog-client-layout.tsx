@@ -8,20 +8,29 @@ import BlogFooter from './components/BlogFooter';
 import ContentWrapper from './components/ContentWrapper';
 import ScrollButton from './components/ScrollButton';
 import BlogSchema from './components/BlogSchema';
+import { ConnectionQualityAdjuster } from './components/ConnectionQualityAdjuster';
 import './ui/globalsBlog.css';
+import './ui/mobile-improvements.css';
 
 // Removida a exportação de metadata daqui
 
 export default function BlogClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isHome = pathname === '/blogflorescerhumano';
-
+  const isHome = pathname === '/blogflorescerhumano';  // Carrega script de interações mobile quando o componente monta
+  React.useEffect(() => {
+    // Importação dinâmica do script de interações mobile
+    import('./scripts/mobile-interactions').then(module => {
+      // Chama a função exportada para inicializar as interações
+      module.default();
+    }).catch(err => {
+      console.error('Erro ao carregar script de interações mobile:', err);
+    });
+  }, []);
   return (
-    // Removidas as tags de favicon do JSX daqui
-    // O Fragmento React <>...</> é necessário se não houver um elemento raiz único após a remoção das tags de favicon que estavam aqui antes.
-    // Se o seu layout já tem um elemento raiz como o <div> abaixo, o Fragmento extra não é estritamente necessário,
-    // mas não prejudica.
     <>
+      {/* Componente que ajusta a qualidade baseado na conexão do usuário */}
+      <ConnectionQualityAdjuster />
+      
       <div className="min-h-screen flex flex-col bg-[#F8F5F0]">
         {/* Navbar */}
         <BlogHeader />

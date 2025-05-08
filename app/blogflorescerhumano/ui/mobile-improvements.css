@@ -1,0 +1,155 @@
+/* Melhorias específicas para mobile e acessibilidade */
+
+/* Ajustes para áreas de toque - garantindo tamanhos mínimos para interatividade */
+@media (max-width: 768px) {
+  .interactive-element,
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Evita zoom automático em iOS */
+    padding: 10px;
+    margin-bottom: 16px;
+  }
+
+  /* Aumentar espaçamento para melhor legibilidade */
+  p, h1, h2, h3 {
+    margin-bottom: 1.2em;
+  }
+
+  /* Aumentar área de toque para links e botões */
+  .touch-target {
+    padding: 12px;
+  }
+}
+
+/* Suporte a preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-bounce,
+  .animate-pulse,
+  .animate-[fadeIn_1s_ease_forwards],
+  .animate-[slideUp_1s_ease_forwards],
+  .animate-[sway_4s_ease-in-out_infinite_alternate],
+  .animate-[breathe_8s_ease-in-out_infinite_alternate],
+  .animate-[grow_10s_linear_forwards] {
+    animation: none !important;
+  }
+}
+
+/* Ajustes específicos para a seção hero em dispositivos menores */
+@media (max-width: 480px) {
+  .hero-container {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  .hero-title {
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hero-description {
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+  
+  .hero-cta {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+}
+
+/* Melhoria de contraste para texto */
+.high-contrast-text {
+  color: #4a3114;
+}
+
+/* Classes de ajuda para espaçamento mobile */
+.mb-mobile-8 {
+  margin-bottom: 2rem;
+}
+
+.mt-mobile-8 {
+  margin-top: 2rem;
+}
+
+/* Otimizações para rolagem mais suave em dispositivos móveis */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Otimização para carregar apenas quando necessário */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Otimizações para dispositivos de baixa potência */
+@media (prefers-reduced-data: reduce) {
+  img:not([loading="eager"]) {
+    content-visibility: auto;
+  }
+  
+  video:not([autoplay]) {
+    display: none;
+  }
+}
+
+/* Melhorias de acessibilidade para toque */
+@media (hover: none) and (pointer: coarse) {
+  .touch-friendly-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Aumenta espaçamento entre links na navegação mobile */
+  .mobile-nav-item {
+    margin: 0.75rem 0;
+  }
+  
+  /* Feedback visual ao toque */
+  .touch-feedback {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .touch-feedback::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .3s, opacity 0.8s;
+  }
+  
+  .touch-feedback:active::after {
+    transform: scale(0, 0);
+    opacity: .3;
+    transition: 0s;
+  }
+}
