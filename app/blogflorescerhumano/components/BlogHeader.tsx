@@ -190,12 +190,14 @@ const BlogHeader = () => {
           </div>          {/* Desktop: Busca e Botão */}          <div className="hidden md:flex items-center space-x-4">
             <div className="relative self-stretch flex items-center">
               <HeaderSearchInline />
-            </div>
-            <Link href="/" legacyBehavior>
-              <a className="px-4 py-1.5 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-all duration-300 text-sm shadow-sm hover:shadow-md">
-                Voltar ao Site Principal
+            </div>            <Link href="/" legacyBehavior>
+              <a className="px-4 py-2 rounded-md bg-[#C19A6B]/90 text-white font-medium hover:bg-[#735B43] hover:text-white transition-all duration-300 text-sm shadow-md hover:shadow-lg flex items-center gap-2 border border-[#C19A6B]/20">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Voltar ao Site Psi Daniel Dantas
               </a>
-            </Link>          </div>        </nav>          {/* Menu Mobile */}        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out -mt-[2px] border-t-0 ${
+            </Link></div>        </nav>          {/* Menu Mobile */}        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out -mt-[2px] border-t-0 ${
           isMobileMenuOpen 
             ? 'max-h-[500px] opacity-100 bg-gradient-to-b from-[#F8F5F0] to-[#F8F5F0]/95 backdrop-blur-md shadow-md border-t-0' 
             : 'max-h-0 opacity-0'
@@ -232,16 +234,18 @@ const BlogHeader = () => {
                   </a>
                 </Link>
               );
-            })}
-            <div className="pt-2">
+            })}            <div className="pt-3">
               <Link href="/" legacyBehavior>
                 <a 
-                  className="mt-4 block py-3 px-4 rounded-lg bg-[#F0EBE2]/50 text-center text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow"
+                  className="mt-4 block py-3.5 px-5 rounded-lg bg-[#C19A6B]/90 text-center text-white font-medium hover:bg-[#735B43] hover:text-white transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 border border-[#C19A6B]/20"
                   style={{
                     animation: isMobileMenuOpen ? 'fadeInUp 0.4s 300ms ease forwards' : 'none'
                   }}
                 >
-                  Voltar ao Site Principal
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  Voltar ao Site Psi Daniel Dantas
                 </a>
               </Link>
             </div>
