@@ -363,7 +363,7 @@ export default async function BlogHomePage() {
           </svg>
         </div>
         {/* Seta indicativa de scroll com animação melhorada */}{" "}
-        <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center animate-[fadeIn_1s_ease_forwards] delay-600 will-change-transform">
+        <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center animate-[fadeIn_1s_ease_forwards] delay-600 will-change-transform">
           <button
             aria-label="Rolar para ver mais conteúdo"
             className="w-12 h-18 text-[#C19A6B] animate-bounce cursor-pointer hover:text-[#735B43] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:ring-opacity-50 rounded-full min-h-[48px] min-w-[48px] touch-target"
