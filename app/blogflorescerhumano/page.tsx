@@ -98,45 +98,84 @@ export default async function BlogHomePage() {
                 Acompanhe minha jornada de compartilhamento de conhecimento
               </p>
             </div>
-          </div>
-
-          {/* Coluna da imagem - à direita em desktop */}
+          </div>          {/* Coluna da imagem - à direita em desktop */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center">
             <div className="relative group animate-[fadeIn_1s_ease_forwards] delay-300">
-              {/* Container da imagem com efeitos de fluídez */}
-              <div className="relative z-10 rounded-lg overflow-hidden shadow-xl border-2 border-[#C19A6B]/20 transform transition-all duration-500 md:hover:scale-[1.02] bg-gradient-to-b from-[#F8F5F0]/5 to-transparent">
-                <div className="w-[300px] h-[350px] md:w-[400px] md:h-[450px] relative">
-                  <Image
-                    src="/blogflorescerhumano/banners-blog/hero-psicologo-daniel-dantas-blog.png"
-                    alt="Psicólogo Daniel Dantas"
-                    className="object-cover"
-                    fill
-                    sizes="(max-width: 768px) 300px, 400px"
-                    priority
-                    quality={95}                  />
+              {/* Moldura orgânica com elementos botânicos */}
+              <div className="relative z-10 transform transition-all duration-500 md:hover:scale-[1.02]">
+                {/* Forma orgânica de fundo */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-[#C19A6B]/20 to-[#583B1F]/10 rounded-[40%_60%_70%_30%/30%_40%_70%_60%] z-0 animate-[breathe_8s_ease-in-out_infinite_alternate]"></div>
+                
+                {/* Container da imagem principal */}
+                <div className="relative overflow-hidden shadow-xl z-10 rounded-[35%_65%_65%_35%/25%_30%_70%_75%] border-2 border-[#C19A6B]/20">
+                  <div className="w-[300px] h-[350px] md:w-[400px] md:h-[450px] relative">
+                    <Image
+                      src="/blogflorescerhumano/banners-blog/hero-psicologo-daniel-dantas-blog.png"
+                      alt="Psicólogo Daniel Dantas"
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 768px) 300px, 400px"
+                      priority
+                      quality={95}
+                    />
+                  </div>
+
+                  {/* Efeito de brilho no hover aprimorado */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#C19A6B]/0 via-white/5 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 </div>
-
-                {/* Efeito de brilho no hover aprimorado */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#C19A6B]/0 via-white/5 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-              </div>
-
-              {/* Elementos decorativos representando crescimento */}
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-[#C19A6B]/40 z-0"></div>              <div className="absolute -top-4 -left-4 w-16 h-16 border-l-2 border-t-2 border-[#C19A6B]/30 z-0"></div>
-              
-              <div className="absolute top-1/2 -right-6 transform -translate-y-1/2">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="text-[#C19A6B]/40"
-                >
-                  <path
-                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  ></path>
-                </svg>
+                
+                {/* Elementos botânicos decorativos */}
+                {/* Folha superior esquerda */}
+                <div className="absolute -top-6 -left-6 z-20 animate-[sway_4s_ease-in-out_infinite_alternate]">
+                  <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50,10 C70,25 90,40 70,65 C50,90 30,75 20,60 C10,45 30,30 50,10 Z" 
+                          fill="none" stroke="#C19A6B" strokeWidth="1.5" opacity="0.6" />
+                  </svg>
+                </div>
+                
+                {/* Folha inferior direita */}
+                <div className="absolute -bottom-8 -right-4 z-20 rotate-45 animate-[sway_5s_ease-in-out_infinite_alternate]" style={{ animationDelay: "-2s" }}>
+                  <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30,20 C60,5 80,30 75,50 C70,70 40,85 20,70 C0,55 10,30 30,20 Z" 
+                          fill="none" stroke="#583B1F" strokeWidth="1.5" opacity="0.4" />
+                  </svg>
+                </div>
+                
+                {/* Pequena flor decorativa */}
+                <div className="absolute -bottom-2 -left-8 z-20 animate-pulse" style={{ animationDuration: "6s" }}>
+                  <svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="10" fill="#C19A6B" opacity="0.6" />
+                    <path d="M50,30 C55,45 70,50 50,70 C30,50 45,45 50,30 Z" fill="#C19A6B" opacity="0.4" transform="rotate(0 50 50)" />
+                    <path d="M50,30 C55,45 70,50 50,70 C30,50 45,45 50,30 Z" fill="#C19A6B" opacity="0.4" transform="rotate(72 50 50)" />
+                    <path d="M50,30 C55,45 70,50 50,70 C30,50 45,45 50,30 Z" fill="#C19A6B" opacity="0.4" transform="rotate(144 50 50)" />
+                    <path d="M50,30 C55,45 70,50 50,70 C30,50 45,45 50,30 Z" fill="#C19A6B" opacity="0.4" transform="rotate(216 50 50)" />
+                    <path d="M50,30 C55,45 70,50 50,70 C30,50 45,45 50,30 Z" fill="#C19A6B" opacity="0.4" transform="rotate(288 50 50)" />
+                  </svg>
+                </div>
+                
+                {/* Pequena flor na parte superior direita */}
+                <div className="absolute -top-4 right-6 z-20 animate-pulse" style={{ animationDuration: "7s" }}>
+                  <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="8" fill="#583B1F" opacity="0.5" />
+                    <path d="M50,35 C53,45 65,50 50,65 C35,50 47,45 50,35 Z" fill="#583B1F" opacity="0.3" transform="rotate(0 50 50)" />
+                    <path d="M50,35 C53,45 65,50 50,65 C35,50 47,45 50,35 Z" fill="#583B1F" opacity="0.3" transform="rotate(72 50 50)" />
+                    <path d="M50,35 C53,45 65,50 50,65 C35,50 47,45 50,35 Z" fill="#583B1F" opacity="0.3" transform="rotate(144 50 50)" />
+                    <path d="M50,35 C53,45 65,50 50,65 C35,50 47,45 50,35 Z" fill="#583B1F" opacity="0.3" transform="rotate(216 50 50)" />
+                    <path d="M50,35 C53,45 65,50 50,65 C35,50 47,45 50,35 Z" fill="#583B1F" opacity="0.3" transform="rotate(288 50 50)" />
+                  </svg>
+                </div>
+                
+                {/* Elemento de videira/ramo na lateral */}
+                <div className="absolute top-1/4 -right-10 z-0">
+                  <svg width="60" height="200" viewBox="0 0 60 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30,0 C40,50 20,100 40,150 C50,180 30,200 20,200" 
+                          stroke="#C19A6B" strokeWidth="1.5" opacity="0.4" fill="none" 
+                          strokeDasharray="4 3" className="animate-[grow_10s_linear_forwards]"/>
+                    <circle cx="26" cy="50" r="4" fill="#C19A6B" opacity="0.4" />
+                    <circle cx="38" cy="100" r="4" fill="#C19A6B" opacity="0.4" />
+                    <circle cx="30" cy="150" r="4" fill="#C19A6B" opacity="0.4" />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>

@@ -362,3 +362,21 @@ html {
   opacity: 0;
 }
 
+/* Animações para moldura orgânica e elementos botânicos */
+@keyframes breathe {
+  0% { border-radius: 40% 60% 70% 30% / 30% 40% 70% 60%; transform: scale(1); }
+  50% { border-radius: 35% 65% 60% 40% / 40% 30% 60% 70%; transform: scale(1.01); }
+  100% { border-radius: 37% 63% 65% 35% / 35% 38% 62% 65%; transform: scale(0.99); }
+}
+
+@keyframes sway {
+  0% { transform: rotate(-3deg) translateX(0px); }
+  50% { transform: rotate(3deg) translateX(2px); }
+  100% { transform: rotate(-2deg) translateX(-1px); }
+}
+
+@keyframes grow {
+  0% { stroke-dashoffset: 300; }
+  100% { stroke-dashoffset: 0; }
+}
+
