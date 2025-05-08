@@ -13,36 +13,49 @@ const BlogHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isHome = useIsHomePage();
-
+  
+  // Fechar menu mobile quando scrollar
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    if (isScrolled && isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [isScrolled, isMobileMenuOpen]);  // Utilizando useCallback para memorizar a função de debounce
+  const handleScroll = React.useCallback(() => {
+    const checkScroll = () => setIsScrolled(window.scrollY > 30);
+    
+    // Criamos um pequeno delay para melhorar a performance
+    let timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(checkScroll, 10);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isHome 
-          ? isMobileMenuOpen 
-            ? 'bg-[#F8F5F0]'
-            : isScrolled
-              ? 'md:bg-[#F8F5F0]/95 md:backdrop-blur-md md:shadow-sm bg-transparent' 
-              : 'bg-[#F8F5F0]'
-          : 'bg-[#F8F5F0]'
-      }`}
-      role="banner"
-      aria-label="Cabeçalho do blog">
+      <header 
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          isScrolled ? 'h-[60px]' : 'h-[70px]'
+        } ${
+          isHome 
+            ? isMobileMenuOpen 
+              ? 'bg-[#F8F5F0] shadow-sm'
+              : isScrolled
+                ? 'md:bg-[#F8F5F0]/85 md:backdrop-blur-md md:shadow-sm bg-[#F8F5F0] shadow-sm' 
+                : 'bg-[#F8F5F0]'
+            : 'bg-[#F8F5F0]'
+        }`}
+        role="banner"
+        aria-label="Cabeçalho do blog"
+      >
         <nav 
-          className="container mx-auto px-4 py-5 flex items-center justify-between"
+          className="container mx-auto px-4 py-3 flex items-center justify-between"
           role="navigation"
           aria-label="Navegação principal"
         >
-          {/* Logo do Blog */}
-          <Link href="/blogflorescerhumano" legacyBehavior>
+          {/* Logo do Blog */}          <Link href="/blogflorescerhumano" legacyBehavior>
             <a 
               className={`flex items-center gap-2 hover:opacity-80 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md ${
                 isScrolled && !isMobileMenuOpen 
@@ -54,27 +67,37 @@ const BlogHeader = () => {
               <Image
                 src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
                 alt="Logo Florescer Humano"
-                width={160}
-                height={40}
+                width={140}
+                height={35}
                 priority
                 className="transition-opacity duration-300"
-              />
-            </a>
+                sizes="(max-width: 768px) 120px, 140px"
+              />            </a>
           </Link>
-
+          
           {/* Links de navegação - Desktop */}
-          <div className="hidden md:flex space-x-8" role="menubar">
-            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
-              <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
-                <a 
-                  className="relative transition-colors duration-300 text-[#583B1F] hover:text-[#C19A6B] group focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md px-2 py-1"
-                  role="menuitem"
-                >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              </Link>
-            ))}
+          <div className="hidden md:flex space-x-6" role="menubar">
+            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => {
+              // Detectar se o link está ativo (URL atual)
+              const isActive = typeof window !== 'undefined' && 
+                window.location.pathname.includes(`/blogflorescerhumano/${item}`);
+              
+              return (
+                <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
+                  <a 
+                    className={`relative transition-colors duration-300 ${
+                      isActive ? 'text-[#C19A6B] font-medium' : 'text-[#583B1F]'
+                    } hover:text-[#C19A6B] group focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md px-2 py-1 text-sm`}
+                    role="menuitem"
+                  >
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                    <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#C19A6B] transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></span>
+                  </a>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile: Lupa e Menu Hambúrguer */}
@@ -96,31 +119,35 @@ const BlogHeader = () => {
             </button>
           </div>
 
-          {/* Desktop: Busca e Botão */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop: Busca e Botão */}          <div className="hidden md:flex items-center space-x-4">
             <HeaderSearchInline />
             <Link href="/" legacyBehavior>
-              <a className="px-8 py-2 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors duration-300">
+              <a className="px-4 py-1.5 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-all duration-300 text-sm shadow-sm hover:shadow-md">
                 Voltar ao Site Principal
               </a>
-            </Link>
-          </div>
+            </Link>          </div>
         </nav>
-
+        
         {/* Menu Mobile */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${
-          isMobileMenuOpen ? 'max-h-screen bg-[#F8F5F0]' : 'max-h-0'
+          isMobileMenuOpen ? 'max-h-[400px] bg-[#F8F5F0] shadow-md' : 'max-h-0'
         }`}>
-          <div className="container mx-auto px-4 py-4 space-y-4">
-            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => (
-              <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
-                <a className="block py-2 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300">
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </a>
-              </Link>
-            ))}
+          <div className="container mx-auto px-4 py-3 space-y-2">
+            {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => {
+              // Detectar se o link está ativo (URL atual)
+              const isActive = typeof window !== 'undefined' && 
+                window.location.pathname.includes(`/blogflorescerhumano/${item}`);
+                
+              return (
+                <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
+                  <a className={`block py-2 ${isActive ? 'text-[#C19A6B] font-medium' : 'text-[#583B1F]'} hover:text-[#C19A6B] transition-colors duration-300 border-b border-[#F0EBE2]`}>
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </a>
+                </Link>
+              );
+            })}
             <Link href="/" legacyBehavior>
-              <a className="block py-2 px-8 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors duration-300">
+              <a className="block py-2 px-4 my-2 rounded-md border border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-all duration-300 text-center shadow-sm hover:shadow-md">
                 Voltar ao Site Principal
               </a>
             </Link>

@@ -123,7 +123,8 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         )}
-      </head>      <body
+      </head>
+      <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased overflow-x-hidden w-full", // Classes base para o corpo da página
           fontSans.variable // Aplica a variável da fonte Inter
