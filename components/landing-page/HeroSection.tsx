@@ -38,7 +38,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
       <div className="absolute inset-0 bg-gradient-to-b from-[#F8F5F0]/60 to-[#F8F5F0]/40 z-[1]"></div>
       
       {/* Conteúdo principal da seção Hero (mantém z-[5]) */}
-      <div className="relative z-[5] container mx-auto px-[5%] md:px-[10%] pt-10 md:pt-14">
+      <div className="relative z-[5] container mx-auto px-4 sm:px-[5%] md:px-[10%] pt-10 md:pt-14 w-full">
         {/* Layout flexível: coluna em mobile, linha em desktop */}        {/* Layout flexível: coluna em mobile, linha em desktop */}
         <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 
           ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
@@ -71,8 +71,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   rounded-full border-2 border-[#C19A6B]/30 z-0 
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
-          </div>
-            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className={`-mt-8 md:-mt-14 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 
+          </div>            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className={`-mt-8 md:-mt-14 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 w-full px-1
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
             transition-all duration-1000 delay-100`}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-3 tracking-tight relative">

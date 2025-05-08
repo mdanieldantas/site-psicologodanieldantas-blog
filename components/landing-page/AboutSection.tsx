@@ -13,8 +13,8 @@ const Divider = () => (
 
 // Componente AboutSection: Apresenta informações sobre o psicólogo
 const AboutSection = () => {
-  return (    <section id="sobre" className="py-14 md:py-24 bg-[#F5F2EE]">
-      <div className="container mx-auto px-6 sm:px-8 md:px-[10%]">
+  return (    <section id="sobre" className="py-14 md:py-24 bg-[#F5F2EE] overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 md:px-[10%]">
         {/* Título da seção */}
         <h2 className="text-2xl md:text-3xl font-light mb-8 md:mb-12 border-b border-[#583B1F] pb-4 inline-block">
           Sobre Daniel Dantas

@@ -23,10 +23,9 @@ const Header: React.FC<HeaderProps> = ({
   return (    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full overflow-hidden ${
       scrolledPastHero ? "bg-[#F8F5F0]/80 backdrop-blur-sm shadow-sm py-2" : "bg-transparent py-4"
     }`}>
-      <nav className="container mx-auto px-4">
-        {/* Container da navegação com estilo condicional baseado no scroll */}
+      <nav className="container mx-auto px-4">        {/* Container da navegação com estilo condicional baseado no scroll */}
         <div
-          className={`flex items-center justify-between mx-[4%] transition-all duration-300`}
+          className={`flex items-center justify-between transition-all duration-300`}
         >          {/* Logo: Visível sempre em desktop, muda de tamanho conforme scroll */}
           {!isMobile && (
             <Link href="/" className={`transition-all duration-300 ${

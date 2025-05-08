@@ -15,14 +15,12 @@ const Footer = () => {
   const youtubeUrl = "https://www.youtube.com/@psidanieldantas"; // Link do YouTube
   const crpNumber = "11/11854"; // Número de CRP
   // --- FIM: INFORMAÇÕES ATUALIZADAS ---
-
   const currentYear = new Date().getFullYear(); // Pega o ano atual dinamicamente
-
+  
   return (
-    // Cor de fundo e texto principal ajustados
-    <footer id="footer" className="bg-[#583B1F] text-[#F8F5F0] py-14 mt-16 shadow-2xl">
+    <footer id="footer" className="bg-[#583B1F] text-[#F8F5F0] py-14 mt-16 shadow-2xl overflow-hidden">
       {/* Padding ajustado para mobile-first */}
-      <div className="container mx-auto px-6 md:px-[10%]">
+      <div className="container mx-auto px-4 sm:px-6 md:px-[10%]">
         {/* Grid com divisores verticais no desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 mb-10 md:divide-x md:divide-[#735B43]">
           {/* Coluna 1: Logo e Descrição - Centralizada */}
@@ -39,16 +37,15 @@ const Footer = () => {
             {/* Cor do texto do parágrafo ajustada e texto centralizado */}
             <p className="text-base font-light text-[#EAE6E1] text-center">
               Psicoterapia humanizada e acolhedora para ajudar você em sua jornada de autoconhecimento e bem-estar emocional.
-            </p>
-            {/* Ícones Sociais - Cores ajustadas e centralizados */}
+            </p>            {/* Ícones Sociais - Cores ajustadas e centralizados */}
             <div className="flex space-x-4 pt-2 justify-center">
-              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="icon-social">
+              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="p-2 bg-[#F8F5F0]/10 hover:bg-[#F8F5F0]/20 text-[#F8F5F0] rounded-full transition-colors">
                 <Facebook size={18} />
               </a>
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="icon-social">
+              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="p-2 bg-[#F8F5F0]/10 hover:bg-[#F8F5F0]/20 text-[#F8F5F0] rounded-full transition-colors">
                 <Instagram size={18} />
               </a>
-              <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="icon-social">
+              <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="p-2 bg-[#F8F5F0]/10 hover:bg-[#F8F5F0]/20 text-[#F8F5F0] rounded-full transition-colors">
                 <Youtube size={18} />
               </a>
             </div>
@@ -97,13 +94,12 @@ const Footer = () => {
                 {/* Cor do texto ajustada */}
                 <span className="text-[#EAE6E1]">Brazil, Fortaleza-CE</span>
               </li>
-            </ul>
-            {/* Botão Agende sua Consulta (centralizado) */}
+            </ul>            {/* Botão Agende sua Consulta (centralizado) */}
             <div className="mt-8 flex justify-center">
               <button
                 type="button"
                 onClick={openModal}
-                className="inline-flex items-center px-7 py-3 bg-[#C19A6B] text-[#583B1F] hover:bg-[#D1AA7B] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105 animate-bounce-once"
+                className="inline-flex items-center px-7 py-3 bg-[#C19A6B] text-[#583B1F] hover:bg-[#D1AA7B] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105"
               >
                 <Calendar className="mr-2 h-5 w-5" />
                 Agende sua Consulta

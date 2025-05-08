@@ -20,11 +20,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
   }
 const { openModal } = useWhatsAppModal();
   return (
-    <div className="fixed inset-0 bg-[#F8F5F0] z-[100] flex flex-col items-center justify-center">
-      {/* Botão para fechar o menu */}
-      <button
+    <div className="fixed inset-0 bg-[#F8F5F0] z-[100] flex flex-col items-center justify-center overflow-hidden">
+      {/* Botão para fechar o menu */}      <button
         onClick={closeMenu}
-        className="absolute top-6 right-6 text-[#583B1F] focus:outline-none z-[101]"
+        className="absolute top-6 right-4 text-[#583B1F] focus:outline-none z-[101]"
         aria-label="Fechar menu"
       >
         <X size={24} />

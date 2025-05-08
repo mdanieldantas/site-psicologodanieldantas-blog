@@ -49,10 +49,9 @@ export default function WhatsAppButton({ isOpen, onClose }: WhatsAppButtonProps 
   return (
     <div className="whatsapp-button-container">
       {/* Botão principal do WhatsApp só aparece se for controle interno */}
-      {typeof isOpen !== 'boolean' && (
-        <button
+      {typeof isOpen !== 'boolean' && (        <button
           onClick={handleOpen}
-          className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-lg hover:bg-[#128C7E] transition-colors z-50"
+          className="fixed bottom-6 right-4 sm:right-6 bg-[#25D366] p-3 sm:p-4 rounded-full shadow-lg hover:bg-[#128C7E] transition-colors z-50"
           aria-label="Contato via WhatsApp"
         >
           <WhatsAppIcon />

@@ -166,9 +166,8 @@ export default function LandingPage() {  // Estados para controle da UI
     setIsMobileMenuOpen(false)
   }
 
-  return (
-    // Container principal da página
-    <div className="min-h-screen bg-[#F8F5F0] font-['Kaisei_Opti'] text-[#583B1F]">
+  return (    // Container principal da página
+    <div className="min-h-screen bg-[#F8F5F0] font-['Kaisei_Opti'] text-[#583B1F] overflow-x-hidden w-full">
       {/* Componente para adicionar Schema Markup (SEO) */}
       <SchemaMarkup />
 
