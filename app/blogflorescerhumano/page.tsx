@@ -51,8 +51,8 @@ export default async function BlogHomePage() {
       {/* Hero Section - Layout Moderno com Foto Lado a Lado */}
       <section className="relative h-screen md:h-[90vh] bg-gradient-to-br from-[#583B1F]/10 to-[#F8F5F0]/90">
         {/* Padrão texturizado sutil no fundo */}
-        <div className="absolute inset-0 opacity-[.35] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
-        
+        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
+
         {/* Camada sutil para melhorar legibilidade do texto */}
         <div className="absolute inset-0 bg-[#F8F5F0]/15 backdrop-blur-[1px]"></div>
         
@@ -60,13 +60,18 @@ export default async function BlogHomePage() {
         <div className="container mx-auto px-4 h-full flex flex-col md:flex-row items-center justify-between relative z-10">
           {/* Coluna de texto - à esquerda em desktop */}
           <div className="w-full md:w-1/2 text-left md:pr-8 mb-8 md:mb-0 mt-16 sm:mt-12 md:mt-0 animate-[fadeIn_1s_ease_forwards]">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-normal mb-4 font-['Old Roman'] tracking-wide animate-[slideUp_1s_ease_forwards] relative drop-shadow-sm">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-normal mb-2 font-['Old Roman'] tracking-wide animate-[slideUp_1s_ease_forwards] relative drop-shadow-sm">
               Florescer Humano
               <span className="absolute left-0 bottom-0 w-20 h-0.5 bg-[#C19A6B] rounded-full mt-2 transform -translate-y-2"></span>
             </h1>
+            
+            {/* Subtítulo com nome do profissional */}
+            <h2 className="text-xl md:text-2xl text-[#583B1F]/80 font-light mb-6 animate-[slideUp_1s_ease_forwards] delay-100 tracking-wider">
+              por <span className="font-semibold text-[#583B1F]">Psicólogo Daniel Dantas</span>
+            </h2>
+            
             <p className="text-xl md:text-2xl text-[#583B1F]/90 font-normal leading-relaxed max-w-xl animate-[slideUp_1s_ease_forwards] delay-200 mb-8">
-              Explorando o potencial humano através da psicologia humanista,
-              arte, educação e filosofia.
+              Explorando o potencial humano através da psicologia humanista.
             </p>
 
             {/* CTA Button */}
@@ -85,6 +90,14 @@ export default async function BlogHomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </Link>
+            
+            {/* Assinatura visual */}
+            <div className="mt-8 flex items-center animate-[fadeIn_1s_ease_forwards] delay-500">
+              <div className="h-[2px] w-10 bg-[#C19A6B] mr-4"></div>
+              <p className="text-sm text-[#583B1F]/70 italic">
+                Acompanhe minha jornada de compartilhamento de conhecimento
+              </p>
+            </div>
           </div>
 
           {/* Coluna da imagem - à direita em desktop */}
@@ -100,8 +113,7 @@ export default async function BlogHomePage() {
                     fill
                     sizes="(max-width: 768px) 300px, 400px"
                     priority
-                    quality={95}
-                  />
+                    quality={95}                  />
                 </div>
 
                 {/* Efeito de brilho no hover aprimorado */}
@@ -109,8 +121,8 @@ export default async function BlogHomePage() {
               </div>
 
               {/* Elementos decorativos representando crescimento */}
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-[#C19A6B]/40 z-0"></div>
-              <div className="absolute -top-4 -left-4 w-16 h-16 border-l-2 border-t-2 border-[#C19A6B]/30 z-0"></div>
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-[#C19A6B]/40 z-0"></div>              <div className="absolute -top-4 -left-4 w-16 h-16 border-l-2 border-t-2 border-[#C19A6B]/30 z-0"></div>
+              
               <div className="absolute top-1/2 -right-6 transform -translate-y-1/2">
                 <svg
                   width="24"
