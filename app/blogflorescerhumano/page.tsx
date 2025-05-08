@@ -52,7 +52,7 @@ export default async function BlogHomePage() {
       {" "}      {/* Hero Section - Layout Moderno com Foto Lado a Lado */}
       <section className="relative min-h-screen md:h-[90vh] py-16 bg-gradient-to-br from-[#583B1F]/10 to-[#F8F5F0]/90" id="hero-section">
         {/* Padrão texturizado sutil no fundo */}
-        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano-mobile.png')] md:bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
 
         {/* Camada sutil para melhorar legibilidade do texto */}
         <div className="absolute inset-0 bg-[#F8F5F0]/30 backdrop-blur-[1px]"></div>
