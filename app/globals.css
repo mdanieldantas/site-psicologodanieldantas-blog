@@ -38,6 +38,52 @@
   }
 }
 
+/* Animações para o hero do blog */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleX {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Classes de animação utilizadas no hero do blog */
+.animate-\[fadeIn_1s_ease_forwards\] {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-\[slideUp_1s_ease_forwards\] {
+  animation: slideUp 1s ease forwards;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-600 {
+  animation-delay: 600ms;
+}
+
 @keyframes subtle-pulse {
   0% {
     transform: scale(1);
