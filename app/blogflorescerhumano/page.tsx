@@ -58,7 +58,7 @@ export default async function BlogHomePage() {
         <div className="absolute inset-0 bg-[#F8F5F0]/30 backdrop-blur-[1px]"></div>
         
         {/* Container principal com layout flexível */}
-        <div className="container mx-auto px-4 h-full flex flex-col md:flex-row items-center justify-between relative z-10">
+        <div className="container mx-auto px-4 h-full flex flex-col-reverse md:flex-row items-center justify-between relative z-10">
           {/* Coluna de texto - à esquerda em desktop */}          <div className="w-full md:w-1/2 text-left md:pr-8 mb-10 md:mb-0 mt-10 sm:mt-12 md:mt-0 animate-[fadeIn_1s_ease_forwards] hero-container">
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-normal mb-4 font-['Old Roman'] tracking-wide animate-[slideUp_1s_ease_forwards] relative drop-shadow-sm hero-title">
               Florescer Humano
