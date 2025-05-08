@@ -59,9 +59,9 @@ export default async function BlogHomePage() {
         
         {/* Container principal com layout flexível */}
         <div className="container mx-auto px-4 h-full flex flex-col-reverse md:flex-row items-center justify-between relative z-10">
-          {/* Coluna de texto - à esquerda em desktop */}          <div className="w-full md:w-1/2 text-left md:pr-8 mb-10 md:mb-0 mt-10 sm:mt-12 md:mt-0 animate-[fadeIn_1s_ease_forwards] hero-container">
+          {/* Coluna de texto - à esquerda em desktop */}          <div className="w-full md:w-1/2 text-left md:pr-8 mb-10 md:mb-0 mt-0 sm:mt-6 md:mt-0 animate-[fadeIn_1s_ease_forwards] hero-container">
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#583B1F] font-normal mb-4 font-['Old Roman'] tracking-wide animate-[slideUp_1s_ease_forwards] relative drop-shadow-sm hero-title">
-              Florescer Humano
+              Blog Florescer Humano
               <span className="absolute left-0 bottom-0 w-20 h-0.5 bg-[#C19A6B] rounded-full mt-2 transform -translate-y-2"></span>
             </h1>
             
@@ -98,7 +98,7 @@ export default async function BlogHomePage() {
                 Acompanhe minha jornada de compartilhamento de conhecimento
               </p>
             </div>
-          </div>          {/* Coluna da imagem - à direita em desktop */}          <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center mt-6 mb-8">
+          </div>          {/* Coluna da imagem - à direita em desktop */}          <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center mt-6 mb-0">
             <div className="relative group animate-[fadeIn_1s_ease_forwards] delay-300 content-visibility-auto">
               {/* Moldura orgânica com elementos botânicos */}
               <div className="relative z-10 transform transition-all duration-500 md:hover:scale-[1.02]">
