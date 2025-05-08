@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import ExploreCategoriesGrid from "./components/ExploreCategoriesGrid";
 import FeaturedArticles from "./components/FeaturedArticles";
 import RecentMaterials from "./components/RecentMaterials";
+import AboutTeaserBanner from "./components/AboutTeaserBanner";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -234,8 +235,7 @@ export default async function BlogHomePage() {
         </div>
         {/* Gradiente de transição na parte inferior */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F8F5F0] to-transparent" />
-      </section>
-      <div className="space-y-12 bg-[#F8F5F0]">
+      </section>      <div className="space-y-12 bg-[#F8F5F0]">
         {/* Artigos em Destaque */}
         {featuredArticles && featuredArticles.length > 0 && (
           <FeaturedArticles articles={featuredArticles} />
@@ -248,6 +248,9 @@ export default async function BlogHomePage() {
 
         {/* Materiais Recentes */}
         <RecentMaterials />
+
+        {/* Banner Sobre Nós */}
+        <AboutTeaserBanner />
       </div>
     </main>
   );
