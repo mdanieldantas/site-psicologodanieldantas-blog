@@ -126,48 +126,39 @@ export default function HeaderSearchInline() {
     setTimeout(() => {
         inputRef.current?.focus();
     }, 0);
-  };
-
-  return (
-    <div className="relative">
+  };  return (
+    <div className="relative flex justify-end">
       {/* Botão de busca */}      <button
         onClick={() => setShowInput((v) => !v)}
         className="p-2 rounded-full hover:bg-[#C19A6B]/10 transition-colors duration-200"
         aria-label="Abrir busca"
       >
         <Search className="h-5 w-5 text-[#583B1F]" />
-      </button>
-
-      {/* Modal de busca */}
+      </button>      {/* Modal de busca */}
       {showInput && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-20" onClick={() => setShowInput(false)}>
-          {/* Adiciona a ref e stopPropagation ao container do formulário */}
-          <div 
-            ref={formContainerRef} 
-            onClick={(e) => e.stopPropagation()} // <-- Adiciona stopPropagation aqui
-            className="absolute right-0 top-[4.5rem] mt-1 z-30 w-[90vw] max-w-sm sm:w-[350px] mx-4"
-          >
-            <form
-              className="relative flex items-center gap-2 bg-[#F8F5F0]/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-[#C19A6B]" // Adicionado relative
+          {/* Adiciona a ref e stopPropagation ao container do formulário */}          <div            ref={formContainerRef} 
+            onClick={(e) => e.stopPropagation()}
+            className="absolute right-0 md:right-48 top-[4rem] sm:top-[4.5rem] mt-1 z-30 w-[90vw] max-w-[280px] md:max-w-[380px]"
+          ><form
+              className="relative flex items-center gap-1.5 sm:gap-2 md:gap-3 bg-[#F8F5F0]/95 backdrop-blur-md p-2.5 sm:p-4 md:p-4 rounded-lg shadow-lg border border-[#C19A6B] w-full origin-top-right"
               onSubmit={handleSearch}
             >              <input
                 ref={inputRef}
                 type="search"
                 id="headerSearchQuery"
                 name="q"
-                autoComplete="off" // Desativa autocomplete nativo
+                autoComplete="off"
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);
-                  setIsSuggestionSelected(false); // Permite buscar novamente ao digitar
+                  setIsSuggestionSelected(false);
                 }}
-                placeholder="Pesquisar no blog..." // Placeholder simplificado
-                aria-label="Campo de busca no blog" // Adicionado aria-label
-                className="flex-1 py-1.5 pl-2 pr-2 text-sm bg-white/90 text-[#583B1F] placeholder:text-[#C19A6B] font-medium border border-[#C19A6B] rounded focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:border-[#735B43]"
-                // Removido onBlur={() => setShowInput(false)}
-              />
-              <ButtonBlog type="submit" className="text-xs px-3 sm:px-4 py-1.5 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
-                {isLoadingSuggestions ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Buscar'} {/* Mostra loader */}
+                placeholder="Pesquisar no blog..."
+                aria-label="Campo de busca no blog"
+                className="flex-1 min-w-0 py-1.5 pl-2.5 pr-2 md:py-2 md:pl-3 md:pr-2.5 text-sm md:text-base bg-white/90 text-[#583B1F] placeholder:text-[#C19A6B] font-medium border border-[#C19A6B] rounded focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:border-[#735B43]"
+              />              <ButtonBlog type="submit" className="text-xs md:text-sm whitespace-nowrap px-2 sm:px-3 md:px-4 py-1.5 md:py-2 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">
+                {isLoadingSuggestions ? <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" /> : <span className="block sm:inline">Buscar</span>}
               </ButtonBlog>
 
               {/* Dropdown de Sugestões */} 
