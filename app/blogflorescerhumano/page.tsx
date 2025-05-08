@@ -52,11 +52,11 @@ export default async function BlogHomePage() {
       {" "}
       {/* Hero Section - Layout Moderno com Foto Lado a Lado */}
       <section
-        className="relative min-h-[75vh] md:h-[90vh] py-8 md:py-16 bg-gradient-to-br from-[#583B1F]/10 to-[#F8F5F0]/90"
+        className="relative min-h-[75vh] md:h-[90vh] py-6 md:py-16 bg-gradient-to-br from-[#583B1F]/10 to-[#F8F5F0]/90"
         id="hero-section"
       >
         {/* Padrão texturizado sutil no fundo */}
-        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano-mobile-2.png')] md:bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
         {/* Camada sutil para melhorar legibilidade do texto */}
         <div className="absolute inset-0 bg-[#F8F5F0]/30 backdrop-blur-[1px]"></div>
         {/* Container principal com layout flexível */}
@@ -74,7 +74,7 @@ export default async function BlogHomePage() {
                 Psicólogo Daniel Dantas
               </span>
             </h2>
-            <p className="text-xl md:text-2xl text-[#583B1F] font-normal leading-relaxed max-w-xl animate-[slideUp_1s_ease_forwards] delay-200 mb-4 md:mb-12 hero-description">
+            <p className="text-xl md:text-2xl text-[#583B1F] font-normal leading-relaxed max-w-xl animate-[slideUp_1s_ease_forwards] delay-200 mb-2 md:mb-12 hero-description">
               Explorando o potencial humano através da psicologia humanista.
             </p>
             {/* CTA Button */}{" "}
@@ -107,14 +107,14 @@ export default async function BlogHomePage() {
             <div className="mt-4 md:mt-10 flex items-center animate-[fadeIn_1s_ease_forwards] delay-500">
               <div className="h-[2px] w-10 bg-[#C19A6B] mr-4"></div>
               <p className="text-sm text-[#583B1F] italic high-contrast-text">
-                Acompanhe minha jornada de compartilhamento de conhecimento
+                Acompanhe essa jornada.
               </p>
             </div>
           </div>{" "}
           {/* Coluna da imagem - à direita em desktop */}{" "}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center mt-0 md:mt-4 mb-0">
             {/* Contêiner do grupo da imagem para animação e padding */}
-            <div className="group animate-[fadeIn_1s_ease_forwards] delay-300 content-visibility-auto p-5">
+            <div className="group animate-[fadeIn_1s_ease_forwards] delay-300 content-visibility-auto pt-5 px-5 pb-2">
               {/* Moldura orgânica com elementos botânicos */}
               <div className="relative z-10 transform transition-all duration-500 md:hover:scale-[1.02]">
                 {/* Forma orgânica de fundo */}

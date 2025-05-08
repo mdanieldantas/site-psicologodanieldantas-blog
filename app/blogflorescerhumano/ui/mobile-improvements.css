@@ -51,8 +51,8 @@
 /* Ajustes específicos para a seção hero em dispositivos menores */
 @media (max-width: 480px) {
   .hero-container {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 1rem; /* Reduzido de 5rem */
+    padding-bottom: 1rem; /* Reduzido de 5rem */
   }
   
   .hero-title {
