@@ -64,9 +64,8 @@ const BlogHeader = () => {
         } ${
           isHome 
             ? isMobileMenuOpen 
-              ? 'bg-[#F8F5F0] shadow-sm'
-              : isScrolled
-                ? 'md:bg-[#F8F5F0]/80 md:backdrop-blur-lg md:shadow-sm bg-[#F8F5F0]/90 backdrop-blur-md shadow-sm' 
+              ? 'bg-[#F8F5F0] shadow-sm'              : isScrolled
+                ? 'md:bg-[#F8F5F0]/80 md:backdrop-blur-lg md:shadow-sm bg-[#F8F5F0]/30 backdrop-blur-sm shadow-sm' 
                 : 'bg-[#F8F5F0]'
             : 'bg-[#F8F5F0]'
         }`}
