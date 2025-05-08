@@ -10,6 +10,7 @@ import AboutTeaserBanner from "./components/AboutTeaserBanner";
 import LazyLoadSection from "./components/LazyLoadSection";
 import Link from "next/link";
 import Image from "next/image";
+import ScrollToFeaturedButton from "./components/ScrollToFeaturedButton";
 
 // --- Metadados Estáticos para a Página Inicial do Blog --- //
 export const metadata: Metadata = {
@@ -364,10 +365,9 @@ export default async function BlogHomePage() {
         </div>
         {/* Seta indicativa de scroll com animação melhorada */}{" "}
         <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center animate-[fadeIn_1s_ease_forwards] delay-600 will-change-transform">
-          <button
-            aria-label="Rolar para ver mais conteúdo"
+          {/* Botão que rola até a seção de artigos em destaque */}
+          <ScrollToFeaturedButton
             className="w-12 h-18 text-[#C19A6B] animate-bounce cursor-pointer hover:text-[#735B43] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:ring-opacity-50 rounded-full min-h-[48px] min-w-[48px] touch-target"
-            id="scroll-indicator-button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -384,7 +384,7 @@ export default async function BlogHomePage() {
             >
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
-          </button>
+          </ScrollToFeaturedButton>
         </div>
         {/* Gradiente de transição na parte inferior */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F8F5F0] to-transparent" />

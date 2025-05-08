@@ -16,7 +16,7 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
   if (!articles?.length) return null;
 
   return (
-    <section className="py-12">
+    <section className="py-12" id="featured-articles">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-light text-[#583B1F]">Artigos em Destaque</h2>
