@@ -170,7 +170,7 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
   }
 
   // --- Construção da URL Completa para Compartilhamento --- //
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.psicologodanieldantas.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.psicologodanieldantas.com.br';
   const shareUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
 
   return (

@@ -27,7 +27,7 @@ export default function ArticleSchema({
   url
 }: ArticleSchemaProps) {
   // URL base fixa para evitar diferenças entre servidor e cliente
-  const baseUrl = 'https://psicologodanieldantas.com';
+  const baseUrl = 'https://psicologodanieldantas.com.br';
   
   // Construir URL completa para a imagem
   const imageUrl = imagePath ? `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}` : null;

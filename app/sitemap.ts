@@ -7,7 +7,7 @@ const supabase = createClient(
 );
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://psicologodanieldantas.com';
+  const baseUrl = 'https://psicologodanieldantas.com.br';
 
   // Busca categorias, artigos e tags publicados
   const { data: categorias } = await supabase.from('categorias').select('slug');

@@ -23,25 +23,25 @@ export const metadata: Metadata = {  // Metadados básicos
   title: "Psicólogo Daniel Dantas | Terapia Online Humanista | CRP 11/11854",  
   description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo",
   keywords: "psicólogo online, terapia humanista, ansiedade, depressão, burnout, estresse, traumas, autoconhecimento, psicólogo Fortaleza, psicoterapia online, regulação emocional, saúde mental, bem-estar psicológico, atendimento online, Daniel Dantas, CRP 11/11854, abordagem centrada na pessoa, acp, focalização, ataques de pânico, transtorno de ansiedade, TOC, crise existencial, luto, solidão, baixa autoestima, problemas de identidade, mudanças de vida, insegurança, terapia em português, atendimento remoto, psicoterapia para adultos, consulta psicológica online, desenvolvimento pessoal, psicólogo para brasileiros no exterior, atendimento online internacional, terapia para expatriados, psicólogo para portugueses, psicoterapia em língua portuguesa, psicólogo online Portugal, brasileiros em Portugal, psicólogo para imigrantes brasileiros, psicólogo LGBTQIA+ friendly, terapia afirmativa, diversidade sexual, identidade de gênero, acolhimento LGBTQIA+, psicoterapia inclusiva, lésbicas, gays, bissexuais, transgêneros, transexuais, travestis, queer, questionando, intersexo, intersexual, assexual, assexualidade, arromântico, agênero, pansexual, não-binário, gênero fluido, atendimento psicológico para LGBTQIA+, terapia para lésbicas, psicólogo para gays, apoio psicológico transgênero, saúde mental trans, psicologia racial, racismo estrutural, discriminação racial, trauma racial, saúde mental da população negra, identidade racial, apoio psicológico afro-brasileiro, letramento racial, atendimento psicológico antirracista, sofrimento psíquico racial, acolhimento étnico-racial, psicoterapia para pessoas negras, psicólogo especializado em questões raciais, raça e psicologia, atendimento sensível a questões étnicas, ancestralidade, conscientização racial, colorismo, enfrentamento ao racismo, saúde mental indígena, terapia culturalmente sensível, mindfulness, atenção plena, meditação, mindfulness baseado em evidências, terapia de redução de estresse baseada em mindfulness, MBSR, terapia cognitiva baseada em mindfulness, MBCT, meditação de atenção plena, meditação guiada, práticas contemplativas, consciência do momento presente, respiração consciente, escaneamento corporal, body scan, controle da ansiedade com mindfulness, mindfulness para depressão, mindfulness para estresse, práticas de atenção plena, autoconsciência, autorregulação emocional, presença mental, aceitação, compaixão, autocompaixão, psicologia contemplativa, psicoterapia mindfulness, terapia baseada em aceitação e compromisso, ACT, mindfulness e bem-estar, psicologia positiva, habilidades de mindfulness, psicopatologia, especialista em psicopatologia, transtornos mentais, saúde mental especializada, manejo de psicopatologias, prevenção em saúde mental, reabilitação psicossocial, acompanhamento clínico especializado, psicoeducação, psicofarmacologia, interface psiquiatria e psicologia, promoção de saúde mental, psicopatologias na contemporaneidade, adoecimento mental, higiene mental, transtornos somatoformes",
-  authors: [{ name: "Daniel Dantas", url: "https://psicologodanieldantas.com" }],
+  authors: [{ name: "Daniel Dantas", url: "https://psicologodanieldantas.com.br" }],
   creator: "Daniel Dantas",
   publisher: "Daniel Dantas",
   
   // URL Canônica
   alternates: {
-    canonical: "https://psicologodanieldantas.com",
+    canonical: "https://psicologodanieldantas.com.br",
   },
     // Open Graph (para compartilhamento em redes sociais)
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://psicologodanieldantas.com",
+    url: "https://psicologodanieldantas.com.br",
     siteName: "Daniel Dantas - Psicólogo Online",
     title: "Psicólogo Daniel Dantas | Terapia Online Humanista | CRP 11/11854",
     description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo.",
     images: [
       {
-        url: "https://psicologodanieldantas.com/foto-psicologo-daniel-dantas.png",
+        url: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.png",
         width: 1200,
         height: 630,        alt: "Foto do Psicólogo Daniel Dantas",
       }
@@ -52,7 +52,7 @@ export const metadata: Metadata = {  // Metadados básicos
     card: "summary_large_image",
     title: "Psicólogo Daniel Dantas | Terapia Online Humanista | CRP 11/11854",
     description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo.",
-    images: ["https://psicologodanieldantas.com/foto-psicologo-daniel-dantas.png"],
+    images: ["https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.png"],
     creator: "@psidanieldantas", // Se tiver um perfil no Twitter, incluir aqui
   },
   // Site já verificado via provedor de domínio no Google Search Console

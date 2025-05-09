@@ -14,13 +14,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://psicologodanieldantas.com/blogflorescerhumano',
+    url: 'https://psicologodanieldantas.com.br/blogflorescerhumano',
     siteName: 'Blog Florescer Humano',
     title: 'Blog Florescer Humano | Psicólogo Daniel Dantas',
     description: 'Blog com artigos sobre psicologia, desenvolvimento pessoal, saúde mental e autoconhecimento.',
     images: [
       {
-        url: 'https://psicologodanieldantas.com/blogflorescerhumano/assets/blog-florescer-humano-og.png',
+        url: 'https://psicologodanieldantas.com.br/blogflorescerhumano/assets/blog-florescer-humano-og.png',
         width: 1200,
         height: 630,
         alt: 'Blog Florescer Humano',
@@ -33,11 +33,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Blog Florescer Humano | Psicólogo Daniel Dantas',
     description: 'Blog com artigos sobre psicologia, desenvolvimento pessoal, saúde mental e autoconhecimento.',
-    images: ['https://psicologodanieldantas.com/blogflorescerhumano/assets/blog-florescer-humano-og.png'],
+    images: ['https://psicologodanieldantas.com.br/blogflorescerhumano/assets/blog-florescer-humano-og.png'],
   },
 
   // URL canônica para o blog
   alternates: {
-    canonical: 'https://psicologodanieldantas.com/blogflorescerhumano',
+    canonical: 'https://psicologodanieldantas.com.br/blogflorescerhumano',
   },
 };

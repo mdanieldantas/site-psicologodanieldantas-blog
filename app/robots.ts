@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin/", "/private/"],
     },
-    sitemap: "https://psicologodanieldantas.com/sitemap.xml",
+    sitemap: "https://psicologodanieldantas.com.br/sitemap.xml",
   }
 }
 

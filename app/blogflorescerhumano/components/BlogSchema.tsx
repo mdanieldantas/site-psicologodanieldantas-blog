@@ -8,7 +8,7 @@ export default function BlogSchema() {
   // Use useMemo para garantir estabilidade no objeto JSON durante renderizações
   const jsonLdString = useMemo(() => {
     // URL base fixa para evitar diferenças entre servidor e cliente
-    const baseUrl = 'https://psicologodanieldantas.com';
+    const baseUrl = 'https://psicologodanieldantas.com.br';
     
     const schemaData = {
       '@context': 'https://schema.org',

@@ -21,7 +21,7 @@ export default function CategorySchema({
   artigosCount
 }: CategorySchemaProps) {
   // URL base fixa para evitar diferenças entre servidor e cliente
-  const baseUrl = 'https://psicologodanieldantas.com';
+  const baseUrl = 'https://psicologodanieldantas.com.br';
     
   // Construir URL completa para a categoria
   const categoryUrl = `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
