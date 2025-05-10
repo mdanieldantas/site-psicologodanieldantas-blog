@@ -16,7 +16,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 // Icons - Requer instalação de lucide-react: npm install lucide-react
-import { CheckCircle, XCircle, AlertCircle, ArrowLeft, Mail, Info, AlertTriangle, ExternalLink } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle, ArrowLeft, Mail, Info, AlertTriangle } from "lucide-react";
 
 export default async function ConfirmarNewsletterPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
   const { token } = await searchParams;
@@ -132,17 +132,22 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
                 <li>Adicione nosso email na sua lista de contatos para garantir o recebimento</li>
               </ul>
             </div>
-          )}{status === 'error' && (
-            <div className="bg-muted/50 p-4 rounded-md mt-4 border border-red-100 dark:border-red-800/30">
+          )}{status === 'error' && (            <div className="bg-muted/50 p-4 rounded-md mt-4 border border-red-100 dark:border-red-800/30">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="h-4 w-4 text-red-600" />
                 <h4 className="font-medium">Como resolver?</h4>
               </div>
               <ul className="list-disc list-inside space-y-1 text-sm opacity-90">
                 <li>Verifique se você clicou no link correto do email</li>
-                <li>Os links de confirmação expiram após 48 horas</li>
-                <li>Se necessário, inscreva-se novamente em nosso blog</li>
+                <li>Os links de confirmação expiram após 24 horas</li>
+                <li>Você pode solicitar um novo e-mail de confirmação</li>
               </ul>
+              <div className="mt-3">
+                <Link href="/blogflorescerhumano/reenviar-confirmacao" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                  <Mail className="h-3.5 w-3.5" />
+                  Solicitar novo e-mail de confirmação
+                </Link>
+              </div>
             </div>
           )}
         </CardContent>        <CardFooter className="flex flex-col sm:flex-row gap-2 justify-center">          <Button 
@@ -156,16 +161,15 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
               Voltar ao Blog
             </Link>
           </Button>
-            {status === 'error' && (
-            <Button 
+            {status === 'error' && (            <Button 
               variant="default" 
               size="sm"
               asChild
               className="animate-pulse bg-[#735B43] hover:bg-[#5d4935] text-white"
             >
-              <Link href="/blogflorescerhumano#newsletter" className="flex items-center gap-1">
-                Inscrever-se novamente
-                <ExternalLink className="h-4 w-4 ml-1" />
+              <Link href="/blogflorescerhumano/reenviar-confirmacao" className="flex items-center gap-1">
+                <Mail className="h-4 w-4 mr-1" />
+                Reenviar e-mail de confirmação
               </Link>
             </Button>
           )}
