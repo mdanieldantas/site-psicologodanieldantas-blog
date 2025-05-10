@@ -18,8 +18,9 @@ export async function sendConfirmationEmail(email: string, confirmationToken: st
     </p>
   `;
 
+// ...existing code...
   return resend.emails.send({
-    from: 'Florescer Humano Blog <newsletter@no-reply.psicologodanieldantas.com.br>', // Usando domínio verificado no Resend
+    from: 'Florescer Humano Blog - Psi Daniel Dantas <newsletter-no-reply@psicologodanieldantas.com.br>', // Alterado para o formato solicitado
     to: email,
     subject,
     html,

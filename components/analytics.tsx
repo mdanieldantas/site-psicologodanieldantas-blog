@@ -1,40 +1,31 @@
 "use client"
 
-import { useEffect } from "react"
-import Script from "next/script"
-import { usePathname, useSearchParams } from "next/navigation"
+// import { usePathname, useSearchParams } from "next/navigation" // Não é mais necessário para pageview
+// import { useEffect } from "react" // Não é mais necessário para pageview
+
+// A constante GA_TRACKING_ID pode ainda ser útil para outros eventos gtag manuais,
+// mas não é mais necessária para o pageview automático via Métricas Otimizadas.
+// const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || ""
 
 export default function Analytics() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  // useEffect(() => {
+  //   // A lógica de pageview manual foi removida, pois as Métricas Otimizadas do GA4
+  //   // com "Alterações na página de acordo com os eventos do histórico de navegação"
+  //   // devem cuidar disso automaticamente.
 
-  useEffect(() => {
-    if (pathname && window.gtag) {
-      // Quando a rota muda, registra uma visualização de página
-      window.gtag("config", "G-V8D9NKCXGS", {
-        page_path: pathname,
-      })
-    }
-  }, [pathname, searchParams])
+  //   // const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "")
+  //   // if (typeof window !== "undefined" && window.gtag) {
+  //   //   window.gtag("event", "page_view", {
+  //   //     page_path: url,
+  //   //     // send_to: GA_TRACKING_ID, // Opcional
+  //   //   })
+  //   // } else {
+  //   //   // console.warn("window.gtag not available for page_view event. GTM might not be loaded yet or configured to expose gtag.");
+  //   // }
+  // }, [pathname, searchParams])
 
-  return (
-    <>
-      <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-V8D9NKCXGS`} />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-V8D9NKCXGS', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
-    </>
-  )
+  // Este componente agora não precisa fazer nada ativamente para pageviews,
+  // pois o GTM carrega o GA4, e as Métricas Otimizadas do GA4 cuidam dos pageviews.
+  // Ele ainda pode ser útil se você adicionar outros tipos de rastreamento aqui no futuro.
+  return null
 }
-
