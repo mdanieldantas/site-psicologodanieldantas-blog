@@ -39,8 +39,8 @@ export default async function CategoriasPage({
 }: {
   searchParams: { page?: string };
 }) {  // --- Lógica de Paginação --- //
-  // Acesso direto às propriedades sem usar operador opcional
-  const page = searchParams.page ?? "1";
+  // Acesso às propriedades com sintaxe de colchetes
+  const page = searchParams['page'] ?? "1";
   const currentPage = parseInt(page, 10);
   const from = (currentPage - 1) * CATEGORIES_PER_PAGE;
   const to = from + CATEGORIES_PER_PAGE - 1;

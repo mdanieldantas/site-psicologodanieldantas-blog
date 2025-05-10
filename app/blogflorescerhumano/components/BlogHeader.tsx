@@ -20,6 +20,11 @@ const BlogHeader = () => {
   const router = useRouter();
   const pathname = usePathname();
   
+  // Função auxiliar para verificar se um link está ativo (usando o pathname do Next.js)
+  const isLinkActive = (item: string) => {
+    return pathname ? pathname.includes(`/blogflorescerhumano/${item}`) : false;
+  };
+  
   // Detectar tamanho da tela
   useEffect(() => {
     const checkIfMobile = () => {
@@ -142,12 +147,10 @@ const BlogHeader = () => {
             </a>
           </Link>
           
-          {/* Links de navegação - Desktop */}
-          <div className="hidden md:flex space-x-6" role="menubar">
+          {/* Links de navegação - Desktop */}          <div className="hidden md:flex space-x-6" role="menubar">
             {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => {
-              // Detectar se o link está ativo (URL atual)
-              const isActive = typeof window !== 'undefined' && 
-                window.location.pathname.includes(`/blogflorescerhumano/${item}`);
+              // Usando a função auxiliar para consistência
+              const isActive = isLinkActive(item);
               
               return (
                 <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>
@@ -205,9 +208,8 @@ const BlogHeader = () => {
         ref={menuRef}
         >          <div className="container mx-auto px-4 py-4 space-y-3">
             {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item, index) => {
-              // Detectar se o link está ativo (URL atual)
-              const isActive = typeof window !== 'undefined' && 
-                window.location.pathname.includes(`/blogflorescerhumano/${item}`);
+              // Usando a função auxiliar para consistência
+              const isActive = isLinkActive(item);
                 
               return (
                 <Link key={item} href={`/blogflorescerhumano/${item}`} legacyBehavior>

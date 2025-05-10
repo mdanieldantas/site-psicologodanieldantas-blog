@@ -84,10 +84,9 @@ export default async function CategoriaEspecificaPage({
 }: {
   params: { categoria: string };
   searchParams: { page?: string };
-}) {
-  // Acesso direto às propriedades params e searchParams sem usar operador opcional
+}) {  // Acesso direto à propriedade categoria de params e notação de colchetes para searchParams
   const categoriaSlug = params.categoria;
-  const page = searchParams.page ?? "1";
+  const page = searchParams['page'] ?? "1";
 
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer

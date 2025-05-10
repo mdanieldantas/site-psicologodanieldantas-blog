@@ -66,7 +66,7 @@ interface TodosArtigosPageProps {
 
 export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
   // --- Lógica de Paginação --- //
-  const currentPage = parseInt(searchParams.page ?? '1', 10);
+  const currentPage = parseInt(searchParams['page'] ?? '1', 10);
   const from = (currentPage - 1) * ARTICLES_PER_PAGE;
   const to = from + ARTICLES_PER_PAGE - 1;
 
