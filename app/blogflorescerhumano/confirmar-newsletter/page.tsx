@@ -5,7 +5,7 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
   const { token } = await searchParams;
 
   if (!token) {
-    return <div>Token de confirmação ausente. Verifique o link enviado por e-mail.</div>;
+    return <div style={{ color: 'red' }}>Token de confirmação ausente. Verifique o link enviado por e-mail.</div>;
   }
 
   const supabase = getSupabaseServiceRoleClient();
@@ -18,7 +18,7 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
   // Log de debug removido
 
   if (error) {
-    return <div>Erro ao validar o token. Tente novamente mais tarde.</div>;
+    return <div style={{ color: 'red' }}>Erro ao validar o token. Tente novamente mais tarde.</div>;
   }
 
   // Verifica se o assinante existe E se o token não expirou
@@ -30,12 +30,12 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
             .update({ token_confirmacao: null, token_expires_at: null })
             .eq('id', subscriber.id);
     }
-    return <div>Token inválido, expirado ou já utilizado. Por favor, inscreva-se novamente.</div>; // Mensagem unificada
+    return <div style={{ color: 'red' }}>Token inválido, expirado ou já utilizado. Por favor, inscreva-se novamente.</div>; // Mensagem unificada
   }
 
 
   if (subscriber.status_confirmacao === 'confirmado') {
-    return <div>Seu e-mail já está confirmado! Obrigado por participar da newsletter.</div>;
+    return <div style={{ color: 'green' }}>Seu e-mail já está confirmado! Obrigado por participar da newsletter.</div>;
   }
 
   // Atualizar status para confirmado e limpar token/expiração
@@ -50,8 +50,8 @@ export default async function ConfirmarNewsletterPage({ searchParams }: { search
     .eq('id', subscriber.id);
 
   if (updateError) {
-    return <div>Erro ao confirmar sua inscrição. Por favor, tente novamente.</div>;
+    return <div style={{ color: 'red' }}>Erro ao confirmar sua inscrição. Por favor, tente novamente.</div>;
   }
 
-  return <div>Inscrição confirmada com sucesso! Agora você receberá nossas novidades :)</div>;
+  return <div style={{ color: 'green' }}>Inscrição confirmada com sucesso! Agora você receberá nossas novidades :)</div>;
 }
