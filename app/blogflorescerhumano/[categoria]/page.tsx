@@ -30,8 +30,8 @@ export async function generateMetadata(
   { params }: { params: { categoria: string } }, 
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Colocamos o valor em uma variável temporária para evitar acessar a propriedade diretamente
-  const categoriaSlug = params?.categoria;
+  // Acesso direto à propriedade sem usar operador opcional
+  const categoriaSlug = params.categoria;
 
   // Busca nome e descrição da categoria
   const { data: categoria, error } = await supabaseServer
@@ -85,9 +85,9 @@ export default async function CategoriaEspecificaPage({
   params: { categoria: string };
   searchParams: { page?: string };
 }) {
-  // Colocamos os valores em variáveis temporárias para evitar acessar as propriedades diretamente
-  const categoriaSlug = params?.categoria;
-  const page = searchParams?.page ?? "1";
+  // Acesso direto às propriedades params e searchParams sem usar operador opcional
+  const categoriaSlug = params.categoria;
+  const page = searchParams.page ?? "1";
 
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer

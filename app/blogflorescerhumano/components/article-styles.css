@@ -1,0 +1,28 @@
+/* Estilos específicos para conteúdo de artigos do blog */
+.article-content {
+  color: #333333 !important;
+}
+.article-content h1, 
+.article-content h2, 
+.article-content h3, 
+.article-content h4, 
+.article-content h5, 
+.article-content h6, 
+.article-content p, 
+.article-content li, 
+.article-content span {
+  color: #333333 !important;
+}
+.article-content a {
+  color: #775e2b !important;
+  text-decoration: underline;
+}
+.article-content strong, 
+.article-content b {
+  color: #333333 !important;
+  font-weight: bold;
+}
+.article-content blockquote {
+  color: #555555 !important;
+  border-left-color: #775e2b !important;
+}

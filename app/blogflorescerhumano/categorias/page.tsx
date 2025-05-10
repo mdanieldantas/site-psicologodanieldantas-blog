@@ -38,10 +38,9 @@ export default async function CategoriasPage({
   searchParams,
 }: {
   searchParams: { page?: string };
-}) {
-  // --- Lógica de Paginação --- //
-  // Colocamos o valor em uma variável temporária para evitar acessar a propriedade diretamente
-  const page = searchParams?.page ?? "1";
+}) {  // --- Lógica de Paginação --- //
+  // Acesso direto às propriedades sem usar operador opcional
+  const page = searchParams.page ?? "1";
   const currentPage = parseInt(page, 10);
   const from = (currentPage - 1) * CATEGORIES_PER_PAGE;
   const to = from + CATEGORIES_PER_PAGE - 1;

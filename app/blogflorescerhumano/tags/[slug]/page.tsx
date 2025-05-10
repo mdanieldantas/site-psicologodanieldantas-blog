@@ -27,6 +27,7 @@ export async function generateMetadata(
   { params }: TagPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  // Acesso direto às propriedades sem operador opcional
   const tagSlug = params.slug;
 
   // Busca nome da tag

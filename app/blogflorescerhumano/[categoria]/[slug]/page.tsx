@@ -34,7 +34,9 @@ export async function generateMetadata(
   { params }: ArtigoPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { categoria: categoriaSlugParam, slug: artigoSlugParam } = params;
+  // Acesso direto às propriedades de params sem desestruturação
+  const categoriaSlugParam = params.categoria;
+  const artigoSlugParam = params.slug;
 
   // Busca apenas os dados necessários para metadata
   const { data: artigo, error } = await supabaseServer
@@ -108,7 +110,9 @@ export async function generateMetadata(
 
 // --- Componente da Página --- //
 export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) {
-  const { categoria: categoriaSlugParam, slug: artigoSlugParam } = params;
+  // Acesso direto às propriedades de params sem desestruturação
+  const categoriaSlugParam = params.categoria;
+  const artigoSlugParam = params.slug;
 
   // --- LOG: Parâmetros recebidos --- //
   console.log(`[Artigo Page] Recebido categoriaSlugParam: "${categoriaSlugParam}", artigoSlugParam: "${artigoSlugParam}"`);
@@ -233,13 +237,24 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-        )}
-
-        {/* Conteúdo Principal do Artigo */}
+        )}        {/* Conteúdo Principal do Artigo */}
         {artigoConteudo ? (
           <div
-            className="prose lg:prose-xl max-w-none mx-auto"
-            dangerouslySetInnerHTML={{ __html: artigoConteudo }}
+            className="prose lg:prose-xl max-w-none mx-auto article-content text-gray-800"
+            dangerouslySetInnerHTML={{ 
+              __html: artigoConteudo
+                // Garantindo que não há spans ou textos com cor branca
+                .replace(/color:\s*white/gi, 'color: #333333')
+                .replace(/color:\s*#fff(fff)?/gi, 'color: #333333')
+                .replace(/color:\s*rgb\(\s*255\s*,\s*255\s*,\s*255\s*\)/gi, 'color: #333333')
+                .replace(/style="color:\s*white/gi, 'style="color: #333333')
+                .replace(/style="color:\s*#fff(fff)?/gi, 'style="color: #333333')
+                .replace(/<p>/gi, '<p style="color: #333333">')
+                .replace(/<h[1-6]/gi, '<h$1 style="color: #333333"')
+                .replace(/<span/gi, '<span style="color: #333333"')
+                .replace(/<li/gi, '<li style="color: #333333"')
+            }}
+            style={{ color: '#333333' }}
           />
         ) : (
           <p className="text-center text-gray-500">Conteúdo do artigo indisponível.</p>

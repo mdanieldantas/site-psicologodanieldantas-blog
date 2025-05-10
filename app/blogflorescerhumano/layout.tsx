@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import BlogClientLayout from './blog-client-layout'; // Importando o layout do cliente
 import React from 'react';
+import './components/article-styles.css'; // Importando estilos específicos para artigos
 
 // Metadados específicos para o Blog Florescer Humano
 export const metadata: Metadata = {

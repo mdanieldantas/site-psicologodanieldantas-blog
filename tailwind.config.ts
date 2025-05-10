@@ -7,9 +7,62 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}"
-  ],
-  theme: {
+  ],  theme: {
   	extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#333333', // Cor base do texto
+            a: {
+              color: '#775e2b',
+              '&:hover': {
+                color: '#5c4621',
+              },
+            },
+            h1: {
+              color: '#333333',
+            },
+            h2: {
+              color: '#333333',
+            },
+            h3: {
+              color: '#333333',
+            },
+            h4: {
+              color: '#333333',
+            },
+            h5: {
+              color: '#333333',
+            },
+            h6: {
+              color: '#333333',
+            },
+            strong: {
+              color: '#333333',
+            },
+            blockquote: {
+              color: '#555',
+              borderLeftColor: '#775e2b',
+            },
+            code: {
+              color: '#333333',
+            },
+            figcaption: {
+              color: '#666',
+            },
+            // Configuração para todas as listas
+            ul: {
+              color: '#333333',
+            },
+            ol: {
+              color: '#333333',
+            },
+            li: {
+              color: '#333333',
+            },
+          },
+        },
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -93,6 +146,6 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
 export default config;
