@@ -29,10 +29,9 @@ export default function BackToTopButton() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   return (
     <button 
-      className={`fixed bottom-8 right-8 bg-green-600 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 ${
+      className={`fixed bottom-8 right-8 bg-[#C19A6B] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:bg-[#735B43] focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:ring-opacity-50 ${
         isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
       onClick={scrollToTop}

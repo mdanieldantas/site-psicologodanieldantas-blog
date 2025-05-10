@@ -21,13 +21,11 @@ export default function ProgressBar() {
     // Adicionar o evento de scroll
     window.addEventListener('scroll', handleScroll);
 
-    // Limpar o evento ao desmontar
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Limpar o evento ao desmontar    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   return (
     <div 
-      className="fixed top-0 left-0 h-1 bg-green-500 z-50" 
+      className="fixed top-0 left-0 h-1 bg-[#C19A6B] z-50" 
       style={{ width: `${width}%` }}
     />
   );

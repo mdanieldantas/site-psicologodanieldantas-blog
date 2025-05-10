@@ -1,28 +1,147 @@
-/* Estilos específicos para conteúdo de artigos do blog */
+/* Estilos específicos para conteúdo de artigos do Blog Florescer Humano */
+/* Esquema de cores da marca:
+   - Marrom escuro: #583B1F (títulos principais, texto principal)
+   - Marrom médio: #735B43 (texto secundário)
+   - Marrom claro/dourado: #C19A6B (acentos, elementos interativos)
+   - Bege claro: #F8F5F0 (fundos, painéis)
+*/
+
 .article-content {
-  color: #333333 !important;
+  color: #583B1F !important;
 }
+
 .article-content h1, 
 .article-content h2, 
-.article-content h3, 
+.article-content h3 {
+  color: #583B1F !important;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
 .article-content h4, 
 .article-content h5, 
-.article-content h6, 
+.article-content h6 {
+  color: #583B1F !important;
+  font-weight: 500;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
 .article-content p, 
-.article-content li, 
+.article-content li {
+  color: #583B1F !important;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
 .article-content span {
-  color: #333333 !important;
+  color: inherit !important;
 }
+
 .article-content a {
-  color: #775e2b !important;
-  text-decoration: underline;
+  color: #C19A6B !important;
+  text-decoration: none;
+  border-bottom: 1px dotted #C19A6B;
+  transition: all 0.2s ease;
 }
+
+.article-content a:hover {
+  color: #735B43 !important;
+}
+
 .article-content strong, 
 .article-content b {
-  color: #333333 !important;
+  color: #583B1F !important;
   font-weight: bold;
 }
+
 .article-content blockquote {
-  color: #555555 !important;
-  border-left-color: #775e2b !important;
+  color: #735B43 !important;
+  border-left: 4px solid #C19A6B !important;
+  background-color: #F8F5F0;
+  padding: 1rem;
+  margin: 2rem 0;
+  font-style: italic;
+}
+
+/* Estilos para tabelas */
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.article-content th {
+  border: 1px solid #C19A6B;
+  padding: 0.75rem;
+  background-color: #F8F5F0;
+  color: #583B1F !important;
+  font-weight: 600;
+  text-align: left;
+}
+
+.article-content td {
+  border: 1px solid rgba(193, 154, 107, 0.3);
+  padding: 0.75rem;
+  color: #583B1F !important;
+}
+
+/* Estilos para listas */
+.article-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.article-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos para código */
+.article-content code {
+  background-color: #F8F5F0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  color: #735B43 !important;
+}
+
+.article-content pre {
+  background-color: #F8F5F0;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border-left: 4px solid #C19A6B;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #583B1F !important;
+}
+
+/* Imagens e mídias */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  margin: 1.5rem 0;
+}
+
+/* Estilos para citações */
+.article-content cite {
+  font-style: italic;
+  color: #735B43 !important;
+}
+
+/* Estilos para hr (separador horizontal) */
+.article-content hr {
+  border: 0;
+  height: 1px;
+  background-color: rgba(193, 154, 107, 0.3);
+  margin: 2rem 0;
 }

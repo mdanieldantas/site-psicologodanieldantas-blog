@@ -195,17 +195,17 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
       />
 
       <article className="container mx-auto px-4 py-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) aprimorada */}
-        <nav aria-label="Navegação estrutural" className="mb-6">          <ol className="flex items-center flex-wrap text-sm text-gray-500">
+        <nav aria-label="Navegação estrutural" className="mb-6">          <ol className="flex items-center flex-wrap text-sm text-[#735B43]">
             <li className="flex items-center">
               <Link href="/blogflorescerhumano" legacyBehavior>
-                <a className="flex items-center text-gray-600 hover:text-green-600 transition-colors">
+                <a className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                   Blog
                 </a>
               </Link>
-              <span className="mx-2 text-gray-400">
+              <span className="mx-2 text-[#C19A6B]">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -213,23 +213,22 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
             </li>
             <li className="flex items-center">
               <Link href={`/blogflorescerhumano/categorias`} legacyBehavior>
-                <a className="text-gray-600 hover:text-green-600 transition-colors">Categorias</a>
+                <a className="text-[#735B43] hover:text-[#C19A6B] transition-colors">Categorias</a>
               </Link>
-              <span className="mx-2 text-gray-400">
+              <span className="mx-2 text-[#C19A6B]">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </span>
             </li>
-            <li className="text-gray-700 font-medium">
+            <li className="text-[#583B1F] font-medium">
               <Link href={`/blogflorescerhumano/${categoriaSlug}`} legacyBehavior>
-                <a className="text-[#333333] hover:text-green-600 transition-colors">{nomeCategoria}</a>
+                <a className="text-[#583B1F] hover:text-[#C19A6B] transition-colors">{nomeCategoria}</a>
               </Link>
             </li>
           </ol>
-        </nav>{/* Cabeçalho do Artigo */}
-        <header className="mb-8 border-b pb-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#333333]">{titulo ?? 'Artigo sem título'}</h1>
+        </nav>{/* Cabeçalho do Artigo */}        <header className="mb-8 border-b pb-4 border-[#C19A6B]/30">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#583B1F]">{titulo ?? 'Artigo sem título'}</h1>
           <div className="flex items-center mt-4 mb-3">
             <div className="flex-shrink-0 mr-3">
               <Image 
@@ -237,23 +236,21 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
                 alt={`Foto de ${nomeAutor}`}
                 width={48}
                 height={48}
-                className="rounded-full border-2 border-green-100 shadow-sm"
+                className="rounded-full border-2 border-[#C19A6B]/30 shadow-sm"
               />
             </div>
-            <div>
-              <div className="text-gray-600 flex flex-col xs:flex-row xs:items-center">
-                <span className="font-medium text-gray-800">{nomeAutor}</span>
+            <div>              <div className="text-[#735B43] flex flex-col xs:flex-row xs:items-center">
+                <span className="font-medium text-[#583B1F]">{nomeAutor}</span>
                 <div className="flex items-center mt-1 xs:mt-0">
                   <span className="hidden xs:inline mx-2">•</span>
                   <span className="flex items-center text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {dataFormatada}
-                  </span>
-                  <span className="hidden sm:flex items-center text-sm ml-2">
+                  </span>                  <span className="hidden sm:flex items-center text-sm ml-2">
                     <span className="mx-2">•</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     {/* Estimativa de tempo de leitura: ~200 palavras por minuto */}
@@ -264,20 +261,18 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
             </div>
           </div>
           {/* Exibição das Tags */}
-          {tags && Array.isArray(tags) && tags.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="font-semibold text-gray-700">Tags:</span>
+          {tags && Array.isArray(tags) && tags.length > 0 && (            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="font-semibold text-[#583B1F]">Tags:</span>
               {tags.map((tag) => (
                 <Link key={tag.id} href={`/blogflorescerhumano/tags/${tag.slug}`} legacyBehavior>
-                  <a className="text-sm bg-gray-200 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-300 transition-colors duration-200">
+                  <a className="text-sm bg-[#F8F5F0] text-[#583B1F] px-3 py-1 rounded-full hover:bg-[#C19A6B]/20 transition-colors duration-200">
                     {tag.nome}
                   </a>
                 </Link>
               ))}
             </div>
           )}
-        </header>        {/* Botões de Compartilhamento Aprimorados */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
+        </header>        {/* Botões de Compartilhamento Aprimorados */}        <div className="bg-[#F8F5F0] p-4 rounded-lg shadow-sm mb-6 border border-[#C19A6B]/20">
           <ShareButtons url={shareUrl} title={titulo ?? 'Artigo do Blog Florescer Humano'} summary={resumo ?? undefined} />        </div>
         
         {/* Barra de progresso de leitura - Componente cliente */}
@@ -302,8 +297,7 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
             {/* Script para gerar índice automaticamente */}
             <script
               dangerouslySetInnerHTML={{
-                __html: `
-                  document.addEventListener('DOMContentLoaded', () => {
+                __html: `                  document.addEventListener('DOMContentLoaded', () => {
                     const articleContent = document.querySelector('.article-content');
                     const headings = articleContent.querySelectorAll('h2, h3');
                     
@@ -324,8 +318,8 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
                         link.href = '#' + heading.id;
                         link.textContent = heading.textContent;
                         link.className = heading.tagName === 'H2' 
-                          ? 'text-gray-800 hover:text-green-600 font-medium' 
-                          : 'text-gray-600 hover:text-green-600 text-sm pl-4 inline-block';
+                          ? 'text-[#583B1F] hover:text-[#C19A6B] font-medium' 
+                          : 'text-[#735B43] hover:text-[#C19A6B] text-sm pl-4 inline-block';
                         
                         listItem.appendChild(link);
                         tocList.appendChild(listItem);
@@ -339,68 +333,71 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
               }}
             />
             
-            {/* Índice de Conteúdo (inicialmente oculto, será preenchido com JavaScript) */}            <div id="table-of-contents" className="hidden mb-8 p-5 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-              <h4 className="text-lg font-semibold mb-3 text-[#333333]">Índice do artigo:</h4>
+            {/* Índice de Conteúdo (inicialmente oculto, será preenchido com JavaScript) */}            <div id="table-of-contents" className="hidden mb-8 p-5 bg-[#F8F5F0] rounded-lg border border-[#C19A6B]/20 shadow-sm">
+              <h4 className="text-lg font-semibold mb-3 text-[#583B1F]">Índice do artigo:</h4>
               {/* O conteúdo do índice será inserido aqui via JavaScript */}
-            </div><div
-              className="prose lg:prose-lg max-w-none mx-auto article-content text-gray-800"
+            </div>            <div
+              className="prose lg:prose-lg max-w-none mx-auto article-content"
               style={{ 
-                color: '#333333 !important',
                 lineHeight: '1.8',
                 fontSize: '1.125rem',
               }}
               dangerouslySetInnerHTML={{ 
                 __html: artigoConteudo
-                  // Garantindo que não há spans ou textos com cor branca
-                  .replace(/color:\s*white/gi, 'color: #333333 !important')
-                  .replace(/color:\s*#fff(fff)?/gi, 'color: #333333 !important')
-                  .replace(/color:\s*rgb\(\s*255\s*,\s*255\s*,\s*255\s*\)/gi, 'color: #333333 !important')
-                  .replace(/style="color:\s*white/gi, 'style="color: #333333 !important')
-                  .replace(/style="color:\s*#fff(fff)?/gi, 'style="color: #333333 !important')
-                  .replace(/<p>/gi, '<p style="color: #333333 !important; margin-bottom: 1.5rem; line-height: 1.8;">')
-                  .replace(/<h([2-6])/gi, '<h$1 id="heading-$1" style="color: #333333 !important; margin-top: 2rem; margin-bottom: 1rem; font-weight: 600;"')
-                  .replace(/<span/gi, '<span style="color: #333333 !important"')
-                  .replace(/<li/gi, '<li style="color: #333333 !important; margin-bottom: 0.5rem;"')
-                  // Melhorar links dentro do conteúdo
-                  .replace(/<a /gi, '<a style="color: #38a169 !important; border-bottom: 1px solid #38a16950; text-decoration: none; transition: all 0.2s ease;" ')
+                  // Garantindo que não há spans ou textos com cor branca ou invisível
+                  .replace(/color:\s*white/gi, 'color: #583B1F')
+                  .replace(/color:\s*#fff(fff)?/gi, 'color: #583B1F')
+                  .replace(/color:\s*rgb\(\s*255\s*,\s*255\s*,\s*255\s*\)/gi, 'color: #583B1F')
+                  .replace(/style="color:\s*white/gi, 'style="color: #583B1F')
+                  .replace(/style="color:\s*#fff(fff)?/gi, 'style="color: #583B1F')
+                  .replace(/color:\s*transparent/gi, 'color: #583B1F')
+                  // Aplicar cores de marca a elementos HTML específicos
+                  .replace(/<p>/gi, '<p style="color: #583B1F; margin-bottom: 1.5rem; line-height: 1.8;">')
+                  .replace(/<h1/gi, '<h1 style="color: #583B1F; margin-top: 2.5rem; margin-bottom: 1.5rem; font-weight: 700;"')
+                  .replace(/<h2/gi, '<h2 style="color: #583B1F; margin-top: 2.2rem; margin-bottom: 1.2rem; font-weight: 600;"')
+                  .replace(/<h3/gi, '<h3 style="color: #583B1F; margin-top: 2rem; margin-bottom: 1rem; font-weight: 600;"')
+                  .replace(/<h([4-6])/gi, '<h$1 style="color: #583B1F; margin-top: 1.8rem; margin-bottom: 0.8rem; font-weight: 600;"')
+                  .replace(/<span/gi, '<span style="color: inherit"')
+                  .replace(/<li/gi, '<li style="color: #583B1F; margin-bottom: 0.5rem;"')
+                  .replace(/<ul/gi, '<ul style="color: #583B1F; margin-bottom: 1.5rem; padding-left: 1.5rem; list-style-type: disc;"')
+                  .replace(/<ol/gi, '<ol style="color: #583B1F; margin-bottom: 1.5rem; padding-left: 1.5rem; list-style-type: decimal;"')
+                  // Estilizar links dentro do conteúdo
+                  .replace(/<a /gi, '<a style="color: #C19A6B; text-decoration: none; border-bottom: 1px dotted #C19A6B; transition: all 0.2s ease;" onmouseover="this.style.color=\'#735B43\'" onmouseout="this.style.color=\'#C19A6B\'" ')
                   // Melhorar aparência de blockquotes
-                  .replace(/<blockquote>/gi, '<blockquote style="border-left: 4px solid #38a169; padding-left: 1rem; font-style: italic; color: #4a5568 !important; margin: 2rem 0;">')
-                  // Melhorar links dentro do conteúdo
-                  .replace(/<a /gi, '<a style="color: #38a169; border-bottom: 1px solid #38a16950; text-decoration: none; transition: all 0.2s ease;" ')
-                  // Melhorar aparência de blockquotes
-                  .replace(/<blockquote>/gi, '<blockquote style="border-left: 4px solid #38a169; padding-left: 1rem; font-style: italic; color: #4a5568; margin: 2rem 0;">')
+                  .replace(/<blockquote>/gi, '<blockquote style="border-left: 4px solid #C19A6B; padding-left: 1rem; font-style: italic; color: #735B43; margin: 2rem 0; background-color: #F8F5F0; padding: 1rem;">')
+                  // Adicionar estilo para tabelas
+                  .replace(/<table/gi, '<table style="border-collapse: collapse; width: 100%; margin: 2rem 0;"')
+                  .replace(/<th/gi, '<th style="border: 1px solid #C19A6B; padding: 0.75rem; background-color: #F8F5F0; color: #583B1F; font-weight: 600; text-align: left;"')
+                  .replace(/<td/gi, '<td style="border: 1px solid #C19A6B30; padding: 0.75rem; color: #583B1F;"')
               }}
             />
               {/* Botão "Voltar ao topo" - Agora implementado como componente cliente */}
             <BackToTopButton />
           </div>
-        ) : (
-          <div className="py-12 text-center">
-            <p className="text-gray-500 mb-4">Conteúdo do artigo indisponível.</p>
+        ) : (          <div className="py-12 text-center">
+            <p className="text-[#735B43] mb-4">Conteúdo do artigo indisponível.</p>
             <Link href="/blogflorescerhumano" legacyBehavior>
-              <a className="text-green-600 hover:text-green-700 font-medium">Voltar para o blog</a>
+              <a className="text-[#C19A6B] hover:text-[#583B1F] transition-colors font-medium">Voltar para o blog</a>
             </Link>
           </div>
-        )}        {/* Bio do Autor ao Final do Artigo */}
-        <div className="mt-12 pt-6 border-t border-gray-200">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-green-50/50 rounded-lg shadow-sm">
+        )}        {/* Bio do Autor ao Final do Artigo */}        <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
             <div className="flex-shrink-0">
               <Image 
                 src="/blogflorescerhumano/autores/daniel-psi-blog.png"
                 alt={`Foto de ${nomeAutor}`}
                 width={80}
                 height={80}
-                className="rounded-full border-2 border-green-100 shadow-sm"
+                className="rounded-full border-2 border-[#C19A6B]/30 shadow-sm"
               />
             </div>
-            <div>              <h3 className="text-lg font-semibold mb-1 text-center sm:text-left text-[#333333]">{nomeAutor}</h3>
-              <p className="text-gray-700 mb-2 text-sm">Psicólogo e escritor do Blog Florescer Humano</p>
-              <p className="text-gray-600 text-sm">Especialista em Psicologia Humanista e desenvolvimento pessoal, ajudando pessoas a encontrarem seu potencial pleno através do autoconhecimento e crescimento pessoal.</p>
+            <div>              <h3 className="text-lg font-semibold mb-1 text-center sm:text-left text-[#583B1F]">{nomeAutor}</h3>              <p className="text-[#735B43] mb-2 text-sm">Psicólogo e escritor do Blog Florescer Humano</p>
+              <p className="text-[#735B43] text-sm">Especialista em Psicologia Humanista e desenvolvimento pessoal, ajudando pessoas a encontrarem seu potencial pleno através do autoconhecimento e crescimento pessoal.</p>
               <div className="mt-3 flex justify-center sm:justify-start">
-                <a href="https://psicologodanieldantas.com.br" target="_blank" rel="noopener noreferrer" className="text-sm text-green-600 hover:text-green-700 transition-colors mr-4">
+                <a href="https://psicologodanieldantas.com.br" target="_blank" rel="noopener noreferrer" className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors mr-4">
                   Website
                 </a>
-                <a href="https://instagram.com/psicologodanieldantas" target="_blank" rel="noopener noreferrer" className="text-sm text-green-600 hover:text-green-700 transition-colors">
+                <a href="https://instagram.com/psicologodanieldantas" target="_blank" rel="noopener noreferrer" className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors">
                   Instagram
                 </a>
               </div>
@@ -408,17 +405,16 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
           </div>
         </div>
         
-        {/* Seção de Artigos Relacionados */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-semibold mb-6 pb-2 border-b text-[#333333]">Leituras relacionadas</h2>
+        {/* Seção de Artigos Relacionados */}        <section className="mt-10">
+          <h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-[#C19A6B]/30 text-[#583B1F]">Leituras relacionadas</h2>
           <RelatedArticles currentArticleId={currentArticleId} tags={tags} />
         </section>
         
         {/* Seção de Comentários com Giscus */}
-        <section className="mt-12 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-semibold mb-6 text-[#333333]">Comentários</h2>
+        <section className="mt-12 pt-8 border-t border-[#C19A6B]/30">
+          <h2 className="text-2xl font-semibold mb-6 text-[#583B1F]">Comentários</h2>
           {/* Renderiza o componente Giscus */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+          <div className="bg-[#F8F5F0] p-6 rounded-lg shadow-sm border border-[#C19A6B]/20">
             <GiscusComments />
           </div>
         </section>
