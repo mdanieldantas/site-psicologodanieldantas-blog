@@ -259,14 +259,19 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
                 </div>
               </div>
             </div>
-          </div>
-          {/* Exibição das Tags */}
-          {tags && Array.isArray(tags) && tags.length > 0 && (            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="font-semibold text-[#583B1F]">Tags:</span>
+          </div>          {/* Exibição das Tags com Destaque */}
+          {tags && Array.isArray(tags) && tags.length > 0 && (
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+                <span className="font-semibold text-[#583B1F]">Tags:</span>
+              </div>
               {tags.map((tag) => (
                 <Link key={tag.id} href={`/blogflorescerhumano/tags/${tag.slug}`} legacyBehavior>
-                  <a className="text-sm bg-[#F8F5F0] text-[#583B1F] px-3 py-1 rounded-full hover:bg-[#C19A6B]/20 transition-colors duration-200">
-                    {tag.nome}
+                  <a className="text-sm bg-[#F8F5F0] text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 hover:bg-[#C19A6B]/20 transition-all duration-300 shadow-sm hover:shadow flex items-center">
+                    <span className="text-[#C19A6B] mr-1">#</span>{tag.nome}
                   </a>
                 </Link>
               ))}
@@ -407,8 +412,31 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
         
         {/* Seção de Artigos Relacionados */}        <section className="mt-10">
           <h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-[#C19A6B]/30 text-[#583B1F]">Leituras relacionadas</h2>
-          <RelatedArticles currentArticleId={currentArticleId} tags={tags} />
-        </section>
+          <RelatedArticles currentArticleId={currentArticleId} tags={tags} />        </section>
+        
+        {/* Exibição de tags relacionadas em destaque ao final do artigo */}
+        {tags && Array.isArray(tags) && tags.length > 0 && (
+          <section className="my-10">
+            <div className="bg-[#F8F5F0] p-5 rounded-lg border border-[#C19A6B]/30 shadow-sm">
+              <h3 className="text-lg font-medium mb-4 text-[#583B1F] flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+                Tópicos discutidos neste artigo:
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {tags.map((tag) => (
+                  <Link key={tag.id} href={`/blogflorescerhumano/tags/${tag.slug}`} legacyBehavior>
+                    <a className="text-sm bg-white text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 hover:bg-[#C19A6B]/20 transition-all duration-300 shadow-sm hover:shadow flex items-center">
+                      <span className="text-[#C19A6B] mr-1">#</span>{tag.nome}
+                    </a>
+                  </Link>
+                ))}
+              </div>
+              <p className="mt-4 text-sm text-[#735B43]">Clique em uma tag para ver mais artigos sobre esse tema.</p>
+            </div>
+          </section>
+        )}
         
         {/* Seção de Comentários com Giscus */}
         <section className="mt-12 pt-8 border-t border-[#C19A6B]/30">
