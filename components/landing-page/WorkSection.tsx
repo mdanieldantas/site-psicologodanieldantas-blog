@@ -24,6 +24,55 @@ const ListIcon = ({ type }: { type: 'discover' | 'understand' }) => (
   </div>
 );
 
+// Componente de vídeo com fachada (lazy loading)
+const LazyYouTube = ({ videoId, title }: { videoId: string, title: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Carrega o vídeo apenas quando o usuário clicar no placeholder
+  const loadVideo = () => {
+    setIsLoaded(true);
+  };
+
+  // Se o vídeo ainda não foi carregado, mostra um placeholder
+  if (!isLoaded) {
+    return (
+      <div 
+        className="absolute top-0 left-0 w-full h-full cursor-pointer"
+        onClick={loadVideo}
+        style={{ 
+          backgroundImage: `url(https://i.ytimg.com/vi/${videoId}/hqdefault.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        aria-label={title}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter') loadVideo(); }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+          <div className="w-16 h-16 bg-[#583B1F]/80 rounded-full flex items-center justify-center transition-transform transform hover:scale-110">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Depois de clicado, mostra o iframe com o vídeo do YouTube
+  return (
+    <iframe
+      className="absolute top-0 left-0 w-full h-full"
+      src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+      title={title}
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    ></iframe>
+  );
+};
+
 // Componente WorkSection: Apresenta o vídeo sobre o trabalho do psicólogo
 const WorkSection = () => {
   const { openModal } = useWhatsAppModal();
@@ -100,17 +149,12 @@ const WorkSection = () => {
                 <div className="mb-3 pb-2 border-b border-[#C19A6B]/20">
                   <p className="text-[#583B1F] font-medium text-sm">Abordagem Terapêutica • Daniel Dantas</p>
                 </div>
-                
-                {/* Wrapper responsivo para manter a proporção do vídeo */}
+                  {/* Wrapper responsivo para manter a proporção do vídeo */}
                 <div className="relative h-0 pb-[56.25%] rounded-lg overflow-hidden"> {/* Proporção 16:9 */}
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/8r22CAuoyPc" // URL do vídeo do YouTube
+                  <LazyYouTube
+                    videoId="8r22CAuoyPc" // ID do vídeo do YouTube
                     title="Conheça Meu Trabalho - Daniel Dantas"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  />
                 </div>
               </div>
             </div>            {/* Botão de CTA - Visível apenas em Mobile */}
