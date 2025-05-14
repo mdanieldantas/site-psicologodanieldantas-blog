@@ -125,7 +125,7 @@ export default async function BlogHomePage() {
                   <div className="w-[280px] h-[320px] md:w-[400px] md:h-[450px] relative">
                     {" "}
                     <Image
-                      src="/blogflorescerhumano/banners-blog/hero-psicologo-daniel-dantas-blog.png"
+                      src="/blogflorescerhumano/banners-blog/hero-psicologo-daniel-dantas-blog.webp"
                       alt="Psicólogo Daniel Dantas, autor do blog Florescer Humano que foca em psicologia humanista e autoconhecimento"
                       className="object-cover"
                       fill

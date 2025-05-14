@@ -7,7 +7,7 @@ export default function SchemaMarkup() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ProfessionalService",
-            name: "Daniel Dantas - Psicólogo Online",            image: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.png",
+            name: "Daniel Dantas - Psicólogo Online",            image: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
             url: "https://psicologodanieldantas.com.br",
             telephone: "+5585986013431",
             address: {

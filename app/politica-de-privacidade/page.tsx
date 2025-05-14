@@ -114,7 +114,7 @@ export default function PoliticaDePrivacidade() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <Image
-                src="/Daniel-Dantas-logo-footer-correta.png"
+                src="/Daniel-Dantas-logo-footer-correta.webp"
                 alt="Daniel Dantas - Psicólogo"
                 width={150}
                 height={60}

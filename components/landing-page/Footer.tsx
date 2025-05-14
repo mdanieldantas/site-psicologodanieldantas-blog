@@ -24,10 +24,9 @@ const Footer = () => {
         {/* Grid com divisores verticais no desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 mb-10 md:divide-x md:divide-[#735B43]">
           {/* Coluna 1: Logo e Descrição - Centralizada */}
-          <div className="space-y-4 flex flex-col items-center md:pr-10">
-            <Link href="/" className="inline-block mb-2">
+          <div className="space-y-4 flex flex-col items-center md:pr-10">            <Link href="/" className="inline-block mb-2">
               <Image
-                src="/Daniel-Dantas-logo-footer-correta.png" // Verifique se o caminho está correto
+                src="/Daniel-Dantas-logo-footer-correta.webp" // Atualizado para formato WebP
                 alt="Daniel Dantas - Psicólogo Logo Rodapé"
                 width={150} // Ajuste o tamanho conforme necessário
                 height={75} // Ajuste o tamanho conforme necessário

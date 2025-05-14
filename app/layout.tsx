@@ -41,7 +41,7 @@ export const metadata: Metadata = {  // Metadados básicos
     description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo.",
     images: [
       {
-        url: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.png",
+        url: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
         width: 1200,
         height: 630,        alt: "Foto do Psicólogo Daniel Dantas",
       }
@@ -52,7 +52,7 @@ export const metadata: Metadata = {  // Metadados básicos
     card: "summary_large_image",
     title: "Psicólogo Daniel Dantas | Terapia Online Humanista | CRP 11/11854",
     description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo.",
-    images: ["https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.png"],
+    images: ["https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp"],
     creator: "@psidanieldantas", // Se tiver um perfil no Twitter, incluir aqui
   },
   // Site já verificado via provedor de domínio no Google Search Console

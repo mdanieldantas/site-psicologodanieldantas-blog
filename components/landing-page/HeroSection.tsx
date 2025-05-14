@@ -55,7 +55,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                 {/* Avatar do Radix UI para melhor gerenciamento de imagem */}
                 <AvatarPrimitive.Root className="w-full h-full relative">
                   <AvatarPrimitive.Image 
-                    src="/hero-daniel-psi-2.png"
+                    src="/hero-daniel-psi-2.webp"
                     alt="Psicólogo Daniel Dantas"
                     className="object-cover w-full h-full"
                   />

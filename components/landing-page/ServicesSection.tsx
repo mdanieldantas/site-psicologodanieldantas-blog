@@ -39,7 +39,7 @@ interface ServicesSectionProps {
 const demandas = [
   {
     title: "Ansiedade e Estresse",
-    imgSrc: "/Ansiedade-e-Estresse-image.png",
+    imgSrc: "/Ansiedade-e-Estresse-image.webp",
     description: "Ajudar você a identificar as causas da ansiedade e do estresse, promovendo autoconhecimento e técnicas de regulação emocional através da Focalização e da ACP.",
   },
   {
@@ -48,7 +48,7 @@ const demandas = [
     description: "Desenvolver habilidades para lidar com emoções intensas, compreendendo seus gatilhos e aprendendo estratégias saudáveis de enfrentamento.",
   },  {
     title: "Autoconhecimento",
-    imgSrc: "/Autoconhecimento-e-Crescimento-Pessoal-image.png",
+    imgSrc: "/Autoconhecimento-e-Crescimento-Pessoal-image.webp",
     description: "Explorar seus valores, crenças e padrões de comportamento para promover um maior entendimento de si mesmo e facilitar o crescimento pessoal.",
   },
   {
@@ -174,8 +174,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
                 <span className="text-base font-medium relative z-10">Agendar primeira sessão</span>
                 <span className={`ml-2 relative z-10 transform transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-1' : 'opacity-0 -translate-x-2'}`}>→</span>
               </button>            </div>              {/* Imagem - Ocupa metade (1/2) em desktop, escondida em mobile onde é substituída por versão abaixo */}            <div className="relative h-auto min-h-[300px] hidden md:block">
-              <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image 
-                src="/atendimento-online-image.png" 
+              <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image                src="/atendimento-online-image.webp" 
                 alt="Psicoterapia Online" 
                 fill 
                 className="object-cover transition-transform duration-700 hover:scale-105" 
@@ -187,7 +186,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
           
           {/* Versão mobile da imagem - melhor integração */}          <div className="md:hidden relative h-64 overflow-hidden">
             <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image 
-              src="/atendimento-online-image.png" 
+              src="/atendimento-online-image.webp" 
               alt="Psicoterapia Online" 
               fill 
               className="object-cover" 

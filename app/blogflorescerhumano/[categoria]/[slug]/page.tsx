@@ -231,8 +231,7 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
           <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#583B1F]">{titulo ?? 'Artigo sem título'}</h1>
           <div className="flex items-center mt-4 mb-3">
             <div className="flex-shrink-0 mr-3">
-              <Image 
-                src="/blogflorescerhumano/autores/daniel-psi-blog.png"
+              <Image                src="/blogflorescerhumano/autores/daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
                 width={48}
                 height={48}
