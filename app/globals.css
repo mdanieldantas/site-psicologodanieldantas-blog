@@ -11,6 +11,43 @@
   animation: bounce-once 0.7s 1;
 }
 
+/* Animação sutil para o cookie emoji */
+@keyframes bounce-subtle {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* Animação de slide para o banner de cookies */
+@keyframes slide-up {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+/* Animação de fade para o modal de cookies */
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Animação de escala para o modal de cookies */
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
 /* Animações para cards de artigos */
 @keyframes cardEntrance {
   from {

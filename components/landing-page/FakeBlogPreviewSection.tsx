@@ -20,12 +20,11 @@ const fakePosts = [
     excerpt: "Explorando como a empatia genuína forma a base da relação terapêutica na abordagem centrada na pessoa...",
     imageUrl: "/importância-da-empatia-image-site.png",
     category: "Terapia Humanista"
-  },
-  {
+  },  {
     slug: "fake-post-2",
     title: "Focalização: conectando-se com a sabedoria do corpo",
     excerpt: "Como a técnica de Focalização desenvolvida por Eugene Gendlin pode nos ajudar a acessar conhecimentos implícitos...",
-    imageUrl: "/focalizacao-imagem.png",
+    imageUrl: "/focalizacao-sabedoria-corpo.webp",
     category: "Técnicas Terapêuticas"
   },
   {
