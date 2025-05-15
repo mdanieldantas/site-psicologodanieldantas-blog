@@ -122,9 +122,8 @@ const BlogHeader = () => {
                 /* Logo completa para desktop ou mobile quando não está rolado */
                 <div className={`overflow-hidden transition-all duration-300 ${
                   isScrolled && isMobile ? 'max-h-0 opacity-0' : 'max-h-[40px] opacity-100'
-                }`}>
-                  <Image
-                    src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png"
+                }`}>                  <Image
+                    src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp"
                     alt="Logo Florescer Humano"
                     width={isScrolled ? 130 : 140}
                     height={isScrolled ? 32 : 35}
@@ -135,7 +134,7 @@ const BlogHeader = () => {
                 </div>
               ) : (
                 /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  <Image
-                    src="/blogflorescerhumano/logos-blog/icone-florescer-humano.png"
+                    src="/blogflorescerhumano/logos-blog/icone-florescer-humano.webp"
                     alt="Ícone Florescer Humano"
                     width={36}
                     height={36}
