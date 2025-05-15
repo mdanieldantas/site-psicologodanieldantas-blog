@@ -119,8 +119,7 @@ const BlogHeader = () => {
               aria-label="Ir para página inicial do blog"
             >              {/* Logo responsiva - alternando entre logo completa e ícone */}
               {(!isScrolled || !isMobile) ? (
-                /* Logo completa para desktop ou mobile quando não está rolado */
-                <div className={`overflow-hidden transition-all duration-300 ${
+                /* Logo completa para desktop ou mobile quando não está rolado */                <div className={`overflow-hidden transition-all duration-300 ${
                   isScrolled && isMobile ? 'max-h-0 opacity-0' : 'max-h-[40px] opacity-100'
                 }`}>                  <Image
                     src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp"
@@ -128,6 +127,11 @@ const BlogHeader = () => {
                     width={isScrolled ? 130 : 140}
                     height={isScrolled ? 32 : 35}
                     priority
+                    style={{ 
+                      height: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain'
+                    }}
                     className={`transition-all duration-300 ${isScrolled ? 'scale-90' : 'scale-100'}`}
                     sizes="(max-width: 768px) 120px, 140px"
                   />
@@ -139,6 +143,11 @@ const BlogHeader = () => {
                     width={36}
                     height={36}
                     priority
+                    style={{ 
+                      height: 'auto',
+                      maxWidth: '100%',
+                      objectFit: 'contain'
+                    }}
                     className="transition-all duration-300 animate-fadeIn drop-shadow-sm"
                   />
                 </div>
