@@ -57,7 +57,7 @@ export default async function BlogHomePage() {
         id="hero-section"
       >
         {/* Padrão texturizado sutil no fundo */}
-        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano-mobile-2.png')] md:bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.png')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 opacity-[.25] bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano-mobile-2.webp')] md:bg-[url('/blogflorescerhumano/banners-blog/hero-cacto-florecer-humano.webp')] bg-cover bg-center"></div>
         {/* Camada sutil para melhorar legibilidade do texto */}
         <div className="absolute inset-0 bg-[#F8F5F0]/30 backdrop-blur-[1px]"></div>
         {/* Container principal com layout flexível */}
