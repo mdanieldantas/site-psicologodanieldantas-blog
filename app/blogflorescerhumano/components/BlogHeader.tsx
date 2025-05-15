@@ -121,34 +121,31 @@ const BlogHeader = () => {
               {(!isScrolled || !isMobile) ? (
                 /* Logo completa para desktop ou mobile quando não está rolado */                <div className={`overflow-hidden transition-all duration-300 ${
                   isScrolled && isMobile ? 'max-h-0 opacity-0' : 'max-h-[40px] opacity-100'
-                }`}>                  <Image
+                }`}>                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}                  <Image
                     src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp"
                     alt="Logo Florescer Humano"
-                    width={isScrolled ? 130 : 140}
-                    height={isScrolled ? 32 : 35}
+                    width={140}
+                    height={35}
                     priority
-                    style={{ 
-                      height: 'auto',
-                      maxWidth: '100%',
-                      objectFit: 'contain'
-                    }}
-                    className={`transition-all duration-300 ${isScrolled ? 'scale-90' : 'scale-100'}`}
                     sizes="(max-width: 768px) 120px, 140px"
+                    style={{
+                      width: "auto",
+                      height: "auto"
+                    }}
                   />
                 </div>
               ) : (
-                /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  <Image
+                /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}                  <Image
                     src="/blogflorescerhumano/logos-blog/icone-florescer-humano.webp"
                     alt="Ícone Florescer Humano"
                     width={36}
                     height={36}
                     priority
-                    style={{ 
-                      height: 'auto',
-                      maxWidth: '100%',
-                      objectFit: 'contain'
+                    className="drop-shadow-sm"
+                    style={{
+                      width: "auto",
+                      height: "auto"
                     }}
-                    className="transition-all duration-300 animate-fadeIn drop-shadow-sm"
                   />
                 </div>
               )}
@@ -244,10 +241,9 @@ const BlogHeader = () => {
                   </a>
                 </Link>
               );
-            })}            <div className="pt-3">
-              <Link href="/" legacyBehavior>
+            })}            <div className="pt-3">              <Link href="/" legacyBehavior>
                 <a 
-                  className="mt-4 block py-3.5 px-5 rounded-lg bg-[#C19A6B]/90 text-center text-white font-medium hover:bg-[#735B43] hover:text-white transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 border border-[#C19A6B]/20"
+                  className="mt-4 py-3.5 px-5 rounded-lg bg-[#C19A6B]/90 text-center text-white font-medium hover:bg-[#735B43] hover:text-white transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 border border-[#C19A6B]/20"
                   style={{
                     animation: isMobileMenuOpen ? 'fadeInUp 0.4s 300ms ease forwards' : 'none'
                   }}

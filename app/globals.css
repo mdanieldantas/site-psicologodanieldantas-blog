@@ -478,3 +478,11 @@ html {
   100% { stroke-dashoffset: 0; }
 }
 
+/* Classe para ajudar a resolver problemas de proporção de imagem no Next.js Image */
+.next-image-fix {
+  width: auto !important;
+  height: auto !important;
+  position: relative !important;
+  object-fit: contain !important;
+}
+
