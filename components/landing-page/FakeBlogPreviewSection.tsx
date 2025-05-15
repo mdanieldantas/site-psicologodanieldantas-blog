@@ -64,8 +64,7 @@ const FakeBlogPreviewSection: React.FC = () => {
                   <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#C19A6B] min-h-[400px] hover:shadow-lg transition-all duration-300">
                     {/* Link principal para /em-construcao */}
                     <div className="cursor-pointer h-full flex flex-col sm:flex-row w-full">
-                      <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[240px] sm:h-[280px] md:h-[360px] mx-auto">
-                        <Link href="/em-construcao" passHref className="block w-full h-full">
+                      <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[240px] sm:h-[280px] md:h-[360px] mx-auto">                        <Link href="/em-construcao" passHref className="block w-full h-full relative">
                           <Image
                             src={post.imageUrl || "/placeholder.svg"}
                             alt={post.title}
