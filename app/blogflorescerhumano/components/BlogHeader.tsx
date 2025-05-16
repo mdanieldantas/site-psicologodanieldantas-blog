@@ -121,7 +121,8 @@ const BlogHeader = () => {
               {(!isScrolled || !isMobile) ? (
                 /* Logo completa para desktop ou mobile quando não está rolado */                <div className={`overflow-hidden transition-all duration-300 ${
                   isScrolled && isMobile ? 'max-h-0 opacity-0' : 'max-h-[40px] opacity-100'
-                }`}>                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}                  <Image
+                }`}>                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}
+                  <Image
                     src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp"
                     alt="Logo Florescer Humano"
                     width={140}
@@ -129,22 +130,23 @@ const BlogHeader = () => {
                     priority
                     sizes="(max-width: 768px) 120px, 140px"
                     style={{
-                      width: "auto",
-                      height: "auto"
+                      maxWidth: "100%",
+                      height: "auto", // Mantém a proporção automaticamente
                     }}
                   />
                 </div>
               ) : (
-                /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}                  <Image
+                /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}
+                  <Image
                     src="/blogflorescerhumano/logos-blog/icone-florescer-humano.webp"
                     alt="Ícone Florescer Humano"
                     width={36}
                     height={36}
                     priority
                     className="drop-shadow-sm"
-                    style={{
-                      width: "auto",
-                      height: "auto"
+                    style={{ 
+                      maxWidth: "100%",
+                      height: "auto" // Mantém a proporção automaticamente
                     }}
                   />
                 </div>
