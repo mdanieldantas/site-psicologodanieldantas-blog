@@ -26,7 +26,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
       {/* Aplicado opacity-30 por padrão (mobile) e md:opacity-35 para telas maiores */}
       <div className="absolute inset-0 z-0 opacity-30 md:opacity-35">
         <Image 
-          src="/hero-sofa.png" 
+          src="/hero-sofa.webp" 
           alt="Sofá de terapia" 
           fill 
           priority 
@@ -52,19 +52,15 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   relative z-10 overflow-hidden transition-all duration-500 
                   hover:shadow-2xl hover:scale-[1.02] hover:border-[#D1AA7B]">
                 
-                {/* Avatar do Radix UI para melhor gerenciamento de imagem */}
-                <AvatarPrimitive.Root className="w-full h-full relative">
-                  <AvatarPrimitive.Image 
-                    src="/hero-daniel-psi-2.webp"
-                    alt="Psicólogo Daniel Dantas"
-                    className="object-cover w-full h-full"
-                  />
-                  <AvatarPrimitive.Fallback 
-                    className="flex items-center justify-center w-full h-full bg-[#F5F2EE] text-[#583B1F]"
-                  >
-                    DD
-                  </AvatarPrimitive.Fallback>
-                </AvatarPrimitive.Root>
+                {/* Imagem otimizada Next.js para o avatar principal */}
+                <Image
+                  src="/hero-daniel-psi-2.webp"
+                  alt="Psicólogo Daniel Dantas"
+                  width={350}
+                  height={350}
+                  priority
+                  className="object-cover w-full h-full rounded-full"
+                />
               </div>
               
               {/* Elemento decorativo de fundo */}              <div className="absolute -bottom-3 -right-3 w-[260px] h-[260px] md:w-[350px] md:h-[350px] 
