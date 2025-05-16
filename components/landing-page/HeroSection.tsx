@@ -40,13 +40,9 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
       {/* Conteúdo principal da seção Hero (mantém z-[5]) */}
       <div className="relative z-[5] container mx-auto px-4 sm:px-[5%] md:px-[10%] pt-10 md:pt-14 w-full">
         {/* Layout flexível: coluna em mobile, linha em desktop */}        {/* Layout flexível: coluna em mobile, linha em desktop */}
-        <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 
-          ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
-          
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12 opacity-100">
           {/* Coluna da imagem - visível sempre, primeiro em mobile e segundo em desktop */}
-          <div className={`w-full lg:w-auto flex justify-center order-1 lg:order-2 mt-4 md:mt-8
-            ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
-            transition-all duration-1000 delay-300`}>
+          <div className="w-full lg:w-auto flex justify-center order-1 lg:order-2 mt-4 md:mt-8 translate-y-0 opacity-100">
             <div className="relative group">
               {/* Container principal com animação e efeitos */}              <div className="w-[260px] h-[260px] md:w-[350px] md:h-[350px] rounded-full border-4 border-[#C19A6B] shadow-xl 
                   relative z-10 overflow-hidden transition-all duration-500 
@@ -67,9 +63,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   rounded-full border-2 border-[#C19A6B]/30 z-0 
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
-          </div>            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className={`-mt-8 md:-mt-14 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 w-full px-1
-            ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'} 
-            transition-all duration-1000 delay-100`}>
+          </div>            {/* Coluna do texto - segundo em mobile e primeiro em desktop */}          <div className="-mt-8 md:-mt-14 lg:mt-0 lg:max-w-[55%] order-2 lg:order-1 w-full px-1 translate-y-0 opacity-100">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-3 tracking-tight relative">
               <span className="text-[#583B1F] block">Psicólogo</span>
               <span className="text-[#583B1F] font-medium">Daniel Dantas</span>
@@ -80,9 +74,8 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
               autoconhecimento, onde quer que você esteja.
             </p>
               {/* Elementos de credibilidade */}
-            <div className={`flex flex-col md:flex-row gap-4 md:gap-8 mb-4 md:mb-5 text-[#583B1F]/90 text-sm
-              ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} 
-              transition-all duration-1000 delay-300`}>              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-8 mb-4 md:mb-5 text-[#583B1F]/90 text-sm translate-y-0 opacity-100">
+              <div className="flex items-center transition-all duration-500 hover:translate-x-1">
                 <div className="mr-2 bg-[#C19A6B]/20 p-2 rounded-full transition-all duration-300 group-hover:bg-[#C19A6B]/30">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#583B1F]">
                     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
@@ -116,9 +109,8 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
             <button
               type="button"
               onClick={openModal}
-              className={`mt-2 md:mt-4 mb-10 md:mb-16 px-8 py-3 font-medium bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] group 
-                relative overflow-hidden rounded-md transition-all duration-300 shadow-md hover:shadow-lg
-                ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} transition-all duration-1000 delay-500`}
+              className="mt-2 md:mt-4 mb-10 md:mb-16 px-8 py-3 font-medium bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] group 
+                relative overflow-hidden rounded-md transition-all duration-300 shadow-md hover:shadow-lg opacity-100 translate-y-0"
             >
               <span className="relative z-10 inline-flex items-center transition-transform duration-300 group-hover:scale-110">
                 Vamos conversar? <Heart className="ml-2 h-4 w-4 opacity-0 transition-all duration-300 group-hover:opacity-100 scale-0 group-hover:scale-100 animate-pulse" />
@@ -129,8 +121,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
         </div>
       </div>
         {/* Indicador de rolagem refinado - visível em todas as resoluções */}
-      <div className={`absolute bottom-10 md:bottom-14 left-0 right-0 flex justify-center z-[5] 
-        ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-700`}>
+      <div className="absolute bottom-10 md:bottom-14 left-0 right-0 flex justify-center z-[5] opacity-100">
         <a 
           href="#sobre" 
           className="text-[#583B1F] group flex flex-col items-center"
