@@ -486,8 +486,5 @@ html {
   object-fit: contain !important;
 }
 
-/* Substituindo a classe ambígua duration-[4000ms] por uma classe escapada */
-.duration-\[4000ms\] {
-  animation-duration: 4000ms;
-}
+/* Classe customizada não é mais necessária, usando duration-4000 definida no tailwind.config.ts */
 

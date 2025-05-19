@@ -30,7 +30,7 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
           alt="Sofá de terapia" 
           fill 
           priority 
-          className="object-cover transition-transform duration-[4000ms] ease-in-out transform scale-[1.02] filter brightness-[0.95] contrast-[1.05]" 
+          className="object-cover transition-transform duration-4000 ease-in-out transform scale-[1.02] filter brightness-[0.95] contrast-[1.05]" 
         />
       </div>
       
