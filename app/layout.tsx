@@ -110,47 +110,37 @@ export const viewport: Viewport = {
 };
 
 // Componente RootLayout: define a estrutura HTML base da aplicação
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {  return (
+export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+  return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        {/* Preload para recursos críticos LCP */}
+        <link rel="preload" href="/hero-daniel-psi-2.webp" as="image" type="image/webp" fetchPriority="high"/>
+        <link rel="preload" href="/hero-sofa.webp" as="image" type="image/webp" fetchPriority="high"/>
+        
+        {/* Otimização para recursos de terceiros */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
+        <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        
         {/* Componente para adicionar dados estruturados JSON-LD */}
-        <SchemaMarkup />
+        <SchemaMarkup/>
+        
         {/* Adiciona o script do Google Tag Manager se o ID estiver definido */}
-        {process.env.NEXT_PUBLIC_GTM_ID && (
-          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-        )}
+        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID}/>}
       </head>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased overflow-x-hidden w-full", // Classes base para o corpo da página
-          fontSans.variable // Aplica a variável da fonte Inter
-        )}
-      >
+      <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden w-full", fontSans.variable)}>
         <WhatsAppModalProvider>
-          {/* Provedor de Tema: Habilita a troca entre modo claro e escuro */}
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {/* Conteúdo principal da página renderizado aqui */}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
-            {/* Componente para o banner de consentimento de cookies */}
-            <CookieConsent />
-            {/* Componente para Analytics da Vercel */}
             <Suspense fallback={null}>
-              <Analytics />
+              <CookieConsent/>
+              <Analytics/>
+              <SpeedInsights debug={false}/>
             </Suspense>
-            {/* Componente para Speed Insights da Vercel */}
-            <SpeedInsights />
           </ThemeProvider>
         </WhatsAppModalProvider>
       </body>
-    </html>
-  );
+    </html>  );
 }
