@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import type React from "react"
 
 export default function ContactForm() {
   const [formState, setFormState] = useState({
@@ -10,14 +11,14 @@ export default function ContactForm() {
     message: "",
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
       ...formState,
       [e.target.id]: e.target.value,
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     // Preparar a mensagem para o WhatsApp

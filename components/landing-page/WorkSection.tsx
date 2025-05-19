@@ -31,6 +31,16 @@ const LazyYouTube = ({ videoId, title }: { videoId: string, title: string }) => 
   // Carrega o vídeo apenas quando o usuário clicar no placeholder
   const loadVideo = () => {
     setIsLoaded(true);
+    // Adicionar esta parte para enviar o evento ao GTM
+    if (typeof window !== "undefined" && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'youtube_video_play', // Nome do evento personalizado para o dataLayer
+        video_id: videoId,
+        video_title: title,
+        video_provider: 'youtube',
+        video_url: `https://www.youtube.com/watch?v=${videoId}`
+      });
+    }
   };
 
   // Se o vídeo ainda não foi carregado, mostra um placeholder
@@ -153,7 +163,7 @@ const WorkSection = () => {
                 <div className="relative h-0 pb-[56.25%] rounded-lg overflow-hidden"> {/* Proporção 16:9 */}
                   <LazyYouTube
                     videoId="8r22CAuoyPc" // ID do vídeo do YouTube
-                    title="Conheça Meu Trabalho - Daniel Dantas"
+                    title="video-conheca-meu-trabalho-daniel-dantas"
                   />
                 </div>
               </div>
