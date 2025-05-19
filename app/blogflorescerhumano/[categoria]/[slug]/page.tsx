@@ -12,6 +12,7 @@ import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Met
 import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; // Importa o componente de Schema JSON-LD
 import BackToTopButton from "@/app/blogflorescerhumano/components/BackToTopButton"; // Importa o componente cliente
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
+import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
 
 type Artigo = Database["public"]["Tables"]["artigos"]["Row"];
@@ -447,85 +448,12 @@ export default async function ArtigoEspecificoPage({
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 pointer-events-none"></div>
           </div>
-        )}{" "}
-        {/* Conteúdo Principal do Artigo - Aprimorado com Índice */}
+        )}{" "}        {/* Conteúdo Principal do Artigo - Aprimorado com Índice */}
         {artigoConteudo ? (
-          <div className="article-container">            {/* Script para gerar índice automaticamente */}
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  // Usamos "window.onload" em vez de "DOMContentLoaded" para garantir que a hidratação React esteja completa
-                  window.onload = function() {
-                    // Garantir que todos os elementos existem
-                    const articleContent = document.querySelector('.article-content');
-                    if (!articleContent) return;
-                    
-                    const headings = articleContent.querySelectorAll('h2, h3');
-                    if (!headings || headings.length < 3) return;
-                    
-                    const tableOfContents = document.getElementById('table-of-contents');
-                    if (!tableOfContents) return;
-                    
-                    // Criar lista para o índice
-                    const tocList = document.createElement('ul');
-                    tocList.className = 'pl-5 space-y-2';
-                    
-                    // Adicionar contador para o número de seções
-                    let sectionCount = 0;
-                    
-                    headings.forEach((heading, index) => {
-                      // Os headings já devem ter IDs semânticos
-                      if (!heading.id) {
-                        heading.id = 'heading-' + index;
-                      }
-                      
-                      // Conta apenas os H2 para saber o número de seções principais
-                      if (heading.tagName === 'H2') {
-                        sectionCount++;
-                      }
-                      
-                      const listItem = document.createElement('li');
-                      const link = document.createElement('a');
-                      link.href = '#' + heading.id;
-                      link.textContent = heading.textContent;
-                      link.className = heading.tagName === 'H2' 
-                        ? 'text-[#583B1F] hover:text-[#C19A6B] font-medium transition-colors' 
-                        : 'text-[#735B43] hover:text-[#C19A6B] text-sm pl-4 inline-block transition-colors';
-                      
-                      // Adicionar efeito de hover suave 
-                      link.addEventListener('mouseover', () => {
-                        link.style.paddingLeft = heading.tagName === 'H2' ? '4px' : '8px';
-                      });
-                      
-                      link.addEventListener('mouseout', () => {
-                        link.style.paddingLeft = heading.tagName === 'H2' ? '0' : '4px';
-                      });
-                      
-                      listItem.appendChild(link);
-                      tocList.appendChild(listItem);
-                    });
-                    
-                    // Atualizar título do índice com contagem de seções
-                    const tocTitle = tableOfContents.querySelector('h4');
-                    if (tocTitle) {
-                      tocTitle.innerHTML = 'Índice do artigo: <span class="text-sm font-normal text-[#735B43]">(' + sectionCount + ' seções)</span>';
-                    }
-                    
-                    tableOfContents.appendChild(tocList);
-                    tableOfContents.classList.remove('hidden');
-                  };
-                `,
-              }}
-            />
-            {/* Índice de Conteúdo (inicialmente oculto, será preenchido com JavaScript) */}{" "}            <div
-              id="table-of-contents"
-              className="hidden mb-8 p-5 bg-[#F8F5F0] rounded-lg border border-[#C19A6B]/20 shadow-sm"
-            >
-              <h4 className="text-lg font-semibold mb-3 text-[#583B1F]">
-                Índice do artigo:
-              </h4>
-              {/* O conteúdo do índice será inserido aqui via JavaScript */}
-            </div>{" "}            <div
+          <div className="article-container">
+            {/* Importamos o componente cliente TableOfContents */}
+            <TableOfContents articleContentId="article-content" />{" "}            <div
+              id="article-content"
               className="prose lg:prose-lg max-w-none mx-auto article-content"
               style={{
                 lineHeight: "1.8",
