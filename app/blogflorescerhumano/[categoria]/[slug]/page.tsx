@@ -388,7 +388,7 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
             <div className="flex-shrink-0">
               <Image 
-                src="/blogflorescerhumano/autores/daniel-psi-blog.png"
+                src="/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
                 width={80}
                 height={80}
@@ -396,12 +396,12 @@ export default async function ArtigoEspecificoPage({ params }: ArtigoPageProps) 
               />
             </div>
             <div>              <h3 className="text-lg font-semibold mb-1 text-center sm:text-left text-[#583B1F]">{nomeAutor}</h3>              <p className="text-[#735B43] mb-2 text-sm">Psicólogo e escritor do Blog Florescer Humano</p>
-              <p className="text-[#735B43] text-sm">Especialista em Psicologia Humanista e desenvolvimento pessoal, ajudando pessoas a encontrarem seu potencial pleno através do autoconhecimento e crescimento pessoal.</p>
+              <p className="text-[#735B43] text-sm">Especialista em Saúde Mental com formação em Abordagem Centrada Pessoa, ajudando pessoas a encontrarem seu potencial pleno através do autoconhecimento e crescimento pessoal.</p>
               <div className="mt-3 flex justify-center sm:justify-start">
                 <a href="https://psicologodanieldantas.com.br" target="_blank" rel="noopener noreferrer" className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors mr-4">
                   Website
                 </a>
-                <a href="https://instagram.com/psicologodanieldantas" target="_blank" rel="noopener noreferrer" className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors">
+                <a href="https://instagram.com/psidanieldantas" target="_blank" rel="noopener noreferrer" className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors">
                   Instagram
                 </a>
               </div>
