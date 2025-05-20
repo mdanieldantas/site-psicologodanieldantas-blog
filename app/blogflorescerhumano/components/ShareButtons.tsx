@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image'; // Garanta que Image está importado
+import React, { useState, useCallback, useMemo } from 'react';
+import Image from 'next/image';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import {
@@ -15,6 +15,14 @@ import {
   LinkedinIcon,
 } from 'react-share';
 
+// Constantes para estilos
+const ICON_SIZE = 44;
+const SHARE_BUTTON_BASE_CLASS = "transform transition-all duration-300 ease-in-out hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary";
+const CONTAINER_CLASS = "flex flex-col sm:flex-row items-center justify-center gap-2 mt-4 mb-6 w-full max-w-screen-lg mx-auto p-4 rounded-lg shadow-lg bg-white/80 backdrop-blur-sm";
+const BUTTONS_CONTAINER_CLASS = "flex items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-2 flex-wrap sm:flex-nowrap";
+const TITLE_CLASS = "text-gray-700 font-semibold mb-3 sm:mb-0 sm:mr-4 whitespace-nowrap text-center text-lg";
+const SOCIAL_LINK_CLASS = "rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden";
+
 // Componente de ícone de copiar link no estilo do react-share
 interface CopyLinkIconProps {
   bgStyle?: React.CSSProperties;
@@ -22,8 +30,8 @@ interface CopyLinkIconProps {
   size: number;
 }
 
-const CopyLinkIcon: React.FC<CopyLinkIconProps> = ({ bgStyle = {}, round, size }) => {
-  const baseStyle = {
+const CopyLinkIcon = React.memo<CopyLinkIconProps>(({ bgStyle = {}, round, size }) => {
+  const baseStyle = useMemo(() => ({
     width: size,
     height: size,
     borderRadius: round ? '50%' : 0,
@@ -32,11 +40,16 @@ const CopyLinkIcon: React.FC<CopyLinkIconProps> = ({ bgStyle = {}, round, size }
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
+    transform: 'scale(1)',
+    transition: 'all 0.3s ease',
     ...bgStyle
-  };
+  }), [size, round, bgStyle]);
 
   return (
-    <div style={baseStyle}>
+    <div 
+      style={baseStyle}
+      className="hover:scale-110 active:scale-95 focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+    >
       <Image
         src="/blogflorescerhumano/icons-blog/icone-copiar-link.webp"
         alt="Copiar link"
@@ -46,7 +59,9 @@ const CopyLinkIcon: React.FC<CopyLinkIconProps> = ({ bgStyle = {}, round, size }
       />
     </div>
   );
-};
+});
+
+CopyLinkIcon.displayName = 'CopyLinkIcon';
 
 interface ShareButtonsProps {
   url: string;
@@ -54,120 +69,152 @@ interface ShareButtonsProps {
   summary?: string;
 }
 
-const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
-  const iconSize = 32;
-  const round = true;
+const ShareButtons: React.FC<ShareButtonsProps> = React.memo(({ url, title, summary }) => {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(url);
       setCopyStatus('copied');
-      setTimeout(() => setCopyStatus('idle'), 2000); // Reseta após 2 segundos
+      if (navigator.vibrate) {
+        navigator.vibrate(100);
+      }
+      setTimeout(() => setCopyStatus('idle'), 2000);
     } catch (err) {
       console.error('Falha ao copiar link: ', err);
-      // Poderia adicionar um estado de erro aqui
+      setCopyStatus('idle');
     }
-  };
+  }, [url]);
 
-  // Constrói a URL do Gmail
-  const encodedSubject = encodeURIComponent(title);
-  const emailBody = summary ? `${summary}\n\n${url}` : url;
-  const encodedBody = encodeURIComponent(emailBody);
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&su=${encodedSubject}&body=${encodedBody}`;
-
-  console.log("Gmail URL Gerada:", gmailUrl);
+  const gmailUrl = useMemo(() => {
+    const encodedSubject = encodeURIComponent(title);
+    const emailBody = summary ? `${summary}\n\n${url}` : url;
+    const encodedBody = encodeURIComponent(emailBody);
+    return `https://mail.google.com/mail/?view=cm&fs=1&su=${encodedSubject}&body=${encodedBody}`;
+  }, [title, summary, url]);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-1 mt-4 mb-6 w-full overflow-x-auto">
-      <span className="text-gray-700 font-semibold mb-2 sm:mb-0 sm:mr-2 whitespace-nowrap text-center">Compartilhe:</span>
-      <div className="flex items-center justify-center gap-0.5 sm:gap-1 w-full sm:w-auto px-1">
-        {/* --- Botões react-share --- */}
-        <TwitterShareButton url={url} title={title} data-tooltip-id="tooltip-twitter" data-tooltip-content="Compartilhar no Twitter/X">
-          <TwitterIcon size={iconSize} round={round} />
-        </TwitterShareButton>
-
-        <FacebookShareButton url={url} data-tooltip-id="tooltip-facebook" data-tooltip-content="Compartilhar no Facebook">
-          <FacebookIcon size={iconSize} round={round} />
-        </FacebookShareButton>
-
-        <WhatsappShareButton url={url} title={title} separator=":: " data-tooltip-id="tooltip-whatsapp" data-tooltip-content="Compartilhar no WhatsApp">
-          <WhatsappIcon size={iconSize} round={round} />
+    <div className={CONTAINER_CLASS}>
+      <span className={TITLE_CLASS}>
+        Compartilhe:
+      </span>
+      <div className={BUTTONS_CONTAINER_CLASS}>
+        {/* WhatsApp primeiro por ser mais popular no Brasil */}
+        <WhatsappShareButton 
+          url={url} 
+          title={title} 
+          separator=":: " 
+          data-tooltip-id="tooltip-whatsapp" 
+          data-tooltip-content="Compartilhar no WhatsApp"
+          className={SHARE_BUTTON_BASE_CLASS}
+        >
+          <WhatsappIcon size={ICON_SIZE} round />
         </WhatsappShareButton>
 
-        <LinkedinShareButton url={url} title={title} summary={summary} data-tooltip-id="tooltip-linkedin" data-tooltip-content="Compartilhar no LinkedIn">
-          <LinkedinIcon size={iconSize} round={round} />
+        {/* Outras redes sociais */}
+        <FacebookShareButton 
+          url={url} 
+          data-tooltip-id="tooltip-facebook" 
+          data-tooltip-content="Compartilhar no Facebook"
+          className={SHARE_BUTTON_BASE_CLASS}
+        >
+          <FacebookIcon size={ICON_SIZE} round />
+        </FacebookShareButton>
+
+        <LinkedinShareButton 
+          url={url} 
+          title={title} 
+          summary={summary} 
+          data-tooltip-id="tooltip-linkedin" 
+          data-tooltip-content="Compartilhar no LinkedIn"
+          className={SHARE_BUTTON_BASE_CLASS}
+        >
+          <LinkedinIcon size={ICON_SIZE} round />
         </LinkedinShareButton>
 
-        {/* --- Botões Customizados --- */}
-        {/* Link para Instagram com Logo PNG (Movido para antes do Gmail) */}
+        <TwitterShareButton 
+          url={url} 
+          title={title} 
+          data-tooltip-id="tooltip-twitter" 
+          data-tooltip-content="Compartilhar no Twitter/X"
+          className={SHARE_BUTTON_BASE_CLASS}
+        >
+          <TwitterIcon size={ICON_SIZE} round />
+        </TwitterShareButton>
+
+        {/* Instagram */}
         <a
           href="https://www.instagram.com/"
           target="_blank"
           rel="noopener noreferrer"
           data-tooltip-id="tooltip-instagram"
           data-tooltip-content="Abrir Instagram (copie o link primeiro!)"
-          className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
-          style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+          className={`${SHARE_BUTTON_BASE_CLASS} ${SOCIAL_LINK_CLASS}`}
+          style={{ width: ICON_SIZE, height: ICON_SIZE }}
         >
-          {/* Usando Image para o logo do Instagram */}
           <Image
-            src="/blogflorescerhumano/icons-blog/instagram.png" // Caminho atualizado
+            src="/blogflorescerhumano/icons-blog/instagram.png"
             alt="Abrir Instagram"
-            width={iconSize}
-            height={iconSize}
-            className="object-contain"
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            className="object-contain transform transition-transform duration-300 hover:scale-110"
           />
         </a>
 
-        {/* Link direto para Gmail com Logo PNG */}
+        {/* Gmail */}
         <a
           href={gmailUrl}
           target="_blank"
           rel="noopener noreferrer"
           data-tooltip-id="tooltip-email"
           data-tooltip-content="Compartilhar via Gmail"
-          className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
-          style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+          className={`${SHARE_BUTTON_BASE_CLASS} ${SOCIAL_LINK_CLASS}`}
+          style={{ width: ICON_SIZE, height: ICON_SIZE }}
         >
-          {/* Usando Image para o logo do Gmail */}
           <Image
-            src="/blogflorescerhumano/icons-blog/gmail.png" // Caminho atualizado
+            src="/blogflorescerhumano/icons-blog/gmail.png"
             alt="Compartilhar via Gmail"
-            width={iconSize}
-            height={iconSize}
-            className="object-contain"
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            className="object-contain transform transition-transform duration-300 hover:scale-110"
           />
         </a>
         
-        {/* Botão Copiar Link no estilo react-share */}
+        {/* Botão Copiar Link */}
         <button
           onClick={handleCopy}
-          className="cursor-pointer focus:outline-none hover:opacity-90 transition-opacity"
+          className={`${SHARE_BUTTON_BASE_CLASS} relative`}
           data-tooltip-id="tooltip-copy"
           data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
           aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
         >
           <CopyLinkIcon 
-            size={iconSize} 
-            round={round} 
+            size={ICON_SIZE} 
+            round 
             bgStyle={{
               backgroundColor: copyStatus === 'copied' ? '#22c55e' : '#C19A6B'
             }}
           />
+          {copyStatus === 'copied' && (
+            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-white text-xs">
+              ✓
+            </span>
+          )}
         </button>
       </div>
 
-      {/* Tooltips (Ordem ajustada) */}
-      <Tooltip id="tooltip-twitter" />
-      <Tooltip id="tooltip-facebook" />
-      <Tooltip id="tooltip-whatsapp" />
-      <Tooltip id="tooltip-linkedin" />
-      <Tooltip id="tooltip-instagram" /> {/* Movido para antes do email */}
-      <Tooltip id="tooltip-email" />
-      <Tooltip id="tooltip-copy" />
+      {/* Tooltips estilizados */}
+      <Tooltip id="tooltip-whatsapp" className="z-50 !bg-green-600 !opacity-100" place="top" />
+      <Tooltip id="tooltip-facebook" className="z-50 !bg-blue-600 !opacity-100" place="top" />
+      <Tooltip id="tooltip-linkedin" className="z-50 !bg-blue-700 !opacity-100" place="top" />
+      <Tooltip id="tooltip-twitter" className="z-50 !bg-sky-500 !opacity-100" place="top" />
+      <Tooltip id="tooltip-instagram" className="z-50 !bg-pink-600 !opacity-100" place="top" />
+      <Tooltip id="tooltip-email" className="z-50 !bg-red-500 !opacity-100" place="top" />
+      <Tooltip id="tooltip-copy" className="z-50 !bg-amber-700 !opacity-100" place="top" />
     </div>
   );
-};
+});
+
+ShareButtons.displayName = 'ShareButtons';
 
 export default ShareButtons;
