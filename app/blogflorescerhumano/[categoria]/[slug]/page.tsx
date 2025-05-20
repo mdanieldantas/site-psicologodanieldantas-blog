@@ -10,7 +10,7 @@ import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticle
 import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
 import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Metadata
 import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; // Importa o componente de Schema JSON-LD
-import BackToTopButton from "@/app/blogflorescerhumano/components/BackToTopButton"; // Importa o componente cliente
+
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
@@ -540,8 +540,7 @@ export default async function ArtigoEspecificoPage({
                   ),
               }}
             />
-            {/* Botão "Voltar ao topo" - Agora implementado como componente cliente */}
-            <BackToTopButton />
+            
           </div>
         ) : (
           <div className="py-12 text-center">
