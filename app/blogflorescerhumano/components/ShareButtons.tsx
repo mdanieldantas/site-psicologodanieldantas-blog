@@ -79,82 +79,84 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
   console.log("Gmail URL Gerada:", gmailUrl);
 
   return (
-    <div className="flex items-center flex-wrap gap-2 mt-4 mb-6"> 
-      <span className="text-gray-700 font-semibold mr-2">Compartilhe:</span>
-      {/* --- Botões react-share --- */}
-      <TwitterShareButton url={url} title={title} data-tooltip-id="tooltip-twitter" data-tooltip-content="Compartilhar no Twitter/X">
-        <TwitterIcon size={iconSize} round={round} />
-      </TwitterShareButton>
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-1 mt-4 mb-6 w-full overflow-x-auto">
+      <span className="text-gray-700 font-semibold mb-2 sm:mb-0 sm:mr-2 whitespace-nowrap text-center">Compartilhe:</span>
+      <div className="flex items-center justify-center gap-0.5 sm:gap-1 w-full sm:w-auto px-1">
+        {/* --- Botões react-share --- */}
+        <TwitterShareButton url={url} title={title} data-tooltip-id="tooltip-twitter" data-tooltip-content="Compartilhar no Twitter/X">
+          <TwitterIcon size={iconSize} round={round} />
+        </TwitterShareButton>
 
-      <FacebookShareButton url={url} data-tooltip-id="tooltip-facebook" data-tooltip-content="Compartilhar no Facebook">
-        <FacebookIcon size={iconSize} round={round} />
-      </FacebookShareButton>
+        <FacebookShareButton url={url} data-tooltip-id="tooltip-facebook" data-tooltip-content="Compartilhar no Facebook">
+          <FacebookIcon size={iconSize} round={round} />
+        </FacebookShareButton>
 
-      <WhatsappShareButton url={url} title={title} separator=":: " data-tooltip-id="tooltip-whatsapp" data-tooltip-content="Compartilhar no WhatsApp">
-        <WhatsappIcon size={iconSize} round={round} />
-      </WhatsappShareButton>
+        <WhatsappShareButton url={url} title={title} separator=":: " data-tooltip-id="tooltip-whatsapp" data-tooltip-content="Compartilhar no WhatsApp">
+          <WhatsappIcon size={iconSize} round={round} />
+        </WhatsappShareButton>
 
-      <LinkedinShareButton url={url} title={title} summary={summary} data-tooltip-id="tooltip-linkedin" data-tooltip-content="Compartilhar no LinkedIn">
-        <LinkedinIcon size={iconSize} round={round} />
-      </LinkedinShareButton>
+        <LinkedinShareButton url={url} title={title} summary={summary} data-tooltip-id="tooltip-linkedin" data-tooltip-content="Compartilhar no LinkedIn">
+          <LinkedinIcon size={iconSize} round={round} />
+        </LinkedinShareButton>
 
-      {/* --- Botões Customizados --- */}
-      {/* Link para Instagram com Logo PNG (Movido para antes do Gmail) */}
-      <a
-        href="https://www.instagram.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        data-tooltip-id="tooltip-instagram"
-        data-tooltip-content="Abrir Instagram (copie o link primeiro!)"
-        className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
-        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
-      >
-        {/* Usando Image para o logo do Instagram */}
-        <Image
-          src="/blogflorescerhumano/icons-blog/instagram.png" // Caminho atualizado
-          alt="Abrir Instagram"
-          width={iconSize}
-          height={iconSize}
-          className="object-contain"
-        />
-      </a>
+        {/* --- Botões Customizados --- */}
+        {/* Link para Instagram com Logo PNG (Movido para antes do Gmail) */}
+        <a
+          href="https://www.instagram.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-tooltip-id="tooltip-instagram"
+          data-tooltip-content="Abrir Instagram (copie o link primeiro!)"
+          className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
+          style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+        >
+          {/* Usando Image para o logo do Instagram */}
+          <Image
+            src="/blogflorescerhumano/icons-blog/instagram.png" // Caminho atualizado
+            alt="Abrir Instagram"
+            width={iconSize}
+            height={iconSize}
+            className="object-contain"
+          />
+        </a>
 
-      {/* Link direto para Gmail com Logo PNG */}
-      <a
-        href={gmailUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-tooltip-id="tooltip-email"
-        data-tooltip-content="Compartilhar via Gmail"
-        className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
-        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
-      >
-        {/* Usando Image para o logo do Gmail */}
-        <Image
-          src="/blogflorescerhumano/icons-blog/gmail.png" // Caminho atualizado
-          alt="Compartilhar via Gmail"
-          width={iconSize}
-          height={iconSize}
-          className="object-contain"
-        />
-      </a>
-      
-      {/* Botão Copiar Link no estilo react-share */}
-      <button
-        onClick={handleCopy}
-        className="cursor-pointer focus:outline-none hover:opacity-90 transition-opacity"
-        data-tooltip-id="tooltip-copy"
-        data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
-        aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
-      >
-        <CopyLinkIcon 
-          size={iconSize} 
-          round={round} 
-          bgStyle={{
-            backgroundColor: copyStatus === 'copied' ? '#22c55e' : '#C19A6B'
-          }}
-        />
-      </button>
+        {/* Link direto para Gmail com Logo PNG */}
+        <a
+          href={gmailUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-tooltip-id="tooltip-email"
+          data-tooltip-content="Compartilhar via Gmail"
+          className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity duration-200 cursor-pointer overflow-hidden"
+          style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+        >
+          {/* Usando Image para o logo do Gmail */}
+          <Image
+            src="/blogflorescerhumano/icons-blog/gmail.png" // Caminho atualizado
+            alt="Compartilhar via Gmail"
+            width={iconSize}
+            height={iconSize}
+            className="object-contain"
+          />
+        </a>
+        
+        {/* Botão Copiar Link no estilo react-share */}
+        <button
+          onClick={handleCopy}
+          className="cursor-pointer focus:outline-none hover:opacity-90 transition-opacity"
+          data-tooltip-id="tooltip-copy"
+          data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
+          aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
+        >
+          <CopyLinkIcon 
+            size={iconSize} 
+            round={round} 
+            bgStyle={{
+              backgroundColor: copyStatus === 'copied' ? '#22c55e' : '#C19A6B'
+            }}
+          />
+        </button>
+      </div>
 
       {/* Tooltips (Ordem ajustada) */}
       <Tooltip id="tooltip-twitter" />
