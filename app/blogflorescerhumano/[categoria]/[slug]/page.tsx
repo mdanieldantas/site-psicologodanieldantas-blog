@@ -329,15 +329,13 @@ export default async function ArtigoEspecificoPage({
         <header className="mb-8 border-b pb-4 border-[#C19A6B]/30">
           <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#583B1F]">
             {titulo ?? "Artigo sem título"}
-          </h1>
-          <div className="flex items-center mt-4 mb-3">
-            <div className="flex-shrink-0 mr-3">
+          </h1>          <div className="flex items-center mt-4 mb-3">            <div className="flex-shrink-0 mr-4 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
               <Image
-                src="/blogflorescerhumano/autores/daniel-psi-blog.webp"
+                src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
-                width={48}
-                height={48}
-                className="rounded-full border-2 border-[#C19A6B]/30 shadow-sm"
+                width={120}
+                height={120}
+                className="w-28 h-28 object-cover transform hover:scale-105 transition-transform duration-300"
               />
             </div>
             <div>
@@ -556,14 +554,12 @@ export default async function ArtigoEspecificoPage({
         )}{" "}
         {/* Bio do Autor ao Final do Artigo */}{" "}
         <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
-            <div className="flex-shrink-0">
-              <Image
-                src="/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">              <Image
+                src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
-                width={80}
-                height={80}
-                className="rounded-full border-2 border-[#C19A6B]/30 shadow-sm"
+                width={120}
+                height={120}
+                className="w-28 h-28 object-cover transform hover:scale-105 transition-transform duration-300"
               />
             </div>
             <div>
