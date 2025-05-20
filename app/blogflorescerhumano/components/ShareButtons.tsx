@@ -15,12 +15,38 @@ import {
   LinkedinIcon,
 } from 'react-share';
 
-// SVG Icon for Copy Link (Alterado para ícone de Link)
-const LinkIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-  </svg>
-);
+// Componente de ícone de copiar link no estilo do react-share
+interface CopyLinkIconProps {
+  bgStyle?: React.CSSProperties;
+  round?: boolean;
+  size: number;
+}
+
+const CopyLinkIcon: React.FC<CopyLinkIconProps> = ({ bgStyle = {}, round, size }) => {
+  const baseStyle = {
+    width: size,
+    height: size,
+    borderRadius: round ? '50%' : 0,
+    backgroundColor: '#C19A6B',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    ...bgStyle
+  };
+
+  return (
+    <div style={baseStyle}>
+      <Image
+        src="/blogflorescerhumano/icons-blog/icone-copiar-link.webp"
+        alt="Copiar link"
+        width={size}
+        height={size}
+        className="object-contain p-1.5"
+      />
+    </div>
+  );
+};
 
 interface ShareButtonsProps {
   url: string;
@@ -111,28 +137,23 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
           height={iconSize}
           className="object-contain"
         />
-      </a>      {/* Botão Copiar Link */}
+      </a>
+      
+      {/* Botão Copiar Link no estilo react-share */}
       <button
         onClick={handleCopy}
-        className={`flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer ${
-          copyStatus === 'copied' 
-            ? 'bg-green-500 hover:bg-green-600' 
-            : 'bg-[#C19A6B] hover:bg-[#A0522D]'
-        }`}
-        aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
-        style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+        className="cursor-pointer focus:outline-none hover:opacity-90 transition-opacity"
         data-tooltip-id="tooltip-copy"
         data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
+        aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
       >
-        <div className="text-white">
-          {copyStatus === 'idle' ? (
-            <LinkIcon />
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-        </div>
+        <CopyLinkIcon 
+          size={iconSize} 
+          round={round} 
+          bgStyle={{
+            backgroundColor: copyStatus === 'copied' ? '#22c55e' : '#C19A6B'
+          }}
+        />
       </button>
 
       {/* Tooltips (Ordem ajustada) */}
