@@ -111,23 +111,28 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ url, title, summary }) => {
           height={iconSize}
           className="object-contain"
         />
-      </a>
-
-      {/* Botão Copiar Link */}
+      </a>      {/* Botão Copiar Link */}
       <button
         onClick={handleCopy}
-         // Removido bg-gray-200, adicionado hover:opacity-80, padding p-1
-        className="flex items-center justify-center p-1 rounded-full hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
+        className={`flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer ${
+          copyStatus === 'copied' 
+            ? 'bg-green-500 hover:bg-green-600' 
+            : 'bg-[#C19A6B] hover:bg-[#A0522D]'
+        }`}
         aria-label={copyStatus === 'idle' ? "Copiar link do artigo" : "Link copiado!"}
         style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
         data-tooltip-id="tooltip-copy"
         data-tooltip-content={copyStatus === 'idle' ? "Copiar link" : "Link copiado!"}
       >
-        {copyStatus === 'idle' ? (
-          <LinkIcon /> // Usa o novo ícone de Link
-        ) : (
-          <span className="text-xs font-semibold text-green-600">✓</span> // Feedback visual com cor
-        )}
+        <div className="text-white">
+          {copyStatus === 'idle' ? (
+            <LinkIcon />
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          )}
+        </div>
       </button>
 
       {/* Tooltips (Ordem ajustada) */}
