@@ -474,9 +474,9 @@ const BlogHeader = () => {
             </div>          </div>{/* Mobile: Compartilhamento, Lupa e Menu Hambúrguer */}
           <div className={`flex md:hidden items-center space-x-2 transition-all duration-300`}>
             {/* Botão de preferências de leitura - Mobile */}
-            <button 
-              onClick={togglePreferencesMenu}
+            <button              onClick={togglePreferencesMenu}
               className={`p-1.5 transition-all duration-300 focus:outline-none 
+                flex items-center justify-center
                 focus:ring-2 focus:ring-[#C19A6B]/70 active:scale-95
                 ${preferencesMenuOpen 
                   ? 'text-[#C19A6B]' 
@@ -487,11 +487,11 @@ const BlogHeader = () => {
             >
               <Settings className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
             </button>
-            
-            {/* Botão de Compartilhamento */}
+              {/* Botão de Compartilhamento */}
             <button 
               onClick={handleNativeShare}
               className={`p-1.5 transition-all duration-300 focus:outline-none 
+                flex items-center justify-center
                 focus:ring-2 focus:ring-[#C19A6B]/70 active:scale-95
                 text-[#583B1F] hover:text-[#C19A6B]`}
               aria-label="Compartilhar página"
@@ -501,10 +501,10 @@ const BlogHeader = () => {
               <div className={`relative transition-all duration-300 ${isScrolled ? 'scale-95' : 'scale-100'}`}>
               <HeaderSearchInline />
             </div>
-            
-            <button
+              <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`p-1.5 transition-all duration-300 focus:outline-none 
+                flex items-center justify-center
                 focus:ring-2 focus:ring-[#C19A6B]/70 active:scale-95
                 ${isMobileMenuOpen 
                   ? 'text-[#C19A6B]' 
