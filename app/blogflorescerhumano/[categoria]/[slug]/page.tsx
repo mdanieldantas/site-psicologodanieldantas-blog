@@ -421,9 +421,9 @@ export default async function ArtigoEspecificoPage({
                 </Link>
               ))}
             </div>
-          )}
-        </header>{" "}
-        {/* Botões de Compartilhamento Aprimorados */}{" "}
+          )}        </header>{" "}
+        {/* Botão de compartilhamento removido da renderização, mas mantido no código não ativar ele sem ordem expressa do programador responsável*/}
+        {/* 
         <div className="bg-[#F8F5F0] p-4 rounded-lg shadow-sm mb-6 border border-[#C19A6B]/20">
           <ShareButtons
             url={shareUrl}
@@ -431,6 +431,7 @@ export default async function ArtigoEspecificoPage({
             summary={resumo ?? undefined}
           />{" "}
         </div>
+        */}
         {/* Barra de progresso de leitura - Componente cliente */}
         <ProgressBar />
         {/* Imagem de Capa Aprimorada */}
