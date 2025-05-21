@@ -5,19 +5,49 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Search, Share2 } from 'lucide-react';
+import { Menu, X, Search, Share2, Settings } from 'lucide-react';
 import HeaderSearchInline from './HeaderSearchInline';
 import { useIsHomePage } from '../hooks/useIsHomePage';
 import { useRouter, usePathname } from 'next/navigation';
+
+// Definições dos tamanhos de fonte
+const FONT_SIZES = {
+  sm: 0.9, // 90% do tamanho padrão
+  md: 1,   // Tamanho padrão (100%)
+  lg: 1.2, // 120% do tamanho padrão
+  xl: 1.4, // 140% do tamanho padrão
+};
+
+// Definições dos modos de contraste
+const CONTRAST_MODES = {
+  normal: 'Padrão',
+  highContrast: 'Alto Contraste',
+  darkMode: 'Modo Escuro'
+};
+
+// Interface para as preferências de usuário
+interface UserPreferences {
+  fontSize: keyof typeof FONT_SIZES;
+  contrastMode: keyof typeof CONTRAST_MODES;
+}
 
 const BlogHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal de fallback
+  const [preferencesMenuOpen, setPreferencesMenuOpen] = useState(false);
+  const [preferences, setPreferences] = useState<UserPreferences>({
+    fontSize: 'md',
+    contrastMode: 'normal',
+  });
+  const [prefsInitialized, setPrefsInitialized] = useState(false);
+  
   const isHome = useIsHomePage();
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const prefsMenuRef = useRef<HTMLDivElement>(null);
+  const preferencesBtnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const pathname = usePathname();
   
@@ -67,6 +97,7 @@ const BlogHeader = () => {
     // Fechar o menu quando o usuário navega para outra página
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setPreferencesMenuOpen(false);
   }, [pathname]);
 
   // Fechar o menu quando o usuário clica fora dele
@@ -81,13 +112,24 @@ const BlogHeader = () => {
       ) {
         setIsMobileMenuOpen(false);
       }
+      
+      // Fechar menu de preferências ao clicar fora
+      if (
+        preferencesMenuOpen &&
+        prefsMenuRef.current &&
+        preferencesBtnRef.current &&
+        !prefsMenuRef.current.contains(event.target as Node) &&
+        !preferencesBtnRef.current.contains(event.target as Node)
+      ) {
+        setPreferencesMenuOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, preferencesMenuOpen]);
   // Fechar menu mobile somente em situações específicas
   useEffect(() => {
     // Apenas fechamos o menu quando há uma mudança de rolagem
@@ -117,6 +159,135 @@ const BlogHeader = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Efeito para carregar preferências do localStorage quando o componente montar
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedPrefs = localStorage.getItem('userReadingPreferences');
+        if (savedPrefs) {
+          setPreferences(JSON.parse(savedPrefs));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar preferências:', error);
+      }
+    }
+    setPrefsInitialized(true);
+  }, []);
+
+  // Efeito para aplicar preferências quando elas mudarem
+  useEffect(() => {
+    if (!prefsInitialized) return;
+    
+    // Aplicar tamanho da fonte
+    document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+    document.documentElement.classList.add(`font-size-${preferences.fontSize}`);
+    
+    // Aplicar modo de contraste
+    document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+    const contrastClass = 
+      preferences.contrastMode === 'normal' ? 'contrast-normal' : 
+      preferences.contrastMode === 'highContrast' ? 'contrast-high' : 'contrast-dark';
+    document.documentElement.classList.add(contrastClass);
+    
+    // Salvar preferências no localStorage
+    try {
+      localStorage.setItem('userReadingPreferences', JSON.stringify(preferences));
+    } catch (error) {
+      console.error('Erro ao salvar preferências:', error);
+    }
+  }, [preferences, prefsInitialized]);
+
+  // Efeito para fechar o menu de preferências ao pressionar Escape
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setPreferencesMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, []);
+  // Função para manipular teclas de setas nos botões de preferências
+  const handlePreferenceKeyDown = (event: React.KeyboardEvent) => {
+    // Suporte a teclas de seta para navegação de preferências
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      // Navegar pelos tamanhos de fonte
+      if (event.currentTarget.getAttribute('aria-label')?.includes('Tamanho da fonte')) {
+        const sizes: (keyof typeof FONT_SIZES)[] = ['sm', 'md', 'lg', 'xl'];
+        const currentIndex = sizes.indexOf(preferences.fontSize);
+        const nextIndex = (currentIndex + 1) % sizes.length;
+        applyFontSize(sizes[nextIndex]);
+        event.preventDefault();
+      }
+      // Navegar pelos modos de contraste
+      else if (event.currentTarget.getAttribute('aria-label')?.includes('Modo de contraste')) {
+        const modes = Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>;
+        const currentIndex = modes.indexOf(preferences.contrastMode);
+        const nextIndex = (currentIndex + 1) % modes.length;
+        applyContrastMode(modes[nextIndex]);
+        event.preventDefault();
+      }
+    }
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      // Navegar pelos tamanhos de fonte
+      if (event.currentTarget.getAttribute('aria-label')?.includes('Tamanho da fonte')) {
+        const sizes: (keyof typeof FONT_SIZES)[] = ['sm', 'md', 'lg', 'xl'];
+        const currentIndex = sizes.indexOf(preferences.fontSize);
+        const prevIndex = (currentIndex - 1 + sizes.length) % sizes.length;
+        applyFontSize(sizes[prevIndex]);
+        event.preventDefault();
+      }
+      // Navegar pelos modos de contraste
+      else if (event.currentTarget.getAttribute('aria-label')?.includes('Modo de contraste')) {
+        const modes = Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>;
+        const currentIndex = modes.indexOf(preferences.contrastMode);
+        const prevIndex = (currentIndex - 1 + modes.length) % modes.length;
+        applyContrastMode(modes[prevIndex]);
+        event.preventDefault();
+      }
+    }
+  };
+
+  // Função para feedback visual quando as preferências são alteradas
+  const provideFeedback = (message: string) => {
+    // Criar um elemento de feedback
+    const feedbackEl = document.createElement('div');
+    feedbackEl.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#583B1F] text-white py-2 px-4 rounded-md shadow-lg z-50 animate-fade-in';
+    feedbackEl.setAttribute('role', 'alert');
+    feedbackEl.textContent = message;
+    
+    // Adicionar ao corpo do documento
+    document.body.appendChild(feedbackEl);
+    
+    // Remover após 2 segundos
+    setTimeout(() => {
+      feedbackEl.classList.add('animate-fade-out');
+      setTimeout(() => document.body.removeChild(feedbackEl), 300);
+    }, 2000);
+  };
+  
+  // Função para aplicar tamanho de fonte com feedback
+  const applyFontSize = (size: keyof typeof FONT_SIZES) => {
+    const sizeName = size === 'sm' ? 'pequeno' : size === 'md' ? 'médio' : size === 'lg' ? 'grande' : 'muito grande';
+    setPreferences({ ...preferences, fontSize: size });
+    provideFeedback(`Tamanho da fonte ${sizeName} aplicado`);
+  };
+  
+  // Função para aplicar modo de contraste com feedback
+  const applyContrastMode = (mode: keyof typeof CONTRAST_MODES) => {
+    setPreferences({ ...preferences, contrastMode: mode });
+    provideFeedback(`Modo ${CONTRAST_MODES[mode]} aplicado`);
+  };
+
+  // Função para alternar o menu de preferências
+  const togglePreferencesMenu = () => {
+    setPreferencesMenuOpen(!preferencesMenuOpen);
+  };
+
   return (
     <>      <header        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'h-[54px]' : 'h-[70px]'
@@ -131,7 +302,7 @@ const BlogHeader = () => {
         role="banner"
         aria-label="Cabeçalho do blog"
       >        <nav 
-          className={`container mx-auto px-4 ${isScrolled ? 'py-2' : 'py-3'} flex items-center justify-between transition-all duration-300`}
+          className={`container mx-auto px-2 pr-1 ${isScrolled ? 'py-2' : 'py-3'} flex items-center justify-between transition-all duration-300`}
           role="navigation"
           aria-label="Navegação principal"
         >
@@ -196,11 +367,126 @@ const BlogHeader = () => {
                   </a>
                 </Link>
               );
-            })}          </div>          {/* Mobile: Lupa, Compartilhamento e Menu Hambúrguer */}
+            })}
+            
+            {/* Botão de preferências de leitura - Desktop */}
+            <div className="relative">
+              <button
+                ref={preferencesBtnRef}
+                onClick={() => setPreferencesMenuOpen(!preferencesMenuOpen)}
+                className="flex items-center justify-center p-2 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md"
+                aria-label="Preferências de leitura"
+                aria-expanded={preferencesMenuOpen}
+              >
+                <Settings size={18} />
+              </button>
+              
+              {/* Menu de preferências - Desktop */}
+              {preferencesMenuOpen && (
+                <div 
+                  ref={prefsMenuRef}
+                  className="absolute right-0 top-full mt-2 w-64 bg-white rounded-md shadow-lg z-50 p-4 border border-[#F0EBE2]"
+                >
+                  <h3 className="text-sm font-medium text-[#583B1F] mb-3">Preferências de Leitura</h3>
+                  
+                  {/* Controle de tamanho de fonte */}
+                  <div className="mb-4">
+                    <p className="text-xs text-[#735B43] mb-2">Tamanho da Fonte</p>
+                    <div className="flex items-center justify-between gap-2">                      <button 
+                        onClick={() => applyFontSize('sm')}
+                        onKeyDown={handlePreferenceKeyDown}
+                        className={`flex-1 px-2 py-1 text-xs rounded-md ${
+                          preferences.fontSize === 'sm' 
+                            ? 'bg-[#C19A6B] text-white' 
+                            : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                        }`}
+                        tabIndex={0}
+                        aria-label="Tamanho da fonte pequeno"
+                      >
+                        A-
+                      </button>                      <button 
+                        onClick={() => applyFontSize('md')}
+                        onKeyDown={handlePreferenceKeyDown}
+                        className={`flex-1 px-2 py-1 text-sm rounded-md ${
+                          preferences.fontSize === 'md' 
+                            ? 'bg-[#C19A6B] text-white' 
+                            : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                        }`}
+                        tabIndex={0}
+                        aria-label="Tamanho da fonte médio"
+                      >
+                        A
+                      </button>                      <button 
+                        onClick={() => applyFontSize('lg')}
+                        onKeyDown={handlePreferenceKeyDown}
+                        className={`flex-1 px-2 py-1 text-base rounded-md ${
+                          preferences.fontSize === 'lg' 
+                            ? 'bg-[#C19A6B] text-white' 
+                            : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                        }`}
+                        tabIndex={0}
+                        aria-label="Tamanho da fonte grande"
+                      >
+                        A+
+                      </button>                      <button 
+                        onClick={() => applyFontSize('xl')}
+                        onKeyDown={handlePreferenceKeyDown}
+                        className={`flex-1 px-2 py-1 text-lg rounded-md ${
+                          preferences.fontSize === 'xl' 
+                            ? 'bg-[#C19A6B] text-white' 
+                            : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                        }`}
+                        tabIndex={0}
+                        aria-label="Tamanho da fonte muito grande"
+                      >
+                        A++
+                      </button>
+                    </div>
+                  </div>
+                    {/* Controle de contraste */}
+                  <div>
+                    <p className="text-xs text-[#735B43] mb-2">Contraste</p>                    <div className="space-y-2" role="radiogroup" aria-label="Opções de contraste">
+                      {(Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>).map((mode) => (
+                        <div 
+                          key={mode} 
+                          className={`flex items-center justify-between p-2 rounded-md cursor-pointer ${
+                            preferences.contrastMode === mode 
+                              ? 'bg-[#F0EBE2]/80 border border-[#C19A6B]' 
+                              : 'hover:bg-[#F0EBE2]/40'
+                          }`}
+                          onClick={() => applyContrastMode(mode)}
+                          onKeyDown={handlePreferenceKeyDown}
+                          tabIndex={0}
+                          role="radio"
+                          aria-checked={preferences.contrastMode === mode}
+                          aria-label={`Modo de contraste ${CONTRAST_MODES[mode]}`}
+                        >
+                          <span className="text-sm text-[#583B1F]">{CONTRAST_MODES[mode]}</span>
+                          {preferences.contrastMode === mode && (
+                            <div className="w-2 h-2 rounded-full bg-[#C19A6B]"></div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>          </div>{/* Mobile: Compartilhamento, Lupa e Menu Hambúrguer */}
           <div className={`flex md:hidden items-center space-x-2 transition-all duration-300`}>
-            <div className={`relative transition-all duration-300 ${isScrolled ? 'scale-95' : 'scale-100'}`}>
-              <HeaderSearchInline />
-            </div>
+            {/* Botão de preferências de leitura - Mobile */}
+            <button 
+              onClick={togglePreferencesMenu}
+              className={`p-1.5 transition-all duration-300 focus:outline-none 
+                focus:ring-2 focus:ring-[#C19A6B]/70 active:scale-95
+                ${preferencesMenuOpen 
+                  ? 'text-[#C19A6B]' 
+                  : 'text-[#583B1F] hover:text-[#C19A6B]'
+                }`}
+              aria-label="Preferências de leitura"
+              aria-expanded={preferencesMenuOpen}
+            >
+              <Settings className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
+            </button>
             
             {/* Botão de Compartilhamento */}
             <button 
@@ -210,7 +496,11 @@ const BlogHeader = () => {
                 text-[#583B1F] hover:text-[#C19A6B]`}
               aria-label="Compartilhar página"
             >
-              <Share2 className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />            </button>
+              <Share2 className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
+            </button>
+              <div className={`relative transition-all duration-300 ${isScrolled ? 'scale-95' : 'scale-100'}`}>
+              <HeaderSearchInline />
+            </div>
             
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -223,8 +513,7 @@ const BlogHeader = () => {
               aria-expanded={isMobileMenuOpen}
               aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
               ref={buttonRef}
-             
-            >              {isMobileMenuOpen 
+            >{isMobileMenuOpen 
                 ? <X className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} /> 
                 : <Menu className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
               }
@@ -293,6 +582,109 @@ const BlogHeader = () => {
         </div>
       </header>
       
+      {/* Menu de preferências - Mobile (fora do header para posicionamento correto) */}
+      {preferencesMenuOpen && isMobile && (
+        <div 
+          ref={prefsMenuRef}
+          className="fixed top-[60px] left-4 right-4 bg-white rounded-md shadow-lg z-50 p-4 border border-[#F0EBE2] animate-scale-in"
+        >
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-sm font-medium text-[#583B1F]">Preferências de Leitura</h3>
+            <button 
+              onClick={() => setPreferencesMenuOpen(false)}
+              className="text-[#583B1F] hover:text-[#C19A6B] transition-colors"
+              aria-label="Fechar menu de preferências"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          {/* Controle de tamanho de fonte */}
+          <div className="mb-4">
+            <p className="text-xs text-[#735B43] mb-2">Tamanho da Fonte</p>
+            <div className="flex items-center justify-between gap-2">              <button 
+                onClick={() => applyFontSize('sm')}
+                onKeyDown={handlePreferenceKeyDown}
+                className={`flex-1 px-2 py-2 text-xs rounded-md ${
+                  preferences.fontSize === 'sm' 
+                    ? 'bg-[#C19A6B] text-white' 
+                    : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                }`}
+                tabIndex={0}
+                aria-label="Tamanho da fonte pequeno"
+              >
+                A-
+              </button>
+                <button 
+                onClick={() => applyFontSize('md')}
+                onKeyDown={handlePreferenceKeyDown}
+                className={`flex-1 px-2 py-2 text-sm rounded-md ${
+                  preferences.fontSize === 'md' 
+                    ? 'bg-[#C19A6B] text-white' 
+                    : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                }`}
+                tabIndex={0}
+                aria-label="Tamanho da fonte médio"
+              >
+                A
+              </button>
+                <button 
+                onClick={() => applyFontSize('lg')}
+                onKeyDown={handlePreferenceKeyDown}
+                className={`flex-1 px-2 py-2 text-base rounded-md ${
+                  preferences.fontSize === 'lg' 
+                    ? 'bg-[#C19A6B] text-white' 
+                    : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                }`}
+                tabIndex={0}
+                aria-label="Tamanho da fonte grande"
+              >
+                A+
+              </button>
+                <button 
+                onClick={() => applyFontSize('xl')}
+                onKeyDown={handlePreferenceKeyDown}
+                className={`flex-1 px-2 py-2 text-lg rounded-md ${
+                  preferences.fontSize === 'xl' 
+                    ? 'bg-[#C19A6B] text-white' 
+                    : 'bg-[#F0EBE2] text-[#583B1F] hover:bg-[#F0EBE2]/80'
+                }`}
+                tabIndex={0}
+                aria-label="Tamanho da fonte muito grande"
+              >
+                A++
+              </button>
+            </div>
+          </div>
+            {/* Controle de contraste */}
+          <div>
+            <p className="text-xs text-[#735B43] mb-2">Contraste</p>            <div className="space-y-2" role="radiogroup" aria-label="Opções de contraste">
+              {(Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>).map((mode) => (
+                <div 
+                  key={mode} 
+                  className={`flex items-center justify-between p-3 rounded-md cursor-pointer ${
+                    preferences.contrastMode === mode 
+                      ? 'bg-[#F0EBE2]/80 border border-[#C19A6B]' 
+                      : 'hover:bg-[#F0EBE2]/40'
+                  }`}
+                  onClick={() => applyContrastMode(mode)}
+                  onKeyDown={handlePreferenceKeyDown}
+                  tabIndex={0}
+                  role="radio"
+                  aria-checked={preferences.contrastMode === mode}
+                  aria-label={`Modo de contraste ${CONTRAST_MODES[mode]}`}
+                >
+                  <span className="text-sm text-[#583B1F]">{CONTRAST_MODES[mode]}</span>
+                  {preferences.contrastMode === mode && (
+                    <div className="w-2 h-2 rounded-full bg-[#C19A6B]"></div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Modal de Compartilhamento para Fallback */}
       {isModalOpen && (
         <div 
@@ -349,7 +741,7 @@ const BlogHeader = () => {
               >
                 <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center mb-2">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487.5-.669.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.884-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
                 </div>
                 <span className="text-xs text-gray-600">WhatsApp</span>

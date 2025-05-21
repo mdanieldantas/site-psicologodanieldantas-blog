@@ -1,3 +1,144 @@
+/* Estilos para preferências de leitura */
+:root {
+  --font-size-multiplier: 1;
+}
+
+/* Classes para tamanhos de fonte diferentes */
+.font-size-sm {
+  --font-size-multiplier: 0.9;
+}
+
+.font-size-md {
+  --font-size-multiplier: 1;
+}
+
+.font-size-lg {
+  --font-size-multiplier: 1.2;
+}
+
+.font-size-xl {
+  --font-size-multiplier: 1.4;
+}
+
+/* Aplicando o tamanho da fonte aos elementos de texto */
+.article-content h1, 
+.article-content h2, 
+.article-content h3, 
+.article-content h4, 
+.article-content h5, 
+.article-content h6, 
+.article-content p, 
+.article-content li, 
+.article-content span,
+.article-content div {
+  font-size: calc(var(--font-size-multiplier) * 1em);
+}
+
+/* Classes para modos de contraste */
+.contrast-normal {
+  /* Modo normal - cores padrão já definidas no sistema */
+}
+
+.contrast-high {
+  /* Alto contraste - fundo branco e texto preto */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+  --primary: 0 0% 0%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 20%;
+  --accent: 0 0% 90%;
+  --accent-foreground: 0 0% 0%;
+  --border: 0 0% 80%;
+  --input: 0 0% 80%;
+  --ring: 0 0% 0%;
+}
+
+.contrast-high .article-content {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+.contrast-high .article-content h1, 
+.contrast-high .article-content h2, 
+.contrast-high .article-content h3, 
+.contrast-high .article-content h4, 
+.contrast-high .article-content h5, 
+.contrast-high .article-content h6, 
+.contrast-high .article-content p, 
+.contrast-high .article-content li, 
+.contrast-high .article-content span {
+  color: #000 !important;
+}
+
+.contrast-high .article-content a {
+  color: #00008B !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+.contrast-high .article-content blockquote {
+  border-left-color: #000 !important;
+  color: #000 !important;
+  background-color: #f0f0f0 !important;
+}
+
+/* Modo escuro */
+.contrast-dark {
+  --background: 0 0% 10%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 15%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 15%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 0 0% 95%;
+  --primary-foreground: 0 0% 10%;
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 95%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 80%;
+  --accent: 0 0% 20%;
+  --accent-foreground: 0 0% 95%;
+  --border: 0 0% 30%;
+  --input: 0 0% 30%;
+  --ring: 0 0% 95%;
+}
+
+.contrast-dark .article-content {
+  color: #e0e0e0 !important;
+  background-color: #121212 !important;
+}
+
+.contrast-dark .article-content h1, 
+.contrast-dark .article-content h2, 
+.contrast-dark .article-content h3, 
+.contrast-dark .article-content h4, 
+.contrast-dark .article-content h5, 
+.contrast-dark .article-content h6, 
+.contrast-dark .article-content p, 
+.contrast-dark .article-content li, 
+.contrast-dark .article-content span {
+  color: #e0e0e0 !important;
+}
+
+.contrast-dark .article-content a {
+  color: #90caf9 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+.contrast-dark .article-content blockquote {
+  border-left-color: #90caf9 !important;
+  color: #e0e0e0 !important;
+  background-color: #1e1e1e !important;
+}
+
 /* Animação bounce suave para o botão */
 @keyframes bounce-once {
   0% { transform: scale(1); }
@@ -259,6 +400,16 @@
   transform: translateY(-3px) scale(1.12) rotate(-6deg);
   box-shadow: 0 6px 18px 0 rgba(193,154,107,0.18);
 }
+
+/* Animação de fade para o feedback das preferências */
+@keyframes fade-out {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+.animate-fade-out {
+  animation: fade-out 0.3s ease-out forwards;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
