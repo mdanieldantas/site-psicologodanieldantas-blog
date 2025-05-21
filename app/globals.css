@@ -4,20 +4,24 @@
 }
 
 /* Classes para tamanhos de fonte diferentes */
+html.font-size-sm,
 .font-size-sm {
-  --font-size-multiplier: 0.9;
+  --font-size-multiplier: 0.9 !important;
 }
 
+html.font-size-md,
 .font-size-md {
-  --font-size-multiplier: 1;
+  --font-size-multiplier: 1 !important;
 }
 
+html.font-size-lg,
 .font-size-lg {
-  --font-size-multiplier: 1.2;
+  --font-size-multiplier: 1.2 !important;
 }
 
+html.font-size-xl,
 .font-size-xl {
-  --font-size-multiplier: 1.4;
+  --font-size-multiplier: 1.4 !important;
 }
 
 /* Aplicando o tamanho da fonte aos elementos de texto */
@@ -30,13 +34,68 @@
 .article-content p, 
 .article-content li, 
 .article-content span,
-.article-content div {
+.article-content div,
+.article-content a,
+.article-content blockquote,
+.article-content code {
   font-size: calc(var(--font-size-multiplier) * 1em);
+}
+
+/* Aplicar a mais elementos do site para uma experiência consistente */
+.blog-post-content,
+.blog-content,
+.post-content,
+.page-content,
+.post-body,
+.content-area p,
+.content-area li,
+.content-area blockquote,
+main p,
+main li, 
+main blockquote,
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6,
+main a,
+main span,
+.entry-content p,
+.entry-content li,
+.entry-content div,
+.text-content p,
+.text-content li,
+.text-content blockquote,
+.blog-text p,
+.blog-text li,
+article p,
+article li,
+.post p,
+.post li {
+  font-size: calc(var(--font-size-multiplier) * 1em);
+}
+
+/* Ajustar tamanho de elementos específicos */
+.font-size-xl .article-title {
+  font-size: calc(1.8rem * var(--font-size-multiplier));
+}
+
+.font-size-lg .article-title {
+  font-size: calc(1.7rem * var(--font-size-multiplier));
+}
+
+.font-size-sm .article-title {
+  font-size: calc(1.5rem * var(--font-size-multiplier));
 }
 
 /* Classes para modos de contraste */
 .contrast-normal {
   /* Modo normal - cores padrão já definidas no sistema */
+  --text-primary: #583B1F;
+  --text-secondary: #735B43;
+  --background-primary: #F8F5F0;
+  --link-color: #C19A6B;
 }
 
 .contrast-high {
@@ -58,6 +117,57 @@
   --border: 0 0% 80%;
   --input: 0 0% 80%;
   --ring: 0 0% 0%;
+  
+  /* Variáveis adicionais para alto contraste */
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --background-primary: #FFFFFF;
+  --link-color: #0000CC;
+}
+
+.contrast-dark {
+  /* Modo escuro - fundo escuro e texto claro */
+  --background: 0 0% 10%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 10%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 80%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 98%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 0% 80%;
+  
+  /* Variáveis adicionais para modo escuro */
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --background-primary: #121212;
+  --link-color: #93C5FD;
+}
+
+/* Alto contraste - aplicado em todo o site */
+.contrast-high {
+  color-scheme: light !important;
+  background-color: white !important;
+  color: black !important;
+}
+
+.contrast-high body,
+.contrast-high main,
+.contrast-high article,
+.contrast-high section, 
+.contrast-high div,
+.contrast-high header,
+.contrast-high footer {
+  background-color: white !important;
+  color: black !important;
 }
 
 .contrast-high .article-content {
@@ -73,11 +183,21 @@
 .contrast-high .article-content h6, 
 .contrast-high .article-content p, 
 .contrast-high .article-content li, 
-.contrast-high .article-content span {
+.contrast-high .article-content span,
+.contrast-high p,
+.contrast-high h1,
+.contrast-high h2,
+.contrast-high h3,
+.contrast-high h4,
+.contrast-high h5,
+.contrast-high h6,
+.contrast-high li,
+.contrast-high span {
   color: #000 !important;
 }
 
-.contrast-high .article-content a {
+.contrast-high .article-content a,
+.contrast-high a {
   color: #00008B !important;
   text-decoration: underline !important;
   text-underline-offset: 2px !important;
@@ -89,29 +209,16 @@
   background-color: #f0f0f0 !important;
 }
 
-/* Modo escuro */
-.contrast-dark {
-  --background: 0 0% 10%;
-  --foreground: 0 0% 95%;
-  --card: 0 0% 15%;
-  --card-foreground: 0 0% 95%;
-  --popover: 0 0% 15%;
-  --popover-foreground: 0 0% 95%;
-  --primary: 0 0% 95%;
-  --primary-foreground: 0 0% 10%;
-  --secondary: 0 0% 20%;
-  --secondary-foreground: 0 0% 95%;
-  --muted: 0 0% 20%;
-  --muted-foreground: 0 0% 80%;
-  --accent: 0 0% 20%;
-  --accent-foreground: 0 0% 95%;
-  --border: 0 0% 30%;
-  --input: 0 0% 30%;
-  --ring: 0 0% 95%;
+/* Estilo para modo escuro */
+.contrast-dark body,
+.contrast-dark .bg-[#F8F5F0],
+.contrast-dark [class*="bg-[#F8F5F0]"] {
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
 }
 
 .contrast-dark .article-content {
-  color: #e0e0e0 !important;
+  color: #FFFFFF !important;
   background-color: #121212 !important;
 }
 
@@ -124,19 +231,65 @@
 .contrast-dark .article-content p, 
 .contrast-dark .article-content li, 
 .contrast-dark .article-content span {
-  color: #e0e0e0 !important;
+  color: #FFFFFF !important;
 }
 
 .contrast-dark .article-content a {
-  color: #90caf9 !important;
+  color: #93C5FD !important;
   text-decoration: underline !important;
   text-underline-offset: 2px !important;
 }
 
 .contrast-dark .article-content blockquote {
-  border-left-color: #90caf9 !important;
-  color: #e0e0e0 !important;
-  background-color: #1e1e1e !important;
+  border-left-color: #CCCCCC !important;
+  color: #FFFFFF !important;
+  background-color: #1F1F1F !important;
+}
+
+/* Modo escuro - aplicado em todo o site */
+.contrast-dark {
+  color-scheme: dark !important;
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
+}
+
+.contrast-dark body,
+.contrast-dark main,
+.contrast-dark article,
+.contrast-dark section, 
+.contrast-dark div,
+.contrast-dark header,
+.contrast-dark footer {
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
+}
+
+.contrast-dark .article-content h1, 
+.contrast-dark .article-content h2, 
+.contrast-dark .article-content h3, 
+.contrast-dark .article-content h4, 
+.contrast-dark .article-content h5, 
+.contrast-dark .article-content h6, 
+.contrast-dark .article-content p, 
+.contrast-dark .article-content li, 
+.contrast-dark .article-content span,
+.contrast-dark p,
+.contrast-dark h1,
+.contrast-dark h2,
+.contrast-dark h3,
+.contrast-dark h4,
+.contrast-dark h5,
+.contrast-dark h6,
+.contrast-dark li,
+.contrast-dark span {
+  color: #FFFFFF !important;
+}
+
+.contrast-dark .article-content a,
+.contrast-dark a {
+  color: #93C5FD !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
 }
 
 /* Animação bounce suave para o botão */

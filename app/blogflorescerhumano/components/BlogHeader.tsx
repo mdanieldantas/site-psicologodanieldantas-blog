@@ -31,16 +31,69 @@ interface UserPreferences {
   contrastMode: keyof typeof CONTRAST_MODES;
 }
 
+// Declare global para habilitar as funções diagnósticas e utilitárias no objeto window
+declare global {
+  interface Window {
+    diagnosticarPreferencias?: () => {
+      state: UserPreferences;
+      storage: string | null;
+      classes: {
+        fontSize: string | undefined;
+        contrast: string | undefined;
+      };
+      cssVars: {
+        fontSizeMultiplier: string;
+      };
+    };
+    forcarPreferencias?: () => void;
+  }
+}
+
 const BlogHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal de fallback
   const [preferencesMenuOpen, setPreferencesMenuOpen] = useState(false);
-  const [preferences, setPreferences] = useState<UserPreferences>({
-    fontSize: 'md',
-    contrastMode: 'normal',
-  });
+  
+  /**
+   * Inicializa ou redefine as preferências de leitura do usuário
+   * Pode ser chamada em situações onde as preferências precisam ser restauradas ao padrão
+   */
+  const inicializarPreferencias = useCallback(() => {
+    // Definir valores padrão
+    const defaultPrefs: UserPreferences = {
+      fontSize: 'md',
+      contrastMode: 'normal'
+    };
+    
+    try {
+      // Tentar carregar do localStorage primeiro
+      const savedPrefs = localStorage.getItem('userReadingPreferences');
+      if (savedPrefs) {
+        const parsedPrefs = JSON.parse(savedPrefs) as UserPreferences;
+        
+        // Validar se tem os valores esperados antes de usar
+        if (parsedPrefs && 
+            parsedPrefs.fontSize && 
+            parsedPrefs.contrastMode && 
+            Object.keys(FONT_SIZES).includes(parsedPrefs.fontSize) &&
+            Object.keys(CONTRAST_MODES).includes(parsedPrefs.contrastMode)) {
+          
+          // Aplicar propriedades válidas
+          return parsedPrefs;
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao inicializar preferências:', error);
+    }
+    
+    // Se não houver preferências salvas ou se forem inválidas, usar padrões
+    return defaultPrefs;
+  }, []);
+  
+  // Inicializar estado com função que valida as preferências salvas
+  const [preferences, setPreferences] = useState<UserPreferences>(inicializarPreferencias);
   const [prefsInitialized, setPrefsInitialized] = useState(false);
   
   const isHome = useIsHomePage();
@@ -166,36 +219,113 @@ const BlogHeader = () => {
       try {
         const savedPrefs = localStorage.getItem('userReadingPreferences');
         if (savedPrefs) {
-          setPreferences(JSON.parse(savedPrefs));
+          // Parsear as preferências salvas
+          const parsedPrefs = JSON.parse(savedPrefs) as UserPreferences;
+          
+          // Verificar se os valores são válidos antes de aplicar
+          if (parsedPrefs.fontSize && Object.keys(FONT_SIZES).includes(parsedPrefs.fontSize)) {
+            // Aplicar tamanho de fonte
+            document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+            document.documentElement.classList.add(`font-size-${parsedPrefs.fontSize}`);
+          }
+          
+          if (parsedPrefs.contrastMode && Object.keys(CONTRAST_MODES).includes(parsedPrefs.contrastMode)) {
+            // Aplicar contraste
+            document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+            const contrastClass = 
+              parsedPrefs.contrastMode === 'normal' ? 'contrast-normal' : 
+              parsedPrefs.contrastMode === 'highContrast' ? 'contrast-high' : 'contrast-dark';
+            document.documentElement.classList.add(contrastClass);
+          }
+          
+          // Atualizar estado com preferências salvas
+          setPreferences(parsedPrefs);
         }
       } catch (error) {
         console.error('Erro ao carregar preferências:', error);
       }
+      setPrefsInitialized(true);
     }
-    setPrefsInitialized(true);
   }, []);
-
   // Efeito para aplicar preferências quando elas mudarem
   useEffect(() => {
     if (!prefsInitialized) return;
     
-    // Aplicar tamanho da fonte
-    document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
-    document.documentElement.classList.add(`font-size-${preferences.fontSize}`);
+    console.log('Aplicando preferências após mudança de estado:', preferences);
     
-    // Aplicar modo de contraste
+    // Remover todas as classes de tamanho de fonte anteriores
+    document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+    // Adicionar a nova classe de tamanho de fonte
+    const fontSizeClass = `font-size-${preferences.fontSize}`;
+    console.log(`Adicionando classe de fonte: ${fontSizeClass}`);
+    document.documentElement.classList.add(fontSizeClass);
+    
+    // Remover todas as classes de contraste anteriores
     document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+    // Adicionar a nova classe de contraste
     const contrastClass = 
       preferences.contrastMode === 'normal' ? 'contrast-normal' : 
-      preferences.contrastMode === 'highContrast' ? 'contrast-high' : 'contrast-dark';
+      preferences.contrastMode === 'highContrast' ? 'contrast-high' : 
+      'contrast-dark';
+    
+    console.log(`Adicionando classe de contraste: ${contrastClass}`);
     document.documentElement.classList.add(contrastClass);
     
-    // Salvar preferências no localStorage
+    // Salvar preferências no localStorage para persistência
     try {
       localStorage.setItem('userReadingPreferences', JSON.stringify(preferences));
+      console.log('Preferências salvas no localStorage');
     } catch (error) {
       console.error('Erro ao salvar preferências:', error);
     }
+  }, [preferences, prefsInitialized]);
+
+  // Adicionando uma verificação periódica para garantir que as preferências sejam mantidas
+  // Isso é especialmente útil em caso de carregamentos dinâmicos que possam sobrescrever nossas preferências
+  useEffect(() => {
+    if (!prefsInitialized) return;
+    
+    // Verificação inicial após montagem do componente
+    const enforcePreferences = () => {
+      console.log('Verificando e reforçando preferências...');
+      
+      // Verificar se as classes foram mantidas
+      const fontSizeClass = `font-size-${preferences.fontSize}`;
+      const contrastClass = 
+        preferences.contrastMode === 'normal' ? 'contrast-normal' : 
+        preferences.contrastMode === 'highContrast' ? 'contrast-high' : 
+        'contrast-dark';
+      
+      const hasFontClass = document.documentElement.classList.contains(fontSizeClass);
+      const hasContrastClass = document.documentElement.classList.contains(contrastClass);
+      
+      // Verificar se as variáveis CSS estão corretas
+      const styles = getComputedStyle(document.documentElement);
+      const currentFontSize = styles.getPropertyValue('--font-size-multiplier').trim();
+      const expectedFontSize = `${FONT_SIZES[preferences.fontSize]}`;
+      
+      // Se alguma preferência foi perdida, reaplique
+      if (!hasFontClass || currentFontSize !== expectedFontSize) {
+        console.log('Reforçando preferência de tamanho de fonte:', preferences.fontSize);
+        applyFontSize(preferences.fontSize);
+      }
+      
+      if (!hasContrastClass) {
+        console.log('Reforçando preferência de contraste:', preferences.contrastMode);
+        applyContrastMode(preferences.contrastMode);
+      }
+    };
+    
+    // Verificar logo após 1 segundo para dar tempo ao navegador de processar o CSS
+    const initialCheck = setTimeout(enforcePreferences, 1000);
+    
+    // Verificação periódica a cada 3 segundos
+    const interval = setInterval(enforcePreferences, 3000);
+    
+    return () => {
+      clearTimeout(initialCheck);
+      clearInterval(interval);
+    };
   }, [preferences, prefsInitialized]);
 
   // Efeito para fechar o menu de preferências ao pressionar Escape
@@ -209,6 +339,19 @@ const BlogHeader = () => {
     document.addEventListener('keydown', handleEscapeKey);
     return () => {
       document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, []);  // Remover as referências aos timeouts que não estamos mais usando
+  useEffect(() => {
+    return () => {
+      // Limpar todos os timeouts e intervalos para evitar memory leaks na desmontagem do componente
+      if (fontSizeTimeoutRef.current) {
+        clearTimeout(fontSizeTimeoutRef.current);
+        fontSizeTimeoutRef.current = null;
+      }
+      if (contrastModeTimeoutRef.current) {
+        clearTimeout(contrastModeTimeoutRef.current);
+        contrastModeTimeoutRef.current = null;
+      }
     };
   }, []);
   // Função para manipular teclas de setas nos botões de preferências
@@ -252,34 +395,218 @@ const BlogHeader = () => {
     }
   };
 
-  // Função para feedback visual quando as preferências são alteradas
+  // Função para feedback visual quando as preferências são alteradas com suporte aprimorado a leitores de tela
   const provideFeedback = (message: string) => {
+    // Remover qualquer feedback anterior que possa existir
+    const existingFeedback = document.getElementById('preferences-feedback');
+    if (existingFeedback) {
+      document.body.removeChild(existingFeedback);
+    }
+    
     // Criar um elemento de feedback
     const feedbackEl = document.createElement('div');
-    feedbackEl.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#583B1F] text-white py-2 px-4 rounded-md shadow-lg z-50 animate-fade-in';
-    feedbackEl.setAttribute('role', 'alert');
-    feedbackEl.textContent = message;
+    feedbackEl.id = 'preferences-feedback';
+    feedbackEl.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#583B1F] text-white py-2 px-4 rounded-md shadow-lg z-50';
+    feedbackEl.setAttribute('role', 'status');
+    feedbackEl.setAttribute('aria-live', 'polite');
+    feedbackEl.style.opacity = '0';
+    feedbackEl.style.transition = 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+    feedbackEl.style.transform = 'translate(-50%, 10px)';
+    
+    // Adicionar ícone para melhorar visibilidade (opcional)
+    feedbackEl.innerHTML = `
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span>${message}</span>
+      </div>
+    `;
     
     // Adicionar ao corpo do documento
     document.body.appendChild(feedbackEl);
     
+    // Aplicar fade-in após um pequeno delay (para dar tempo ao browser de processar)
+    setTimeout(() => {
+      feedbackEl.style.opacity = '1';
+      feedbackEl.style.transform = 'translate(-50%, 0)';
+    }, 10);
+    
     // Remover após 2 segundos
     setTimeout(() => {
-      feedbackEl.classList.add('animate-fade-out');
-      setTimeout(() => document.body.removeChild(feedbackEl), 300);
+      feedbackEl.style.opacity = '0';
+      feedbackEl.style.transform = 'translate(-50%, 10px)';
+      
+      // Remover elemento do DOM após a animação terminar
+      setTimeout(() => {
+        if (document.body.contains(feedbackEl)) {
+          document.body.removeChild(feedbackEl);
+        }
+      }, 300);
     }, 2000);
   };
-  
-  // Função para aplicar tamanho de fonte com feedback
+    // Referências que serão usadas para controle de estado dos botões
+  // mas não mais para debounce já que removemos o timeout
+  const fontSizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const contrastModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);  // Função para aplicar tamanho de fonte - abordagem aprimorada com força bruta
   const applyFontSize = (size: keyof typeof FONT_SIZES) => {
+    console.log(`Aplicando tamanho de fonte: ${size}`);
+    
+    // Evitar operações desnecessárias se o tamanho já for o mesmo
+    if (preferences.fontSize === size) {
+      console.log(`Tamanho já está em ${size}, ignorando.`);
+      return;
+    }
+
     const sizeName = size === 'sm' ? 'pequeno' : size === 'md' ? 'médio' : size === 'lg' ? 'grande' : 'muito grande';
-    setPreferences({ ...preferences, fontSize: size });
+    
+    // FORÇA BRUTA: Criar um estilo inline e injetá-lo no head do documento
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+      :root {
+        --font-size-multiplier: ${FONT_SIZES[size]} !important;
+      }
+      
+      /* Aplicar diretamente aos elementos mais importantes */
+      body {
+        font-size: calc(1rem * ${FONT_SIZES[size]}) !important;
+      }
+      
+      /* Garantir que os elementos mais comuns de conteúdo sejam afetados */
+      main p, main li, main h1, main h2, main h3, main h4, main h5, main h6,
+      article p, article li, article h1, article h2, article h3, article h4,
+      .article-content p, .article-content li, .article-content h1, .article-content h2, 
+      .article-content h3, .article-content h4, .article-content h5, .article-content h6,
+      .blog-post-content p, .blog-post-content li,
+      .post p, .post li,
+      .content-area p, .content-area li {
+        font-size: calc(var(--font-size-multiplier) * 1em) !important;
+      }
+    `;
+    
+    // Remover qualquer estilo anterior injetado
+    const oldStyle = document.getElementById('dynamic-font-size');
+    if (oldStyle) {
+      oldStyle.remove();
+    }
+    
+    // Adicionar ID para referência futura
+    styleEl.id = 'dynamic-font-size';
+    document.head.appendChild(styleEl);
+    
+    // Aplicação tradicional das classes para compatibilidade
+    document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+    document.documentElement.classList.add(`font-size-${size}`);
+    
+    // Forçar um pequeno reflow para garantir que as mudanças sejam aplicadas
+    void document.documentElement.offsetHeight;
+    
+    // Garantir que a classe seja aplicada no body também para maior compatibilidade
+    document.body.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+    document.body.classList.add(`font-size-${size}`);
+    
+    // Atualizar o estado
+    setPreferences(prev => ({ ...prev, fontSize: size }));
+    
+    // Tentar salvar no localStorage imediatamente
+    try {
+      localStorage.setItem('userReadingPreferences', JSON.stringify({
+        ...preferences,
+        fontSize: size
+      }));
+      console.log('Preferência de tamanho salva com sucesso:', size);
+    } catch (error) {
+      console.error('Erro ao salvar preferência de tamanho:', error);
+    }
+    
+    // Mostrar feedback visual
     provideFeedback(`Tamanho da fonte ${sizeName} aplicado`);
   };
-  
-  // Função para aplicar modo de contraste com feedback
+  // Função para aplicar modo de contraste - usando a mesma abordagem de força bruta do tamanho de fonte
   const applyContrastMode = (mode: keyof typeof CONTRAST_MODES) => {
-    setPreferences({ ...preferences, contrastMode: mode });
+    console.log(`Aplicando modo de contraste: ${mode}`);
+    
+    // Evitar operações desnecessárias se o modo já for o mesmo
+    if (preferences.contrastMode === mode) {
+      console.log(`Contraste já está em ${mode}, ignorando.`);
+      return;
+    }
+
+    // FORÇA BRUTA: Criar um estilo inline e injetá-lo no head do documento
+    const styleEl = document.createElement('style');
+    const contrastClass = 
+      mode === 'normal' ? 'contrast-normal' : 
+      mode === 'highContrast' ? 'contrast-high' : 
+      'contrast-dark';
+    
+    // Definir variáveis CSS diferentes dependendo do modo
+    let cssVars = '';
+    if (mode === 'normal') {
+      cssVars = `
+        --text-primary: #583B1F !important;
+        --text-secondary: #735B43 !important;
+        --background-primary: #F8F5F0 !important;
+        --link-color: #C19A6B !important;
+      `;
+    } else if (mode === 'highContrast') {
+      cssVars = `
+        --text-primary: #000000 !important;
+        --text-secondary: #333333 !important;
+        --background-primary: #FFFFFF !important;
+        --link-color: #0000CC !important;
+      `;
+    } else { // darkMode
+      cssVars = `
+        --text-primary: #FFFFFF !important;
+        --text-secondary: #CCCCCC !important;
+        --background-primary: #121212 !important;
+        --link-color: #93C5FD !important;
+      `;
+    }
+    
+    styleEl.textContent = `
+      :root {
+        ${cssVars}
+      }
+      
+      html {
+        color-scheme: ${mode === 'darkMode' ? 'dark' : 'light'} !important;
+      }
+    `;
+    
+    // Remover qualquer estilo anterior injetado
+    const oldStyle = document.getElementById('dynamic-contrast-mode');
+    if (oldStyle) {
+      oldStyle.remove();
+    }
+    
+    // Adicionar ID para referência futura
+    styleEl.id = 'dynamic-contrast-mode';
+    document.head.appendChild(styleEl);
+    
+    // Aplicação tradicional das classes para compatibilidade
+    document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+    console.log(`Adicionando classe de contraste: ${contrastClass}`);
+    document.documentElement.classList.add(contrastClass);
+    
+    // Forçar um pequeno reflow para garantir que as mudanças sejam aplicadas
+    void document.documentElement.offsetHeight;
+    
+    // Atualizar o estado
+    setPreferences(prev => ({ ...prev, contrastMode: mode }));
+    
+    // Tentar salvar no localStorage imediatamente
+    try {
+      localStorage.setItem('userReadingPreferences', JSON.stringify({
+        ...preferences,
+        contrastMode: mode
+      }));
+    } catch (error) {
+      console.error('Erro ao salvar preferência de contraste:', error);
+    }
+    
+    // Mostrar feedback visual
     provideFeedback(`Modo ${CONTRAST_MODES[mode]} aplicado`);
   };
 
@@ -287,6 +614,145 @@ const BlogHeader = () => {
   const togglePreferencesMenu = () => {
     setPreferencesMenuOpen(!preferencesMenuOpen);
   };
+
+  // Função para garantir que as preferências sejam aplicadas corretamente
+  const forceApplyPreferences = useCallback(() => {
+    if (!prefsInitialized) return;
+    
+    console.log('Forçando aplicação de todas as preferências');
+    
+    // Aplicar tamanho de fonte
+    applyFontSize(preferences.fontSize);
+    
+    // Aplicar contraste
+    applyContrastMode(preferences.contrastMode);
+    
+  }, [preferences, prefsInitialized]);
+
+  // Garantir que as preferências sejam aplicadas após a montagem completa do componente
+  useEffect(() => {
+    if (prefsInitialized) {
+      // Pequeno atraso para garantir que o DOM esteja totalmente carregado
+      const timer = setTimeout(() => {
+        forceApplyPreferences();
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [prefsInitialized, forceApplyPreferences]);
+
+  // Adicionar comando global para depuração e forçar aplicação das preferências
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.forcarPreferencias = forceApplyPreferences;
+      
+      return () => {
+        delete window.forcarPreferencias;
+      };
+    }
+  }, [forceApplyPreferences]);
+
+  // Função utilitária para diagnóstico de problemas com as preferências de leitura
+  // Esta função pode ser chamada pelo console do navegador: window.diagnosticarPreferencias()
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Função para diagnóstico de problemas com as preferências
+      window.diagnosticarPreferencias = () => {
+        console.group('Diagnóstico de Preferências de Leitura');
+        
+        // Verificar preferências no state
+        console.log('Estado interno (React):', preferences);
+        
+        // Verificar localStorage
+        try {
+          const savedPrefs = localStorage.getItem('userReadingPreferences');
+          console.log('localStorage:', savedPrefs ? JSON.parse(savedPrefs) : 'Não encontrado');
+        } catch (error) {
+          console.error('Erro ao ler localStorage:', error);
+        }
+        
+        // Verificar classes aplicadas ao document
+        const fontSizeClass = ['font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl']
+          .find(cls => document.documentElement.classList.contains(cls));
+        
+        const contrastClass = ['contrast-normal', 'contrast-high', 'contrast-dark']
+          .find(cls => document.documentElement.classList.contains(cls));
+        
+        console.log('Classes aplicadas:', {
+          'Tamanho de fonte': fontSizeClass || 'Nenhum',
+          'Modo de contraste': contrastClass || 'Nenhum'
+        });
+        
+        // Verificar variáveis CSS computadas
+        const styles = getComputedStyle(document.documentElement);
+        console.log('Variável CSS --font-size-multiplier:', styles.getPropertyValue('--font-size-multiplier'));
+        
+        console.groupEnd();
+        
+        return {
+          state: preferences,
+          storage: localStorage.getItem('userReadingPreferences'),
+          classes: {
+            fontSize: fontSizeClass,
+            contrast: contrastClass
+          },
+          cssVars: {
+            fontSizeMultiplier: styles.getPropertyValue('--font-size-multiplier')
+          }
+        };
+      };
+    }
+    
+    return () => {
+      if (typeof window !== 'undefined' && window.diagnosticarPreferencias) {
+        delete window.diagnosticarPreferencias;
+      }
+    };
+  }, [preferences]);
+
+  // Adicionar script de diagnóstico para verificar se as preferências estão sendo aplicadas corretamente
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Executar diagnóstico quando a página carregar completamente
+      const handleLoad = () => {
+        setTimeout(() => {
+          console.group('🔍 Diagnóstico automático de preferências');
+          
+          // Verificar preferências no state
+          console.log('Estado interno (React):', preferences);
+          
+          // Verificar localStorage
+          try {
+            const savedPrefs = localStorage.getItem('userReadingPreferences');
+            console.log('localStorage:', savedPrefs ? JSON.parse(savedPrefs) : 'Não encontrado');
+          } catch (error) {
+            console.error('Erro ao ler localStorage:', error);
+          }
+          
+          // Verificar classes aplicadas ao document
+          const fontSizeClass = ['font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl']
+            .find(cls => document.documentElement.classList.contains(cls));
+          
+          const contrastClass = ['contrast-normal', 'contrast-high', 'contrast-dark']
+            .find(cls => document.documentElement.classList.contains(cls));
+          
+          console.log('Classes aplicadas:', {
+            'Tamanho de fonte': fontSizeClass || 'Nenhum',
+            'Modo de contraste': contrastClass || 'Nenhum'
+          });
+          
+          // Verificar variáveis CSS computadas
+          const styles = getComputedStyle(document.documentElement);
+          console.log('Variável CSS --font-size-multiplier:', styles.getPropertyValue('--font-size-multiplier'));
+          
+          console.groupEnd();
+        }, 1000);
+      };
+      
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, [preferences]);
 
   return (
     <>      <header        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -382,7 +848,7 @@ const BlogHeader = () => {
               </button>
               
               {/* Menu de preferências - Desktop */}
-              {preferencesMenuOpen && (
+        {preferencesMenuOpen && (
                 <div 
                   ref={prefsMenuRef}
                   className="absolute right-0 top-full mt-2 w-64 bg-white rounded-md shadow-lg z-50 p-4 border border-[#F0EBE2]"
@@ -392,8 +858,14 @@ const BlogHeader = () => {
                   {/* Controle de tamanho de fonte */}
                   <div className="mb-4">
                     <p className="text-xs text-[#735B43] mb-2">Tamanho da Fonte</p>
-                    <div className="flex items-center justify-between gap-2">                      <button 
-                        onClick={() => applyFontSize('sm')}
+                    <div className="flex items-center justify-between gap-2">
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Clique no botão de tamanho pequeno');
+                          applyFontSize('sm');
+                        }}
                         onKeyDown={handlePreferenceKeyDown}
                         className={`flex-1 px-2 py-1 text-xs rounded-md ${
                           preferences.fontSize === 'sm' 
@@ -404,8 +876,14 @@ const BlogHeader = () => {
                         aria-label="Tamanho da fonte pequeno"
                       >
                         A-
-                      </button>                      <button 
-                        onClick={() => applyFontSize('md')}
+                      </button>
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Clique no botão de tamanho médio');
+                          applyFontSize('md');
+                        }}
                         onKeyDown={handlePreferenceKeyDown}
                         className={`flex-1 px-2 py-1 text-sm rounded-md ${
                           preferences.fontSize === 'md' 
@@ -416,8 +894,14 @@ const BlogHeader = () => {
                         aria-label="Tamanho da fonte médio"
                       >
                         A
-                      </button>                      <button 
-                        onClick={() => applyFontSize('lg')}
+                      </button>
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Clique no botão de tamanho grande');
+                          applyFontSize('lg');
+                        }}
                         onKeyDown={handlePreferenceKeyDown}
                         className={`flex-1 px-2 py-1 text-base rounded-md ${
                           preferences.fontSize === 'lg' 
@@ -428,8 +912,14 @@ const BlogHeader = () => {
                         aria-label="Tamanho da fonte grande"
                       >
                         A+
-                      </button>                      <button 
-                        onClick={() => applyFontSize('xl')}
+                      </button>
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Clique no botão de tamanho muito grande');
+                          applyFontSize('xl');
+                        }}
                         onKeyDown={handlePreferenceKeyDown}
                         className={`flex-1 px-2 py-1 text-lg rounded-md ${
                           preferences.fontSize === 'xl' 
@@ -454,7 +944,12 @@ const BlogHeader = () => {
                               ? 'bg-[#F0EBE2]/80 border border-[#C19A6B]' 
                               : 'hover:bg-[#F0EBE2]/40'
                           }`}
-                          onClick={() => applyContrastMode(mode)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log(`Clique na opção de contraste ${mode}`);
+                            applyContrastMode(mode);
+                          }}
                           onKeyDown={handlePreferenceKeyDown}
                           tabIndex={0}
                           role="radio"
@@ -601,9 +1096,13 @@ const BlogHeader = () => {
           
           {/* Controle de tamanho de fonte */}
           <div className="mb-4">
-            <p className="text-xs text-[#735B43] mb-2">Tamanho da Fonte</p>
-            <div className="flex items-center justify-between gap-2">              <button 
-                onClick={() => applyFontSize('sm')}
+            <p className="text-xs text-[#735B43] mb-2">Tamanho da Fonte</p>            <div className="flex items-center justify-between gap-2">              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Clique no botão de tamanho pequeno (mobile)');
+                  applyFontSize('sm');
+                }}
                 onKeyDown={handlePreferenceKeyDown}
                 className={`flex-1 px-2 py-2 text-xs rounded-md ${
                   preferences.fontSize === 'sm' 
@@ -616,7 +1115,12 @@ const BlogHeader = () => {
                 A-
               </button>
                 <button 
-                onClick={() => applyFontSize('md')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Clique no botão de tamanho médio (mobile)');
+                  applyFontSize('md');
+                }}
                 onKeyDown={handlePreferenceKeyDown}
                 className={`flex-1 px-2 py-2 text-sm rounded-md ${
                   preferences.fontSize === 'md' 
@@ -627,9 +1131,13 @@ const BlogHeader = () => {
                 aria-label="Tamanho da fonte médio"
               >
                 A
-              </button>
-                <button 
-                onClick={() => applyFontSize('lg')}
+              </button>                <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Clique no botão de tamanho grande (mobile)');
+                  applyFontSize('lg');
+                }}
                 onKeyDown={handlePreferenceKeyDown}
                 className={`flex-1 px-2 py-2 text-base rounded-md ${
                   preferences.fontSize === 'lg' 
@@ -642,7 +1150,12 @@ const BlogHeader = () => {
                 A+
               </button>
                 <button 
-                onClick={() => applyFontSize('xl')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Clique no botão de tamanho muito grande (mobile)');
+                  applyFontSize('xl');
+                }}
                 onKeyDown={handlePreferenceKeyDown}
                 className={`flex-1 px-2 py-2 text-lg rounded-md ${
                   preferences.fontSize === 'xl' 
@@ -658,8 +1171,7 @@ const BlogHeader = () => {
           </div>
             {/* Controle de contraste */}
           <div>
-            <p className="text-xs text-[#735B43] mb-2">Contraste</p>            <div className="space-y-2" role="radiogroup" aria-label="Opções de contraste">
-              {(Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>).map((mode) => (
+            <p className="text-xs text-[#735B43] mb-2">Contraste</p>            <div className="space-y-2" role="radiogroup" aria-label="Opções de contraste">              {(Object.keys(CONTRAST_MODES) as Array<keyof typeof CONTRAST_MODES>).map((mode) => (
                 <div 
                   key={mode} 
                   className={`flex items-center justify-between p-3 rounded-md cursor-pointer ${
@@ -667,7 +1179,12 @@ const BlogHeader = () => {
                       ? 'bg-[#F0EBE2]/80 border border-[#C19A6B]' 
                       : 'hover:bg-[#F0EBE2]/40'
                   }`}
-                  onClick={() => applyContrastMode(mode)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log(`Clique na opção de contraste ${mode} (mobile)`);
+                    applyContrastMode(mode);
+                  }}
                   onKeyDown={handlePreferenceKeyDown}
                   tabIndex={0}
                   role="radio"
@@ -741,7 +1258,7 @@ const BlogHeader = () => {
               >
                 <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center mb-2">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487.5-.669.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.884-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579.487.5.669.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.884-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
                 </div>
                 <span className="text-xs text-gray-600">WhatsApp</span>
