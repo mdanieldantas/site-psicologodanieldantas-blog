@@ -279,7 +279,6 @@ const BlogHeader = () => {
       console.error('Erro ao salvar preferências:', error);
     }
   }, [preferences, prefsInitialized]);
-
   // Adicionando uma verificação periódica para garantir que as preferências sejam mantidas
   // Isso é especialmente útil em caso de carregamentos dinâmicos que possam sobrescrever nossas preferências
   useEffect(() => {
@@ -297,6 +296,7 @@ const BlogHeader = () => {
         'contrast-dark';
       
       const hasFontClass = document.documentElement.classList.contains(fontSizeClass);
+      const hasBodyFontClass = document.body.classList.contains(fontSizeClass);
       const hasContrastClass = document.documentElement.classList.contains(contrastClass);
       
       // Verificar se as variáveis CSS estão corretas
@@ -304,8 +304,25 @@ const BlogHeader = () => {
       const currentFontSize = styles.getPropertyValue('--font-size-multiplier').trim();
       const expectedFontSize = `${FONT_SIZES[preferences.fontSize]}`;
       
+      // Verificar se os estilos de título estão corretos
+      const h1Style = document.querySelector('h1, .h1');
+      let titleSizeCorrect = true;
+      
+      if (h1Style) {
+        const computedH1Style = window.getComputedStyle(h1Style);
+        // Verificar se o tamanho está pelo menos próximo do esperado
+        const actualSize = parseFloat(computedH1Style.fontSize);
+        const baseH1Size = 2; // 2rem é o tamanho base para h1
+        const expectedMinSize = baseH1Size * FONT_SIZES[preferences.fontSize] * 14; // aproximadamente em px
+        
+        if (actualSize < expectedMinSize * 0.8 || actualSize > expectedMinSize * 1.2) {
+          titleSizeCorrect = false;
+          console.log('Tamanho de títulos incorreto:', actualSize, 'esperado aproximadamente:', expectedMinSize);
+        }
+      }
+      
       // Se alguma preferência foi perdida, reaplique
-      if (!hasFontClass || currentFontSize !== expectedFontSize) {
+      if (!hasFontClass || !hasBodyFontClass || currentFontSize !== expectedFontSize || !titleSizeCorrect) {
         console.log('Reforçando preferência de tamanho de fonte:', preferences.fontSize);
         applyFontSize(preferences.fontSize);
       }
@@ -473,11 +490,22 @@ const BlogHeader = () => {
         font-size: calc(1rem * ${FONT_SIZES[size]}) !important;
       }
       
+      /* Garantir que títulos mantenham sua proporção relativa */
+      h1, .h1 { font-size: calc(2rem * ${FONT_SIZES[size]}) !important; }
+      h2, .h2 { font-size: calc(1.8rem * ${FONT_SIZES[size]}) !important; }
+      h3, .h3 { font-size: calc(1.5rem * ${FONT_SIZES[size]}) !important; }
+      h4, .h4 { font-size: calc(1.25rem * ${FONT_SIZES[size]}) !important; }
+      h5, .h5 { font-size: calc(1.125rem * ${FONT_SIZES[size]}) !important; }
+      h6, .h6 { font-size: calc(1rem * ${FONT_SIZES[size]}) !important; }
+      
+      /* Classes específicas de títulos em blogs */
+      .article-title { font-size: calc(2.25rem * ${FONT_SIZES[size]}) !important; }
+      .article-subtitle { font-size: calc(1.5rem * ${FONT_SIZES[size]}) !important; }
+      
       /* Garantir que os elementos mais comuns de conteúdo sejam afetados */
-      main p, main li, main h1, main h2, main h3, main h4, main h5, main h6,
-      article p, article li, article h1, article h2, article h3, article h4,
-      .article-content p, .article-content li, .article-content h1, .article-content h2, 
-      .article-content h3, .article-content h4, .article-content h5, .article-content h6,
+      main p, main li,
+      article p, article li,
+      .article-content p, .article-content li,
       .blog-post-content p, .blog-post-content li,
       .post p, .post li,
       .content-area p, .content-area li {
