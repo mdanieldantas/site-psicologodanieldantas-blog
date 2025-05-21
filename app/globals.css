@@ -76,100 +76,90 @@ article li,
   font-size: calc(var(--font-size-multiplier) * 1em);
 }
 
-/* Ajustar tamanho de elementos específicos - mantemos para retrocompatibilidade */
+/* Ajustar tamanho de elementos específicos */
 .font-size-xl .article-title {
-  font-size: calc(2.25rem * var(--font-size-multiplier));
+  font-size: calc(1.8rem * var(--font-size-multiplier));
 }
 
 .font-size-lg .article-title {
-  font-size: calc(2.1rem * var(--font-size-multiplier));
-}
-
-.font-size-md .article-title {
-  font-size: calc(2rem * var(--font-size-multiplier));
+  font-size: calc(1.7rem * var(--font-size-multiplier));
 }
 
 .font-size-sm .article-title {
-  font-size: calc(1.9rem * var(--font-size-multiplier));
+  font-size: calc(1.5rem * var(--font-size-multiplier));
 }
-
-/* Definições de tamanho para cabeçalhos com proporções corretas */
-.font-size-xl h1, .font-size-xl .h1 { font-size: calc(2rem * 1.4) !important; }
-.font-size-xl h2, .font-size-xl .h2 { font-size: calc(1.8rem * 1.4) !important; }
-.font-size-xl h3, .font-size-xl .h3 { font-size: calc(1.5rem * 1.4) !important; }
-.font-size-xl h4, .font-size-xl .h4 { font-size: calc(1.25rem * 1.4) !important; }
-
-.font-size-lg h1, .font-size-lg .h1 { font-size: calc(2rem * 1.2) !important; }
-.font-size-lg h2, .font-size-lg .h2 { font-size: calc(1.8rem * 1.2) !important; }
-.font-size-lg h3, .font-size-lg .h3 { font-size: calc(1.5rem * 1.2) !important; }
-.font-size-lg h4, .font-size-lg .h4 { font-size: calc(1.25rem * 1.2) !important; }
-
-.font-size-sm h1, .font-size-sm .h1 { font-size: calc(2rem * 0.9) !important; }
-.font-size-sm h2, .font-size-sm .h2 { font-size: calc(1.8rem * 0.9) !important; }
-.font-size-sm h3, .font-size-sm .h3 { font-size: calc(1.5rem * 0.9) !important; }
-.font-size-sm h4, .font-size-sm .h4 { font-size: calc(1.25rem * 0.9) !important; }
 
 /* Classes para modos de contraste */
+html.contrast-normal,
 .contrast-normal {
   /* Modo normal - cores padrão já definidas no sistema */
-  --text-primary: #583B1F;
-  --text-secondary: #735B43;
-  --background-primary: #F8F5F0;
-  --link-color: #C19A6B;
+  --text-primary: #583B1F !important;
+  --text-secondary: #735B43 !important;
+  --background-primary: #F8F5F0 !important;
+  --link-color: #C19A6B !important;
+  color-scheme: light !important;
 }
 
+html.contrast-high,
 .contrast-high {
   /* Alto contraste - fundo branco e texto preto */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 0%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 0%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%;
-  --primary: 0 0% 0%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 90%;
-  --secondary-foreground: 0 0% 0%;
-  --muted: 0 0% 90%;
-  --muted-foreground: 0 0% 20%;
-  --accent: 0 0% 90%;
-  --accent-foreground: 0 0% 0%;
-  --border: 0 0% 80%;
-  --input: 0 0% 80%;
-  --ring: 0 0% 0%;
+  --background: 0 0% 100% !important;
+  --foreground: 0 0% 0% !important;
+  --card: 0 0% 100% !important;
+  --card-foreground: 0 0% 0% !important;
+  --popover: 0 0% 100% !important;
+  --popover-foreground: 0 0% 0% !important;
+  --primary: 0 0% 0% !important;
+  --primary-foreground: 0 0% 100% !important;
+  --secondary: 0 0% 90% !important;
+  --secondary-foreground: 0 0% 0% !important;
+  --muted: 0 0% 90% !important;
+  --muted-foreground: 0 0% 20% !important;
+  --accent: 0 0% 90% !important;
+  --accent-foreground: 0 0% 0% !important;
+  --border: 0 0% 80% !important;
+  --input: 0 0% 80% !important;
+  --ring: 0 0% 0% !important;
   
   /* Variáveis adicionais para alto contraste */
-  --text-primary: #000000;
-  --text-secondary: #333333;
-  --background-primary: #FFFFFF;
-  --link-color: #0000CC;
+  --text-primary: #000000 !important;
+  --text-secondary: #333333 !important;
+  --background-primary: #FFFFFF !important;
+  --link-color: #0000CC !important;
+  color-scheme: light !important;
+  background-color: white !important;
+  color: black !important;
 }
 
+html.contrast-dark,
 .contrast-dark {
   /* Modo escuro - fundo escuro e texto claro */
-  --background: 0 0% 10%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 10%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 10%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 10%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 80%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 98%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 80%;
+  --background: 0 0% 10% !important;
+  --foreground: 0 0% 98% !important;
+  --card: 0 0% 10% !important;
+  --card-foreground: 0 0% 98% !important;
+  --popover: 0 0% 10% !important;
+  --popover-foreground: 0 0% 98% !important;
+  --primary: 0 0% 98% !important;
+  --primary-foreground: 0 0% 10% !important;
+  --secondary: 0 0% 15% !important;
+  --secondary-foreground: 0 0% 98% !important;
+  --muted: 0 0% 15% !important;
+  --muted-foreground: 0 0% 80% !important;
+  --accent: 0 0% 15% !important;
+  --accent-foreground: 0 0% 98% !important;
+  --border: 0 0% 20% !important;
+  --input: 0 0% 20% !important;
+  --ring: 0 0% 80% !important;
   
   /* Variáveis adicionais para modo escuro */
-  --text-primary: #FFFFFF;
-  --text-secondary: #CCCCCC;
-  --background-primary: #121212;
-  --link-color: #93C5FD;
+  --text-primary: #FFFFFF !important;
+  --text-secondary: #CCCCCC !important;
+  --background-primary: #121212 !important;
+  --link-color: #93C5FD !important;
+  color-scheme: dark !important;
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
 }
 
 /* Alto contraste - aplicado em todo o site */
@@ -803,12 +793,164 @@ html {
 }
 
 /* Classe para ajudar a resolver problemas de proporção de imagem no Next.js Image */
-.next-image-fix {
-  width: auto !important;
-  height: auto !important;
-  position: relative !important;
-  object-fit: contain !important;
+
+/* REGRAS DE FORÇA MÁXIMA PARA GARANTIR APLICAÇÃO DAS PREFERÊNCIAS */
+
+/* =========================== */
+/* REFORÇO DO TAMANHO DE FONTE */
+/* =========================== */
+
+/* Garantir que headings mantenham proporções corretas */
+html.font-size-sm h1, 
+html.font-size-md h1, 
+html.font-size-lg h1, 
+html.font-size-xl h1,
+.font-size-sm h1, 
+.font-size-md h1, 
+.font-size-lg h1, 
+.font-size-xl h1,
+h1.article-title, 
+.article-title {
+  font-size: calc(2.25rem * var(--font-size-multiplier)) !important;
 }
 
-/* Classe customizada não é mais necessária, usando duration-4000 definida no tailwind.config.ts */
+html.font-size-sm h2, 
+html.font-size-md h2, 
+html.font-size-lg h2, 
+html.font-size-xl h2,
+.font-size-sm h2, 
+.font-size-md h2, 
+.font-size-lg h2, 
+.font-size-xl h2 {
+  font-size: calc(1.8rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h3, 
+html.font-size-md h3, 
+html.font-size-lg h3, 
+html.font-size-xl h3,
+.font-size-sm h3, 
+.font-size-md h3, 
+.font-size-lg h3, 
+.font-size-xl h3 {
+  font-size: calc(1.5rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h4, 
+html.font-size-md h4, 
+html.font-size-lg h4, 
+html.font-size-xl h4,
+.font-size-sm h4, 
+.font-size-md h4, 
+.font-size-lg h4, 
+.font-size-xl h4 {
+  font-size: calc(1.25rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h5, 
+html.font-size-md h5, 
+html.font-size-lg h5, 
+html.font-size-xl h5,
+.font-size-sm h5, 
+.font-size-md h5, 
+.font-size-lg h5, 
+.font-size-xl h5 {
+  font-size: calc(1.125rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h6, 
+html.font-size-md h6, 
+html.font-size-lg h6, 
+html.font-size-xl h6,
+.font-size-sm h6, 
+.font-size-md h6, 
+.font-size-lg h6, 
+.font-size-xl h6 {
+  font-size: calc(1rem * var(--font-size-multiplier)) !important;
+}
+
+/* =========================== */
+/* REFORÇO DO MODO DE CONTRASTE */
+/* =========================== */
+
+/* Modo Alto Contraste - Override Extremo */
+html.contrast-high * {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.contrast-high a,
+html.contrast-high button,
+html.contrast-high .btn,
+html.contrast-high .button {
+  color: #0000CC !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-high button:hover,
+html.contrast-high .btn:hover,
+html.contrast-high .button:hover {
+  background-color: #F0F0F0 !important;
+}
+
+html.contrast-high img,
+html.contrast-high svg {
+  filter: grayscale(100%) contrast(120%) !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Modo Escuro - Override Extremo */
+html.contrast-dark * {
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
+  border-color: #444444 !important;
+}
+
+html.contrast-dark a,
+html.contrast-dark button,
+html.contrast-dark .btn,
+html.contrast-dark .button {
+  color: #93C5FD !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-dark button:hover,
+html.contrast-dark .btn:hover,
+html.contrast-dark .button:hover {
+  background-color: #2A2A2A !important;
+}
+
+html.contrast-dark img,
+html.contrast-dark svg {
+  filter: brightness(0.8) contrast(1.2) !important;
+  border: 1px solid #444444 !important;
+}
+
+/* Forçar aplicação dos modos em elementos específicos */
+.header, header, nav, footer, aside, 
+.sidebar, .container, .content, 
+.article-content, .blog-post, 
+main, article, section {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Medida extra para garantir que a aplicação seja mantida */
+@media screen {
+  html.contrast-high body,
+  html.contrast-dark body {
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+  }
+  
+  html.font-size-sm body,
+  html.font-size-md body,
+  html.font-size-lg body,
+  html.font-size-xl body {
+    transition: font-size 0.3s ease !important;
+  }
+}
+
+/* FIM DAS REGRAS DE FORÇA MÁXIMA */
 

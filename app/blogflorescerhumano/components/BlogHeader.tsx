@@ -279,6 +279,7 @@ const BlogHeader = () => {
       console.error('Erro ao salvar preferências:', error);
     }
   }, [preferences, prefsInitialized]);
+
   // Adicionando uma verificação periódica para garantir que as preferências sejam mantidas
   // Isso é especialmente útil em caso de carregamentos dinâmicos que possam sobrescrever nossas preferências
   useEffect(() => {
@@ -296,7 +297,6 @@ const BlogHeader = () => {
         'contrast-dark';
       
       const hasFontClass = document.documentElement.classList.contains(fontSizeClass);
-      const hasBodyFontClass = document.body.classList.contains(fontSizeClass);
       const hasContrastClass = document.documentElement.classList.contains(contrastClass);
       
       // Verificar se as variáveis CSS estão corretas
@@ -304,25 +304,8 @@ const BlogHeader = () => {
       const currentFontSize = styles.getPropertyValue('--font-size-multiplier').trim();
       const expectedFontSize = `${FONT_SIZES[preferences.fontSize]}`;
       
-      // Verificar se os estilos de título estão corretos
-      const h1Style = document.querySelector('h1, .h1');
-      let titleSizeCorrect = true;
-      
-      if (h1Style) {
-        const computedH1Style = window.getComputedStyle(h1Style);
-        // Verificar se o tamanho está pelo menos próximo do esperado
-        const actualSize = parseFloat(computedH1Style.fontSize);
-        const baseH1Size = 2; // 2rem é o tamanho base para h1
-        const expectedMinSize = baseH1Size * FONT_SIZES[preferences.fontSize] * 14; // aproximadamente em px
-        
-        if (actualSize < expectedMinSize * 0.8 || actualSize > expectedMinSize * 1.2) {
-          titleSizeCorrect = false;
-          console.log('Tamanho de títulos incorreto:', actualSize, 'esperado aproximadamente:', expectedMinSize);
-        }
-      }
-      
       // Se alguma preferência foi perdida, reaplique
-      if (!hasFontClass || !hasBodyFontClass || currentFontSize !== expectedFontSize || !titleSizeCorrect) {
+      if (!hasFontClass || currentFontSize !== expectedFontSize) {
         console.log('Reforçando preferência de tamanho de fonte:', preferences.fontSize);
         applyFontSize(preferences.fontSize);
       }
@@ -550,8 +533,7 @@ const BlogHeader = () => {
     
     // Mostrar feedback visual
     provideFeedback(`Tamanho da fonte ${sizeName} aplicado`);
-  };
-  // Função para aplicar modo de contraste - usando a mesma abordagem de força bruta do tamanho de fonte
+  };  // Função para aplicar modo de contraste - implementação aprimorada com abordagem agressiva
   const applyContrastMode = (mode: keyof typeof CONTRAST_MODES) => {
     console.log(`Aplicando modo de contraste: ${mode}`);
     
@@ -561,47 +543,165 @@ const BlogHeader = () => {
       return;
     }
 
-    // FORÇA BRUTA: Criar um estilo inline e injetá-lo no head do documento
-    const styleEl = document.createElement('style');
     const contrastClass = 
       mode === 'normal' ? 'contrast-normal' : 
       mode === 'highContrast' ? 'contrast-high' : 
       'contrast-dark';
+
+    // ABORDAGEM ULTRA-AGRESSIVA: Aplicar estilos diretamente com a maior especificidade possível
+    const styleEl = document.createElement('style');
     
-    // Definir variáveis CSS diferentes dependendo do modo
-    let cssVars = '';
     if (mode === 'normal') {
-      cssVars = `
-        --text-primary: #583B1F !important;
-        --text-secondary: #735B43 !important;
-        --background-primary: #F8F5F0 !important;
-        --link-color: #C19A6B !important;
+      // Modo normal - cores padrão
+      styleEl.textContent = `
+        :root {
+          --text-primary: #583B1F !important;
+          --text-secondary: #735B43 !important;
+          --background-primary: #F8F5F0 !important;
+          --link-color: #C19A6B !important;
+        }
+        
+        html, body {
+          color-scheme: light !important;
+          background-color: #F8F5F0 !important;
+          color: #583B1F !important;
+        }
+        
+        html.contrast-normal body,
+        html.contrast-normal main,
+        html.contrast-normal article,
+        html.contrast-normal section,
+        html.contrast-normal header,
+        html.contrast-normal footer,
+        html.contrast-normal div.bg-\\[\\#F8F5F0\\],
+        html.contrast-normal \\[class\\*\\=\\"bg-\\[\\#F8F5F0\\]\\"\\] {
+          background-color: #F8F5F0 !important;
+          color: #583B1F !important;
+        }
+        
+        html.contrast-normal a:not(.btn):not(.button) {
+          color: #C19A6B !important;
+        }
       `;
     } else if (mode === 'highContrast') {
-      cssVars = `
-        --text-primary: #000000 !important;
-        --text-secondary: #333333 !important;
-        --background-primary: #FFFFFF !important;
-        --link-color: #0000CC !important;
+      // Alto contraste
+      styleEl.textContent = `
+        :root {
+          --text-primary: #000000 !important;
+          --text-secondary: #333333 !important;
+          --background-primary: #FFFFFF !important;
+          --link-color: #0000CC !important;
+        }
+        
+        html, body {
+          color-scheme: light !important;
+          background-color: white !important;
+          color: black !important;
+        }
+        
+        html.contrast-high body,
+        html.contrast-high main,
+        html.contrast-high article,
+        html.contrast-high section,
+        html.contrast-high header,
+        html.contrast-high nav,
+        html.contrast-high footer,
+        html.contrast-high div,
+        html.contrast-high aside,
+        html.contrast-high p,
+        html.contrast-high span,
+        html.contrast-high h1,
+        html.contrast-high h2,
+        html.contrast-high h3,
+        html.contrast-high h4,
+        html.contrast-high h5,
+        html.contrast-high h6 {
+          background-color: white !important;
+          color: black !important;
+          border-color: black !important;
+        }
+        
+        html.contrast-high a:not(.btn):not(.button) {
+          color: #0000CC !important;
+          text-decoration: underline !important;
+          text-underline-offset: 2px !important;
+        }
+        
+        html.contrast-high button, 
+        html.contrast-high .button,
+        html.contrast-high .btn {
+          border: 2px solid black !important;
+          background: white !important;
+          color: black !important;
+          font-weight: bold !important;
+        }
+        
+        html.contrast-high img, 
+        html.contrast-high svg,
+        html.contrast-high video {
+          filter: grayscale(100%) contrast(120%) !important;
+        }
       `;
     } else { // darkMode
-      cssVars = `
-        --text-primary: #FFFFFF !important;
-        --text-secondary: #CCCCCC !important;
-        --background-primary: #121212 !important;
-        --link-color: #93C5FD !important;
+      // Modo escuro
+      styleEl.textContent = `
+        :root {
+          --text-primary: #FFFFFF !important;
+          --text-secondary: #CCCCCC !important;
+          --background-primary: #121212 !important;
+          --link-color: #93C5FD !important;
+        }
+        
+        html, body {
+          color-scheme: dark !important;
+          background-color: #121212 !important;
+          color: #FFFFFF !important;
+        }
+        
+        html.contrast-dark body,
+        html.contrast-dark main,
+        html.contrast-dark article,
+        html.contrast-dark section,
+        html.contrast-dark header,
+        html.contrast-dark nav,
+        html.contrast-dark footer,
+        html.contrast-dark div,
+        html.contrast-dark aside {
+          background-color: #121212 !important;
+          color: #FFFFFF !important;
+          border-color: #333333 !important;
+        }
+        
+        html.contrast-dark p,
+        html.contrast-dark span,
+        html.contrast-dark h1,
+        html.contrast-dark h2,
+        html.contrast-dark h3,
+        html.contrast-dark h4,
+        html.contrast-dark h5,
+        html.contrast-dark h6,
+        html.contrast-dark li {
+          color: #FFFFFF !important;
+        }
+        
+        html.contrast-dark a:not(.btn):not(.button) {
+          color: #93C5FD !important;
+          text-decoration: underline !important;
+          text-underline-offset: 2px !important;
+        }
+        
+        html.contrast-dark button, 
+        html.contrast-dark .button,
+        html.contrast-dark .btn {
+          border: 2px solid #FFFFFF !important;
+        }
+        
+        html.contrast-dark img, 
+        html.contrast-dark svg {
+          filter: brightness(0.8) contrast(1.2) !important;
+        }
       `;
     }
-    
-    styleEl.textContent = `
-      :root {
-        ${cssVars}
-      }
-      
-      html {
-        color-scheme: ${mode === 'darkMode' ? 'dark' : 'light'} !important;
-      }
-    `;
     
     // Remover qualquer estilo anterior injetado
     const oldStyle = document.getElementById('dynamic-contrast-mode');
@@ -618,8 +718,36 @@ const BlogHeader = () => {
     console.log(`Adicionando classe de contraste: ${contrastClass}`);
     document.documentElement.classList.add(contrastClass);
     
-    // Forçar um pequeno reflow para garantir que as mudanças sejam aplicadas
+    // Aplicar também ao body para maior compatibilidade
+    document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+    document.body.classList.add(contrastClass);
+    
+    // Forçar um reflow mais agressivo para garantir que as mudanças sejam aplicadas
     void document.documentElement.offsetHeight;
+    void document.body.offsetHeight;
+    
+    // Verificar se mudanças foram aplicadas e tentar novamente se necessário
+    setTimeout(() => {
+      const computedBodyBg = window.getComputedStyle(document.body).backgroundColor;
+      const expectedBg = mode === 'normal' ? 'rgb(248, 245, 240)' : 
+                         mode === 'highContrast' ? 'rgb(255, 255, 255)' : 
+                         'rgb(18, 18, 18)';
+      
+      if (!document.documentElement.classList.contains(contrastClass) || 
+          !computedBodyBg.includes(expectedBg.split(' ')[0])) {
+        console.warn('Contraste não foi aplicado corretamente. Tentando novamente...');
+        
+        // Aplicar novamente as classes
+        document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+        document.documentElement.classList.add(contrastClass);
+        document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+        document.body.classList.add(contrastClass);
+        
+        // Forçar outro reflow
+        void document.documentElement.offsetHeight;
+        void document.body.offsetHeight;
+      }
+    }, 50);
     
     // Atualizar o estado
     setPreferences(prev => ({ ...prev, contrastMode: mode }));
@@ -630,6 +758,7 @@ const BlogHeader = () => {
         ...preferences,
         contrastMode: mode
       }));
+      console.log('Preferência de contraste salva com sucesso:', mode);
     } catch (error) {
       console.error('Erro ao salvar preferência de contraste:', error);
     }
@@ -642,20 +771,61 @@ const BlogHeader = () => {
   const togglePreferencesMenu = () => {
     setPreferencesMenuOpen(!preferencesMenuOpen);
   };
-
   // Função para garantir que as preferências sejam aplicadas corretamente
   const forceApplyPreferences = useCallback(() => {
     if (!prefsInitialized) return;
     
     console.log('Forçando aplicação de todas as preferências');
     
-    // Aplicar tamanho de fonte
-    applyFontSize(preferences.fontSize);
+    // Técnica mais agressiva para garantir a aplicação
+    // Primeiro remover todas as classes relacionadas a preferências
+    document.documentElement.classList.remove(
+      'font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl',
+      'contrast-normal', 'contrast-high', 'contrast-dark'
+    );
     
-    // Aplicar contraste
-    applyContrastMode(preferences.contrastMode);
+    document.body.classList.remove(
+      'font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl',
+      'contrast-normal', 'contrast-high', 'contrast-dark'
+    );
     
-  }, [preferences, prefsInitialized]);
+    // Pequena pausa para garantir que o DOM processou as mudanças
+    setTimeout(() => {
+      // Aplicar tamanho de fonte
+      applyFontSize(preferences.fontSize);
+      
+      // Pequena pausa entre as aplicações para evitar conflitos
+      setTimeout(() => {
+        // Aplicar contraste
+        applyContrastMode(preferences.contrastMode);
+        
+        // Verificação adicional após aplicar as preferências
+        setTimeout(() => {
+          // Verificar se as classes foram aplicadas corretamente
+          const fontSizeClass = `font-size-${preferences.fontSize}`;
+          const contrastClass = 
+            preferences.contrastMode === 'normal' ? 'contrast-normal' : 
+            preferences.contrastMode === 'highContrast' ? 'contrast-high' : 
+            'contrast-dark';
+            
+          if (!document.documentElement.classList.contains(fontSizeClass) ||
+              !document.documentElement.classList.contains(contrastClass)) {
+            console.warn('Algumas preferências não foram aplicadas corretamente. Tentando novamente...');
+            
+            // Aplicar classes diretamente
+            document.documentElement.classList.add(fontSizeClass);
+            document.documentElement.classList.add(contrastClass);
+            document.body.classList.add(fontSizeClass);
+            document.body.classList.add(contrastClass);
+            
+            // Forçar reflow
+            void document.documentElement.offsetHeight;
+            void document.body.offsetHeight;
+          }
+        }, 100);
+      }, 50);
+    }, 10);
+  }, [preferences, prefsInitialized, applyFontSize, applyContrastMode]);
 
   // Garantir que as preferências sejam aplicadas após a montagem completa do componente
   useEffect(() => {
@@ -737,6 +907,78 @@ const BlogHeader = () => {
       }
     };
   }, [preferences]);
+
+  // Efeito para adicionar script de inicialização rápida das preferências salvas
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Script que será executado o mais cedo possível
+      const initScript = document.createElement('script');
+      initScript.innerHTML = `
+        (function() {
+          try {
+            // Tentar carregar preferências salvas do localStorage
+            const savedPrefs = localStorage.getItem('userReadingPreferences');
+            if (savedPrefs) {
+              const prefs = JSON.parse(savedPrefs);
+              
+              if (prefs && prefs.fontSize) {
+                // Aplicar tamanho da fonte
+                document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+                document.documentElement.classList.add('font-size-' + prefs.fontSize);
+                document.body.classList.add('font-size-' + prefs.fontSize);
+                
+                // Injetar estilo para garantir variáveis CSS
+                const fontSizes = {
+                  sm: 0.9,
+                  md: 1,
+                  lg: 1.2,
+                  xl: 1.4
+                };
+                
+                const styleEl = document.createElement('style');
+                styleEl.id = 'early-font-size';
+                styleEl.textContent = ':root { --font-size-multiplier: ' + fontSizes[prefs.fontSize] + ' !important; }';
+                document.head.appendChild(styleEl);
+              }
+              
+              if (prefs && prefs.contrastMode) {
+                // Aplicar contraste
+                const contrastClass = 
+                  prefs.contrastMode === 'normal' ? 'contrast-normal' : 
+                  prefs.contrastMode === 'highContrast' ? 'contrast-high' : 
+                  'contrast-dark';
+                
+                document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+                document.documentElement.classList.add(contrastClass);
+                document.body.classList.add(contrastClass);
+                
+                if (prefs.contrastMode === 'darkMode') {
+                  document.documentElement.style.colorScheme = 'dark';
+                }
+              }
+            }
+          } catch (e) {
+            console.error('Erro ao aplicar preferências iniciais:', e);
+          }
+        })();
+      `;
+      
+      // Adicionar o script ao head para execução imediata
+      document.head.appendChild(initScript);
+      
+      // Limpeza
+      return () => {
+        if (document.head.contains(initScript)) {
+          document.head.removeChild(initScript);
+        }
+        
+        const earlyStyle = document.getElementById('early-font-size');
+        if (earlyStyle) {
+          earlyStyle.remove();
+        }
+      };
+    }
+  }, []);
 
   // Adicionar script de diagnóstico para verificar se as preferências estão sendo aplicadas corretamente
   useEffect(() => {
