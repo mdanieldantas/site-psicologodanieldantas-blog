@@ -1057,21 +1057,19 @@ const BlogHeader = () => {
       return () => window.removeEventListener('load', handleLoad);
     }
   }, [preferences]);
-
   return (
     <>      <header        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'h-[54px]' : 'h-[70px]'
         } ${
-          isHome 
-            ? isMobileMenuOpen 
-              ? 'bg-[#F8F5F0] shadow-none border-b-0'              : isScrolled
-                ? 'md:bg-[#F8F5F0]/75 md:backdrop-blur-lg md:shadow-sm bg-[#F8F5F0]/20 backdrop-blur-md shadow-sm border-b border-[#F8F5F0]/30' 
-                : 'bg-[#F8F5F0]'
-            : 'bg-[#F8F5F0]'
+          isMobileMenuOpen 
+            ? 'bg-[#F8F5F0] shadow-none border-b-0' 
+            : isScrolled
+              ? 'md:bg-[#F8F5F0]/75 md:backdrop-blur-lg md:shadow-sm bg-[#F8F5F0]/20 backdrop-blur-md shadow-sm border-b border-[#F8F5F0]/30' 
+              : 'bg-[#F8F5F0]'
         }`}
         role="banner"
         aria-label="Cabeçalho do blog"
-      >        <nav 
+      ><nav 
           className={`container mx-auto px-2 pr-1 ${isScrolled ? 'py-2' : 'py-3'} flex items-center justify-between transition-all duration-300`}
           role="navigation"
           aria-label="Navegação principal"
