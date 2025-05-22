@@ -212,7 +212,6 @@ const BlogHeader = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-
   // Efeito para carregar preferências do localStorage quando o componente montar
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -227,6 +226,11 @@ const BlogHeader = () => {
             // Aplicar tamanho de fonte
             document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
             document.documentElement.classList.add(`font-size-${parsedPrefs.fontSize}`);
+          } else {
+            // Aplicar valor padrão se o tamanho salvo for inválido
+            document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+            document.documentElement.classList.add('font-size-md');
+            setPreferences(prev => ({...prev, fontSize: 'md'}));
           }
           
           if (parsedPrefs.contrastMode && Object.keys(CONTRAST_MODES).includes(parsedPrefs.contrastMode)) {
@@ -236,13 +240,43 @@ const BlogHeader = () => {
               parsedPrefs.contrastMode === 'normal' ? 'contrast-normal' : 
               parsedPrefs.contrastMode === 'highContrast' ? 'contrast-high' : 'contrast-dark';
             document.documentElement.classList.add(contrastClass);
+          } else {
+            // Aplicar valor padrão se o contraste salvo for inválido
+            document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+            document.documentElement.classList.add('contrast-normal');
+            setPreferences(prev => ({...prev, contrastMode: 'normal'}));
           }
           
-          // Atualizar estado com preferências salvas
+          // Atualizar estado com preferências salvas válidas
           setPreferences(parsedPrefs);
+        } else {
+          // Não há preferências salvas, aplicar valores padrão explicitamente
+          document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+          document.documentElement.classList.add('font-size-md');
+          
+          document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+          document.documentElement.classList.add('contrast-normal');
+          
+          // Atualizar estado com os valores padrão
+          setPreferences({
+            fontSize: 'md',
+            contrastMode: 'normal'
+          });
         }
       } catch (error) {
         console.error('Erro ao carregar preferências:', error);
+        
+        // Em caso de erro, também aplicar valores padrão
+        document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+        document.documentElement.classList.add('font-size-md');
+        
+        document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+        document.documentElement.classList.add('contrast-normal');
+        
+        setPreferences({
+          fontSize: 'md',
+          contrastMode: 'normal'
+        });
       }
       setPrefsInitialized(true);
     }
@@ -1082,8 +1116,7 @@ const BlogHeader = () => {
               )}
             </a>
           </Link>
-          
-          {/* Links de navegação - Desktop */}          <div className="hidden md:flex space-x-6" role="menubar">
+            {/* Links de navegação - Desktop */}          <div className="hidden md:flex space-x-6" role="menubar">
             {['categorias', 'artigos', 'materiais', 'midias', 'sobre', 'contato'].map((item) => {
               // Usando a função auxiliar para consistência
               const isActive = isLinkActive(item);
@@ -1104,6 +1137,17 @@ const BlogHeader = () => {
                 </Link>
               );
             })}
+            
+            {/* Botão de compartilhamento - Desktop */}
+            <div className="relative">
+              <button
+                onClick={handleNativeShare}
+                className="flex items-center justify-center p-2 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] rounded-md"
+                aria-label="Compartilhar página"
+              >
+                <Share2 size={18} />
+              </button>
+            </div>
             
             {/* Botão de preferências de leitura - Desktop */}
             <div className="relative">
