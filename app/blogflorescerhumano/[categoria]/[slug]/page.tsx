@@ -248,18 +248,49 @@ export default async function ArtigoEspecificoPage({
         url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
       />
 
-      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) simplificada */}
-        <nav aria-label="Navegação estrutural" className="mb-2 overflow-x-auto pr-2">
-          <ol className="flex items-center text-xs text-[#735B43] whitespace-nowrap h-6 w-full">
-            <li className="flex items-center h-full">
-              <Link href="/blogflorescerhumano" className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
-                Blog
+      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
+        <nav aria-label="Navegação estrutural" className="mb-3 py-1.5 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
+          <ol className="flex items-center text-xs whitespace-nowrap w-full">
+            <li className="flex items-center">
+              <Link 
+                href="/blogflorescerhumano" 
+                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-all duration-300 font-medium"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor" 
+                  className="w-3.5 h-3.5 mr-1.5 text-[#C19A6B]"
+                >
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span className="hover:underline underline-offset-2 decoration-[#C19A6B]/40">Blog</span>
               </Link>
-              <span className="mx-2">/</span>
+              <div className="flex items-center mx-2.5 text-[#C19A6B]">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor" 
+                  className="w-3 h-3"
+                >
+                  <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                </svg>
+              </div>
             </li>
-            <li className="flex items-center h-full">
-              <Link href="/blogflorescerhumano/categorias" className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
-                Categorias
+            <li className="flex items-center">
+              <Link 
+                href="/blogflorescerhumano/categorias" 
+                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-all duration-300 font-medium group"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor" 
+                  className="w-3.5 h-3.5 mr-1.5 text-[#C19A6B]"
+                >
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                </svg>
+                <span className="hover:underline underline-offset-2 decoration-[#C19A6B]/40">Categorias</span>
               </Link>
             </li>
           </ol>
@@ -408,37 +439,33 @@ export default async function ArtigoEspecificoPage({
               </AspectRatio.Root>
             </div>
           )}
-          
-          {/* Exibição das Tags com Destaque */}
-          {tags && Array.isArray(tags) && tags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-[#C19A6B]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                  />
-                </svg>
-                <span className="font-semibold text-[#583B1F]">Tags:</span>
+            {/* Exibição das Tags - Design elegante e refinado */}          {tags && Array.isArray(tags) && tags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-5">              <div className="flex items-center text-xs text-[#735B43] mr-1">
+                <div className="flex items-center justify-center w-4 h-4 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-2.5 w-2.5 text-[#C19A6B]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
+                  </svg>
+                </div>
               </div>
               {tags.map((tag) => (
                 <Link
                   key={tag.id}
                   href={`/blogflorescerhumano/tags/${tag.slug}`}
-                  legacyBehavior
+                  className="inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8F5F0]/50 to-[#F8F5F0]/80 text-[#583B1F] border-[0.5px] border-[#C19A6B]/15 hover:from-[#F8F5F0]/70 hover:to-[#F8F5F0] hover:border-[#C19A6B]/30 transition-all duration-300 hover:shadow-sm"
                 >
-                  <a className="text-sm bg-[#F8F5F0] text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 hover:bg-[#C19A6B]/20 transition-all duration-300 shadow-sm hover:shadow flex items-center">
-                    <span className="text-[#C19A6B] mr-1">#</span>
-                    {tag.nome}
-                  </a>
+                  <span className="text-[#C19A6B] mr-0.5 font-medium">#</span>
+                  <span className="tracking-tight">{tag.nome}</span>
                 </Link>
               ))}
             </div>
@@ -666,43 +693,53 @@ export default async function ArtigoEspecificoPage({
             />
           </div>
         </section>
-        {/* Exibição de tags relacionadas em destaque ao final do artigo */}
-        {tags && Array.isArray(tags) && tags.length > 0 && (
+        {/* Exibição de tags relacionadas em destaque ao final do artigo */}        {tags && Array.isArray(tags) && tags.length > 0 && (
           <section className="my-10">
-            <div className="bg-[#F8F5F0] p-5 rounded-lg border border-[#C19A6B]/30 shadow-sm">
-              <h3 className="text-lg font-medium mb-4 text-[#583B1F] flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-[#C19A6B]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                  />
-                </svg>
-                Tópicos discutidos neste artigo:
-              </h3>
-              <div className="flex flex-wrap gap-3">
+            <div className="bg-[#F8F5F0]/60 p-4 rounded-lg border-[0.5px] border-[#C19A6B]/20 shadow-sm">              <h3 className="text-sm font-medium mb-3 text-[#583B1F] flex items-center">
+                <div className="flex items-center justify-center w-5 h-5 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-2 shadow-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3 w-3 text-[#C19A6B]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
+                  </svg>
+                </div>
+                <span>Tópicos discutidos neste artigo</span>
+              </h3>              <div className="flex flex-wrap gap-x-2 gap-y-1.5">
                 {tags.map((tag) => (
                   <Link
                     key={tag.id}
                     href={`/blogflorescerhumano/tags/${tag.slug}`}
-                    legacyBehavior
+                    className="inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8F5F0]/50 to-[#F8F5F0]/80 text-[#583B1F] border-[0.5px] border-[#C19A6B]/15 hover:from-[#F8F5F0]/70 hover:to-[#F8F5F0] hover:border-[#C19A6B]/30 transition-all duration-300 hover:shadow-sm"
                   >
-                    <a className="text-sm bg-white text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 hover:bg-[#C19A6B]/20 transition-all duration-300 shadow-sm hover:shadow flex items-center">
-                      <span className="text-[#C19A6B] mr-1">#</span>
-                      {tag.nome}
-                    </a>
+                    <span className="text-[#C19A6B] mr-0.5 font-medium">#</span>
+                    <span className="tracking-tight">{tag.nome}</span>
                   </Link>
                 ))}
-              </div>
-              <p className="mt-4 text-sm text-[#735B43]">
-                Clique em uma tag para ver mais artigos sobre esse tema.
+              </div>              <p className="mt-3 text-xs text-[#735B43]/70 italic flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 mr-1 text-[#C19A6B]/60"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Clique em uma tag para explorar mais conteúdo sobre o tema
               </p>
             </div>
           </section>
