@@ -248,45 +248,18 @@ export default async function ArtigoEspecificoPage({
         url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
       />
 
-      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">
-        {/* Navegação Estrutural (Breadcrumbs) simplificada */}
-        <nav aria-label="Navegação estrutural" className="mb-4 overflow-x-auto pr-2">
-          <ol className="flex items-center text-sm text-[#735B43] whitespace-nowrap h-8 w-full">
+      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) simplificada */}
+        <nav aria-label="Navegação estrutural" className="mb-2 overflow-x-auto pr-2">
+          <ol className="flex items-center text-xs text-[#735B43] whitespace-nowrap h-6 w-full">
             <li className="flex items-center h-full">
-              <Link href={`/blogflorescerhumano/categorias`} legacyBehavior>
-                <a className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
-                  Categorias
-                </a>
+              <Link href="/blogflorescerhumano" className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
+                Blog
               </Link>
-              <div className="flex items-center justify-center h-full px-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3.5 w-3.5 text-[#C19A6B]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </div>
+              <span className="mx-2">/</span>
             </li>
             <li className="flex items-center h-full">
-              <Link
-                href={`/blogflorescerhumano/${categoriaSlug}`}
-                legacyBehavior
-              >
-                <a 
-                  className="text-[#583B1F] hover:text-[#C19A6B] transition-colors truncate inline-flex items-center h-full max-w-[280px]" 
-                  title={nomeCategoria}
-                >
-                  {nomeCategoria.length > 30 ? `${nomeCategoria.substring(0, 28)}...` : nomeCategoria}
-                </a>
+              <Link href="/blogflorescerhumano/categorias" className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
+                Categorias
               </Link>
             </li>
           </ol>
@@ -294,14 +267,32 @@ export default async function ArtigoEspecificoPage({
 
         {/* Cabeçalho do Artigo - Nova estrutura aprimorada */}
         <header className="mb-8">
-          {/* Categoria destacada */}
-          <div className="mb-3">
+          {/* Categoria destacada - Redesenhada com ícone */}
+          <div className="mb-4">
             <Link 
               href={`/blogflorescerhumano/${categoriaSlug}`}
-              className="inline-block bg-[#F8F5F0] text-[#583B1F] px-4 py-1.5 rounded-md border border-[#C19A6B]/30 
-              hover:bg-[#C19A6B]/20 transition-all duration-300 text-sm font-medium"
+              className="inline-flex items-center gap-2 text-[#583B1F] hover:text-[#C19A6B] transition-all duration-300"
+              title="Ver todos os artigos desta categoria"
             >
-              {nomeCategoria}
+              <span className="flex items-center justify-center w-7 h-7 bg-[#F8F5F0] rounded-full border border-[#C19A6B]/50">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-[#C19A6B]"
+                  fill="none"
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </span>
+              <span className="text-sm font-medium pb-1 border-b border-[#C19A6B]/30">
+                {nomeCategoria}
+              </span>
             </Link>
           </div>
           
