@@ -471,24 +471,8 @@ export default async function ArtigoEspecificoPage({
               ))}
             </div>
           )}
-        </header>
-
-        {/* Barra de progresso de leitura - Componente cliente */}
-        <ProgressBar />
-        {/* Imagem de Capa Aprimorada */}
-        {imageUrl && (
-          <div className="mb-10 relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-xl transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
-            <Image
-              src={imageUrl}
-              alt={`Imagem de capa para ${titulo ?? "artigo"}`}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 pointer-events-none"></div>
-          </div>
-        )}{" "}        {/* Conteúdo Principal do Artigo - Aprimorado com Índice */}
+        </header>        {/* Barra de progresso de leitura - Componente cliente */}
+        <ProgressBar />{/* Conteúdo Principal do Artigo - Aprimorado com Índice */}
         {artigoConteudo ? (
           <div className="article-container">
             {/* Importamos o componente cliente TableOfContents */}
