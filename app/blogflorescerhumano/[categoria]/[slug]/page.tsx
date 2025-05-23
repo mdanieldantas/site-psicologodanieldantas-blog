@@ -248,61 +248,22 @@ export default async function ArtigoEspecificoPage({
       />
 
       <article className="container mx-auto px-4 py-12 max-w-4xl">
-        {" "}
-        {/* Navegação Estrutural (Breadcrumbs) aprimorada */}
-        <nav aria-label="Navegação estrutural" className="mb-6">
-          {" "}
-          <ol className="flex items-center flex-wrap text-sm text-[#735B43]">
-            <li className="flex items-center">
-              <Link href="/blogflorescerhumano" legacyBehavior>
-                <a className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                  Blog
-                </a>
-              </Link>
-              <span className="mx-2 text-[#C19A6B]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </span>
-            </li>
-            <li className="flex items-center">
+        {" "}        {/* Navegação Estrutural (Breadcrumbs) simplificada */}        <nav aria-label="Navegação estrutural" className="mb-6 overflow-x-auto">
+          <ol className="flex items-center text-sm text-[#735B43] whitespace-nowrap h-8">
+            <li className="flex items-center h-full">
               <Link href={`/blogflorescerhumano/categorias`} legacyBehavior>
-                <a className="text-[#735B43] hover:text-[#C19A6B] transition-colors">
+                <a className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
                   Categorias
                 </a>
               </Link>
-              <span className="mx-2 text-[#C19A6B]">
+              <div className="flex items-center justify-center h-full px-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
+                  className="h-3.5 w-3.5 text-[#C19A6B]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -311,15 +272,18 @@ export default async function ArtigoEspecificoPage({
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-              </span>
+              </div>
             </li>
-            <li className="text-[#583B1F] font-medium">
+            <li className="flex items-center h-full">
               <Link
                 href={`/blogflorescerhumano/${categoriaSlug}`}
                 legacyBehavior
               >
-                <a className="text-[#583B1F] hover:text-[#C19A6B] transition-colors">
-                  {nomeCategoria}
+                <a 
+                  className="text-[#583B1F] hover:text-[#C19A6B] transition-colors truncate inline-flex items-center h-full max-w-[200px]" 
+                  title={nomeCategoria}
+                >
+                  {nomeCategoria.length > 25 ? `${nomeCategoria.substring(0, 23)}...` : nomeCategoria}
                 </a>
               </Link>
             </li>
