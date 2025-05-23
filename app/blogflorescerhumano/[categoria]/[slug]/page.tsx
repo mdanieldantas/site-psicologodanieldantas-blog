@@ -14,6 +14,7 @@ import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
+import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 
 type Artigo = Database["public"]["Tables"]["artigos"]["Row"];
 type Categoria = Database["public"]["Tables"]["categorias"]["Row"];
@@ -248,7 +249,8 @@ export default async function ArtigoEspecificoPage({
       />
 
       <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">
-        {" "}        {/* Navegação Estrutural (Breadcrumbs) simplificada */}        <nav aria-label="Navegação estrutural" className="mb-4 overflow-x-auto pr-2">
+        {/* Navegação Estrutural (Breadcrumbs) simplificada */}
+        <nav aria-label="Navegação estrutural" className="mb-4 overflow-x-auto pr-2">
           <ol className="flex items-center text-sm text-[#735B43] whitespace-nowrap h-8 w-full">
             <li className="flex items-center h-full">
               <Link href={`/blogflorescerhumano/categorias`} legacyBehavior>
@@ -274,7 +276,8 @@ export default async function ArtigoEspecificoPage({
                 </svg>
               </div>
             </li>
-            <li className="flex items-center h-full">              <Link
+            <li className="flex items-center h-full">
+              <Link
                 href={`/blogflorescerhumano/${categoriaSlug}`}
                 legacyBehavior
               >
@@ -288,72 +291,155 @@ export default async function ArtigoEspecificoPage({
             </li>
           </ol>
         </nav>
-        {/* Cabeçalho do Artigo */}{" "}
-        <header className="mb-8 border-b pb-4 border-[#C19A6B]/30">
+
+        {/* Cabeçalho do Artigo - Nova estrutura aprimorada */}
+        <header className="mb-8">
+          {/* Categoria destacada */}
+          <div className="mb-3">
+            <Link 
+              href={`/blogflorescerhumano/${categoriaSlug}`}
+              className="inline-block bg-[#F8F5F0] text-[#583B1F] px-4 py-1.5 rounded-md border border-[#C19A6B]/30 
+              hover:bg-[#C19A6B]/20 transition-all duration-300 text-sm font-medium"
+            >
+              {nomeCategoria}
+            </Link>
+          </div>
+          
+          {/* Título principal */}
           <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#583B1F]">
             {titulo ?? "Artigo sem título"}
-          </h1>          <div className="flex items-center mt-4 mb-3">            <div className="flex-shrink-0 mr-4 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
+          </h1>
+          
+          {/* Subtítulo destacado */}
+          {resumo && (
+            <p className="text-xl md:text-2xl text-[#735B43] font-normal italic mb-5 leading-relaxed">
+              {resumo}
+            </p>
+          )}          {/* Informações do autor e metadados em layout responsivo - Reorganizado com foto à esquerda */}
+          <div className="flex flex-row items-start gap-5 border-b border-[#C19A6B]/30 pb-6 mb-6">
+            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
               <Image
                 src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
                 width={120}
                 height={120}
-                className="w-28 h-28 object-cover transform hover:scale-105 transition-transform duration-300"
+                className="w-20 h-20 object-cover transform hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <div>
-              {" "}
-              <div className="text-[#735B43] flex flex-col xs:flex-row xs:items-center">
-                <span className="font-medium text-[#583B1F]">{nomeAutor}</span>
-                <div className="flex items-center mt-1 xs:mt-0">
-                  <span className="hidden xs:inline mx-2">•</span>
-                  <span className="flex items-center text-sm">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1 text-[#C19A6B]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {dataFormatada}
-                  </span>{" "}
-                  <span className="hidden sm:flex items-center text-sm ml-2">
-                    <span className="mx-2">•</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1 text-[#C19A6B]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    {/* Estimativa de tempo de leitura: ~200 palavras por minuto */}
-                    {artigoConteudo
-                      ? `${Math.max(1, Math.ceil(artigoConteudo.split(" ").length / 200))} min de leitura`
-                      : "5 min de leitura"}
-                  </span>
-                </div>
+            
+            <div className="flex flex-col flex-1">              <div className="flex flex-col xs:flex-row xs:items-center mb-1">
+                <span className="font-semibold text-[#583B1F] mr-2">{nomeAutor}</span>
+                <span className="text-sm text-[#735B43] flex items-center">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-4 w-4 mr-1 text-[#C19A6B]" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Psicólogo CRP 11/11854
+                </span>
+              </div>
+              
+              <div className="text-[#735B43] flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                {/* Data de publicação */}
+                <span className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-1 text-[#C19A6B]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {dataFormatada}
+                </span>
+                
+                {/* Tempo de leitura */}
+                <span className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-1 text-[#C19A6B]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  {artigoConteudo
+                    ? `${Math.max(1, Math.ceil(artigoConteudo.split(" ").length / 200))} min de leitura`
+                    : "5 min de leitura"}
+                </span>
+                
+                {/* Especialidade ou abordagem - Atualizada */}
+                <span className="flex items-center">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-4 w-4 mr-1 text-[#C19A6B]" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                    />
+                  </svg>
+                  ACP/Focalização/mindfulness
+                </span>
               </div>
             </div>
-          </div>{" "}
+          </div>{/* Imagem de Capa Aprimorada */}
+          {imageUrl && (
+            <div className="mb-8 relative w-full overflow-hidden rounded-lg shadow-lg">
+              <AspectRatio.Root ratio={16 / 9}>
+                <Image
+                  src={imageUrl}
+                  alt={`Imagem de capa para ${titulo ?? "artigo"}`}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-60 pointer-events-none"></div>
+                {resumo && (
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+                    <p className="text-white text-sm md:text-base font-medium drop-shadow-md hidden md:block">
+                      {resumo}
+                    </p>
+                  </div>
+                )}
+              </AspectRatio.Root>
+            </div>
+          )}
+          
           {/* Exibição das Tags com Destaque */}
           {tags && Array.isArray(tags) && tags.length > 0 && (
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
               <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -384,17 +470,9 @@ export default async function ArtigoEspecificoPage({
                 </Link>
               ))}
             </div>
-          )}        </header>{" "}
-        {/* Botão de compartilhamento removido da renderização, mas mantido no código não ativar ele sem ordem expressa do programador responsável*/}
-        {/* 
-        <div className="bg-[#F8F5F0] p-4 rounded-lg shadow-sm mb-6 border border-[#C19A6B]/20">
-          <ShareButtons
-            url={shareUrl}
-            title={titulo ?? "Artigo do Blog Florescer Humano"}
-            summary={resumo ?? undefined}
-          />{" "}
-        </div>
-        */}
+          )}
+        </header>
+
         {/* Barra de progresso de leitura - Componente cliente */}
         <ProgressBar />
         {/* Imagem de Capa Aprimorada */}
@@ -515,10 +593,11 @@ export default async function ArtigoEspecificoPage({
               </a>
             </Link>
           </div>
-        )}{" "}
-        {/* Bio do Autor ao Final do Artigo */}{" "}
+        )}{" "}        {/* Bio do Autor ao Final do Artigo */}
         <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">              <Image
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
+            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
+              <Image
                 src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
                 alt={`Foto de ${nomeAutor}`}
                 width={120}
@@ -526,49 +605,108 @@ export default async function ArtigoEspecificoPage({
                 className="w-28 h-28 object-cover transform hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <div>
-              {" "}
-              <h3 className="text-lg font-semibold mb-1 text-center sm:text-left text-[#583B1F]">
-                {nomeAutor}
-              </h3>{" "}
-              <p className="text-[#735B43] mb-2 text-sm">
+            <div>              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
+                <h3 className="text-xl font-semibold text-center sm:text-left text-[#583B1F]">
+                  {nomeAutor}
+                </h3>
+                <span className="hidden sm:inline text-[#C19A6B]">•</span>
+                <span className="text-[#735B43] text-sm font-medium text-center sm:text-left flex items-center justify-center sm:justify-start">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-4 w-4 mr-1 text-[#C19A6B]" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Psicólogo CRP 11/11854
+                </span>
+              </div>
+              <p className="text-[#735B43] mb-3 text-sm italic">
                 Psicólogo e escritor do Blog Florescer Humano
-              </p>
-              <p className="text-[#735B43] text-sm">
-                Especialista em Saúde Mental com formação em Abordagem Centrada
-                Pessoa, ajudando pessoas a encontrarem seu potencial pleno
+              </p>              <p className="text-[#735B43] text-sm mb-3">
+                Especialista em Saúde Mental com formação em ACP/Focalização/mindfulness,
+                ajudando pessoas a encontrarem seu potencial pleno
                 através do autoconhecimento e crescimento pessoal.
               </p>
-              <div className="mt-3 flex justify-center sm:justify-start">
+              <div className="flex items-center flex-wrap gap-4 mt-4">
                 <a
                   href="https://psicologodanieldantas.com.br"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors mr-4"
+                  className="text-sm bg-[#C19A6B]/10 hover:bg-[#C19A6B]/20 text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 transition-all duration-300 flex items-center"
                 >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    className="w-4 h-4 mr-2 text-[#C19A6B]"
+                  >
+                    <path d="M12 2 C 6.5 2 2 6.5 2 12 C 2 17.5 6.5 22 12 22 C 17.5 22 22 17.5 22 12 C 22 6.5 17.5 2 12 2 Z"></path>
+                    <path d="M12 8 L 12 16"></path>
+                    <path d="M8 12 L 16 12"></path>
+                  </svg>
                   Website
-                </a>
-                <a
+                </a>                <a
                   href="https://instagram.com/psidanieldantas"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[#C19A6B] hover:text-[#583B1F] transition-colors"
+                  className="text-sm bg-[#C19A6B]/10 hover:bg-[#C19A6B]/20 text-[#583B1F] px-4 py-1.5 rounded-full border border-[#C19A6B]/30 transition-all duration-300 flex items-center"
                 >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    className="w-4 h-4 mr-2 text-[#C19A6B]"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
                   Instagram
                 </a>
               </div>
             </div>
           </div>
-        </div>
-        {/* Seção de Artigos Relacionados */}{" "}
-        <section className="mt-10">
-          <h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-[#C19A6B]/30 text-[#583B1F]">
+        </div>        {/* Seção de Artigos Relacionados */}
+        <section className="mt-14">
+          <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-[#C19A6B]/30 text-[#583B1F] flex items-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              className="w-5 h-5 mr-2 text-[#C19A6B]"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
             Leituras relacionadas
           </h2>
-          <RelatedArticles
-            currentArticleId={currentArticleId}
-            tags={tags}
-          />{" "}
+          <div className="bg-[#F8F5F0]/50 rounded-lg p-4">
+            <RelatedArticles
+              currentArticleId={currentArticleId}
+              tags={tags}
+            />
+          </div>
         </section>
         {/* Exibição de tags relacionadas em destaque ao final do artigo */}
         {tags && Array.isArray(tags) && tags.length > 0 && (
@@ -610,10 +748,21 @@ export default async function ArtigoEspecificoPage({
               </p>
             </div>
           </section>
-        )}
-        {/* Seção de Comentários com Giscus */}
-        <section className="mt-12 pt-8 border-t border-[#C19A6B]/30">
-          <h2 className="text-2xl font-semibold mb-6 text-[#583B1F]">
+        )}        {/* Seção de Comentários com Giscus */}
+        <section className="mt-14 pt-8 border-t border-[#C19A6B]/30">
+          <h2 className="text-2xl font-semibold mb-6 text-[#583B1F] flex items-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              className="w-5 h-5 mr-2 text-[#C19A6B]"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
             Comentários
           </h2>
           {/* Renderiza o componente Giscus */}
