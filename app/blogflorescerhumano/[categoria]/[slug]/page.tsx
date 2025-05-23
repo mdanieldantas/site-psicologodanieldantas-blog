@@ -315,19 +315,21 @@ export default async function ArtigoEspecificoPage({
             <p className="text-xl md:text-2xl text-[#735B43] font-normal italic mb-5 leading-relaxed">
               {resumo}
             </p>
-          )}          {/* Informações do autor e metadados em layout responsivo - Reorganizado com foto à esquerda */}
-          <div className="flex flex-row items-start gap-5 border-b border-[#C19A6B]/30 pb-6 mb-6">
-            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
-              <Image
-                src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
-                alt={`Foto de ${nomeAutor}`}
-                width={120}
-                height={120}
-                className="w-20 h-20 object-cover transform hover:scale-105 transition-transform duration-300"
-              />
+          )}          {/* Informações do autor e metadados em layout responsivo - Reorganizado com foto à esquerda e alinhamento vertical */}
+          <div className="flex flex-row items-center gap-5 border-b border-[#C19A6B]/30 pb-6 mb-6">
+            <div className="flex-shrink-0 self-center">
+              <div className="w-20 h-20 overflow-hidden rounded-full border-2 border-[#C19A6B] shadow-md transform transition-all duration-300 hover:shadow-lg hover:scale-105">
+                <Image
+                  src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
+                  alt={`Foto de ${nomeAutor}`}
+                  width={120}
+                  height={120}
+                  className="w-20 h-20 object-cover"
+                />
+              </div>
             </div>
             
-            <div className="flex flex-col flex-1">              <div className="flex flex-col xs:flex-row xs:items-center mb-1">
+            <div className="flex flex-col flex-1 py-1"><div className="flex flex-col xs:flex-row xs:items-center mb-1">
                 <span className="font-semibold text-[#583B1F] mr-2">{nomeAutor}</span>
                 <span className="text-sm text-[#735B43] flex items-center">
                   <svg 
@@ -369,8 +371,7 @@ export default async function ArtigoEspecificoPage({
                   </svg>
                   {dataFormatada}
                 </span>
-                
-                {/* Tempo de leitura */}
+                  {/* Tempo de leitura */}
                 <span className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -390,26 +391,6 @@ export default async function ArtigoEspecificoPage({
                   {artigoConteudo
                     ? `${Math.max(1, Math.ceil(artigoConteudo.split(" ").length / 200))} min de leitura`
                     : "5 min de leitura"}
-                </span>
-                
-                {/* Especialidade ou abordagem - Atualizada */}
-                <span className="flex items-center">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 mr-1 text-[#C19A6B]" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                    />
-                  </svg>
-                  ACP/Focalização/mindfulness
                 </span>
               </div>
             </div>
@@ -579,15 +560,17 @@ export default async function ArtigoEspecificoPage({
           </div>
         )}{" "}        {/* Bio do Autor ao Final do Artigo */}
         <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
-            <div className="flex-shrink-0 overflow-hidden rounded-full border-2 border-[#C19A6B]/30 shadow-sm">
-              <Image
-                src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
-                alt={`Foto de ${nomeAutor}`}
-                width={120}
-                height={120}
-                className="w-28 h-28 object-cover transform hover:scale-105 transition-transform duration-300"
-              />
+          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
+            <div className="flex-shrink-0 self-center">
+              <div className="w-28 h-28 overflow-hidden rounded-full border-2 border-[#C19A6B] shadow-md transform transition-all duration-300 hover:shadow-lg hover:scale-105">
+                <Image
+                  src="/blogflorescerhumano/autores/mini-autores-daniel-psi-blog.webp"
+                  alt={`Foto de ${nomeAutor}`}
+                  width={120}
+                  height={120}
+                  className="w-28 h-28 object-cover"
+                />
+              </div>
             </div>
             <div>              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
                 <h3 className="text-xl font-semibold text-center sm:text-left text-[#583B1F]">
