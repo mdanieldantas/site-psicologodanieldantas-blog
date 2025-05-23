@@ -247,9 +247,9 @@ export default async function ArtigoEspecificoPage({
         url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
       />
 
-      <article className="container mx-auto px-4 py-12 max-w-4xl">
-        {" "}        {/* Navegação Estrutural (Breadcrumbs) simplificada */}        <nav aria-label="Navegação estrutural" className="mb-6 overflow-x-auto">
-          <ol className="flex items-center text-sm text-[#735B43] whitespace-nowrap h-8">
+      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">
+        {" "}        {/* Navegação Estrutural (Breadcrumbs) simplificada */}        <nav aria-label="Navegação estrutural" className="mb-4 overflow-x-auto pr-2">
+          <ol className="flex items-center text-sm text-[#735B43] whitespace-nowrap h-8 w-full">
             <li className="flex items-center h-full">
               <Link href={`/blogflorescerhumano/categorias`} legacyBehavior>
                 <a className="text-[#735B43] hover:text-[#C19A6B] transition-colors inline-flex items-center h-full">
@@ -274,16 +274,15 @@ export default async function ArtigoEspecificoPage({
                 </svg>
               </div>
             </li>
-            <li className="flex items-center h-full">
-              <Link
+            <li className="flex items-center h-full">              <Link
                 href={`/blogflorescerhumano/${categoriaSlug}`}
                 legacyBehavior
               >
                 <a 
-                  className="text-[#583B1F] hover:text-[#C19A6B] transition-colors truncate inline-flex items-center h-full max-w-[200px]" 
+                  className="text-[#583B1F] hover:text-[#C19A6B] transition-colors truncate inline-flex items-center h-full max-w-[280px]" 
                   title={nomeCategoria}
                 >
-                  {nomeCategoria.length > 25 ? `${nomeCategoria.substring(0, 23)}...` : nomeCategoria}
+                  {nomeCategoria.length > 30 ? `${nomeCategoria.substring(0, 28)}...` : nomeCategoria}
                 </a>
               </Link>
             </li>
