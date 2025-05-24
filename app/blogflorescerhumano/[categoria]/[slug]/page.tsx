@@ -249,7 +249,7 @@ export default async function ArtigoEspecificoPage({
       />
 
       <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
-        <nav aria-label="Navegação estrutural" className="mb-3 pt-0 pb-1 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
+        <nav aria-label="Navegação estrutural" className="mb-3 py-1.5 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
           <ol className="flex items-center text-xs whitespace-nowrap w-full">
             <li className="flex items-center">
               <Link 
