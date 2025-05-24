@@ -10,6 +10,7 @@ import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticle
 import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
 import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Metadata
 import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; // Importa o componente de Schema JSON-LD
+import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
@@ -468,11 +469,19 @@ export default async function ArtigoEspecificoPage({
             </div>
           )}
         </header>        {/* Barra de progresso de leitura - Componente cliente */}
-        <ProgressBar />{/* Conteúdo Principal do Artigo - Aprimorado com Índice */}
-        {artigoConteudo ? (
+        <ProgressBar />{/* Conteúdo Principal do Artigo - Aprimorado com Índice */}        {artigoConteudo ? (
           <div className="article-container">
             {/* Importamos o componente cliente TableOfContents */}
-            <TableOfContents articleContentId="article-content" />{" "}            <div
+            <TableOfContents articleContentId="article-content" />
+            
+            {/* Componente de Citação Acadêmica e Compartilhamento */}            <CitationBox 
+              title={titulo}
+              author="Marcos Daniel Gomes Dantas"
+              date={data_publicacao || new Date().toISOString()}
+              url={`https://www.psicologodanieldantas.com/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
+            />
+            
+            <div
               id="article-content"
               className="prose lg:prose-lg max-w-none mx-auto article-content"
               style={{
@@ -660,12 +669,13 @@ export default async function ArtigoEspecificoPage({
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                   </svg>
-                  Instagram
-                </a>
+                  Instagram                </a>
               </div>
             </div>
           </div>
-        </div>        {/* Seção de Artigos Relacionados - Redesenhada para maior consistência */}
+        </div>
+        
+        {/* Seção de Artigos Relacionados - Redesenhada para maior consistência */}
         <section className="mt-14">
           <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-[#C19A6B]/30 text-[#583B1F] flex items-center">
             <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-3 shadow-sm">
