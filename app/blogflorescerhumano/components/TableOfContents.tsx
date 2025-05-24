@@ -116,15 +116,14 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
   if (!visible || headings.length === 0) {
     return null;
   }
-
   const renderTocContent = () => (
     <div 
-      className="mt-4 md:mt-0 bg-[#F8F5F0] md:bg-transparent p-5 md:p-0 rounded-lg md:rounded-none border border-[#C19A6B]/20 md:border-none shadow-sm md:shadow-none"
+      className="mt-3 md:mt-0 bg-[#F8F5F0]/90 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none border border-[#C19A6B]/15 md:border-none shadow-sm md:shadow-none"
     >
-      <h4 className="text-lg font-semibold mb-3 text-[#583B1F] flex items-center">
+      <h4 className="text-base font-medium mb-2 text-[#583B1F] flex items-center">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className="h-5 w-5 mr-2 text-[#C19A6B]" 
+          className="h-4 w-4 mr-1.5 text-[#C19A6B]" 
           fill="none"
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -133,30 +132,28 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
           <path 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            strokeWidth={2} 
+            strokeWidth={1.75} 
             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" 
           />
         </svg>
-        Índice do artigo: <span className="text-sm font-normal text-[#735B43] ml-1">({mainSectionsCount} seções)</span>
+        Índice do artigo <span className="text-xs font-normal text-[#735B43] ml-1">({mainSectionsCount} seções)</span>
       </h4>
-      <ul className="pl-1 md:pl-5 space-y-1.5"> {/* Ajustado space-y e pl para mobile */}
-        {headings.map((heading) => (
+      <ul className="pl-1 md:pl-3 space-y-1"> {/* Ajustado space-y e pl para mobile */}        {headings.map((heading) => (
           <li key={heading.id} className={`${
-            heading.level === 3 ? "pl-3 md:pl-4" : ""
+            heading.level === 3 ? "pl-2 md:pl-3" : ""
           } ${activeHeadingId === heading.id ? 'toc-active-item' : ''}`}>
             <a
               href={`#${heading.id}`}
               onClick={(e) => handleLinkClick(e, heading.id)}              
               className={`
-                flex items-center transition-colors duration-150 ease-in-out
-                ${heading.level === 2 ? "text-[#583B1F] hover:text-[#C19A6B] font-medium" : "text-[#735B43] hover:text-[#C19A6B] text-sm"}
-                ${activeHeadingId === heading.id ? '!text-[#C19A6B] font-semibold' : ''}
+                flex items-center transition-colors duration-150 ease-in-out py-0.5
+                ${heading.level === 2 ? "text-[#583B1F] hover:text-[#C19A6B] text-sm font-medium" : "text-[#735B43] hover:text-[#C19A6B] text-xs"}
+                ${activeHeadingId === heading.id ? '!text-[#C19A6B] font-medium' : ''}
               `}
-            >
-              {heading.level === 2 && (
+            >              {heading.level === 2 && (
                 <svg 
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 mr-1.5 text-[#C19A6B] flex-shrink-0" // Adicionado flex-shrink-0
+                  className="h-2.5 w-2.5 mr-1 text-[#C19A6B] flex-shrink-0" // Adicionado flex-shrink-0
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -165,7 +162,7 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
                   <path 
                     strokeLinecap="round" 
                     strokeLinejoin="round"
-                    strokeWidth={activeHeadingId === heading.id ? 3 : 2} // Mais grosso se ativo
+                    strokeWidth={activeHeadingId === heading.id ? 2.5 : 2} // Mais grosso se ativo
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
@@ -173,7 +170,7 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
               {heading.level === 3 && (
                 <svg 
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-2 w-2 mr-1.5 text-[#735B43] flex-shrink-0" // Adicionado flex-shrink-0
+                  className="h-1.5 w-1.5 mr-1 text-[#735B43] flex-shrink-0" // Adicionado flex-shrink-0
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -188,21 +185,19 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
       </ul>
     </div>
   );
-
   return (
-    <div ref={tocRef} className="mb-8 md:p-5 md:bg-[#F8F5F0] md:rounded-lg md:border md:border-[#C19A6B]/20 md:shadow-sm">
+    <div ref={tocRef} className="mb-6 md:p-4 md:bg-[#F8F5F0]/80 md:rounded-lg md:border md:border-[#C19A6B]/15 md:shadow-sm">
       {/* Botão Sanduíche para Mobile */}
-      <div className="md:hidden p-3 bg-[#F8F5F0] rounded-lg border border-[#C19A6B]/20 shadow-sm">
+      <div className="md:hidden p-2.5 bg-[#F8F5F0]/90 rounded-lg border border-[#C19A6B]/15 shadow-sm">
         <button
           onClick={toggleToc}
-          className="w-full flex items-center justify-between text-lg font-semibold text-[#583B1F]"
+          className="w-full flex items-center justify-between text-base font-medium text-[#583B1F]"
           aria-expanded={isTocOpen}
           aria-controls="toc-content-mobile"
-        >
-          <span className="flex items-center">
+        >          <span className="flex items-center">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 mr-2 text-[#C19A6B]" 
+              className="h-4 w-4 mr-1.5 text-[#C19A6B]" 
               fill="none"
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -211,21 +206,20 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
               <path 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
-                strokeWidth={2} 
+                strokeWidth={1.75} 
                 d="M4 6h16M4 12h16M4 18h16" 
               />
             </svg>
             Índice do Artigo
-          </span>
-          <svg 
+          </span>          <svg 
             xmlns="http://www.w3.org/2000/svg"
-            className={`h-5 w-5 text-[#C19A6B] transition-transform duration-200 ${isTocOpen ? 'transform rotate-180' : ''}`}
+            className={`h-4 w-4 text-[#C19A6B] transition-transform duration-200 ${isTocOpen ? 'transform rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
             aria-hidden="true"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         {isTocOpen && (
