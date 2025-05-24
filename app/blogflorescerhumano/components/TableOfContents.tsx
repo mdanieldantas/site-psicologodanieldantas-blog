@@ -147,7 +147,7 @@ export default function TableOfContents({ articleContentId }: TableOfContentsPro
               onClick={(e) => handleLinkClick(e, heading.id)}              
               className={`
                 flex items-center transition-colors duration-150 ease-in-out py-0.5
-                ${heading.level === 2 ? "text-[#583B1F] hover:text-[#C19A6B] text-sm font-medium" : "text-[#735B43] hover:text-[#C19A6B] text-xs"}
+                ${heading.level === 2 ? "text-[#583B1F] hover:text-[#C19A6B] md:text-lg text-sm font-medium" : "text-[#735B43] hover:text-[#C19A6B] md:text-base text-xs"}
                 ${activeHeadingId === heading.id ? '!text-[#C19A6B] font-medium' : ''}
               `}
             >              {heading.level === 2 && (

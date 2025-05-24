@@ -126,16 +126,16 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
       <div className="flex justify-between items-center">
         <button 
           onClick={() => setIsOpen(!isOpen)} 
-          className="flex items-center gap-2 text-xs font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
+          className="flex items-center gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
         >
-          <FileText className="w-4 h-4" />
+          <FileText className="w-5 h-5" /> {/* Aumentado de w-4 h-4 para w-5 h-5 */}
           Como citar este post
         </button>        <button 
           onClick={handleShare}
-          className="flex items-center gap-2 text-xs font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
+          className="flex items-center gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
           aria-label="Compartilhar este artigo"
         >
-          <Share2 className="w-4 h-4" />
+          <Share2 className="w-5 h-5" /> {/* Aumentado de w-4 h-4 para w-5 h-5 */}
           <span className="hidden sm:inline">Compartilhar</span>
         </button>
       </div>
