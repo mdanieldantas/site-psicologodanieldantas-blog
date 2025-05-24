@@ -1,5 +1,6 @@
 // app/blogflorescerhumano/components/RelatedArticles.tsx
 import React from 'react';
+import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from './ArticleCardBlog'; // Reutiliza o card
@@ -64,22 +65,45 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
   if (!relatedArticles || relatedArticles.length === 0) {
     return null; // Não mostra a seção se não houver artigos relacionados
   }
-
   return (
-    <section className="mt-12 pt-8 border-t">
-      <h2 className="text-2xl font-semibold mb-6">Artigos Relacionados</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {relatedArticles.map((artigo) => (
-          <ArticleCardBlog
-            key={artigo.id}
-            titulo={artigo.titulo ?? 'Artigo sem título'}
-            resumo={artigo.resumo ?? undefined}
-            slug={artigo.slug ?? ''}
-            categoriaSlug={artigo.categorias?.slug ?? 'sem-categoria'}
-            imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
-          />
-        ))}
-      </div>
-    </section>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {relatedArticles.map((artigo) => (
+        <ArticleCardBlog
+          key={artigo.id}
+          titulo={artigo.titulo ?? 'Artigo sem título'}
+          resumo={artigo.resumo ?? undefined}
+          slug={artigo.slug ?? ''}
+          categoriaSlug={artigo.categorias?.slug ?? 'sem-categoria'}
+          imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+        />
+      ))}
+      {relatedArticles.length < limit && (
+        <div className="hidden md:flex items-center justify-center col-span-1 h-full">
+          <Link 
+            href="/blogflorescerhumano" 
+            className="flex flex-col items-center justify-center p-6 h-full w-full border-2 border-dashed border-[#C19A6B]/30 rounded-lg bg-[#F8F5F0]/30 hover:bg-[#F8F5F0]/70 hover:border-[#C19A6B]/50 transition-all duration-300 group"
+          >
+            <div className="w-12 h-12 rounded-full bg-[#F8F5F0]/70 flex items-center justify-center mb-3 group-hover:bg-white transition-colors duration-300">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className="text-[#C19A6B]"
+              >
+                <path d="M5 12h14"/>
+                <path d="M12 5v14"/>
+              </svg>
+            </div>
+            <span className="text-center text-[#583B1F] font-medium">Ver Mais Artigos</span>
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }

@@ -246,10 +246,8 @@ export default async function ArtigoEspecificoPage({
         categoryName={categorias?.nome || ""}
         tags={tags || []}
         url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
-      />
-
-      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
-        <nav aria-label="Navegação estrutural" className="mb-3 py-1.5 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
+      />      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
+        <nav aria-label="Navegação estrutural" className="mb-3 pt-0 pb-1 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
           <ol className="flex items-center text-xs whitespace-nowrap w-full">
             <li className="flex items-center">
               <Link 
@@ -326,9 +324,8 @@ export default async function ArtigoEspecificoPage({
               </span>
             </Link>
           </div>
-          
-          {/* Título principal */}
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 leading-tight text-[#583B1F]">
+            {/* Título principal */}
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight text-[#583B1F]">
             {titulo ?? "Artigo sem título"}
           </h1>
           
@@ -617,7 +614,7 @@ export default async function ArtigoEspecificoPage({
               <p className="text-[#735B43] mb-3 text-sm italic">
                 Psicólogo e escritor do Blog Florescer Humano
               </p>              <p className="text-[#735B43] text-sm mb-3">
-                Especialista em Saúde Mental com formação em ACP/Focalização/mindfulness,
+                Especialista em Saúde Mental com formação em ACP,Focalização,e pesquisador de Mindfulness,
                 ajudando pessoas a encontrarem seu potencial pleno
                 através do autoconhecimento e crescimento pessoal.
               </p>
@@ -668,29 +665,34 @@ export default async function ArtigoEspecificoPage({
               </div>
             </div>
           </div>
-        </div>        {/* Seção de Artigos Relacionados */}
+        </div>        {/* Seção de Artigos Relacionados - Redesenhada para maior consistência */}
         <section className="mt-14">
           <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-[#C19A6B]/30 text-[#583B1F] flex items-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-              className="w-5 h-5 mr-2 text-[#C19A6B]"
-            >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
-            Leituras relacionadas
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-3 shadow-sm">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.75" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+                className="w-4.5 h-4.5 text-[#C19A6B]"
+              >
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <span>Leituras Relacionadas</span>
           </h2>
-          <div className="bg-[#F8F5F0]/50 rounded-lg p-4">
-            <RelatedArticles
-              currentArticleId={currentArticleId}
-              tags={tags}
-            />
+          <div className="bg-[#F8F5F0]/30 rounded-lg p-0">
+            <div className="related-articles-container">
+              <RelatedArticles
+                currentArticleId={currentArticleId}
+                tags={tags}
+                limit={3}
+              />
+            </div>
           </div>
         </section>
         {/* Exibição de tags relacionadas em destaque ao final do artigo */}        {tags && Array.isArray(tags) && tags.length > 0 && (
