@@ -474,7 +474,8 @@ export default async function ArtigoEspecificoPage({
             {/* Importamos o componente cliente TableOfContents */}
             <TableOfContents articleContentId="article-content" />
             
-            {/* Componente de Citação Acadêmica e Compartilhamento */}            <CitationBox 
+            {/* Componente de Citação Acadêmica e Compartilhamento */}            
+            <CitationBox 
               title={titulo}
               author="Marcos Daniel Gomes Dantas"
               date={data_publicacao || new Date().toISOString()}
@@ -570,6 +571,14 @@ export default async function ArtigoEspecificoPage({
               }}
             />
             
+            {/* Adicionando o CitationBox novamente aqui */}
+            <CitationBox 
+              title={titulo}
+              author="Marcos Daniel Gomes Dantas"
+              date={data_publicacao || new Date().toISOString()}
+              url={`https://www.psicologodanieldantas.com/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
+            />
+
           </div>
         ) : (
           <div className="py-12 text-center">
