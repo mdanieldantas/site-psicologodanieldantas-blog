@@ -61,44 +61,43 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
   // Iniciais sem pontos para Vancouver
   const vancouverNameInitials = authorFirstName.split(' ').map(name => name[0]).join('');
     // Meses por extenso em português para APA
-  const apaMonths = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-  const apaMonth = apaMonths[pubDate.getMonth()];
-
+  const apaMonths = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];  const apaMonth = apaMonths[pubDate.getMonth()];
+  
   // Format citations
-  // ABNT NBR 6023:2018
-  // SOBRENOME, Iniciais. **Título do artigo**: subtítulo. *Nome do site/revista*, [s.l.], dia mês ano. Disponível em: <URL>. Acesso em: dia mês abreviado. ano.
-  const abntCitation = `${authorLastName.toUpperCase()}, ${nameInitials} **${title}**. *Florescer Humano*, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: ${url}. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
+  // ABNT NBR 6023:2018  // SOBRENOME, Iniciais. Título do artigo. Nome do site/revista, [s.l.], dia mês ano. Disponível em: URL. Acesso em: dia mês abreviado. ano.
+  const abntCitation = `${authorLastName.toUpperCase()}, ${nameInitials} ${title}. Florescer Humano, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: ${url}. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
+  
+  // Versão para cópia para ABNT (com < > em volta da URL)
+  const abntCopyVersion = `${authorLastName.toUpperCase()}, ${nameInitials} ${title}. Florescer Humano, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: <${url}>. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
+  
+  // Versão de exibição formatada para ABNT
+  const abntFormattedDisplay = `${authorLastName.toUpperCase()}, ${nameInitials} <strong>${title}</strong>. <em>Florescer Humano</em>, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: ${url}. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
   
   // APA 7ª Edição (2019)
-  // Sobrenome, Iniciais. (Ano, Mês Dia). *Título do artigo*. Nome do Site. URL
-  const apaCitation = `${authorLastName}, ${nameInitials} (${pubYear}, ${apaMonth} ${pubDay}). *${title}*. Florescer Humano. ${url}`;
+  // Sobrenome, Iniciais. (Ano, Mês Dia). Título do artigo. Nome do Site. URL
+  const apaCitation = `${authorLastName}, ${nameInitials} (${pubYear}, ${apaMonth} ${pubDay}). ${title}. Florescer Humano. ${url}`;
+  
+  // Versão de exibição formatada para APA
+  const apaFormattedDisplay = `${authorLastName}, ${nameInitials} (${pubYear}, ${apaMonth} ${pubDay}). <em>${title}</em>. Florescer Humano. ${url}`;
   
   // Vancouver (ICMJE)
   // Sobrenome Iniciais. Título do artigo. Nome do site [Internet]. Ano [citado AAAA Mês Dia]. Disponível em: URL
   const vancouverCitation = `${authorLastName} ${vancouverNameInitials}. ${title}. Florescer Humano [Internet]. ${pubYear} [citado ${currentYear} ${vancouverCurrentMonth} ${currentDay}]. Disponível em: ${url}`;  const handleCopy = (text: string, format: string) => {
-    // Remove os marcadores markdown ao copiar, mas mantendo a formatação apropriada para a visualização
-    // Substitui marcações conforme necessário para o formato copiado
+    // Seleciona o texto apropriado para cada formato de citação
     let plainText = text;
     
-    // Para ABNT, substitui ** por negrito e * por itálico
+    // Para ABNT, usa a versão com os sinais < > ao redor da URL
     if (format === 'abnt') {
-      plainText = text
-        .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove marcadores de negrito (já que o texto estará em negrito na visualização)
-        .replace(/\*(.*?)\*/g, '$1');     // Remove marcadores de itálico (já que o texto estará em itálico na visualização)
+      plainText = abntCopyVersion;
     } 
-    // Para APA, remover marcadores
+    // Para APA, usa o formato padrão
     else if (format === 'apa') {
-      plainText = text
-        .replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/\*(.*?)\*/g, '$1');
+      plainText = apaCitation;
     }
-    // Para Vancouver, remover marcadores
+    // Para Vancouver, usa o formato padrão
     else {
-      plainText = text
-        .replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/\*(.*?)\*/g, '$1');
+      plainText = vancouverCitation;
     }
-    
     navigator.clipboard.writeText(plainText);
     setCopied(format);
     setTimeout(() => setCopied(null), 2000);
@@ -167,7 +166,7 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
                   )}
                 </button>
               </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p dangerouslySetInnerHTML={{ __html: abntCitation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') }} />
+                <p dangerouslySetInnerHTML={{ __html: abntFormattedDisplay }} />
               </div>
             </div>
             
@@ -191,7 +190,7 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
                   )}
                 </button>
               </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p dangerouslySetInnerHTML={{ __html: apaCitation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') }} />
+                <p dangerouslySetInnerHTML={{ __html: apaFormattedDisplay }} />
               </div>
             </div>
             
@@ -215,7 +214,7 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
                   )}
                 </button>
               </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p dangerouslySetInnerHTML={{ __html: vancouverCitation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') }} />
+                <p>{vancouverCitation}</p>
               </div>
             </div>
           </div>
