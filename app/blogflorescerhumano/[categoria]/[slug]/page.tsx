@@ -442,11 +442,11 @@ export default async function ArtigoEspecificoPage({
                 <div className="flex items-center justify-center w-4 h-4 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-2.5 w-2.5 text-[#C19A6B]"
+                    className="h-3.5 w-3.5 text-[#C19A6B]" // Aumentado de h-3 w-3
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={1.5}
+                    strokeWidth={2}
                   >
                     <path
                       strokeLinecap="round"
