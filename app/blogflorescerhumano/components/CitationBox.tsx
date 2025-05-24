@@ -13,7 +13,18 @@ interface CitationBoxProps {
 export default function CitationBox({ title, author, date, url }: CitationBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-    // Parse date to get year
+  
+  // Estado para armazenar a data de acesso atual - será calculada apenas uma vez quando o componente for montado
+  const [accessDate] = useState(() => {
+    const now = new Date();
+    return {
+      day: now.getDate(),
+      month: now.getMonth(),
+      year: now.getFullYear()
+    };
+  });
+    
+  // Parse date to get year
   const publishYear = new Date(date).getFullYear();
   
   // Tratamento especial para o autor específico do blog
@@ -25,16 +36,14 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
     authorLastName = author.split(' ').pop() || author;
     authorFirstName = author.split(' ').shift() || '';
   }
-  
   const formattedDate = new Date(date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-  // Obtenção da data atual em formato correto para citações
-  const today = new Date();
-  const currentDay = today.getDate();
   
   // Meses abreviados conforme ABNT
   const abntMonths = ['jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
-  const currentMonth = abntMonths[today.getMonth()];
-  const currentYear = today.getFullYear();
+  
+  const currentDay = accessDate.day;
+  const currentMonth = abntMonths[accessDate.month];
+  const currentYear = accessDate.year;
   
   // Iniciais do nome formatadas corretamente
   const nameInitials = authorFirstName.split(' ')
@@ -45,30 +54,50 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
   const pubDay = pubDate.getDate();
   const pubMonth = abntMonths[pubDate.getMonth()];
   const pubYear = pubDate.getFullYear();
-    // Meses abreviados para Vancouver (em inglês conforme padrão internacional)
+  // Meses abreviados para Vancouver (em inglês conforme padrão internacional)
   const vancouverMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const vancouverCurrentMonth = vancouverMonths[today.getMonth()];
+  const vancouverCurrentMonth = vancouverMonths[accessDate.month];
   
   // Iniciais sem pontos para Vancouver
   const vancouverNameInitials = authorFirstName.split(' ').map(name => name[0]).join('');
-  
+    // Meses por extenso em português para APA
+  const apaMonths = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const apaMonth = apaMonths[pubDate.getMonth()];
+
   // Format citations
   // ABNT NBR 6023:2018
   // SOBRENOME, Iniciais. **Título do artigo**: subtítulo. *Nome do site/revista*, [s.l.], dia mês ano. Disponível em: <URL>. Acesso em: dia mês abreviado. ano.
-  const abntCitation = `${authorLastName.toUpperCase()}, ${nameInitials} **${title}**. *Florescer Humano*, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: <${url}>. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
+  const abntCitation = `${authorLastName.toUpperCase()}, ${nameInitials} **${title}**. *Florescer Humano*, [s.l.], ${pubDay} ${pubMonth} ${pubYear}. Disponível em: ${url}. Acesso em: ${currentDay} ${currentMonth} ${currentYear}.`;
   
   // APA 7ª Edição (2019)
   // Sobrenome, Iniciais. (Ano, Mês Dia). *Título do artigo*. Nome do Site. URL
-  const apaCitation = `${authorLastName}, ${nameInitials} (${pubYear}, ${pubMonth.replace('.', '')} ${pubDay}). *${title}*. Florescer Humano. ${url}`;
+  const apaCitation = `${authorLastName}, ${nameInitials} (${pubYear}, ${apaMonth} ${pubDay}). *${title}*. Florescer Humano. ${url}`;
   
   // Vancouver (ICMJE)
   // Sobrenome Iniciais. Título do artigo. Nome do site [Internet]. Ano [citado AAAA Mês Dia]. Disponível em: URL
-  const vancouverCitation = `${authorLastName} ${vancouverNameInitials}. ${title}. Florescer Humano [Internet]. ${pubYear} [citado ${currentYear} ${vancouverCurrentMonth} ${currentDay}]. Disponível em: ${url}`;
-  const handleCopy = (text: string, format: string) => {
-    // Remove os marcadores markdown ao copiar
-    const plainText = text
-      .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove marcadores de negrito
-      .replace(/\*(.*?)\*/g, '$1');     // Remove marcadores de itálico
+  const vancouverCitation = `${authorLastName} ${vancouverNameInitials}. ${title}. Florescer Humano [Internet]. ${pubYear} [citado ${currentYear} ${vancouverCurrentMonth} ${currentDay}]. Disponível em: ${url}`;  const handleCopy = (text: string, format: string) => {
+    // Remove os marcadores markdown ao copiar, mas mantendo a formatação apropriada para a visualização
+    // Substitui marcações conforme necessário para o formato copiado
+    let plainText = text;
+    
+    // Para ABNT, substitui ** por negrito e * por itálico
+    if (format === 'abnt') {
+      plainText = text
+        .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove marcadores de negrito (já que o texto estará em negrito na visualização)
+        .replace(/\*(.*?)\*/g, '$1');     // Remove marcadores de itálico (já que o texto estará em itálico na visualização)
+    } 
+    // Para APA, remover marcadores
+    else if (format === 'apa') {
+      plainText = text
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1');
+    }
+    // Para Vancouver, remover marcadores
+    else {
+      plainText = text
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1');
+    }
     
     navigator.clipboard.writeText(plainText);
     setCopied(format);
@@ -186,7 +215,7 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
                   )}
                 </button>
               </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p>{vancouverCitation}</p>
+                <p dangerouslySetInnerHTML={{ __html: vancouverCitation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') }} />
               </div>
             </div>
           </div>
