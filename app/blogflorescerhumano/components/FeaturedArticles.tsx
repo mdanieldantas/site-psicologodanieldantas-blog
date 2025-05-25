@@ -43,7 +43,7 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
               imagemUrl={article.imagem_capa_arquivo || undefined}
               autor={{
                 nome: "Psicólogo Daniel Dantas",
-                fotoUrl: "autores/mini-autores-daniel-psi-blog.webp"
+                fotoUrl: "mini-autores-daniel-psi-blog.webp"
               }}
               dataPublicacao={article.data_publicacao || undefined}
               dataAtualizacao={article.data_atualizacao}

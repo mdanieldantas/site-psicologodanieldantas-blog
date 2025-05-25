@@ -95,11 +95,13 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
         {/* Informações do autor e data */}
         <div className="flex items-center gap-3 mb-3">
           {autor?.fotoUrl && (
-            <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#C19A6B]/20">
-              <img
-                src={`/${autor.fotoUrl}`}
+            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#C19A6B]/20">
+              <Image
+                src={`/blogflorescerhumano/autores/${autor.fotoUrl}`}
                 alt={`Foto de ${autor.nome}`}
-                className="w-full h-full object-cover"
+                width={40}
+                height={40}
+                className="object-cover"
               />
             </div>
           )}
