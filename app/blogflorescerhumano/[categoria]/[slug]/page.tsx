@@ -703,12 +703,11 @@ export default async function ArtigoEspecificoPage({
               </svg>
             </div>
             <span>Leituras Relacionadas</span>
-          </h2>
-          <div className="bg-[#F8F5F0]/30 rounded-lg p-0">
+          </h2>          <div className="bg-[#F8F5F0]/30 rounded-lg p-0">
             <div className="related-articles-container">
               <RelatedArticles
                 currentArticleId={currentArticleId}
-                tags={tags}
+                tags={tags ? tags.map(tag => tag.nome) : []}
                 limit={3}
               />
             </div>

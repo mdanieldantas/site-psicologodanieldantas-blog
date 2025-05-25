@@ -40,10 +40,9 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
               resumo={article.resumo || undefined}
               slug={article.slug}
               categoriaSlug={article.categorias?.slug || 'sem-categoria'}
-              imagemUrl={article.imagem_capa_arquivo || undefined}
-              autor={{
+              imagemUrl={article.imagem_capa_arquivo || undefined}              autor={{
                 nome: "Psicólogo Daniel Dantas",
-                fotoUrl: "mini-autores-daniel-psi-blog.webp"
+                fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
               }}
               dataPublicacao={article.data_publicacao || undefined}
               dataAtualizacao={article.data_atualizacao}

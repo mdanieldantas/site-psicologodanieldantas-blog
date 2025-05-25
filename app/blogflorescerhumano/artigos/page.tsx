@@ -12,10 +12,11 @@ import { ResolvingMetadata } from 'next';
 
 // --- Metadados dinâmicos para SEO conforme paginação --- //
 export async function generateMetadata(
-  { searchParams }: { searchParams?: { page?: string } },
+  { searchParams }: { searchParams?: Promise<{ page?: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const currentPage = parseInt(searchParams?.page ?? '1', 10);
+  const params = await searchParams;
+  const currentPage = parseInt(params?.page ?? '1', 10);
   const isFirstPage = currentPage === 1;
   const pageTitle = isFirstPage
     ? 'Todos os Artigos | Blog Florescer Humano'
@@ -51,7 +52,24 @@ export async function generateMetadata(
 
 // Tipagem para o artigo com slug da categoria
 type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
-  categorias: { slug: string } | null;
+  categorias: {
+    id: string;
+    nome: string | null;
+    slug: string;
+  } | null;
+  autor: {
+    id: string;
+    nome: string | null;
+    foto_arquivo: string | null;
+    biografia: string | null;
+  } | null;
+  artigos_tags: {
+    tags: {
+      id: number;
+      nome: string;
+      slug: string;
+    } | null;
+  }[] | null;
 };
 
 // Define quantos artigos serão exibidos por página
@@ -59,14 +77,15 @@ const ARTICLES_PER_PAGE = 6; // Alterado para 6 para manter consistência
 
 // Define as props da página, incluindo searchParams para paginação
 interface TodosArtigosPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string; // Parâmetro opcional para a página
-  };
+  }>;
 }
 
 export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
   // --- Lógica de Paginação --- //
-  const currentPage = parseInt(searchParams['page'] ?? '1', 10);
+  const params = await searchParams;
+  const currentPage = parseInt(params['page'] ?? '1', 10);
   const from = (currentPage - 1) * ARTICLES_PER_PAGE;
   const to = from + ARTICLES_PER_PAGE - 1;
 
@@ -76,14 +95,12 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
     .select('* ', { count: 'exact', head: true }) // Conta todos os artigos publicados
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString());
-
   if (countError) {
     console.error('Erro ao contar todos os artigos:', countError);
     // Considerar como lidar com este erro
   }
 
   const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
-
   // --- Busca de Artigos da Página Atual --- //
   const { data: artigos, error } = await supabaseServer
     .from('artigos')
@@ -94,7 +111,25 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
       resumo,
       imagem_capa_arquivo,
       data_publicacao,
-      categorias ( slug )
+      data_atualizacao,
+      autor:autores (
+        id,
+        nome,
+        foto_arquivo,
+        biografia
+      ),
+      categorias ( 
+        id,
+        nome,
+        slug 
+      ),
+      artigos_tags (
+        tags (
+          id,
+          nome,
+          slug
+        )
+      )
     `)
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
@@ -105,10 +140,21 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
   if (error) {
     console.error(`Erro ao buscar artigos (Página ${currentPage}):`, error);
     // Considerar mostrar um erro mais explícito para o usuário
-  }
-
-  // Log para depuração
+  }  // Log para depuração
   console.log(`Todos Artigos - Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);
+  
+  // Debug detalhado dos artigos e tags
+  if (artigos) {
+    console.log('=== DEBUG DETALHADO DOS ARTIGOS E TAGS ===');
+    artigos.forEach((artigo, index) => {
+      console.log(`\nArtigo ${index + 1}:`);
+      console.log(`  ID: ${artigo.id}`);
+      console.log(`  Título: ${artigo.titulo}`);
+      console.log(`  artigos_tags raw:`, artigo.artigos_tags);
+      console.log(`  Tags processadas:`, artigo.artigos_tags?.map((at: any) => at.tags?.nome).filter(Boolean));
+    });
+    console.log('=== FIM DEBUG ===\n');
+  }
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -116,22 +162,29 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         Todos os Artigos
       </h1>
 
-      <section>
-        {artigos && artigos.length > 0 ? (
+      <section>{artigos && artigos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artigos.map((artigo) => (
+            {artigos.map((artigo) => 
               // Verifica se temos slug do artigo e da categoria antes de renderizar
-              artigo.slug && artigo.categorias?.slug && (
-                <ArticleCardBlog
+              artigo.slug && artigo.categorias?.slug ? (                <ArticleCardBlog
                   key={artigo.id}
                   titulo={artigo.titulo ?? 'Artigo sem título'}
                   resumo={artigo.resumo ?? undefined}
                   slug={artigo.slug}
                   categoriaSlug={artigo.categorias.slug}
-                  imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+                  imagemUrl={artigo.imagem_capa_arquivo ?? undefined}                  autor={{
+                    nome: artigo.autor?.nome ?? "Psicólogo Daniel Dantas",
+                    fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                  }}
+                  dataPublicacao={artigo.data_publicacao ?? undefined}                  dataAtualizacao={artigo.data_atualizacao ?? undefined}
+                  categoria={artigo.categorias?.nome ?? undefined}
+                  tags={artigo.artigos_tags?.map((at: any) => at.tags?.nome).filter((nome: any): nome is string => Boolean(nome)) ?? []}
+                  tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+                  numeroComentarios={0}
+                  tipoConteudo="artigo"
                 />
-              )
-            ))}
+              ) : null
+            )}
           </div>
         ) : (
           <p className="text-center text-gray-500">
