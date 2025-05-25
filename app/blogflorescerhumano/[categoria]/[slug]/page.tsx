@@ -296,7 +296,7 @@ export default async function ArtigoEspecificoPage({
         </nav>
 
         {/* Cabeçalho do Artigo - Nova estrutura aprimorada */}
-        <header className="mb-8">
+        <header>
           {/* Categoria destacada - Redesenhada com ícone */}
           <div className="mb-4">
             <Link 
@@ -416,7 +416,7 @@ export default async function ArtigoEspecificoPage({
             </div>
           </div>{/* Imagem de Capa Aprimorada */}
           {imageUrl && (
-            <div className="mb-8 relative w-full overflow-hidden rounded-lg shadow-lg">
+            <div className="mb-3 relative w-full overflow-hidden rounded-lg shadow-lg">
               <AspectRatio.Root ratio={16 / 9}>
                 <Image
                   src={imageUrl}
@@ -438,7 +438,7 @@ export default async function ArtigoEspecificoPage({
             </div>
           )}
             {/* Exibição das Tags - Design elegante e refinado */}          {tags && Array.isArray(tags) && tags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-5">              <div className="flex items-center text-xs text-[#735B43] mr-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3">              <div className="flex items-center text-xs text-[#735B43] mr-1">
                 <div className="flex items-center justify-center w-4 h-4 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
