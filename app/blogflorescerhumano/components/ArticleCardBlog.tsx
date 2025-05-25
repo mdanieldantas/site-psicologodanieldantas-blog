@@ -17,7 +17,7 @@ interface ArticleCardBlogProps {
   dataPublicacao?: string;
   dataAtualizacao?: string;
   categoria?: string;
-  tags?: string[];
+  tags?: Array<{ id: number; nome: string; slug: string; }>;
   tempoLeitura?: number; // em minutos
   numeroComentarios?: number;
   tipoConteudo?: 'artigo' | 'video' | 'podcast' | 'infografico';
@@ -156,19 +156,17 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
           <p className="text-[#583B1F]/80 text-sm mb-4 line-clamp-3">
             {resumo}
           </p>
-        )}
-
-        {/* Tags Section - Proteção Completa Contra Falhas */}
+        )}        {/* Tags Section - Proteção Completa Contra Falhas */}
         {(() => {
           // Validação robusta das tags
           if (!tags || !Array.isArray(tags) || tags.length === 0) {
             return null;
           }
           
-          // Filtrar e limpar tags válidas
+          // Filtrar e limpar tags válidas (agora são objetos)
           const tagsValidas = tags
-            .filter(tag => tag && typeof tag === 'string' && tag.trim().length > 0)
-            .map(tag => tag.trim());
+            .filter(tag => tag && typeof tag === 'object' && tag.nome && tag.nome.trim().length > 0)
+            .map(tag => ({ ...tag, nome: tag.nome.trim() }));
             
           if (tagsValidas.length === 0) {
             return null;
@@ -179,7 +177,7 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
               <div className="flex flex-wrap gap-1.5">
                 {tagsValidas.slice(0, 3).map((tag, index) => (
                   <span 
-                    key={`tag-${index}-${tag.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                    key={`tag-${tag.id || index}-${tag.nome.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                     className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F5F0] text-[#583B1F] border border-[#C19A6B]/25 hover:bg-[#F8F5F0]/80 transition-colors"
                   >
                     <svg
@@ -196,7 +194,7 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
                       />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
                     </svg>
-                    {tag}
+                    {tag.nome}
                   </span>
                 ))}
                 {tagsValidas.length > 3 && (

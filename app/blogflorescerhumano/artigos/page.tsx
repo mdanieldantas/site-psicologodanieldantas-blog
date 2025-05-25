@@ -56,19 +56,16 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
     id: string;
     nome: string | null;
     slug: string;
-  } | null;
-  autor: {
+  } | null;  autor: {
     id: string;
     nome: string | null;
     foto_arquivo: string | null;
     biografia: string | null;
   } | null;
-  artigos_tags: {
-    tags: {
-      id: number;
-      nome: string;
-      slug: string;
-    } | null;
+  tags: {
+    id: number;
+    nome: string;
+    slug: string;
   }[] | null;
 };
 
@@ -117,18 +114,15 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         nome,
         foto_arquivo,
         biografia
-      ),
-      categorias ( 
+      ),      categorias ( 
         id,
         nome,
         slug 
       ),
-      artigos_tags (
-        tags (
-          id,
-          nome,
-          slug
-        )
+      tags ( 
+        id,
+        nome,
+        slug 
       )
     `)
     .eq('status', 'publicado')
@@ -147,11 +141,10 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
   if (artigos) {
     console.log('=== DEBUG DETALHADO DOS ARTIGOS E TAGS ===');
     artigos.forEach((artigo, index) => {
-      console.log(`\nArtigo ${index + 1}:`);
-      console.log(`  ID: ${artigo.id}`);
+      console.log(`\nArtigo ${index + 1}:`);      console.log(`  ID: ${artigo.id}`);
       console.log(`  Título: ${artigo.titulo}`);
-      console.log(`  artigos_tags raw:`, artigo.artigos_tags);
-      console.log(`  Tags processadas:`, artigo.artigos_tags?.map((at: any) => at.tags?.nome).filter(Boolean));
+      console.log(`  tags raw:`, artigo.tags);
+      console.log(`  Tags processadas:`, artigo.tags?.map((tag: any) => tag.nome).filter(Boolean));
     });
     console.log('=== FIM DEBUG ===\n');
   }
@@ -178,7 +171,7 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
                   }}
                   dataPublicacao={artigo.data_publicacao ?? undefined}                  dataAtualizacao={artigo.data_atualizacao ?? undefined}
                   categoria={artigo.categorias?.nome ?? undefined}
-                  tags={artigo.artigos_tags?.map((at: any) => at.tags?.nome).filter((nome: any): nome is string => Boolean(nome)) ?? []}
+                  tags={artigo.tags ?? []}
                   tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
                   numeroComentarios={0}
                   tipoConteudo="artigo"
