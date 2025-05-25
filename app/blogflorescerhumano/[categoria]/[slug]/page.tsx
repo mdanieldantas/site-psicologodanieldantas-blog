@@ -632,7 +632,7 @@ export default async function ArtigoEspecificoPage({
               <p className="text-[#735B43] mb-3 text-sm italic">
                 Psicólogo e escritor do Blog Florescer Humano
               </p>              <p className="text-[#735B43] text-sm mb-3">
-                Especialista em Saúde Mental com formação em ACP,Focalização,e pesquisador de Mindfulness,
+                Especialista em Saúde Mental com formação em ACP, Focalização, e pesquisador de Mindfulness,
                 ajudando pessoas a encontrarem seu potencial pleno
                 através do autoconhecimento e crescimento pessoal.
               </p>
