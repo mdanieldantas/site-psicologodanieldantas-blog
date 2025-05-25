@@ -85,6 +85,7 @@ type ArticleSearchResult = {
   imagem_capa_arquivo: string | null;
   data_publicacao: string | null; // Supabase retorna como string
   categoria_slug: string | null; // Campo vindo da função SQL ou da query direta
+  tags?: Array<{ id: number; nome: string; slug: string; }> | null;
 };
 
 // --- ATUALIZADO: Corresponde ao retorno da função SQL 'search_articles_paginated' ---
@@ -97,6 +98,7 @@ type PaginatedArticlesResponse = {
 // Ajuste conforme a estrutura exata retornada pelo Supabase
 type ArticleWithCategorySlug = Database['public']['Tables']['artigos']['Row'] & {
     categorias: { slug: string | null } | null; // Ou { slug: string }[] se for many-to-many
+    tags: Array<{ id: number; nome: string; slug: string; }> | null;
 };
 
 
@@ -120,8 +122,7 @@ async function SearchResults({
   let totalCount = 0;
   let error: any = null;
 
-  if (categoryId) {
-    // --- LÓGICA PARA BUSCA POR CATEGORIA (USA categoryId) ---
+  if (categoryId) {    // --- LÓGICA PARA BUSCA POR CATEGORIA (USA categoryId) ---
     const { data: categoryArticles, error: categoryError, count } = await supabase
       .from('artigos')
       .select(`
@@ -131,14 +132,13 @@ async function SearchResults({
         resumo,
         imagem_capa_arquivo,
         data_publicacao,
-        categorias ( slug )
+        categorias ( slug ),
+        tags ( id, nome, slug )
       `, { count: 'exact' })
       .eq('categoria_id', categoryId)
       .eq('status', 'publicado')
       .order('data_publicacao', { ascending: false })
-      .range(offset, offset + PAGE_SIZE - 1);
-
-      if (categoryArticles) {
+      .range(offset, offset + PAGE_SIZE - 1);      if (categoryArticles) {
         // CORRIGIDO: Mapeamento mais seguro e remoção da tipagem explícita de 'a'
         artigos = categoryArticles.map(a => ({
             id: a.id,
@@ -150,7 +150,8 @@ async function SearchResults({
             // Verifica explicitamente se 'categorias' existe e tem 'slug'
             categoria_slug: (a.categorias && typeof a.categorias === 'object' && 'slug' in a.categorias)
                               ? a.categorias.slug
-                              : 'sem-categoria'
+                              : 'sem-categoria',
+            tags: a.tags ?? []
         }));
       }
       totalCount = count ?? 0;
@@ -188,8 +189,7 @@ async function SearchResults({
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Mapeia os artigos recebidos */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">        {/* Mapeia os artigos recebidos */}
         {artigos.map((artigo) => (
           <ArticleCardBlog
             key={artigo.id}
@@ -198,6 +198,14 @@ async function SearchResults({
             slug={artigo.slug ?? ''}
             categoriaSlug={artigo.categoria_slug ?? 'sem-categoria'} // Usa o slug mapeado
             imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+            tags={artigo.tags ?? []}
+            autor={{
+              nome: "Psicólogo Daniel Dantas",
+              fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+            }}
+            tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+            numeroComentarios={0}
+            tipoConteudo="artigo"
           />
         ))}
       </div>

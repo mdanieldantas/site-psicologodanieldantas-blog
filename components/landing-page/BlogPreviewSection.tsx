@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"; // Importar componentes do carrossel
 import ButtonBlog from '@/app/blogflorescerhumano/components/ButtonBlog';
+import ArticleCardBlog from '@/app/blogflorescerhumano/components/ArticleCardBlog';
 
 // Define a estrutura esperada para cada post do blog
 // Adicionada a propriedade 'date' e 'id' (opcional, mas presente nos dados de exemplo)
@@ -20,6 +21,8 @@ interface BlogPost {
   imageUrl: string;
   date?: string; // Adicionada data opcional
   category?: string; // Adicionada categoria opcional
+  categorySlug?: string; // Adicionado slug da categoria
+  tags?: Array<{ id: number; nome: string; slug: string; }>; // Adicionado tags
 }
 
 // Define as propriedades esperadas pelo componente BlogPreviewSection
@@ -68,46 +71,23 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
         >          <CarouselContent className="-ml-4">
             {posts.map((post, index) => (
               <CarouselItem key={post.id || post.slug || index} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                <div className="p-1 h-full">{/* Card com sombra e efeitos de hover aprimorados */}
-                  <div className="article-card-animate bg-[#F8F5F0] rounded-lg shadow-md hover:shadow-lg overflow-hidden h-full flex flex-col border-l-4 border-[#C19A6B] transform transition-all duration-300 hover:-translate-y-1">
-                    <Link href="/em-construcao" passHref aria-label={`Ler artigo: ${post.title}`}> {/* Alterado href para /em-construcao */}
-                      <div className="cursor-pointer h-full flex flex-col group">
-                        <div className="relative h-52"> {/* Altura padronizada da imagem */}
-                          <Image
-                            src={post.imageUrl || "/placeholder.svg"}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            loading={index === 0 ? "eager" : "lazy"}
-                            priority={index === 0}
-                          />
-                          {/* Overlay de hover na imagem */}
-                          <div className="absolute inset-0 bg-[#583B1F]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-                        </div>
-                        <div className="p-6 flex flex-col flex-grow">
-                          {/* Tag e tempo de leitura */}
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            <span className="inline-block px-3 py-1 bg-[#F5F2EE] text-[#735B43] text-xs rounded-full">
-                              {post.category || "Psicologia"}
-                            </span>
-                            <span className="inline-flex items-center px-3 py-1 bg-[#F5F2EE] text-[#735B43] text-xs rounded-full">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {Math.ceil((post.excerpt?.length || 0) / 200) + 2} min
-                            </span>
-                          </div>
-                          {post.date && (
-                            <p className="text-sm text-[#C19A6B] mb-2">{post.date}</p>
-                          )}
-                          <h3 className="text-xl font-light mb-3 text-[#583B1F] group-hover:text-[#C19A6B] transition-colors duration-300">{post.title}</h3>
-                          <p className="text-[#735B43] font-light mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
-                          <span className="inline-flex items-center text-sm font-medium text-[#583B1F] group-hover:text-[#C19A6B] transition-colors duration-300 self-start mt-auto">
-                            Ler mais <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
+                <div className="p-1 h-full">
+                  <ArticleCardBlog
+                    titulo={post.title}
+                    resumo={post.excerpt}
+                    slug={post.slug}
+                    categoriaSlug={post.categorySlug || 'sem-categoria'}
+                    imagemUrl={post.imageUrl}
+                    tags={post.tags ?? []}
+                    autor={{
+                      nome: "Psicólogo Daniel Dantas",
+                      fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                    }}
+                    tempoLeitura={Math.ceil((post.excerpt?.length || 0) / 200) + 3}
+                    numeroComentarios={0}
+                    tipoConteudo="artigo"
+                    dataPublicacao={post.date}
+                  />
                 </div>
               </CarouselItem>
             ))}

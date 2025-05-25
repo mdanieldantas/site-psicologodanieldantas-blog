@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock, MessageSquare } from "lucide-react";
 
-interface ArticleCardBlogProps {
+export interface ArticleCardBlogProps {
   titulo: string;
   resumo?: string;
   slug: string;

@@ -10,7 +10,9 @@ type RelatedArticle = Pick<
   Database['public']['Tables']['artigos']['Row'],
   'id' | 'titulo' | 'slug' | 'resumo' | 'imagem_capa_arquivo' | 'data_publicacao' | 'data_atualizacao'
 > & {
-  categorias: { slug: string } | null;  tipo_conteudo?: 'artigo' | 'video' | 'podcast' | 'infografico';
+  categorias: { slug: string } | null;
+  tags?: Array<{ id: number; nome: string; slug: string; }> | null;
+  tipo_conteudo?: 'artigo' | 'video' | 'podcast' | 'infografico';
 };
 
 interface RelatedArticlesProps {
@@ -22,9 +24,9 @@ interface RelatedArticlesProps {
 export default async function RelatedArticles({ currentArticleId, tags, limit = 3 }: RelatedArticlesProps) {
   let relatedArticles: RelatedArticle[] | null = null;
 
-  try {
-    const { data: relatedData } = await supabaseServer
-      .from('artigos')      .select(`
+  try {    const { data: relatedData } = await supabaseServer
+      .from('artigos')
+      .select(`
         id,
         titulo,
         slug,
@@ -33,6 +35,11 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
         data_publicacao,
         data_atualizacao,
         categorias (
+          slug
+        ),
+        tags (
+          id,
+          nome,
           slug
         )
       `)
@@ -51,22 +58,21 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {relatedArticles.map((artigo) => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">      {relatedArticles.map((artigo) => (
         <ArticleCardBlog
           key={artigo.id}
           titulo={artigo.titulo}
           resumo={artigo.resumo || undefined}
           slug={artigo.slug}
           categoriaSlug={artigo.categorias?.slug || 'sem-categoria'}
-          imagemUrl={artigo.imagem_capa_arquivo || undefined}
-          autor={{
+          imagemUrl={artigo.imagem_capa_arquivo || undefined}          autor={{
             nome: "Psicólogo Daniel Dantas",
-            fotoUrl: "autores/mini-autores-daniel-psi-blog.webp"
-          }}          dataPublicacao={artigo.data_publicacao || undefined}
+            fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+          }}
+          dataPublicacao={artigo.data_publicacao || undefined}
           dataAtualizacao={artigo.data_atualizacao || undefined}
           categoria={artigo.categorias?.slug?.replace(/-/g, ' ')}
-          tags={[]}
+          tags={artigo.tags ?? []}
           tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
           numeroComentarios={0}
           tipoConteudo={'artigo'}

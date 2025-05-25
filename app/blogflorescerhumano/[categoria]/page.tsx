@@ -14,7 +14,9 @@ const ARTICLES_PER_PAGE = 6; // Valor original
 // const ARTICLES_PER_PAGE = 2; // TEMPORÁRIO PARA TESTE DE PAGINAÇÃO
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
-type Artigo = Database['public']['Tables']['artigos']['Row'];
+type Artigo = Database['public']['Tables']['artigos']['Row'] & {
+  tags?: Array<{ id: number; nome: string; slug: string; }> | null;
+};
 
 interface CategoriaPageProps {
   params: {
@@ -120,7 +122,6 @@ export default async function CategoriaEspecificaPage({
   }
 
   const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
-
   // --- 4. Busca de Artigos da Página Atual --- //
   const { data: artigos, error: artigosError } = await supabaseServer
     .from('artigos')
@@ -130,7 +131,13 @@ export default async function CategoriaEspecificaPage({
       slug,
       resumo,
       imagem_capa_arquivo,
-      data_publicacao
+      data_publicacao,
+      data_atualizacao,
+      tags (
+        id,
+        nome,
+        slug
+      )
     `)
     .eq('categoria_id', categoria.id)
     .eq('status', 'publicado')
@@ -165,8 +172,7 @@ export default async function CategoriaEspecificaPage({
       </header>
 
       {/* Lista de Artigos */}
-      <section>
-        {artigos && artigos.length > 0 ? (
+      <section>        {artigos && artigos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {artigos.map((artigo) => (
               <ArticleCardBlog
@@ -176,6 +182,17 @@ export default async function CategoriaEspecificaPage({
                 slug={artigo.slug ?? ''} // Garante que slug não seja null
                 categoriaSlug={categoria.slug} // Usa o slug da categoria atual
                 imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+                autor={{
+                  nome: "Psicólogo Daniel Dantas",
+                  fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                }}
+                dataPublicacao={artigo.data_publicacao || undefined}
+                dataAtualizacao={artigo.data_atualizacao || undefined}
+                categoria={categoria.nome}
+                tags={artigo.tags ?? []}
+                tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+                numeroComentarios={0}
+                tipoConteudo="artigo"
               />
             ))}
           </div>

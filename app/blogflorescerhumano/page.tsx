@@ -29,14 +29,17 @@ export default async function BlogHomePage() {
     supabaseServer
       .from("categorias")
       .select("*")
-      .order("nome", { ascending: true }),
-
-    supabaseServer
+      .order("nome", { ascending: true }),    supabaseServer
       .from("artigos")
       .select(
         `
         *,
         categorias (
+          slug
+        ),
+        tags (
+          id,
+          nome,
           slug
         )
       `

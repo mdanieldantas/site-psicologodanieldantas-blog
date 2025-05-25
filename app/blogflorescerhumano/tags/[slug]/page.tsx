@@ -19,7 +19,7 @@ interface TagPageProps {
 type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
   categorias: { slug: string } | null; // Apenas o slug da categoria é necessário
   // Adiciona a relação com tags para a query funcionar
-  tags: { id: number }[] | null;
+  tags: Array<{ id: number; nome: string; slug: string; }> | null;
 };
 
 // --- Geração de Metadados Dinâmicas para Tag --- //
@@ -118,7 +118,6 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
 
   // Calcular total de páginas
   const totalPages = Math.max(1, Math.ceil((count ?? 0) / perPageNumber));
-
   // --- 2b. Busca dos Artigos da Página Atual --- //
   // CORREÇÃO: Usar 'artigos_tags' na relação se necessário
   const { data: artigos, error: artigosError } = await supabaseServer
@@ -131,7 +130,8 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
       imagem_capa_arquivo,
       data_publicacao,
       categorias ( slug ),
-      artigos_tags!inner(tag_id) // CORRIGIDO: Nome da tabela de junção
+      tags ( id, nome, slug ),
+      artigos_tags!inner(tag_id)
     `)
     .eq('artigos_tags.tag_id', tag.id) // Filtra artigos que têm a tag com o ID encontrado via tabela de junção
     .eq('status', 'publicado')
@@ -152,8 +152,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
         Artigos com a tag: <span className="text-blue-600">{tag.nome}</span>
       </h1>
 
-      <section>
-        {artigos && artigos.length > 0 ? (
+      <section>        {artigos && artigos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {artigos.map((artigo) => (
               <ArticleCardBlog
@@ -161,9 +160,16 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                 titulo={artigo.titulo ?? 'Artigo sem título'}
                 resumo={artigo.resumo ?? undefined}
                 slug={artigo.slug ?? ''}
-                // Extrai o slug da categoria do objeto aninhado
                 categoriaSlug={artigo.categorias?.slug ?? 'sem-categoria'}
                 imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+                tags={artigo.tags ?? []}
+                autor={{
+                  nome: "Psicólogo Daniel Dantas",
+                  fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                }}
+                tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+                numeroComentarios={0}
+                tipoConteudo="artigo"
               />
             ))}
           </div>

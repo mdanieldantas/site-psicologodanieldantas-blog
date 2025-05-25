@@ -5,7 +5,9 @@ import type { Database } from '@/types/supabase';
 import ArticleCardBlog from './ArticleCardBlog';
 
 type ArtigoComCategoria = Database['public']['Tables']['artigos']['Row'] & {
-  categorias: { slug: string } | null;  autor?: {
+  categorias: { slug: string } | null;
+  tags?: Array<{ id: number; nome: string; slug: string; }> | null;
+  autor?: {
     nome: string;
     fotoUrl?: string;
   };
@@ -30,9 +32,7 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
             Ver todos
             <ArrowRight className="inline-block ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
           </Link>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        </div>        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
             <ArticleCardBlog
               key={article.id}
@@ -40,13 +40,15 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
               resumo={article.resumo || undefined}
               slug={article.slug}
               categoriaSlug={article.categorias?.slug || 'sem-categoria'}
-              imagemUrl={article.imagem_capa_arquivo || undefined}              autor={{
+              imagemUrl={article.imagem_capa_arquivo || undefined}
+              autor={{
                 nome: "Psicólogo Daniel Dantas",
                 fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
               }}
               dataPublicacao={article.data_publicacao || undefined}
               dataAtualizacao={article.data_atualizacao}
               categoria={article.categorias?.slug?.replace(/-/g, ' ')}
+              tags={article.tags ?? []}
               tempoLeitura={Math.ceil((article.resumo?.length || 0) / 200) + 3}
               numeroComentarios={0}
               tipoConteudo="artigo"
