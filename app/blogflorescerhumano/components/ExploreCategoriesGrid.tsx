@@ -1,6 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import BlogCategoryCard from '@/components/blog-category-card';
 import type { Database } from '@/types/supabase';
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
@@ -10,8 +9,6 @@ interface ExploreCategoriesGridProps {
 }
 
 export default function ExploreCategoriesGrid({ categories }: ExploreCategoriesGridProps) {
-  const fallbackImage = '/blogflorescerhumano/category-images/test-image-category.png';
-
   return (
     <section className="py-12 bg-[#F4EED9]">
       <div className="container mx-auto px-4">
@@ -24,36 +21,12 @@ export default function ExploreCategoriesGrid({ categories }: ExploreCategoriesG
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category) => (
-            <Link 
-              key={category.id} 
-              href={`/blogflorescerhumano/${category.slug}`} 
-              className="group transform transition-transform duration-300 hover:scale-105"
-            >
-              <div className="relative h-64 rounded-lg overflow-hidden shadow-lg">
-                {/* Imagem de fundo com fallback */}
-                <Image
-                  src={fallbackImage}
-                  alt={category.nome}
-                  fill
-                  className="object-cover brightness-75 group-hover:brightness-90 transition-all duration-300"
-                />
-                
-                {/* Overlay com gradiente */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                
-                {/* Conteúdo do card */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-semibold text-white mb-2 font-['Old Roman']">
-                    {category.nome}
-                  </h3>
-                  {category.descricao && (
-                    <p className="text-sm text-white/90 line-clamp-2">
-                      {category.descricao}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Link>
+            <BlogCategoryCard 
+              key={category.id}
+              category={category}
+              variant="visual"
+              showImage={true}
+            />
           ))}
         </div>
       </div>
