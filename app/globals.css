@@ -573,6 +573,227 @@ html.contrast-dark,
   animation: fade-out 0.3s ease-out forwards;
 }
 
+/* Animações para ExploreCategoriesGrid */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(193, 154, 107, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(193, 154, 107, 0);
+  }
+}
+
+/* Classes de animação para os cards */
+.category-card-enter {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.category-card-enter:nth-child(1) { animation-delay: 0ms; }
+.category-card-enter:nth-child(2) { animation-delay: 150ms; }
+.category-card-enter:nth-child(3) { animation-delay: 300ms; }
+.category-card-enter:nth-child(4) { animation-delay: 450ms; }
+.category-card-enter:nth-child(5) { animation-delay: 600ms; }
+.category-card-enter:nth-child(6) { animation-delay: 750ms; }
+.category-card-enter:nth-child(7) { animation-delay: 900ms; }
+.category-card-enter:nth-child(8) { animation-delay: 1050ms; }
+
+/* Melhorias de acessibilidade para movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .category-card-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .group {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =========================== */
+/* REFORÇO DO TAMANHO DE FONTE */
+/* =========================== */
+
+/* Garantir que headings mantenham proporções corretas */
+html.font-size-sm h1, 
+html.font-size-md h1, 
+html.font-size-lg h1, 
+html.font-size-xl h1,
+.font-size-sm h1, 
+.font-size-md h1, 
+.font-size-lg h1, 
+.font-size-xl h1,
+h1.article-title, 
+.article-title {
+  font-size: calc(2.25rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h2, 
+html.font-size-md h2, 
+html.font-size-lg h2, 
+html.font-size-xl h2,
+.font-size-sm h2, 
+.font-size-md h2, 
+.font-size-lg h2, 
+.font-size-xl h2 {
+  font-size: calc(1.8rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h3, 
+html.font-size-md h3, 
+html.font-size-lg h3, 
+html.font-size-xl h3,
+.font-size-sm h3, 
+.font-size-md h3, 
+.font-size-lg h3, 
+.font-size-xl h3 {
+  font-size: calc(1.5rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h4, 
+html.font-size-md h4, 
+html.font-size-lg h4, 
+html.font-size-xl h4,
+.font-size-sm h4, 
+.font-size-md h4, 
+.font-size-lg h4, 
+.font-size-xl h4 {
+  font-size: calc(1.25rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h5, 
+html.font-size-md h5, 
+html.font-size-lg h5, 
+html.font-size-xl h5,
+.font-size-sm h5, 
+.font-size-md h5, 
+.font-size-lg h5, 
+.font-size-xl h5 {
+  font-size: calc(1.125rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h6, 
+html.font-size-md h6, 
+html.font-size-lg h6, 
+html.font-size-xl h6,
+.font-size-sm h6, 
+.font-size-md h6, 
+.font-size-lg h6, 
+.font-size-xl h6 {
+  font-size: calc(1rem * var(--font-size-multiplier)) !important;
+}
+
+/* =========================== */
+/* REFORÇO DO MODO DE CONTRASTE */
+/* =========================== */
+
+/* Modo Alto Contraste - Override Extremo */
+html.contrast-high * {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.contrast-high a,
+html.contrast-high button,
+html.contrast-high .btn,
+html.contrast-high .button {
+  color: #0000CC !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-high button:hover,
+html.contrast-high .btn:hover,
+html.contrast-high .button:hover {
+  background-color: #F0F0F0 !important;
+}
+
+html.contrast-high img,
+html.contrast-high svg {
+  filter: grayscale(100%) contrast(120%) !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Modo Escuro - Override Extremo */
+html.contrast-dark * {
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
+  border-color: #444444 !important;
+}
+
+html.contrast-dark a,
+html.contrast-dark button,
+html.contrast-dark .btn,
+html.contrast-dark .button {
+  color: #93C5FD !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-dark button:hover,
+html.contrast-dark .btn:hover,
+html.contrast-dark .button:hover {
+  background-color: #2A2A2A !important;
+}
+
+html.contrast-dark img,
+html.contrast-dark svg {
+  filter: brightness(0.8) contrast(1.2) !important;
+  border: 1px solid #444444 !important;
+}
+
+/* Forçar aplicação dos modos em elementos específicos */
+.header, header, nav, footer, aside, 
+.sidebar, .container, .content, 
+.article-content, .blog-post, 
+main, article, section {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Medida extra para garantir que a aplicação seja mantida */
+@media screen {
+  html.contrast-high body,
+  html.contrast-dark body {
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+  }
+  
+  html.font-size-sm body,
+  html.font-size-md body,
+  html.font-size-lg body,
+  html.font-size-xl body {
+    transition: font-size 0.3s ease !important;
+  }
+}
+
+/* FIM DAS REGRAS DE FORÇA MÁXIMA */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

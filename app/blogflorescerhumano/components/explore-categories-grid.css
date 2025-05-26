@@ -1,0 +1,158 @@
+/* Estilos específicos para o ExploreCategoriesGrid */
+
+/* Animações de entrada escalonadas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(193, 154, 107, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(193, 154, 107, 0);
+  }
+}
+
+/* Classes de animação para os cards */
+.category-card-enter {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.category-card-enter:nth-child(1) { animation-delay: 0ms; }
+.category-card-enter:nth-child(2) { animation-delay: 150ms; }
+.category-card-enter:nth-child(3) { animation-delay: 300ms; }
+.category-card-enter:nth-child(4) { animation-delay: 450ms; }
+.category-card-enter:nth-child(5) { animation-delay: 600ms; }
+.category-card-enter:nth-child(6) { animation-delay: 750ms; }
+.category-card-enter:nth-child(7) { animation-delay: 900ms; }
+.category-card-enter:nth-child(8) { animation-delay: 1050ms; }
+
+/* Efeitos especiais para o header */
+.explore-header {
+  animation: slideInFromLeft 1s ease-out forwards;
+}
+
+.explore-divider {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Hover states melhorados */
+.category-card:hover .category-image {
+  transform: scale(1.1) rotate(1deg);
+  filter: brightness(0.9) saturate(1.1);
+}
+
+.category-card:hover .category-overlay {
+  background: linear-gradient(
+    to top, 
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(193, 154, 107, 0.1) 50%,
+    transparent 100%
+  );
+}
+
+/* Estados de foco para acessibilidade */
+.category-card:focus-visible {
+  outline: 3px solid #C19A6B;
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+/* Responsive breakpoints personalizados */
+@media (max-width: 640px) {
+  .category-card-enter {
+    animation-delay: 0 !important;
+  }
+}
+
+/* Modo de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .category-card-enter,
+  .explore-header,
+  .explore-divider {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .category-card:hover .category-image {
+    transform: none !important;
+  }
+}
+
+/* Estados de carregamento */
+.category-card-skeleton {
+  background: linear-gradient(
+    90deg,
+    #F8F5F0 25%,
+    #F4EED9 50%,
+    #F8F5F0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Melhorias para telas de alta densidade */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .category-card {
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/* Dark mode support para futuras implementações */
+@media (prefers-color-scheme: dark) {
+  .explore-categories-section {
+    background: linear-gradient(
+      135deg,
+      #2A1F1A 0%,
+      #1F1611 50%,
+      #2A1F1A 100%
+    );
+  }
+}
+
+/* Melhorias de acessibilidade para movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .category-card-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .group {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
