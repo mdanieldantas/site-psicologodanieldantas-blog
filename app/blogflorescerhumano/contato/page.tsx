@@ -98,9 +98,8 @@ export default function ContatoPage() {
             </li>
           </ol>
         </div>
-      </nav>      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
           {/* Informações de Contato */}
           <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full"> 
             <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
@@ -162,15 +161,7 @@ export default function ContatoPage() {
               >
                 <Youtube className="h-5 w-5 text-white" />
               </Link>
-            </div>
-          </div>
-
-          {/* Formulário de Contato */}
-          <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20">
-            <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Envie sua Mensagem</h2>
-            {/* Renderiza o Client Component */}
-            <ContatoFormulario contactInfo={contactInfo} />
-          </div>
+            </div>          </div>
         </div>
       </main>
     </div>
