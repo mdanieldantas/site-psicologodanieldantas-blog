@@ -8,7 +8,7 @@ type Categoria = Database['public']['Tables']['categorias']['Row'];
 
 interface BlogCategoryCardProps {
   category: Categoria;
-  variant?: 'simple' | 'visual';
+  variant?: 'simple' | 'visual' | 'enhanced';
   showImage?: boolean;
   className?: string;
   featured?: boolean; // Nova prop para categoria destaque
@@ -20,7 +20,9 @@ export default function BlogCategoryCard({
   showImage = true,
   className = '',
   featured = false 
-}: BlogCategoryCardProps) {// Construir o caminho da imagem dinamicamente
+}: BlogCategoryCardProps) {
+
+  // Construir o caminho da imagem dinamicamente
   const getImageUrl = () => {
     if (category.imagem_url) {
       // Se tem imagem no banco, usar diretamente o nome do arquivo
@@ -31,7 +33,9 @@ export default function BlogCategoryCard({
   };
 
   const imageUrl = getImageUrl();
-  if (variant === 'simple') {    return (
+  
+  if (variant === 'simple') {
+    return (
       <MotionDiv
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
@@ -44,10 +48,88 @@ export default function BlogCategoryCard({
           <h2 className="text-2xl font-semibold mb-2 text-[#583B1F] font-['Old_Roman'] hover:text-[#C19A6B] transition-colors duration-300">
             {category.nome}
           </h2>
-          {category.descricao && (            <p className="text-[#735B43] text-sm line-clamp-3 leading-relaxed">
+          {category.descricao && (
+            <p className="text-[#735B43] text-sm line-clamp-3 leading-relaxed">
               {category.descricao}
             </p>
           )}
+        </Link>
+      </MotionDiv>
+    );
+  }
+
+  if (variant === 'enhanced') {
+    return (
+      <MotionDiv
+        className={`group transform focus:outline-none focus:ring-4 focus:ring-blue-300/30 rounded-xl ${className}`}
+        whileHover={{ 
+          scale: 1.03, 
+          y: -8,
+          transition: { type: "spring", stiffness: 300, damping: 20 }
+        }}
+        whileTap={{ scale: 0.98 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Link 
+          href={`/blogflorescerhumano/${category.slug}`}
+          className="block w-full h-full"
+          aria-label={`Explorar categoria ${category.nome}${category.descricao ? `: ${category.descricao}` : ''}`}
+        >
+          <div className="relative h-80 rounded-xl overflow-hidden bg-white shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-gray-100">
+            {/* Enhanced Image Section */}
+            {showImage && (
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={imageUrl}
+                  alt={`Imagem da categoria ${category.nome}`}
+                  fill
+                  className="object-cover brightness-90 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                
+                {/* Hover overlay effect */}
+                <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-all duration-300" />
+              </div>
+            )}
+            
+            {/* Enhanced Content Section */}
+            <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+                  {category.nome}
+                </h3>
+                
+                {category.descricao && (
+                  <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
+                    {category.descricao}
+                  </p>
+                )}
+              </div>
+              
+              {/* Enhanced CTA */}
+              <div className="flex items-center justify-between pt-2">
+                <span className="text-blue-600 font-medium text-sm group-hover:text-blue-700 transition-colors duration-200">
+                  Explorar categoria
+                </span>
+                <div className="p-2 rounded-full bg-blue-50 group-hover:bg-blue-100 transition-colors duration-200">
+                  <svg 
+                    className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-200" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            {/* Enhanced border effect */}
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-200 rounded-xl transition-all duration-300" />
+          </div>
         </Link>
       </MotionDiv>
     );
