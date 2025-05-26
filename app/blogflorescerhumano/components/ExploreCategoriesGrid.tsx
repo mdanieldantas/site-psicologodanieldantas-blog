@@ -149,11 +149,9 @@ export default function ExploreCategoriesGrid({ categories }: ExploreCategoriesG
                   <div className="bg-gradient-to-r from-[#C19A6B] to-[#D4AF37] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                     ✨ Em Destaque
                   </div>
-                </MotionDiv>
-                <BlogCategoryCard 
+                </MotionDiv>                <BlogCategoryCard 
                   category={featuredCategory} 
                   variant="visual"
-                  featured={true}
                   className="transform hover:scale-[1.02] transition-all duration-300"
                 />
               </MotionDiv>
