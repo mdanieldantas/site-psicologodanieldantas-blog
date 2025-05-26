@@ -18,7 +18,7 @@ export default function ContatoPage() {
     instagramUrl: "https://www.instagram.com/psidanieldantas",
     youtubeUrl: "https://www.youtube.com/@psidanieldantas",
   };
-
+  
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
       {/* Hero Banner Section */}
@@ -35,7 +35,6 @@ export default function ContatoPage() {
           }}
           className="brightness-75"
         />
-        
         {/* Hero Content Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
@@ -78,74 +77,74 @@ export default function ContatoPage() {
             </li>
           </ol>
         </div>
-      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">
-        {/* Informações de Contato */}
-        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-          <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full"> 
-            <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
-            <p className="text-[#735B43] mb-8">
+      </nav>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8 md:py-12">
+        {/* Grid de cards com espaçamento uniforme */}
+        <div className="grid grid-cols-1 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {/* Informações de Contato */}
+          <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full">
+            <h2 className="text-2xl md:text-3xl font-['Old_Roman'] mb-4 md:mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
+            <p className="text-[#735B43] mb-6 md:mb-8 text-sm md:text-base">
               Tem alguma dúvida, sugestão, ou gostaria de propor uma parceria?
               Envie um e-mail para o endereço abaixo que entraremos em contato o mais breve possível.
             </p>
 
-            <h3 className="text-xl font-semibold mb-4 text-[#583B1F]">Informações de Contato</h3>
-            <ul className="space-y-6 mb-8">
+            <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-[#583B1F]">Informações de Contato</h3>
+            <ul className="space-y-4 md:space-y-6 mb-6 md:mb-8">
               <li className="flex items-start">
-                <div className="bg-[#C19A6B] p-2 rounded-full mr-4 mt-1 flex-shrink-0">
-                  <Mail className="h-5 w-5 text-white" />
+                <div className="bg-[#C19A6B] p-1.5 md:p-2 rounded-full mr-3 md:mr-4 mt-1 flex-shrink-0">
+                  <Mail className="h-4 w-4 md:h-5 md:w-5 text-white" />
                 </div>
                 <div>
-                  <span className="block font-medium text-[#583B1F] mb-1">E-mail</span>
+                  <span className="block font-medium text-[#583B1F] mb-1 text-sm md:text-base">E-mail</span>
                   <a
                     href={`mailto:${contactInfo.email}`}
-                    className="text-[#735B43] hover:text-[#C19A6B] transition-colors"
+                    className="text-[#735B43] hover:text-[#C19A6B] transition-colors text-xs md:text-sm break-all"
                   >
                     {contactInfo.email}
                   </a>
                 </div>
               </li>
               <li className="flex items-start">
-                <div className="bg-[#C19A6B] p-2 rounded-full mr-4 mt-1 flex-shrink-0">
-                  <MapPin className="h-5 w-5 text-white" />
+                <div className="bg-[#C19A6B] p-1.5 md:p-2 rounded-full mr-3 md:mr-4 mt-1 flex-shrink-0">
+                  <MapPin className="h-4 w-4 md:h-5 md:w-5 text-white" />
                 </div>
                 <div>
-                  <span className="block font-medium text-[#583B1F] mb-1">Endereço</span>
-                  <p className="text-[#735B43]">{contactInfo.address}</p>
+                  <span className="block font-medium text-[#583B1F] mb-1 text-sm md:text-base">Endereço</span>
+                  <p className="text-[#735B43] text-xs md:text-sm">{contactInfo.address}</p>
                 </div>
               </li>
             </ul>
-
-            <h3 className="text-xl font-semibold mb-4 text-[#583B1F]">Redes Sociais</h3>
-            <div className="flex space-x-4">
-              <Link
-                href={contactInfo.facebookUrl}
-                target="_blank" 
+            
+            <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-[#583B1F]">Redes Sociais</h3>
+            <div className="flex space-x-3 md:space-x-4">              <Link
+                href={contactInfo.facebookUrl}                target="_blank" 
                 rel="noopener noreferrer"
-                className="bg-[#583B1F] p-3 rounded-full hover:bg-[#735B43] transition-colors shadow-md"
+                className="bg-[#583B1F] w-9 h-9 md:w-11 md:h-11 rounded-full hover:bg-[#735B43] transition-colors shadow-md flex items-center justify-center"
               >
-                <Facebook className="h-5 w-5 text-white" />
+                <Facebook className="h-4 w-4 md:h-5 md:w-5 text-white" />
+              </Link>              <Link
+                href={contactInfo.instagramUrl}                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-[#583B1F] w-9 h-9 md:w-11 md:h-11 rounded-full hover:bg-[#735B43] transition-colors shadow-md flex items-center justify-center"
+              >
+                <Instagram className="h-4 w-4 md:h-5 md:w-5 text-white" />
+              </Link>              <Link
+                href={contactInfo.youtubeUrl}                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-[#583B1F] w-9 h-9 md:w-11 md:h-11 rounded-full hover:bg-[#735B43] transition-colors shadow-md flex items-center justify-center"
+              >
+                <Youtube className="h-4 w-4 md:h-5 md:w-5 text-white" />
               </Link>
-              <Link
-                href={contactInfo.instagramUrl}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-[#583B1F] p-3 rounded-full hover:bg-[#735B43] transition-colors shadow-md"
-              >
-                <Instagram className="h-5 w-5 text-white" />
-              </Link>
-              <Link
-                href={contactInfo.youtubeUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-[#583B1F] p-3 rounded-full hover:bg-[#735B43] transition-colors shadow-md"
-              >
-                <Youtube className="h-5 w-5 text-white" />
-              </Link>            </div>          </div>
-        </div>
-        
-        {/* Card de Agendamento */}
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-          <AgendamentoCard />
+            </div>
+          </div>
+          
+          {/* Card de Agendamento */}
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+            <AgendamentoCard />
+          </div>
         </div>
       </main>
     </div>
