@@ -78,13 +78,9 @@ export default function ContatoPage() {
             </li>
           </ol>
         </div>
-      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">        {/* Card de Agendamento */}
+      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">
+        {/* Informações de Contato */}
         <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-          <AgendamentoCard />
-        </div>
-        
-        <div className="grid grid-cols-1 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-          {/* Informações de Contato */}
           <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full"> 
             <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
             <p className="text-[#735B43] mb-8">
@@ -144,8 +140,12 @@ export default function ContatoPage() {
                 className="bg-[#583B1F] p-3 rounded-full hover:bg-[#735B43] transition-colors shadow-md"
               >
                 <Youtube className="h-5 w-5 text-white" />
-              </Link>
-            </div>          </div>
+              </Link>            </div>          </div>
+        </div>
+        
+        {/* Card de Agendamento */}
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+          <AgendamentoCard />
         </div>
       </main>
     </div>
