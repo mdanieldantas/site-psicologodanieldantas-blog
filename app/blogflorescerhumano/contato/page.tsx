@@ -1,32 +1,12 @@
+"use client";
+
 // app/blogflorescerhumano/contato/page.tsx
 import React from 'react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import ContatoFormulario from './components/ContatoFormulario';
-
-export const metadata: Metadata = {
-  title: 'Contato | Blog Florescer Humano',
-  description: 'Entre em contato com o Blog Florescer Humano para dúvidas, sugestões ou parcerias. Adoraríamos ouvir você!',
-  alternates: {
-    canonical: '/blogflorescerhumano/contato',
-  },
-  openGraph: {
-    title: 'Contato | Blog Florescer Humano',
-    description: 'Envie sua mensagem para o Blog Florescer Humano.',
-    url: '/blogflorescerhumano/contato',
-    siteName: 'Blog Florescer Humano',
-    locale: 'pt_BR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Contato | Blog Florescer Humano',
-    description: 'Envie sua mensagem para o Blog Florescer Humano.',
-  },
-};
+import AgendamentoCard from './components/AgendamentoCard';
 
 export default function ContatoPage() {
   // Informações de contato
@@ -98,8 +78,12 @@ export default function ContatoPage() {
             </li>
           </ol>
         </div>
-      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+      </nav>      {/* Main Content */}      <main className="container mx-auto px-4 py-12">        {/* Card de Agendamento */}
+        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <AgendamentoCard />
+        </div>
+        
+        <div className="grid grid-cols-1 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
           {/* Informações de Contato */}
           <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full"> 
             <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
