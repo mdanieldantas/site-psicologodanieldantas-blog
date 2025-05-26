@@ -98,27 +98,9 @@ export default function ContatoPage() {
             </li>
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
+      </nav>      {/* Main Content */}
       <main className="container mx-auto px-4 py-12">
-        {/* Stats Section */}
-        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-[#C19A6B]/20">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="text-center sm:text-left">
-                <p className="text-2xl font-bold text-[#583B1F] font-['Old_Roman']">
-                  Nossa Equipe está à sua Disposição
-                </p>
-                <p className="text-[#735B43]">
-                  Estamos prontos para responder suas dúvidas e ouvir suas sugestões
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
           {/* Informações de Contato */}
           <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full"> 
             <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
@@ -129,20 +111,6 @@ export default function ContatoPage() {
 
             <h3 className="text-xl font-semibold mb-4 text-[#583B1F]">Informações de Contato</h3>
             <ul className="space-y-6 mb-8">
-              <li className="flex items-start">
-                <div className="bg-[#C19A6B] p-2 rounded-full mr-4 mt-1 flex-shrink-0">
-                  <Phone className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <span className="block font-medium text-[#583B1F] mb-1">Telefone</span>
-                  <a
-                    href={`tel:${contactInfo.phone.replace(/\D/g, '')}`}
-                    className="text-[#735B43] hover:text-[#C19A6B] transition-colors"
-                  >
-                    {contactInfo.phone}
-                  </a>
-                </div>
-              </li>
               <li className="flex items-start">
                 <div className="bg-[#C19A6B] p-2 rounded-full mr-4 mt-1 flex-shrink-0">
                   <Mail className="h-5 w-5 text-white" />
