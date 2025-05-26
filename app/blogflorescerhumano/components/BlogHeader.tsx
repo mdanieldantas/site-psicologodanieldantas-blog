@@ -67,6 +67,11 @@ const BlogHeader = () => {
       contrastMode: 'normal'
     };
     
+    // Verificar se estamos no navegador antes de acessar o localStorage
+    if (typeof window === 'undefined') {
+      return defaultPrefs;
+    }
+    
     try {
       // Tentar carregar do localStorage primeiro
       const savedPrefs = localStorage.getItem('userReadingPreferences');
@@ -92,8 +97,11 @@ const BlogHeader = () => {
     return defaultPrefs;
   }, []);
   
-  // Inicializar estado com função que valida as preferências salvas
-  const [preferences, setPreferences] = useState<UserPreferences>(inicializarPreferencias);
+  // Inicializar estado com valores padrão para evitar acesso ao localStorage durante SSR
+  const [preferences, setPreferences] = useState<UserPreferences>({
+    fontSize: 'md',
+    contrastMode: 'normal'
+  });
   const [prefsInitialized, setPrefsInitialized] = useState(false);
   
   const isHome = useIsHomePage();
@@ -211,79 +219,82 @@ const BlogHeader = () => {
     // Adicionar listener de evento
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-  // Efeito para carregar preferências do localStorage quando o componente montar
+  }, [handleScroll]);  // Efeito para carregar preferências do localStorage quando o componente montar (client-side only)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const savedPrefs = localStorage.getItem('userReadingPreferences');
-        if (savedPrefs) {
-          // Parsear as preferências salvas
-          const parsedPrefs = JSON.parse(savedPrefs) as UserPreferences;
-          
-          // Verificar se os valores são válidos antes de aplicar
-          if (parsedPrefs.fontSize && Object.keys(FONT_SIZES).includes(parsedPrefs.fontSize)) {
-            // Aplicar tamanho de fonte
-            document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
-            document.documentElement.classList.add(`font-size-${parsedPrefs.fontSize}`);
-          } else {
-            // Aplicar valor padrão se o tamanho salvo for inválido
-            document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
-            document.documentElement.classList.add('font-size-md');
-            setPreferences(prev => ({...prev, fontSize: 'md'}));
-          }
-          
-          if (parsedPrefs.contrastMode && Object.keys(CONTRAST_MODES).includes(parsedPrefs.contrastMode)) {
-            // Aplicar contraste
-            document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-            const contrastClass = 
-              parsedPrefs.contrastMode === 'normal' ? 'contrast-normal' : 
-              parsedPrefs.contrastMode === 'highContrast' ? 'contrast-high' : 'contrast-dark';
-            document.documentElement.classList.add(contrastClass);
-          } else {
-            // Aplicar valor padrão se o contraste salvo for inválido
-            document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-            document.documentElement.classList.add('contrast-normal');
-            setPreferences(prev => ({...prev, contrastMode: 'normal'}));
-          }
-          
-          // Atualizar estado com preferências salvas válidas
-          setPreferences(parsedPrefs);
+    // Este efeito só executa no cliente
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const savedPrefs = localStorage.getItem('userReadingPreferences');
+      if (savedPrefs) {
+        // Parsear as preferências salvas
+        const parsedPrefs = JSON.parse(savedPrefs) as UserPreferences;
+        
+        // Verificar se os valores são válidos antes de aplicar
+        if (parsedPrefs.fontSize && Object.keys(FONT_SIZES).includes(parsedPrefs.fontSize)) {
+          // Aplicar tamanho de fonte
+          document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+          document.documentElement.classList.add(`font-size-${parsedPrefs.fontSize}`);
         } else {
-          // Não há preferências salvas, aplicar valores padrão explicitamente
+          // Aplicar valor padrão se o tamanho salvo for inválido
           document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
           document.documentElement.classList.add('font-size-md');
-          
+          setPreferences(prev => ({...prev, fontSize: 'md'}));
+        }
+        
+        if (parsedPrefs.contrastMode && Object.keys(CONTRAST_MODES).includes(parsedPrefs.contrastMode)) {
+          // Aplicar contraste
+          document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+          const contrastClass = 
+            parsedPrefs.contrastMode === 'normal' ? 'contrast-normal' : 
+            parsedPrefs.contrastMode === 'highContrast' ? 'contrast-high' : 
+            'contrast-dark';
+          document.documentElement.classList.add(contrastClass);
+        } else {
+          // Aplicar valor padrão se o contraste salvo for inválido
           document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
           document.documentElement.classList.add('contrast-normal');
-          
-          // Atualizar estado com os valores padrão
-          setPreferences({
-            fontSize: 'md',
-            contrastMode: 'normal'
-          });
+          setPreferences(prev => ({...prev, contrastMode: 'normal'}));
         }
-      } catch (error) {
-        console.error('Erro ao carregar preferências:', error);
         
-        // Em caso de erro, também aplicar valores padrão
+        // Atualizar estado com preferências salvas válidas
+        setPreferences(parsedPrefs);
+      } else {
+        // Não há preferências salvas, aplicar valores padrão explicitamente
         document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
         document.documentElement.classList.add('font-size-md');
         
         document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
         document.documentElement.classList.add('contrast-normal');
         
+        // Atualizar estado com os valores padrão
         setPreferences({
           fontSize: 'md',
           contrastMode: 'normal'
         });
       }
-      setPrefsInitialized(true);
+    } catch (error) {
+      console.error('Erro ao carregar preferências:', error);
+      
+      // Em caso de erro, também aplicar valores padrão
+      document.documentElement.classList.remove('font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl');
+      document.documentElement.classList.add('font-size-md');
+      
+      document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      document.documentElement.classList.add('contrast-normal');
+      
+      setPreferences({
+        fontSize: 'md',
+        contrastMode: 'normal'
+      });
     }
-  }, []);
-  // Efeito para aplicar preferências quando elas mudarem
+    
+    setPrefsInitialized(true);
+  }, []);  // Efeito para aplicar preferências quando elas mudarem (client-side only)
   useEffect(() => {
-    if (!prefsInitialized) return;
+    if (!prefsInitialized || typeof window === 'undefined') return;
     
     console.log('Aplicando preferências após mudança de estado:', preferences);
     
@@ -305,7 +316,7 @@ const BlogHeader = () => {
     console.log(`Adicionando classe de contraste: ${contrastClass}`);
     document.documentElement.classList.add(contrastClass);
     
-    // Salvar preferências no localStorage para persistência
+    // Salvar preferências no localStorage para persistência (apenas no cliente)
     try {
       localStorage.setItem('userReadingPreferences', JSON.stringify(preferences));
       console.log('Preferências salvas no localStorage');
@@ -428,9 +439,11 @@ const BlogHeader = () => {
       }
     }
   };
-
-  // Função para feedback visual quando as preferências são alteradas com suporte aprimorado a leitores de tela
+  // Função para feedback visual quando as preferências são alteradas com suporte aprimorado a leitores de tela (client-side only)
   const provideFeedback = (message: string) => {
+    // Esta função só deve executar no navegador
+    if (typeof window === 'undefined') return;
+    
     // Remover qualquer feedback anterior que possa existir
     const existingFeedback = document.getElementById('preferences-feedback');
     if (existingFeedback) {
@@ -483,8 +496,11 @@ const BlogHeader = () => {
     // Referências que serão usadas para controle de estado dos botões
   // mas não mais para debounce já que removemos o timeout
   const fontSizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const contrastModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);  // Função para aplicar tamanho de fonte - abordagem aprimorada com força bruta
+  const contrastModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);  // Função para aplicar tamanho de fonte - abordagem aprimorada com força bruta (client-side only)
   const applyFontSize = (size: keyof typeof FONT_SIZES) => {
+    // Verificar se estamos no navegador
+    if (typeof window === 'undefined') return;
+    
     console.log(`Aplicando tamanho de fonte: ${size}`);
     
     // Evitar operações desnecessárias se o tamanho já for o mesmo
@@ -554,7 +570,7 @@ const BlogHeader = () => {
     // Atualizar o estado
     setPreferences(prev => ({ ...prev, fontSize: size }));
     
-    // Tentar salvar no localStorage imediatamente
+    // Tentar salvar no localStorage (já verificamos que estamos no navegador acima)
     try {
       localStorage.setItem('userReadingPreferences', JSON.stringify({
         ...preferences,
@@ -567,8 +583,11 @@ const BlogHeader = () => {
     
     // Mostrar feedback visual
     provideFeedback(`Tamanho da fonte ${sizeName} aplicado`);
-  };  // Função para aplicar modo de contraste - implementação aprimorada com abordagem agressiva
+  };  // Função para aplicar modo de contraste - implementação aprimorada com abordagem agressiva (client-side only)
   const applyContrastMode = (mode: keyof typeof CONTRAST_MODES) => {
+    // Verificar se estamos no navegador
+    if (typeof window === 'undefined') return;
+    
     console.log(`Aplicando modo de contraste: ${mode}`);
     
     // Evitar operações desnecessárias se o modo já for o mesmo
@@ -786,15 +805,17 @@ const BlogHeader = () => {
     // Atualizar o estado
     setPreferences(prev => ({ ...prev, contrastMode: mode }));
     
-    // Tentar salvar no localStorage imediatamente
-    try {
-      localStorage.setItem('userReadingPreferences', JSON.stringify({
-        ...preferences,
-        contrastMode: mode
-      }));
-      console.log('Preferência de contraste salva com sucesso:', mode);
-    } catch (error) {
-      console.error('Erro ao salvar preferência de contraste:', error);
+    // Tentar salvar no localStorage apenas se estivermos no navegador
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('userReadingPreferences', JSON.stringify({
+          ...preferences,
+          contrastMode: mode
+        }));
+        console.log('Preferência de contraste salva com sucesso:', mode);
+      } catch (error) {
+        console.error('Erro ao salvar preferência de contraste:', error);
+      }
     }
     
     // Mostrar feedback visual
@@ -1013,49 +1034,49 @@ const BlogHeader = () => {
       };
     }
   }, []);
-
-  // Adicionar script de diagnóstico para verificar se as preferências estão sendo aplicadas corretamente
+  // Adicionar script de diagnóstico para verificar se as preferências estão sendo aplicadas corretamente (client-side only)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Executar diagnóstico quando a página carregar completamente
-      const handleLoad = () => {
-        setTimeout(() => {
-          console.group('🔍 Diagnóstico automático de preferências');
-          
-          // Verificar preferências no state
-          console.log('Estado interno (React):', preferences);
-          
-          // Verificar localStorage
-          try {
-            const savedPrefs = localStorage.getItem('userReadingPreferences');
-            console.log('localStorage:', savedPrefs ? JSON.parse(savedPrefs) : 'Não encontrado');
-          } catch (error) {
-            console.error('Erro ao ler localStorage:', error);
-          }
-          
-          // Verificar classes aplicadas ao document
-          const fontSizeClass = ['font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl']
-            .find(cls => document.documentElement.classList.contains(cls));
-          
-          const contrastClass = ['contrast-normal', 'contrast-high', 'contrast-dark']
-            .find(cls => document.documentElement.classList.contains(cls));
-          
-          console.log('Classes aplicadas:', {
-            'Tamanho de fonte': fontSizeClass || 'Nenhum',
-            'Modo de contraste': contrastClass || 'Nenhum'
-          });
-          
-          // Verificar variáveis CSS computadas
-          const styles = getComputedStyle(document.documentElement);
-          console.log('Variável CSS --font-size-multiplier:', styles.getPropertyValue('--font-size-multiplier'));
-          
-          console.groupEnd();
-        }, 1000);
-      };
-      
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
+    // Este efeito só deve executar no navegador
+    if (typeof window === 'undefined') return;
+
+    // Executar diagnóstico quando a página carregar completamente
+    const handleLoad = () => {
+      setTimeout(() => {
+        console.group('🔍 Diagnóstico automático de preferências');
+        
+        // Verificar preferências no state
+        console.log('Estado interno (React):', preferences);
+        
+        // Verificar localStorage
+        try {
+          const savedPrefs = localStorage.getItem('userReadingPreferences');
+          console.log('localStorage:', savedPrefs ? JSON.parse(savedPrefs) : 'Não encontrado');
+        } catch (error) {
+          console.error('Erro ao ler localStorage:', error);
+        }
+        
+        // Verificar classes aplicadas ao document
+        const fontSizeClass = ['font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl']
+          .find(cls => document.documentElement.classList.contains(cls));
+        
+        const contrastClass = ['contrast-normal', 'contrast-high', 'contrast-dark']
+          .find(cls => document.documentElement.classList.contains(cls));
+        
+        console.log('Classes aplicadas:', {
+          'Tamanho de fonte': fontSizeClass || 'Nenhum',
+          'Modo de contraste': contrastClass || 'Nenhum'
+        });
+        
+        // Verificar variáveis CSS computadas
+        const styles = getComputedStyle(document.documentElement);
+        console.log('Variável CSS --font-size-multiplier:', styles.getPropertyValue('--font-size-multiplier'));
+        
+        console.groupEnd();
+      }, 1000);
+    };
+    
+    window.addEventListener('load', handleLoad);
+    return () => window.removeEventListener('load', handleLoad);
   }, [preferences]);
   return (
     <>      <header        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -1575,19 +1596,20 @@ const BlogHeader = () => {
                 </div>
                 <span className="text-xs text-gray-600">WhatsApp</span>
               </a>
-            </div>
-            
-            <div className="border-t pt-4">
-              <div className="flex items-center mb-4">
-                <input 
+            </div>            <div className="border-t pt-4">
+              <div className="flex">
+                <input
                   type="text" 
-                  value={window.location.href} 
+                  value={typeof window !== 'undefined' ? window.location.href : ''}
                   className="flex-1 border rounded-l px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C19A6B]"
                   readOnly 
-                />                <button 
+                />
+                <button 
                   onClick={(e) => {
                     const button = e.currentTarget;
-                    navigator.clipboard.writeText(window.location.href);
+                    if (typeof window !== 'undefined') {
+                      navigator.clipboard.writeText(window.location.href);
+                    }
                     
                     // Feedback visual temporário
                     button.textContent = "Copiado!";
