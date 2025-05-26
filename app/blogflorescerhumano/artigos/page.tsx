@@ -3,12 +3,12 @@ import React, { Suspense } from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
-import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
+import PaginationControls from '../components/PaginationControls';
 import type { Metadata } from 'next';
 import { ResolvingMetadata } from 'next';
-
-// --- Metadados para a Página de Todos os Artigos --- //
-// (Removido export const metadata para evitar conflito com generateMetadata)
+import Image from 'next/image';
+import Link from 'next/link';
+import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 // --- Metadados dinâmicos para SEO conforme paginação --- //
 export async function generateMetadata(
@@ -56,7 +56,8 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
     id: string;
     nome: string | null;
     slug: string;
-  } | null;  autor: {
+  } | null;  
+  autor: {
     id: string;
     nome: string | null;
     foto_arquivo: string | null;
@@ -70,12 +71,12 @@ type ArtigoComCategoriaSlug = Database['public']['Tables']['artigos']['Row'] & {
 };
 
 // Define quantos artigos serão exibidos por página
-const ARTICLES_PER_PAGE = 6; // Alterado para 6 para manter consistência
+const ARTICLES_PER_PAGE = 6;
 
 // Define as props da página, incluindo searchParams para paginação
 interface TodosArtigosPageProps {
   searchParams: Promise<{
-    page?: string; // Parâmetro opcional para a página
+    page?: string;
   }>;
 }
 
@@ -89,15 +90,16 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
   // --- Busca da Contagem Total de Artigos --- //
   const { count: totalCount, error: countError } = await supabaseServer
     .from('artigos')
-    .select('* ', { count: 'exact', head: true }) // Conta todos os artigos publicados
+    .select('* ', { count: 'exact', head: true })
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString());
+  
   if (countError) {
     console.error('Erro ao contar todos os artigos:', countError);
-    // Considerar como lidar com este erro
   }
 
   const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
+  
   // --- Busca de Artigos da Página Atual --- //
   const { data: artigos, error } = await supabaseServer
     .from('artigos')
@@ -114,7 +116,8 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
         nome,
         foto_arquivo,
         biografia
-      ),      categorias ( 
+      ),      
+      categorias ( 
         id,
         nome,
         slug 
@@ -128,76 +131,151 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString())
     .order('data_publicacao', { ascending: false })
-    .range(from, to) // Aplica o range para a paginação
+    .range(from, to)
     .returns<ArtigoComCategoriaSlug[]>();
 
   if (error) {
     console.error(`Erro ao buscar artigos (Página ${currentPage}):`, error);
-    // Considerar mostrar um erro mais explícito para o usuário
-  }  // Log para depuração
-  console.log(`Todos Artigos - Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);
-  
-  // Debug detalhado dos artigos e tags
-  if (artigos) {
-    console.log('=== DEBUG DETALHADO DOS ARTIGOS E TAGS ===');
-    artigos.forEach((artigo, index) => {
-      console.log(`\nArtigo ${index + 1}:`);      console.log(`  ID: ${artigo.id}`);
-      console.log(`  Título: ${artigo.titulo}`);
-      console.log(`  tags raw:`, artigo.tags);
-      console.log(`  Tags processadas:`, artigo.tags?.map((tag: any) => tag.nome).filter(Boolean));
-    });
-    console.log('=== FIM DEBUG ===\n');
   }
 
   return (
-    <main className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
-        Todos os Artigos
-      </h1>
-
-      <section>{artigos && artigos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artigos.map((artigo) => 
-              // Verifica se temos slug do artigo e da categoria antes de renderizar
-              artigo.slug && artigo.categorias?.slug ? (                <ArticleCardBlog
-                  key={artigo.id}
-                  titulo={artigo.titulo ?? 'Artigo sem título'}
-                  resumo={artigo.resumo ?? undefined}
-                  slug={artigo.slug}
-                  categoriaSlug={artigo.categorias.slug}
-                  imagemUrl={artigo.imagem_capa_arquivo ?? undefined}                  autor={{
-                    nome: artigo.autor?.nome ?? "Psicólogo Daniel Dantas",
-                    fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
-                  }}
-                  dataPublicacao={artigo.data_publicacao ?? undefined}                  dataAtualizacao={artigo.data_atualizacao ?? undefined}
-                  categoria={artigo.categorias?.nome ?? undefined}
-                  tags={artigo.tags ?? []}
-                  tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
-                  numeroComentarios={0}
-                  tipoConteudo="artigo"
-                />
-              ) : null
-            )}
+    <div className="min-h-screen bg-[#F8F5F0]">
+      {/* Hero Banner Section */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+        <Image
+          src="/blogflorescerhumano/banners-blog/banner-artigos.webp"
+          alt="Banner de Artigos do Blog Florescer Humano"
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+          className="brightness-75"
+        />
+        
+        {/* Hero Content Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+          <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
+              Artigos
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
+              Explore todos os conhecimentos compartilhados em nossos artigos de psicologia humanista
+            </p>
           </div>
-        ) : (
-          <p className="text-center text-gray-500">
-            {error
-              ? 'Não foi possível carregar os artigos no momento.'
-              : currentPage > 1 ? 'Não há mais artigos para exibir.' : 'Nenhum artigo publicado ainda.' // Mensagem ajustada
-            }
-          </p>
-        )}
+        </div>
       </section>
 
-      {/* Adiciona controles de paginação */}
-      <Suspense fallback={null}>
-        <PaginationControls
-          currentPage={currentPage}
-          totalCount={totalCount ?? 0}
-          pageSize={ARTICLES_PER_PAGE}
-          basePath="/blogflorescerhumano/artigos"
-        />
-      </Suspense>
-    </main>
+      {/* Breadcrumb Navigation */}
+      <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-3">
+          <ol className="flex items-center space-x-2 text-sm">
+            <li>
+              <Link 
+                href="/" 
+                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+              >
+                <HomeIcon className="h-4 w-4 mr-1" />
+                Início
+              </Link>
+            </li>
+            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <li>
+              <Link 
+                href="/blogflorescerhumano" 
+                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+              >
+                Blog
+              </Link>
+            </li>
+            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <li className="text-[#583B1F] font-medium">
+              Artigos
+            </li>
+          </ol>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12">
+        {/* Stats Section */}
+        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-[#C19A6B]/20">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="text-center sm:text-left">
+                <p className="text-2xl font-bold text-[#583B1F] font-['Old_Roman']">
+                  {totalCount || 0} {totalCount === 1 ? 'Artigo' : 'Artigos'}
+                </p>
+                <p className="text-[#735B43]">
+                  Conhecimentos compartilhados sobre psicologia humanista e bem-estar
+                </p>
+              </div>
+              <div className="text-center sm:text-right">
+                <p className="text-sm text-[#735B43]/70">
+                  Página {currentPage} de {totalPages}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Articles Grid */}
+        <section className="mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+          {artigos && artigos.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {artigos.map((artigo) => 
+                artigo.slug && artigo.categorias?.slug ? (
+                  <ArticleCardBlog
+                    key={artigo.id}
+                    titulo={artigo.titulo ?? 'Artigo sem título'}
+                    resumo={artigo.resumo ?? undefined}
+                    slug={artigo.slug}
+                    categoriaSlug={artigo.categorias.slug}
+                    imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+                    autor={{
+                      nome: artigo.autor?.nome ?? "Psicólogo Daniel Dantas",
+                      fotoUrl: artigo.autor?.foto_arquivo 
+                        ? `/blogflorescerhumano/autores/${artigo.autor.foto_arquivo}` 
+                        : "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                    }}
+                    dataPublicacao={artigo.data_publicacao ?? undefined}
+                    dataAtualizacao={artigo.data_atualizacao ?? undefined}
+                    categoria={artigo.categorias?.nome ?? undefined}
+                    tags={artigo.tags ?? []}
+                    tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+                    numeroComentarios={0}
+                    tipoConteudo="artigo"
+                  />
+                ) : null
+              )}
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 text-center">
+              <p className="text-xl text-[#583B1F]">
+                {error
+                  ? 'Não foi possível carregar os artigos no momento.'
+                  : currentPage > 1 
+                    ? 'Não há mais artigos para exibir.' 
+                    : 'Nenhum artigo publicado ainda.'
+                }
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Adiciona controles de paginação */}
+        <Suspense fallback={null}>
+          <PaginationControls
+            currentPage={currentPage}
+            totalCount={totalCount ?? 0}
+            pageSize={ARTICLES_PER_PAGE}
+            basePath="/blogflorescerhumano/artigos"
+          />
+        </Suspense>
+      </main>
+    </div>
   );
 }
