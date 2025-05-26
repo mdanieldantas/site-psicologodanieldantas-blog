@@ -1,6 +1,7 @@
 // app/blogflorescerhumano/[categoria]/page.tsx
 import React, { Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase'; // Ajustado para @/
@@ -89,11 +90,10 @@ export default async function CategoriaEspecificaPage({
 }) {  // Acesso direto à propriedade categoria de params e notação de colchetes para searchParams
   const categoriaSlug = params.categoria;
   const page = searchParams['page'] ?? "1";
-
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer
     .from('categorias')
-    .select('id, nome, slug, descricao')
+    .select('id, nome, slug, descricao, imagem_url')
     .eq('slug', categoriaSlug)
     .single<Categoria>();
 
@@ -152,78 +152,194 @@ export default async function CategoriaEspecificaPage({
   }
 
   // Log para depuração
-  console.log(`Categoria: ${categoria.nome}, Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);
+  console.log(`Categoria: ${categoria.nome}, Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);  // Função para obter a URL da imagem da categoria a partir do campo imagem_url do banco de dados
+  const getCategoryImageUrl = (categoria: Categoria) => {
+    if (categoria.imagem_url) {
+      return `/blogflorescerhumano/category-images/${categoria.imagem_url}`;
+    }
+    
+    // Fallback caso não haja imagem definida
+    return '/blogflorescerhumano/category-images/categoria-default.webp';
+  };
 
   return (
-    <main className="container mx-auto px-4 py-12">
-      {/* Breadcrumbs */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <Link href="/blogflorescerhumano" legacyBehavior><a className="hover:underline">Blog</a></Link>
-        <span className="mx-2">/</span>
-        <Link href={`/blogflorescerhumano/categorias`} legacyBehavior><a className="hover:underline">Categorias</a></Link>
-      </nav>
-
-      {/* Cabeçalho da Categoria */}
-      <header className="mb-10 border-b pb-6">
-        <h1 className="text-4xl md:text-5xl font-bold mb-3">{categoria.nome}</h1>
-        {categoria.descricao && (
-          <p className="text-lg text-gray-600 max-w-3xl">{categoria.descricao}</p>
-        )}
-      </header>
-
-      {/* Lista de Artigos */}
-      <section>        {artigos && artigos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artigos.map((artigo) => (
-              <ArticleCardBlog
-                key={artigo.id}
-                titulo={artigo.titulo ?? 'Artigo sem título'}
-                resumo={artigo.resumo ?? undefined}
-                slug={artigo.slug ?? ''} // Garante que slug não seja null
-                categoriaSlug={categoria.slug} // Usa o slug da categoria atual
-                imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
-                autor={{
-                  nome: "Psicólogo Daniel Dantas",
-                  fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
-                }}
-                dataPublicacao={artigo.data_publicacao || undefined}
-                dataAtualizacao={artigo.data_atualizacao || undefined}
-                categoria={categoria.nome}
-                tags={artigo.tags ?? []}
-                tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
-                numeroComentarios={0}
-                tipoConteudo="artigo"
-              />
-            ))}
+    <div className="min-h-screen bg-[#F8F5F0]">
+      {/* Hero Banner Section */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">        <Image
+          src={getCategoryImageUrl(categoria)}
+          alt={`Banner da categoria ${categoria.nome}`}
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+          className="brightness-75"
+        />
+        
+        {/* Hero Content Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+          <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
+              {categoria.nome}
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
+              {categoria.descricao || `Explore artigos sobre ${categoria.nome}`}
+            </p>
           </div>
-        ) : (
-          <p className="text-center text-gray-500">
-            {artigosError
-              ? 'Não foi possível carregar os artigos desta categoria no momento.'
-              : currentPage > 1 ? 'Não há mais artigos nesta categoria.' : 'Nenhum artigo publicado nesta categoria ainda.' // Mensagem ajustada para paginação
-            }
-          </p>
-        )}
+        </div>
       </section>
 
-      {/* Adiciona o componente de Paginação */}
-      <Suspense fallback={null}>
-        <PaginationControls
-          currentPage={currentPage}
-          totalCount={totalCount ?? 0}
-          pageSize={ARTICLES_PER_PAGE}
-          basePath={`/blogflorescerhumano/${categoria.slug}`}
-        />
-      </Suspense>      {/* Schema da Categoria (JSON-LD) */}
-      <CategorySchema
-        nome={categoria.nome}
-        descricao={categoria.descricao ?? ''}
-        slug={categoria.slug}
-        url={`/blogflorescerhumano/${categoria.slug}`}
-        imagemUrl={(artigos && artigos.length > 0) ? artigos[0].imagem_capa_arquivo : null} // Usa a imagem do primeiro artigo como imagem da categoria
-        artigosCount={totalCount}
-      />
+      {/* Breadcrumb Navigation */}
+      <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-3">
+          <ol className="flex items-center space-x-2 text-sm">
+            <li>              <Link 
+                href="/" 
+                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Início
+              </Link>
+            </li>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#735B43]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <li>
+              <Link 
+                href="/blogflorescerhumano" 
+                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+              >
+                Blog
+              </Link>
+            </li>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#735B43]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <li>
+              <Link 
+                href="/blogflorescerhumano/categorias" 
+                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+              >
+                Categorias
+              </Link>
+            </li>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#735B43]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <li className="text-[#583B1F] font-medium">
+              {categoria.nome}
+            </li>
+          </ol>
+        </div>
+      </nav>
 
-    </main>
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12">
+        {/* Stats Section */}
+        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-[#C19A6B]/20">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="text-center sm:text-left">
+                <p className="text-2xl font-bold text-[#583B1F] font-['Old_Roman']">
+                  {totalCount || 0} {totalCount === 1 ? 'Artigo' : 'Artigos'}
+                </p>
+                <p className="text-[#735B43]">
+                  {categoria.descricao || `Explorando ${categoria.nome}`}
+                </p>
+              </div>
+              <div className="text-center sm:text-right">
+                <p className="text-sm text-[#735B43]/80">
+                  Página {currentPage} de {totalPages}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>        {/* Articles Grid */}
+        {artigos && artigos.length > 0 ? (
+          <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {artigos.map((artigo, index) => (
+                <div
+                  key={artigo.id}
+                  className="animate-in fade-in zoom-in-95 slide-in-from-bottom-4 hover:zoom-in-105 transition-all duration-300"
+                  style={{
+                    animationDelay: `${600 + (index * 100)}ms`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  <div className="group h-full">
+                    <ArticleCardBlog
+                      titulo={artigo.titulo ?? 'Artigo sem título'}
+                      resumo={artigo.resumo ?? undefined}
+                      slug={artigo.slug ?? ''}
+                      categoriaSlug={categoria.slug}
+                      imagemUrl={artigo.imagem_capa_arquivo ?? undefined}
+                      autor={{
+                        nome: "Psicólogo Daniel Dantas",
+                        fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                      }}
+                      dataPublicacao={artigo.data_publicacao || undefined}
+                      dataAtualizacao={artigo.data_atualizacao || undefined}
+                      categoria={categoria.nome}
+                      tags={artigo.tags ?? []}
+                      tempoLeitura={Math.ceil((artigo.resumo?.length || 0) / 200) + 3}
+                      numeroComentarios={0}
+                      tipoConteudo="artigo"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-16 animate-in fade-in zoom-in-75 duration-700">
+            <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 max-w-md mx-auto">              <div className="text-[#735B43]/60 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-[#583B1F] mb-2 font-['Old_Roman']">
+                {artigosError ? 'Erro ao carregar' : 'Nenhum artigo'}
+              </h3>
+              <p className="text-[#735B43]">
+                {artigosError
+                  ? 'Não foi possível carregar os artigos desta categoria no momento.'
+                  : currentPage > 1 
+                    ? 'Não há mais artigos nesta categoria.' 
+                    : 'Nenhum artigo publicado nesta categoria ainda.'
+                }
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700">
+            <Suspense fallback={null}>
+              <PaginationControls
+                currentPage={currentPage}
+                totalCount={totalCount ?? 0}
+                pageSize={ARTICLES_PER_PAGE}
+                basePath={`/blogflorescerhumano/${categoria.slug}`}
+              />
+            </Suspense>
+          </div>
+        )}        {/* Schema da Categoria (JSON-LD) */}
+        <CategorySchema
+          nome={categoria.nome}
+          descricao={categoria.descricao ?? ''}
+          slug={categoria.slug}
+          url={`/blogflorescerhumano/${categoria.slug}`}
+          imagemUrl={(artigos && artigos.length > 0) ? artigos[0].imagem_capa_arquivo : null}
+          artigosCount={totalCount}
+        />
+      </main>
+    </div>
   );
 }
