@@ -132,30 +132,8 @@ export default async function CategoriasPage({
             </li>
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">        {/* Stats Section */}
-        <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-[#C19A6B]/20">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="text-center sm:text-left">
-                <p className="text-2xl font-bold text-[#583B1F]">
-                  {totalCount || 0} {totalCount === 1 ? 'Categoria' : 'Categorias'}
-                </p>
-                <p className="text-[#735B43]">
-                  Organizadas para facilitar sua navegação
-                </p>
-              </div>
-              <div className="text-center sm:text-right">
-                <p className="text-sm text-[#735B43]/80">
-                  Página {currentPage} de {totalPages}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      </nav>      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12">
         {/* Categories Grid */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
