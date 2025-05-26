@@ -57,11 +57,10 @@ export default function BlogCategoryCard({
       </MotionDiv>
     );
   }
-
   if (variant === 'enhanced') {
     return (
       <MotionDiv
-        className={`group transform focus:outline-none focus:ring-4 focus:ring-blue-300/30 rounded-xl ${className}`}
+        className={`group transform focus:outline-none focus:ring-4 focus:ring-[#C19A6B]/30 rounded-xl ${className}`}
         whileHover={{ 
           scale: 1.03, 
           y: -8,
@@ -76,47 +75,53 @@ export default function BlogCategoryCard({
           href={`/blogflorescerhumano/${category.slug}`}
           className="block w-full h-full"
           aria-label={`Explorar categoria ${category.nome}${category.descricao ? `: ${category.descricao}` : ''}`}
-        >
-          <div className="relative h-80 rounded-xl overflow-hidden bg-white shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-gray-100">
+        >          <div className="relative h-[520px] rounded-xl overflow-hidden bg-white shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-[#C19A6B]/20 flex flex-col">
             {/* Enhanced Image Section */}
             {showImage && (
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-72 overflow-hidden flex-shrink-0">
                 <Image
                   src={imageUrl}
                   alt={`Imagem da categoria ${category.nome}`}
                   fill
-                  className="object-cover brightness-90 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out"
+                  className="object-cover object-center brightness-90 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/20 to-transparent" />
                 
                 {/* Hover overlay effect */}
-                <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-all duration-300" />
+                <div className="absolute inset-0 bg-[#C19A6B]/0 group-hover:bg-[#C19A6B]/10 transition-all duration-300" />
               </div>
             )}
             
             {/* Enhanced Content Section */}
-            <div className="p-6 space-y-4">
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+            <div className="flex-1 p-8 flex flex-col justify-between min-h-0">
+              <div className="flex-1 space-y-4">
+                <h3 className="text-xl font-bold text-[#583B1F] group-hover:text-[#C19A6B] transition-colors duration-300 line-clamp-2 font-['Old_Roman'] leading-tight">
                   {category.nome}
                 </h3>
                 
-                {category.descricao && (
-                  <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-                    {category.descricao}
-                  </p>
-                )}
+                <div className="flex-1 min-h-0">
+                  {category.descricao ? (
+                    <p className="text-[#735B43] text-sm line-clamp-3 leading-relaxed">
+                      {category.descricao}
+                    </p>
+                  ) : (
+                    <p className="text-[#735B43]/60 text-sm italic">
+                      Explore os artigos desta categoria
+                    </p>
+                  )}
+                </div>
               </div>
               
-              {/* Enhanced CTA */}
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-blue-600 font-medium text-sm group-hover:text-blue-700 transition-colors duration-200">
+              {/* Enhanced CTA - Sempre visível */}
+              <div className="flex items-center justify-between pt-4 mt-auto border-t border-[#C19A6B]/10">
+                <span className="text-[#C19A6B] font-medium text-sm group-hover:text-[#583B1F] transition-colors duration-200">
                   Explorar categoria
                 </span>
-                <div className="p-2 rounded-full bg-blue-50 group-hover:bg-blue-100 transition-colors duration-200">
+                <div className="p-2 rounded-full bg-[#F8F5F0] group-hover:bg-[#C19A6B]/10 transition-colors duration-200">
                   <svg 
-                    className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-200" 
+                    className="w-4 h-4 text-[#C19A6B] group-hover:translate-x-1 transition-transform duration-200" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -128,7 +133,7 @@ export default function BlogCategoryCard({
             </div>
             
             {/* Enhanced border effect */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-200 rounded-xl transition-all duration-300" />
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#C19A6B]/30 rounded-xl transition-all duration-300" />
           </div>
         </Link>
       </MotionDiv>

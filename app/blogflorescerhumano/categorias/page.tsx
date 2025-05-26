@@ -73,10 +73,8 @@ export default async function CategoriasPage({
   }
 
   // Log para depuração
-  console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+  console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);  return (
+    <div className="min-h-screen bg-[#F8F5F0]">
       {/* Hero Banner Section */}
       <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
         <Image
@@ -93,10 +91,10 @@ export default async function CategoriasPage({
         />
         
         {/* Hero Content Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
           <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
               Categorias
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
@@ -107,29 +105,29 @@ export default async function CategoriasPage({
       </section>
 
       {/* Breadcrumb Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
+      <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
               <Link 
                 href="/" 
-                className="flex items-center text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
                 <HomeIcon className="h-4 w-4 mr-1" />
                 Início
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-gray-400" />
+            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
             <li>
               <Link 
                 href="/blogflorescerhumano" 
-                className="text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
                 Blog
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-gray-400" />
-            <li className="text-gray-900 font-medium">
+            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <li className="text-[#583B1F] font-medium">
               Categorias
             </li>
           </ol>
@@ -137,21 +135,20 @@ export default async function CategoriasPage({
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        {/* Stats Section */}
+      <main className="container mx-auto px-4 py-12">        {/* Stats Section */}
         <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-[#C19A6B]/20">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="text-center sm:text-left">
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-[#583B1F]">
                   {totalCount || 0} {totalCount === 1 ? 'Categoria' : 'Categorias'}
                 </p>
-                <p className="text-gray-600">
+                <p className="text-[#735B43]">
                   Organizadas para facilitar sua navegação
                 </p>
               </div>
               <div className="text-center sm:text-right">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-[#735B43]/80">
                   Página {currentPage} de {totalPages}
                 </p>
               </div>
@@ -162,7 +159,7 @@ export default async function CategoriasPage({
         {/* Categories Grid */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {categorias.map((categoria, index) => (
                 <div
                   key={categoria.id}
@@ -186,16 +183,16 @@ export default async function CategoriasPage({
           </div>
         ) : (
           <div className="text-center py-16 animate-in fade-in zoom-in-75 duration-700">
-            <div className="bg-white rounded-xl shadow-lg p-12 border border-gray-100 max-w-md mx-auto">
-              <div className="text-gray-400 mb-4">
+            <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 max-w-md mx-auto">
+              <div className="text-[#735B43]/60 mb-4">
                 <svg className="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-[#583B1F] mb-2">
                 {error ? 'Erro ao carregar' : 'Nenhuma categoria'}
               </h3>
-              <p className="text-gray-500">
+              <p className="text-[#735B43]">
                 {error
                   ? 'Não foi possível carregar as categorias no momento.'
                   : currentPage > 1 
