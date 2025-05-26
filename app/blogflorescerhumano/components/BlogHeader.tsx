@@ -595,6 +595,28 @@ const BlogHeader = () => {
       console.log(`Contraste já está em ${mode}, ignorando.`);
       return;
     }
+    
+    // Função para limpar estilos antes de aplicar novos
+    const cleanupPreviousStyles = () => {
+      // Remover todos os estilos dinâmicos anteriores
+      const oldContrastStyle = document.getElementById('dynamic-contrast-mode');
+      if (oldContrastStyle) {
+        oldContrastStyle.remove();
+      }
+      
+      // Remover classes de contraste anteriores
+      document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      
+      // Forçar um reflow para aplicar as remoções
+      void document.documentElement.offsetHeight;
+      void document.body.offsetHeight;
+      
+      console.log('Estilos anteriores limpos com sucesso');
+    };
+    
+    // Limpar estilos anteriores
+    cleanupPreviousStyles();
 
     const contrastClass = 
       mode === 'normal' ? 'contrast-normal' : 
@@ -603,7 +625,6 @@ const BlogHeader = () => {
 
     // ABORDAGEM ULTRA-AGRESSIVA: Aplicar estilos diretamente com a maior especificidade possível
     const styleEl = document.createElement('style');
-    
     if (mode === 'normal') {
       // Modo normal - cores padrão
       styleEl.textContent = `
@@ -620,20 +641,58 @@ const BlogHeader = () => {
           color: #583B1F !important;
         }
         
-        html.contrast-normal body,
-        html.contrast-normal main,
-        html.contrast-normal article,
-        html.contrast-normal section,
-        html.contrast-normal header,
-        html.contrast-normal footer,
-        html.contrast-normal div.bg-\\[\\#F8F5F0\\],
-        html.contrast-normal \\[class\\*\\=\\"bg-\\[\\#F8F5F0\\]\\"\\] {
-          background-color: #F8F5F0 !important;
+        /* Restaurar cores de links padrão */
+        a:not([class]), a.default-link {
+          color: #C19A6B !important;
+          text-decoration: none !important;
+        }
+        
+        /* Restaurar cores de texto para os diferentes elementos */
+        p, span, h1, h2, h3, h4, h5, h6, li {
           color: #583B1F !important;
         }
         
-        html.contrast-normal a:not(.btn):not(.button) {
-          color: #C19A6B !important;
+        /* Elementos com fundos específicos */
+        .bg-\[#F8F5F0\] {
+          background-color: #F8F5F0 !important;
+        }
+        
+        .bg-\[#FFFFFF\], .bg-white {
+          background-color: #FFFFFF !important;
+        }
+        
+        /* Botões com cores específicas mantem o texto branco */
+        .bg-\[#C19A6B\], .bg-\[#C19A6B\]\/90, 
+        .bg-\[#735B43\], .bg-\[#735B43\]\/90,
+        .bg-\[#583B1F\], .bg-\[#583B1F\]\/90 {
+          color: white !important;
+        }
+        
+        /* Tratamento específico para o botão "Voltar ao site" */
+        a[href="/"] {
+          color: white !important;
+        }
+        
+        /* Botões no cabeçalho */
+        header button, 
+        header .button, 
+        nav button, 
+        nav .button {
+          color: #583B1F !important;
+        }
+        
+        /* Botões com fundo colorido sempre terão texto branco */
+        button.bg-\[#C19A6B\], .button.bg-\[#C19A6B\],
+        button.bg-\[#583B1F\], .button.bg-\[#583B1F\],
+        button.bg-\[#735B43\], .button.bg-\[#735B43\],
+        a.bg-\[#C19A6B\], a.bg-\[#583B1F\], a.bg-\[#735B43\] {
+          color: white !important;
+        }
+        
+        /* Garantir que links dentro de elementos com fundo colorido tenham texto branco */
+        .bg-\[#C19A6B\] a, .bg-\[#C19A6B\]\/90 a, 
+        .bg-\[#583B1F\] a, .bg-\[#735B43\] a {
+          color: white !important;
         }
       `;
     } else if (mode === 'highContrast') {
@@ -774,10 +833,20 @@ const BlogHeader = () => {
     // Aplicar também ao body para maior compatibilidade
     document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
     document.body.classList.add(contrastClass);
-    
-    // Forçar um reflow mais agressivo para garantir que as mudanças sejam aplicadas
+      // Forçar um reflow mais agressivo para garantir que as mudanças sejam aplicadas
     void document.documentElement.offsetHeight;
     void document.body.offsetHeight;
+    
+    // Adicionar uma segunda aplicação de classe após um pequeno delay para garantir que as classes foram aplicadas
+    setTimeout(() => {
+      // Garantir que as classes estão corretamente aplicadas
+      document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      document.documentElement.classList.add(contrastClass);
+      document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      document.body.classList.add(contrastClass);
+      
+      console.log(`Classes de contraste reaplicadas após delay: ${contrastClass}`);
+    }, 50);
     
     // Verificar se mudanças foram aplicadas e tentar novamente se necessário
     setTimeout(() => {
@@ -828,71 +897,49 @@ const BlogHeader = () => {
   };
   // Função para garantir que as preferências sejam aplicadas corretamente
   const forceApplyPreferences = useCallback(() => {
-    if (!prefsInitialized) return;
+    if (!prefsInitialized || typeof window === 'undefined') return;
     
-    console.log('Forçando aplicação de todas as preferências');
+    console.log('Forçando aplicação das preferências do usuário...');
     
-    // Técnica mais agressiva para garantir a aplicação
-    // Primeiro remover todas as classes relacionadas a preferências
-    document.documentElement.classList.remove(
-      'font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl',
-      'contrast-normal', 'contrast-high', 'contrast-dark'
-    );
+    // Aplicar tamanho da fonte atual
+    applyFontSize(preferences.fontSize);
     
-    document.body.classList.remove(
-      'font-size-sm', 'font-size-md', 'font-size-lg', 'font-size-xl',
-      'contrast-normal', 'contrast-high', 'contrast-dark'
-    );
+    // Aplicar modo de contraste atual
+    applyContrastMode(preferences.contrastMode);
     
-    // Pequena pausa para garantir que o DOM processou as mudanças
-    setTimeout(() => {
-      // Aplicar tamanho de fonte
-      applyFontSize(preferences.fontSize);
-      
-      // Pequena pausa entre as aplicações para evitar conflitos
-      setTimeout(() => {
-        // Aplicar contraste
-        applyContrastMode(preferences.contrastMode);
-        
-        // Verificação adicional após aplicar as preferências
-        setTimeout(() => {
-          // Verificar se as classes foram aplicadas corretamente
-          const fontSizeClass = `font-size-${preferences.fontSize}`;
-          const contrastClass = 
-            preferences.contrastMode === 'normal' ? 'contrast-normal' : 
-            preferences.contrastMode === 'highContrast' ? 'contrast-high' : 
-            'contrast-dark';
-            
-          if (!document.documentElement.classList.contains(fontSizeClass) ||
-              !document.documentElement.classList.contains(contrastClass)) {
-            console.warn('Algumas preferências não foram aplicadas corretamente. Tentando novamente...');
-            
-            // Aplicar classes diretamente
-            document.documentElement.classList.add(fontSizeClass);
-            document.documentElement.classList.add(contrastClass);
-            document.body.classList.add(fontSizeClass);
-            document.body.classList.add(contrastClass);
-            
-            // Forçar reflow
-            void document.documentElement.offsetHeight;
-            void document.body.offsetHeight;
-          }
-        }, 100);
-      }, 50);
-    }, 10);
-  }, [preferences, prefsInitialized, applyFontSize, applyContrastMode]);
-
-  // Garantir que as preferências sejam aplicadas após a montagem completa do componente
+    console.log('Preferências do usuário reaplicadas com sucesso.');
+  }, [preferences, prefsInitialized]);
+  
+  // Efeito para verificar e reaplicar preferências periodicamente para garantir consistência
   useEffect(() => {
-    if (prefsInitialized) {
-      // Pequeno atraso para garantir que o DOM esteja totalmente carregado
-      const timer = setTimeout(() => {
-        forceApplyPreferences();
-      }, 500);
+    if (!prefsInitialized || typeof window === 'undefined') return;
+    
+    // Verificar após carregamento completo da página
+    const initialCheck = setTimeout(() => {
+      forceApplyPreferences();
+    }, 1500);
+    
+    // Verificar a cada 3 segundos para casos onde o DOM é modificado dinamicamente
+    const intervalCheck = setInterval(() => {
+      // Verificar se as classes de contraste e tamanho de fonte ainda estão aplicadas
+      const hasCorrectFontClass = document.documentElement.classList.contains(`font-size-${preferences.fontSize}`);
+      const contrastClass = 
+        preferences.contrastMode === 'normal' ? 'contrast-normal' : 
+        preferences.contrastMode === 'highContrast' ? 'contrast-high' : 
+        'contrast-dark';
+      const hasCorrectContrastClass = document.documentElement.classList.contains(contrastClass);
       
-      return () => clearTimeout(timer);
-    }
-  }, [prefsInitialized, forceApplyPreferences]);
+      if (!hasCorrectFontClass || !hasCorrectContrastClass) {
+        console.log('Detectada perda de estilos de acessibilidade. Reaplicando...');
+        forceApplyPreferences();
+      }
+    }, 3000);
+    
+    return () => {
+      clearTimeout(initialCheck);
+      clearInterval(intervalCheck);
+    };
+  }, [preferences, prefsInitialized, forceApplyPreferences]);
 
   // Adicionar comando global para depuração e forçar aplicação das preferências
   useEffect(() => {
@@ -1578,7 +1625,7 @@ const BlogHeader = () => {
               >
                 <div className="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center mb-2">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806.188-1.566.232-2.229.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                   </svg>
                 </div>
                 <span className="text-xs text-gray-600">Twitter</span>
@@ -1591,7 +1638,7 @@ const BlogHeader = () => {
               >
                 <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center mb-2">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579.487.5.669.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.884-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    <path d="M17.472 14.382c-.297-.149-1.758.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579.487.5.669.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.884-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
                 </div>
                 <span className="text-xs text-gray-600">WhatsApp</span>
