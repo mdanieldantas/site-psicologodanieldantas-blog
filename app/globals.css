@@ -1175,3 +1175,570 @@ main, article, section {
 
 /* FIM DAS REGRAS DE FORÇA MÁXIMA */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 30 45% 23%;
+
+    --card: 36 33% 97%;
+    --card-foreground: 30 45% 23%;
+
+    --popover: 36 33% 97%;
+    --popover-foreground: 30 45% 23%;
+
+    --primary: 30 45% 23%;
+    --primary-foreground: 36 33% 97%;
+
+    --secondary: 36 33% 97%;
+    --secondary-foreground: 30 45% 23%;
+
+    --muted: 36 33% 97%;
+    --muted-foreground: 30 30% 36%;
+
+    --accent: 36 33% 97%;
+    --accent-foreground: 30 45% 23%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 36 33% 97%;
+
+    --border: 30 30% 76%;
+    --input: 30 30% 76%;
+    --ring: 30 45% 23%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 30 45% 23%;
+    --foreground: 36 33% 97%;
+
+    --card: 30 45% 23%;
+    --card-foreground: 36 33% 97%;
+
+    --popover: 30 45% 23%;
+    --popover-foreground: 36 33% 97%;
+
+    --primary: 36 33% 97%;
+    --primary-foreground: 30 45% 23%;
+
+    --secondary: 30 30% 36%;
+    --secondary-foreground: 36 33% 97%;
+
+    --muted: 30 30% 36%;
+    --muted-foreground: 36 20% 80%;
+
+    --accent: 30 30% 36%;
+    --accent-foreground: 36 33% 97%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 36 33% 97%;
+
+    --border: 30 30% 36%;
+    --input: 30 30% 36%;
+    --ring: 36 33% 97%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@font-face {
+  font-family: "Kaisei Opti";
+  src: url("https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@400;500;700&display=swap");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Melhorias de foco para acessibilidade */
+:focus-visible {
+  outline: 3px solid #583b1f;
+  outline-offset: 3px;
+}
+
+/* Melhorias de contraste */
+.text-enhanced-contrast {
+  color: #4a3114;
+}
+
+/* Rolagem suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Adicionar ao final do arquivo */
+.navbar-scrolled {
+  background-color: rgba(248, 245, 240, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Melhorias para dispositivos móveis */
+@media (max-width: 768px) {
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.5rem 1rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Evita zoom automático em iOS */
+  }
+
+  .touch-target {
+    padding: 0.75rem;
+  }
+}
+
+/* Otimizações de performance */
+.will-change-transform {
+  will-change: transform;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+}
+
+/* Melhorias de carregamento de imagens */
+.image-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-loaded {
+  opacity: 1;
+}
+
+/* Animação de fade-in para elementos */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+/* Animação de entrada para itens do menu mobile */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+/* Animações para moldura orgânica e elementos botânicos */
+@keyframes breathe {
+  0% { border-radius: 40% 60% 70% 30% / 30% 40% 70% 60%; transform: scale(1); }
+  50% { border-radius: 35% 65% 60% 40% / 40% 30% 60% 70%; transform: scale(1.01); }
+  100% { border-radius: 37% 63% 65% 35% / 35% 38% 62% 65%; transform: scale(0.99); }
+}
+
+@keyframes sway {
+  0% { transform: rotate(-3deg) translateX(0px); }
+  50% { transform: rotate(3deg) translateX(2px); }
+  100% { transform: rotate(-2deg) translateX(-1px); }
+}
+
+@keyframes grow {
+  0% { stroke-dashoffset: 300; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Classe para ajudar a resolver problemas de proporção de imagem no Next.js Image */
+
+/* REGRAS DE FORÇA MÁXIMA PARA GARANTIR APLICAÇÃO DAS PREFERÊNCIAS */
+
+/* =========================== */
+/* REFORÇO DO TAMANHO DE FONTE */
+/* =========================== */
+
+/* Garantir que headings mantenham proporções corretas */
+html.font-size-sm h1, 
+html.font-size-md h1, 
+html.font-size-lg h1, 
+html.font-size-xl h1,
+.font-size-sm h1, 
+.font-size-md h1, 
+.font-size-lg h1, 
+.font-size-xl h1,
+h1.article-title, 
+.article-title {
+  font-size: calc(2.25rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h2, 
+html.font-size-md h2, 
+html.font-size-lg h2, 
+html.font-size-xl h2,
+.font-size-sm h2, 
+.font-size-md h2, 
+.font-size-lg h2, 
+.font-size-xl h2 {
+  font-size: calc(1.8rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h3, 
+html.font-size-md h3, 
+html.font-size-lg h3, 
+html.font-size-xl h3,
+.font-size-sm h3, 
+.font-size-md h3, 
+.font-size-lg h3, 
+.font-size-xl h3 {
+  font-size: calc(1.5rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h4, 
+html.font-size-md h4, 
+html.font-size-lg h4, 
+html.font-size-xl h4,
+.font-size-sm h4, 
+.font-size-md h4, 
+.font-size-lg h4, 
+.font-size-xl h4 {
+  font-size: calc(1.25rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h5, 
+html.font-size-md h5, 
+html.font-size-lg h5, 
+html.font-size-xl h5,
+.font-size-sm h5, 
+.font-size-md h5, 
+.font-size-lg h5, 
+.font-size-xl h5 {
+  font-size: calc(1.125rem * var(--font-size-multiplier)) !important;
+}
+
+html.font-size-sm h6, 
+html.font-size-md h6, 
+html.font-size-lg h6, 
+html.font-size-xl h6,
+.font-size-sm h6, 
+.font-size-md h6, 
+.font-size-lg h6, 
+.font-size-xl h6 {
+  font-size: calc(1rem * var(--font-size-multiplier)) !important;
+}
+
+/* =========================== */
+/* REFORÇO DO MODO DE CONTRASTE */
+/* =========================== */
+
+/* Modo Alto Contraste - Override Extremo */
+html.contrast-high * {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.contrast-high a,
+html.contrast-high button,
+html.contrast-high .btn,
+html.contrast-high .button {
+  color: #0000CC !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-high button:hover,
+html.contrast-high .btn:hover,
+html.contrast-high .button:hover {
+  background-color: #F0F0F0 !important;
+}
+
+html.contrast-high img,
+html.contrast-high svg {
+  filter: grayscale(100%) contrast(120%) !important;
+  border: 1px solid #000000 !important;
+}
+
+/* Modo Escuro - Override Extremo */
+html.contrast-dark * {
+  background-color: #121212 !important;
+  color: #FFFFFF !important;
+  border-color: #444444 !important;
+}
+
+html.contrast-dark a,
+html.contrast-dark button,
+html.contrast-dark .btn,
+html.contrast-dark .button {
+  color: #93C5FD !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+}
+
+html.contrast-dark button:hover,
+html.contrast-dark .btn:hover,
+html.contrast-dark .button:hover {
+  background-color: #2A2A2A !important;
+}
+
+html.contrast-dark img,
+html.contrast-dark svg {
+  filter: brightness(0.8) contrast(1.2) !important;
+  border: 1px solid #444444 !important;
+}
+
+/* Forçar aplicação dos modos em elementos específicos */
+.header, header, nav, footer, aside, 
+.sidebar, .container, .content, 
+.article-content, .blog-post, 
+main, article, section {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Medida extra para garantir que a aplicação seja mantida */
+@media screen {
+  html.contrast-high body,
+  html.contrast-dark body {
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+  }
+  
+  html.font-size-sm body,
+  html.font-size-md body,
+  html.font-size-lg body,
+  html.font-size-xl body {
+    transition: font-size 0.3s ease !important;
+  }
+}
+
+/* FIM DAS REGRAS DE FORÇA MÁXIMA */
+
+/* ==============================================
+   ANIMAÇÕES AVANÇADAS PARA CATEGORIAS - BASEADO EM CONTEXT7
+   ============================================== */
+
+/* Performance optimization for animations */
+.category-card-enter,
+.category-card,
+[class*="animate-in"],
+[class*="motion-"] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced stagger animations inspired by TailwindCSS Animate */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/* Advanced hover effects for category cards */
+.category-card-hover-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease-in-out;
+  z-index: 1;
+}
+
+.category-card-hover-effect:hover::before {
+  left: 100%;
+}
+
+/* Enhanced motion-safe support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .category-card-enter,
+  [class*="animate-in"] {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Custom utilities for enhanced animations */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced focus states for accessibility */
+.category-focus-enhanced:focus-visible {
+  outline: 3px solid rgb(193, 154, 107);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+/* Smooth transforms for better performance */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Custom timing functions for more natural animations */
+.ease-bounce {
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ease-smooth {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ease-spring {
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Advanced gradient animations */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-gradient-animated {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* Enhanced card depth effect */
+.card-depth-enhanced {
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-depth-enhanced:hover {
+  box-shadow: 
+    0 14px 28px rgba(88, 59, 31, 0.25),
+    0 10px 10px rgba(88, 59, 31, 0.22);
+}
+
+/* Micro-interactions for better UX */
+.interactive-scale {
+  transition: transform 0.2s ease;
+}
+
+.interactive-scale:active {
+  transform: scale(0.98);
+}
+
+/* Enhanced loading states */
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-gentle {
+  animation: pulse-gentle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ==============================================
+   FIM DAS ANIMAÇÕES AVANÇADAS
+   ============================================== */
+
+/* FIM DAS REGRAS DE FORÇA MÁXIMA */
+
