@@ -133,7 +133,7 @@ export default async function CategoriasPage({
           </ol>
         </div>
       </nav>      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 pb-12">
         {/* Categories Grid */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
