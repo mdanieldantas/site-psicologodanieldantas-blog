@@ -163,7 +163,7 @@ export default async function SobrePage() {
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12">
+      <main className="container mx-auto px-4 pb-12 mt-4">
         {/* Stats Section REMOVIDA */}
         
         {/* Seção: Missão e Inspiração */}
