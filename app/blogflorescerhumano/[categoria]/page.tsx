@@ -228,12 +228,7 @@ export default async function CategoriaEspecificaPage({
                 Categorias
               </Link>
             </li>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#735B43]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <li className="text-[#583B1F] font-medium">
-              {categoria.nome}
-            </li>
+            {/* Removido nome da categoria do breadcrumb */}
           </ol>
         </div>
       </nav>
