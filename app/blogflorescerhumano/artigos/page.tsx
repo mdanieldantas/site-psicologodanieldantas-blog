@@ -6,9 +6,9 @@ import ArticleCardBlog from '../components/ArticleCardBlog';
 import PaginationControls from '../components/PaginationControls';
 import type { Metadata } from 'next';
 import { ResolvingMetadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import BannerImage from '../components/BannerImage';
 
 // --- Metadados dinâmicos para SEO conforme paginação --- //
 export async function generateMetadata(
@@ -140,19 +140,11 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
 
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-        <Image
-          src="/blogflorescerhumano/banners-blog/banner-artigos.webp"
+      {/* Hero Banner Section */}      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+        <BannerImage 
+          bannerPath="/blogflorescerhumano/banners-blog/banner-artigos.webp"
+          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
           alt="Banner de Artigos do Blog Florescer Humano"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          className="brightness-75"
         />
         
         {/* Hero Content Overlay */}

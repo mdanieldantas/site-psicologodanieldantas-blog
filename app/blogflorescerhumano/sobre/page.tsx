@@ -2,9 +2,10 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image'; // Adicionado import do Image
-import { supabaseServer } from '@/lib/supabase/server'; // Adicionado import do supabaseServer
-import type { Database } from '@/types/supabase'; // Adicionado import do tipo Database
+import Image from 'next/image';
+import { supabaseServer } from '@/lib/supabase/server'; 
+import type { Database } from '@/types/supabase'; 
+import BannerImage from '../components/BannerImage';
 
 // --- Metadados para a Página Sobre --- //
 export const metadata: Metadata = {
@@ -97,19 +98,11 @@ export default async function SobrePage() {
   }
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-        <Image
-          src="/blogflorescerhumano/banners-blog/banner-sobre-mulher-filho.webp"
+      {/* Hero Banner Section */}      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+        <BannerImage
+          bannerPath="/blogflorescerhumano/banners-blog/banner-sobre-mulher-filho.webp"
+          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
           alt="Banner Sobre o Blog Florescer Humano"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          className="brightness-75"
         />
         
         {/* Hero Content Overlay */}

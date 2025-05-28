@@ -2,13 +2,14 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { supabaseServer } from '@/lib/supabase/server'; // Ajustado para @/
+import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
-import type { Database } from '@/types/supabase'; // Ajustado para @/
-import ArticleCardBlog from '../components/ArticleCardBlog'; // Ajustado para ../
-import PaginationControls from '../components/PaginationControls'; // Importa o componente de paginação
-import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
-import CategorySchema from '../components/CategorySchema'; // Importa o componente Schema JSON-LD para categorias
+import type { Database } from '@/types/supabase';
+import ArticleCardBlog from '../components/ArticleCardBlog';
+import PaginationControls from '../components/PaginationControls';
+import type { Metadata, ResolvingMetadata } from 'next';
+import CategorySchema from '../components/CategorySchema';
+import BannerImage from '../components/BannerImage';
 
 // Define quantos artigos serão exibidos por página
 const ARTICLES_PER_PAGE = 6; // Valor original
@@ -164,18 +165,11 @@ export default async function CategoriaEspecificaPage({
 
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">        <Image
-          src={getCategoryImageUrl(categoria)}
+      {/* Hero Banner Section */}      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+        <BannerImage 
+          bannerPath={getCategoryImageUrl(categoria)}
+          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
           alt={`Banner da categoria ${categoria.nome}`}
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          className="brightness-75"
         />
         
         {/* Hero Content Overlay */}

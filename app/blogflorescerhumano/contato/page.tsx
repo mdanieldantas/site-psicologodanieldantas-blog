@@ -1,15 +1,39 @@
 "use client";
 
 // app/blogflorescerhumano/contato/page.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import AgendamentoCard from './components/AgendamentoCard';
 
-export default function ContatoPage() {
-  const [imageError, setImageError] = useState(false);
+export default function ContatoPage() {  const [imageError, setImageError] = useState(false);
+  // Adicione um parâmetro de cache busting para forçar o recarregamento da imagem
+  const timestamp = Date.now();
+  const [bannerPath, setBannerPath] = useState(`/blogflorescerhumano/banners-blog/banner-contato.webp?v=${timestamp}`);
+  
+  // Verificação prévia da existência da imagem com cache-busting
+  useEffect(() => {
+    const checkImageExists = async () => {
+      try {
+        // Usa no-cache para evitar que o fetch pegue versões em cache
+        const res = await fetch(bannerPath.split('?')[0], {
+          cache: 'no-cache',
+          headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
+        });
+        if (!res.ok) {
+          console.warn('Banner contato não encontrado, usando fallback');
+          setBannerPath(`/blogflorescerhumano/banners-blog/hero-home-banner.webp?v=${timestamp}`);
+        }
+      } catch (error) {
+        console.error('Erro ao verificar banner:', error);
+        setBannerPath(`/blogflorescerhumano/banners-blog/hero-home-banner.webp?v=${timestamp}`);
+      }
+    };
+    
+    checkImageExists();
+  }, []);
   
   // Informações de contato
   const contactInfo = {
@@ -20,45 +44,27 @@ export default function ContatoPage() {
     instagramUrl: "https://www.instagram.com/psidanieldantas",
     youtubeUrl: "https://www.youtube.com/@psidanieldantas",
   };
-  
-  return (
-    <div className="min-h-screen bg-[#F8F5F0]">      {/* Hero Banner Section */}
+    return (
+    <div className="min-h-screen bg-[#F8F5F0]">
+      {/* Hero Banner Section */}
       <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]">
-        {!imageError ? (
-          <Image
-            src="/blogflorescerhumano/banners-blog/banner-contato.webp"
-            alt="Banner da página de contato do Blog Florescer Humano"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
-            className="brightness-75 z-0"
-            onLoad={() => console.log('✅ Banner contato carregou com sucesso!')}
-            onError={(e) => {
-              console.error('❌ Erro ao carregar banner contato:', e);
-              setImageError(true);
-            }}
-          />
-        ) : (
-          // Fallback: usar hero-home-banner.webp se banner-contato.webp não carregar
-          <Image
-            src="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
-            alt="Banner alternativo da página de contato do Blog Florescer Humano"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
-            className="brightness-75 z-0"
-            onLoad={() => console.log('✅ Banner alternativo carregou!')}
-            onError={(e) => console.error('❌ Erro no fallback:', e)}
-          />
-        )}
+        <Image
+          src={bannerPath}
+          alt="Banner da página de contato do Blog Florescer Humano"
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+          className="brightness-75 z-0"          onError={() => {
+            // Este tratamento é um fallback adicional caso o useEffect não funcione
+            console.log('Usando banner alternativo após erro de carregamento');
+            setImageError(true);
+            setBannerPath(`/blogflorescerhumano/banners-blog/hero-home-banner.webp?v=${timestamp}`);
+          }}
+        />
         {/* Hero Content Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent z-10" />
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-20">

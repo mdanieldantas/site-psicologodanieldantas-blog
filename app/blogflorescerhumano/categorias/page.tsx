@@ -3,11 +3,11 @@ import React, { Suspense } from 'react';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import PaginationControls from '../components/PaginationControls';
 import BlogCategoryCard from '@/components/blog-category-card';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
+import BannerImage from '../components/BannerImage';
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
 
@@ -75,19 +75,11 @@ export default async function CategoriasPage({
   // Log para depuração
   console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);  return (
     <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-        <Image
-          src="/blogflorescerhumano/banners-blog/categories-banner.webp"
+      {/* Hero Banner Section */}      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+        <BannerImage 
+          bannerPath="/blogflorescerhumano/banners-blog/categories-banner.webp"
+          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
           alt="Banner de Categorias do Blog Florescer Humano"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          className="brightness-75"
         />
         
         {/* Hero Content Overlay */}
