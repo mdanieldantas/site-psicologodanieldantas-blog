@@ -2,6 +2,7 @@
 // Localização: app/blogflorescerhumano/components/BlogFooter.tsx
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { NewsletterBlogForm } from './NewsletterBlogForm';
 import AgendamentoBotao from './agendamento-botao';
 import { 
@@ -13,13 +14,13 @@ import {
   BookOpen
 } from 'lucide-react';
 
-const BlogFooter = () => {
-  // Informações de contato e redes sociais
+const BlogFooter = () => {  // Informações de contato e redes sociais
   const contactInfo = {
     email: 'contatomarcosdgomes@gmail.com',
     instagramUrl: 'https://www.instagram.com/psidanieldantas',
     linkedinUrl: 'https://www.linkedin.com/in/psidanieldantas',
     youtubeUrl: 'https://youtube.com/@psidanieldantas',
+    profileImage: '/blogflorescerhumano/autores/autores-daniel-psi-blog.webp', // Caminho correto para a imagem do perfil
   };  // Informações para o rodapé
 
   return (
@@ -34,25 +35,38 @@ const BlogFooter = () => {
               Receba conteúdos sobre desenvolvimento pessoal e bem-estar emocional.
             </p>
             <NewsletterBlogForm />
-          </div>
-
-          {/* Seção de Agendamento */}
+          </div>          {/* Seção de Agendamento */}
           <div>
-            <div className="bg-[#E8E6E2] rounded-lg p-6 text-[#583B1F]">
-              <div className="flex items-center gap-2 mb-3">
-                <Calendar className="h-5 w-5 text-[#6B7B3F]" />
-                <h3 className="text-lg font-semibold">Agende sua Consulta</h3>
+            <div className="bg-[#F8F5F0] rounded-lg p-6 text-[#583B1F] shadow-sm border border-[#E8E6E2]">
+              <h3 className="text-lg font-semibold mb-4 text-[#583B1F]">Gostaria de agendar uma sessão?</h3>
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-4">                <div className="relative overflow-hidden w-20 h-20 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">
+                  <Image 
+                    src={contactInfo.profileImage} 
+                    alt="Dr. Daniel Dantas - Psicólogo" 
+                    width={80} 
+                    height={80} 
+                    className="object-cover"
+                    priority
+                    onError={(e) => {
+                      // Fallback para quando a imagem falhar
+                      const imgElement = e.currentTarget as HTMLImageElement;
+                      imgElement.src = "/placeholder-user.jpg";
+                    }}
+                  />
+                </div>
+                <p className="text-sm leading-relaxed text-[#7D6E63] text-center sm:text-left">
+                  Se você está considerando buscar um espaço para você, te convido a entrar em contato. Ficarei feliz em te receber para conversarmos.
+                </p>
               </div>
-              <p className="text-sm mb-4 leading-relaxed">
-                Se você está considerando buscar um espaço para você, te convido a entrar em contato.
-              </p>
+              
               <AgendamentoBotao 
                 variant="primary" 
                 size="md" 
                 fullWidth={true}
-                className="bg-[#583B1F] hover:bg-[#5B3E22]"
+                className="bg-[#583B1F] hover:bg-[#5B3E22] flex items-center justify-center gap-2"
               >
-                Agendar Primeira Sessão
+                <Calendar className="h-4 w-4" />
+                Agendar primeira sessão
               </AgendamentoBotao>
             </div>
           </div>
