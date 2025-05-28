@@ -1,8 +1,11 @@
 // app/blogflorescerhumano/components/ArticleCardBlog.tsx
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Clock, MessageSquare } from "lucide-react";
+import { ArrowRight, Clock, MessageSquare, Calendar, Tag } from "lucide-react";
+import { MotionDiv } from '@/components/ui/motion-components';
 
 export interface ArticleCardBlogProps {
   titulo: string;
@@ -86,147 +89,165 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
       year: 'numeric' 
     });
   };
-  
-  // Ícone com base no tipo de conteúdo
+    // Ícone com base no tipo de conteúdo - Design mais moderno
   const renderIconeTipoConteudo = () => {
+    const baseClasses = "absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium shadow-lg border-2 border-white/20";
+    
     switch (tipoConteudo) {
       case 'video':
-        return <span className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs">Vídeo</span>;
+        return <span className={`${baseClasses} bg-gradient-to-r from-red-500 to-red-600 text-white`}>📹 Vídeo</span>;
       case 'podcast':
-        return <span className="absolute top-2 right-2 bg-purple-600 text-white rounded-full p-1 text-xs">Podcast</span>;
+        return <span className={`${baseClasses} bg-gradient-to-r from-purple-500 to-purple-600 text-white`}>🎧 Podcast</span>;
       case 'infografico':
-        return <span className="absolute top-2 right-2 bg-blue-600 text-white rounded-full p-1 text-xs">Infográfico</span>;
+        return <span className={`${baseClasses} bg-gradient-to-r from-blue-500 to-blue-600 text-white`}>📊 Infográfico</span>;
       default:
-        return <span className="absolute top-2 right-2 bg-[#C19A6B] text-white rounded-full p-1 text-xs">Artigo</span>;
+        return <span className={`${baseClasses} bg-gradient-to-r from-[#A57C3A] to-[#C19A6B] text-white`}>📄 Artigo</span>;
     }
   };
 
   return (
-    <Link 
-      href={linkArtigo}
-      className="bg-[#F8F5F0]/70 rounded-lg overflow-hidden h-full flex flex-col border-[0.5px] border-[#C19A6B]/20 transition-all duration-300 hover:shadow-md hover:bg-[#F8F5F0] group"
-    >      <div className="relative w-full h-48 overflow-hidden">
-        <Image
-          src={processarImagemUrl(imagemUrl)}
-          alt={`Imagem para ${titulo}`}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
-        {renderIconeTipoConteudo()}
-        
-        {/* Categoria label */}
-        {categoria && (
-          <span className="absolute left-3 bottom-3 bg-[#C19A6B]/90 text-white text-xs px-2 py-1 rounded">
-            {categoria}
-          </span>
-        )}
-      </div>
-
-      <div className="p-5 flex flex-col flex-grow relative">        {/* Informações do autor e data */}
-        <div className="flex items-center gap-3 mb-3">
-          {autor?.fotoUrl && (
-            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#C19A6B]/20">
-              <Image
-                src={autor.fotoUrl.startsWith('/') ? autor.fotoUrl : `/blogflorescerhumano/autores/${autor.fotoUrl}`}
-                alt={`Foto de ${autor.nome}`}
-                width={40}
-                height={40}
-                className="object-cover"
-              />
-            </div>
-          )}
-          <div className="flex flex-col">
-            {autor?.nome && (
-              <span className="text-sm text-[#583B1F]">{autor.nome}</span>
-            )}
-            {dataAtualizacao && (
-              <span className="text-xs text-gray-500">
-                Atualizado em {formatarData(dataAtualizacao)}
-              </span>
+    <article className="group">
+      <Link 
+        href={linkArtigo}
+        className="block h-full transform transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
+      >
+        <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-lg group-hover:shadow-2xl border border-[#E8E6E2] transition-all duration-500 group-hover:border-[#A57C3A]/30">
+          
+          {/* Imagem do Artigo */}
+          <div className="relative w-full h-56 overflow-hidden">
+            <Image
+              src={processarImagemUrl(imagemUrl)}
+              alt={`Imagem para ${titulo}`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              priority
+            />
+            
+            {/* Overlay gradiente */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300"></div>
+            
+            {/* Tipo de conteúdo */}
+            {renderIconeTipoConteudo()}
+            
+            {/* Categoria Badge - Posição inferior esquerda */}
+            {categoria && (
+              <div className="absolute bottom-4 left-4">
+                <span className="inline-flex items-center px-3 py-1.5 bg-[#583B1F]/90 backdrop-blur-sm text-white text-sm font-medium rounded-full border border-white/20 shadow-lg">
+                  <Tag className="w-3 h-3 mr-1.5" />
+                  {categoria}
+                </span>
+              </div>
             )}
           </div>
-        </div>
 
-        <h3 className="text-lg font-medium text-[#583B1F] mb-2 line-clamp-2 group-hover:text-[#C19A6B] transition-colors">
-          {titulo}
-        </h3>        {resumo && (
-          <p className="text-[#583B1F]/80 text-sm mb-4 line-clamp-3">
-            {resumo}
-          </p>
-        )}        {/* Tags Section - Proteção Completa Contra Falhas */}
-        {(() => {
-          // Validação robusta das tags
-          if (!tags || !Array.isArray(tags) || tags.length === 0) {
-            return null;
-          }
-          
-          // Filtrar e limpar tags válidas (agora são objetos)
-          const tagsValidas = tags
-            .filter(tag => tag && typeof tag === 'object' && tag.nome && tag.nome.trim().length > 0)
-            .map(tag => ({ ...tag, nome: tag.nome.trim() }));
+          {/* Conteúdo do Card */}
+          <div className="p-6 flex flex-col flex-grow">
             
-          if (tagsValidas.length === 0) {
-            return null;
-          }
-          
-          return (
-            <div className="mb-3">
-              <div className="flex flex-wrap gap-1.5">
-                {tagsValidas.slice(0, 3).map((tag, index) => (
-                  <span 
-                    key={`tag-${tag.id || index}-${tag.nome.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                    className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F5F0] text-[#583B1F] border border-[#C19A6B]/25 hover:bg-[#F8F5F0]/80 transition-colors"
-                  >
-                    <svg
-                      className="w-3 h-3 mr-1 opacity-60"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
-                      />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-                    </svg>
-                    {tag.nome}
-                  </span>
-                ))}
-                {tagsValidas.length > 3 && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#C19A6B]/10 text-[#583B1F]/70 border border-[#C19A6B]/20">
-                    +{tagsValidas.length - 3} mais
-                  </span>
+            {/* Header com autor e data */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                {autor?.fotoUrl && (
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#A57C3A]/30 shadow-md">
+                    <Image
+                      src={autor.fotoUrl.startsWith('/') ? autor.fotoUrl : `/blogflorescerhumano/autores/${autor.fotoUrl}`}
+                      alt={`Foto de ${autor.nome}`}
+                      width={48}
+                      height={48}
+                      className="object-cover"
+                    />
+                  </div>
                 )}
+                <div className="flex flex-col">
+                  {autor?.nome && (
+                    <span className="text-sm font-medium text-[#583B1F]">{autor.nome}</span>
+                  )}
+                  {dataAtualizacao && (
+                    <span className="text-xs text-[#7D6E63] flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      Atualizado em {formatarData(dataAtualizacao)}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-          );
-        })()}
 
-        <div className="mt-auto flex items-center justify-between text-xs text-gray-500">
-          <div className="flex items-center gap-4">
-            {tempoLeitura && (
-              <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                {tempoLeitura} min
-              </span>
+            {/* Título do Artigo */}
+            <h3 className="text-xl font-semibold text-[#583B1F] mb-3 line-clamp-2 leading-tight group-hover:text-[#A57C3A] transition-colors duration-300">
+              {titulo}
+            </h3>
+
+            {/* Resumo */}
+            {resumo && (
+              <p className="text-[#7D6E63] text-sm mb-4 line-clamp-3 leading-relaxed flex-grow">
+                {resumo}
+              </p>
             )}
-            {numeroComentarios !== undefined && (
-              <span className="flex items-center gap-1">
-                <MessageSquare className="w-4 h-4" />
-                {numeroComentarios}
-              </span>
-            )}
+
+            {/* Tags Section */}
+            {(() => {
+              if (!tags || !Array.isArray(tags) || tags.length === 0) {
+                return null;
+              }
+              
+              const tagsValidas = tags
+                .filter(tag => tag && typeof tag === 'object' && tag.nome && tag.nome.trim().length > 0)
+                .map(tag => ({ ...tag, nome: tag.nome.trim() }));
+                
+              if (tagsValidas.length === 0) {
+                return null;
+              }
+              
+              return (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    {tagsValidas.slice(0, 3).map((tag, index) => (
+                      <span 
+                        key={`tag-${tag.id || index}-${tag.nome.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#E8E6E2] text-[#583B1F] border border-[#A57C3A]/20 hover:bg-[#A57C3A]/10 hover:border-[#A57C3A]/40 transition-all duration-200"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#6B7B3F] mr-1.5"></span>
+                        {tag.nome}
+                      </span>
+                    ))}
+                    {tagsValidas.length > 3 && (
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#A57C3A]/10 text-[#583B1F] border border-[#A57C3A]/30">
+                        +{tagsValidas.length - 3} mais
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Footer com métricas e CTA */}
+            <div className="mt-auto pt-4 border-t border-[#E8E6E2]/50">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4 text-xs text-[#7D6E63]">
+                  {tempoLeitura && (
+                    <span className="flex items-center gap-1.5 bg-[#F8F5F0] px-2 py-1 rounded-lg">
+                      <Clock className="w-3 h-3" />
+                      {tempoLeitura} min
+                    </span>
+                  )}
+                  {numeroComentarios !== undefined && (
+                    <span className="flex items-center gap-1.5 bg-[#F8F5F0] px-2 py-1 rounded-lg">
+                      <MessageSquare className="w-3 h-3" />
+                      {numeroComentarios}
+                    </span>
+                  )}
+                </div>
+                
+                <div className="flex items-center text-[#A57C3A] group-hover:text-[#583B1F] transition-colors duration-300">
+                  <span className="text-sm font-medium mr-2">Ler mais</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <ArrowRight className="w-4 h-4 text-[#C19A6B] transition-transform group-hover:translate-x-1" />
         </div>
-      </div>
-    </Link>
+      </Link>
+    </article>
   );
 };
 
