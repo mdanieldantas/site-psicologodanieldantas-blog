@@ -58,14 +58,12 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
                   Se você está considerando buscar um espaço para você, te convido a entrar em contato. Ficarei feliz em te receber para conversarmos.
                 </p>
               </div>
-              
-              <AgendamentoBotao 
+                <AgendamentoBotao 
                 variant="primary" 
                 size="md" 
                 fullWidth={true}
-                className="bg-[#583B1F] hover:bg-[#5B3E22] flex items-center justify-center gap-2"
+                className="bg-[#583B1F] hover:bg-[#5B3E22]"
               >
-                <Calendar className="h-4 w-4" />
                 Agendar primeira sessão
               </AgendamentoBotao>
             </div>
