@@ -31,14 +31,8 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-[#6B7B3F]/10 rounded-full blur-3xl"></div>
       </div>
       
-      <div className="container mx-auto px-4 relative">
-        {/* Header da seção melhorado */}
+      <div className="container mx-auto px-4 relative">        {/* Header da seção melhorado */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-[#E8E6E2] text-[#583B1F] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Sparkles className="w-4 h-4" />
-            Conteúdo em Destaque
-          </div>
-          
           <h2 className="text-4xl md:text-5xl font-light text-[#583B1F] mb-4 font-['Old_Roman']">
             Artigos em 
             <span className="text-[#A57C3A] relative ml-2">
