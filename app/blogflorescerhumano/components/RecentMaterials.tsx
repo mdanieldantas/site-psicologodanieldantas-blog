@@ -1,13 +1,17 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import MaterialCard, { MaterialCardProps } from './MaterialCard';
 
-interface Material {
-  id: number;
-  title: string;
-  type: 'E-book' | 'Kit Digital' | 'Áudio';
-  imageUrl: string;
+// Interface para dados do material compatível com MaterialCard
+interface Material extends Omit<MaterialCardProps, 'imageUrl'> {
+  imageUrl?: string;
+  description?: string;
+  tags?: string[];
+  fileSize?: string;
+  format?: string;
+  downloadCount?: number;
+  rating?: number;
 }
 
 const sampleMaterials: Material[] = [
@@ -15,71 +19,79 @@ const sampleMaterials: Material[] = [
     id: 1,
     title: 'Guia Prático de Escuta Ativa',
     type: 'E-book',
-    imageUrl: '/blogflorescerhumano/materiais/guia-escuta-ativa.jpg',
+    description: 'Um guia completo para desenvolver habilidades de escuta ativa na prática clínica e no desenvolvimento pessoal.',
+    imageUrl: '/blogflorescerhumano/test-image.webp',
+    featured: true,
+    tags: ['Escuta', 'Comunicação', 'Terapia'],
+    fileSize: '2.5 MB',
+    format: 'PDF',
+    downloadCount: 1250,
+    rating: 4.8
   },
   {
     id: 2,
     title: 'Cartas para Reflexão Humanista',
     type: 'Kit Digital',
-    imageUrl: '/blogflorescerhumano/materiais/cartas-reflexao.jpg',
+    description: 'Um conjunto de cartas inspiradoras para práticas de autoconhecimento e reflexão baseadas na abordagem humanista.',
+    imageUrl: '/blogflorescerhumano/test-image.webp',
+    tags: ['Autoconhecimento', 'Reflexão', 'Humanismo'],
+    fileSize: '15 MB',
+    format: 'ZIP',
+    downloadCount: 890,
+    rating: 4.6
   },
   {
     id: 3,
     title: 'Meditação Guiada: Encontrando seu Felt Sense',
     type: 'Áudio',
-    imageUrl: '/blogflorescerhumano/materiais/meditacao-felt-sense.jpg',
+    description: 'Uma meditação guiada baseada na Terapia Corporal para conectar-se com suas sensações internas e sabedoria do corpo.',
+    imageUrl: '/blogflorescerhumano/test-image.webp',
+    tags: ['Meditação', 'Felt Sense', 'Corpo'],
+    fileSize: '45 MB',
+    format: 'MP3',
+    downloadCount: 1450,
+    rating: 4.9
   },
 ];
 
 export default function RecentMaterials() {
   return (
-    <section className="py-12 bg-[#F8F5F0]">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-light text-[#583B1F] font-['Old Roman']">
+    <section className="py-16 bg-[#F8F5F0] relative overflow-hidden">
+      {/* Elementos decorativos de fundo */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#A57C3A]/5 rounded-full blur-xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#6B7B3F]/5 rounded-full blur-xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">        {/* Header da seção */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-light text-[#583B1F] font-['Old_Roman'] mb-4">
             Materiais Recentes
           </h2>
+          <p className="text-[#7D6E63] text-lg max-w-3xl mx-auto">
+            Descubra nossos recursos gratuitos mais recentes para apoiar sua jornada de crescimento e desenvolvimento pessoal
+          </p>
+        </div>        {/* Grid de materiais */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sampleMaterials.map((material) => (
+            <MaterialCard
+              key={material.id}
+              {...material}
+              downloadUrl="/blogflorescerhumano/materiais"
+            />
+          ))}
+        </div>        {/* Botão Ver todos os materiais */}
+        <div className="mt-12 text-center">
           <Link 
             href="/blogflorescerhumano/materiais"
-            className="text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300 flex items-center"
+            className="inline-flex items-center px-8 py-4 bg-[#583B1F] text-white 
+                     hover:bg-[#5B3E22] transition-all duration-300 rounded-lg 
+                     shadow-md hover:shadow-lg font-medium text-lg
+                     transform hover:scale-105"
           >
-            Ver todos
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <span>Ver todos os materiais</span>
+            <ArrowRight className="ml-3 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sampleMaterials.map((material) => (
-            <div 
-              key={material.id}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="flex flex-col h-full">
-                <div className="relative h-48">
-                  <Image
-                    src={material.imageUrl}
-                    alt={material.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <span className="inline-block px-3 py-1 bg-[#EAE6E1] text-[#583B1F] text-sm rounded-full mb-3">
-                    {material.type}
-                  </span>
-                  <h3 className="text-xl font-light text-[#583B1F] mb-4">
-                    {material.title}
-                  </h3>
-                  <Link
-                    href="/blogflorescerhumano/materiais"
-                    className="mt-auto px-4 py-2 bg-[#583B1F] text-white rounded-md text-center hover:bg-[#735B43] transition-colors duration-300"
-                  >
-                    Download Gratuito
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
