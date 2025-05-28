@@ -1,7 +1,7 @@
 "use client";
 
 // app/blogflorescerhumano/contato/page.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
@@ -9,6 +9,8 @@ import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import AgendamentoCard from './components/AgendamentoCard';
 
 export default function ContatoPage() {
+  const [imageError, setImageError] = useState(false);
+  
   // Informações de contato
   const contactInfo = {
     phone: "+55 (85) 98601-3431",
@@ -20,24 +22,46 @@ export default function ContatoPage() {
   };
   
   return (
-    <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
-        <Image
-          src="/blogflorescerhumano/banners-blog/banner-contato.webp"
-          alt="Banner da página de contato do Blog Florescer Humano"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          className="brightness-75"
-        />
+    <div className="min-h-screen bg-[#F8F5F0]">      {/* Hero Banner Section */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]">
+        {!imageError ? (
+          <Image
+            src="/blogflorescerhumano/banners-blog/banner-contato.webp"
+            alt="Banner da página de contato do Blog Florescer Humano"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+            className="brightness-75 z-0"
+            onLoad={() => console.log('✅ Banner contato carregou com sucesso!')}
+            onError={(e) => {
+              console.error('❌ Erro ao carregar banner contato:', e);
+              setImageError(true);
+            }}
+          />
+        ) : (
+          // Fallback: usar hero-home-banner.webp se banner-contato.webp não carregar
+          <Image
+            src="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
+            alt="Banner alternativo da página de contato do Blog Florescer Humano"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+            className="brightness-75 z-0"
+            onLoad={() => console.log('✅ Banner alternativo carregou!')}
+            onError={(e) => console.error('❌ Erro no fallback:', e)}
+          />
+        )}
         {/* Hero Content Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent z-10" />
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-20">
           <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
               Entre em Contato
