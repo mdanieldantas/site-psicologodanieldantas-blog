@@ -39,7 +39,7 @@ export default function PoliticaDePrivacidade() {
               }`}
             >
               <h1 className="text-4xl md:text-5xl font-light mb-6">Política de Privacidade</h1>
-              <div className="w-20 h-1 bg-[#C19A6B] mb-8"></div>
+              <div className="w-20 h-1 bg-[#A57C3A] mb-8"></div>
               <p className="text-[#735B43] text-lg mb-8">
                 Esta Política de Privacidade descreve como coletamos, usamos e protegemos suas informações pessoais ao
                 utilizar nosso site. Ao acessar e utilizar este site, você concorda com os termos descritos abaixo.

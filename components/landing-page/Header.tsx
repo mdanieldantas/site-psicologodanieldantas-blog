@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({
               </Link>
               <button
                 onClick={toggleMobileMenu}
-                className={`text-[#583B1F] focus:outline-none focus:ring-2 focus:ring-[#C19A6B] focus:ring-opacity-50 rounded-md p-1 z-[101] transition-all`}
+                className={`text-[#583B1F] focus:outline-none focus:ring-2 focus:ring-[#A57C3A] focus:ring-opacity-50 rounded-md p-1 z-[101] transition-all`}
                 aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -68,30 +68,28 @@ const Header: React.FC<HeaderProps> = ({
           
           {/* Navegação Desktop: Sempre visível em desktop, com design adaptado ao scroll */}
           {!isMobile && (
-            <div className="flex items-center space-x-6">
-              <a href="#inicio" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+            <div className="flex items-center space-x-6">              <a href="#inicio" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Início
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#sobre" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+              <a href="#sobre" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Sobre
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#servicos" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+              <a href="#servicos" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Serviços
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
-              </a>
-              <a href="#faq" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
+              </a>              <a href="#faq" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 FAQ
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#blog" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+              <a href="#blog" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Blog
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#footer" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C19A6B]`}>
+              <a href="#footer" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Contato
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#C19A6B] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
               
               {/* CTA mais destacado */}

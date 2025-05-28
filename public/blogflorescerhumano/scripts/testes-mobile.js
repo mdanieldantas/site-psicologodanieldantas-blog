@@ -194,7 +194,7 @@ function executarTestes() {
 
 // Execute todos os testes após 3 segundos para garantir que a página esteja carregada
 setTimeout(() => {
-  console.log('%cExecutando testes de otimizações mobile...', 'color: #C19A6B; font-weight: bold; font-size: 16px; background-color: #F8F5F0; padding: 5px;');
+  console.log('%cExecutando testes de otimizações mobile...', 'color: #A57C3A; font-weight: bold; font-size: 16px; background-color: #F8F5F0; padding: 5px;');
   executarTestes();
 }, 3000);
 

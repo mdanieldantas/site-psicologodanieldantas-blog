@@ -40,16 +40,14 @@ export default function BlogCategoryCard({
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <Link 
+      >        <Link 
           href={`/blogflorescerhumano/${category.slug}`}
-          className={`block p-6 border border-[#C19A6B]/20 rounded-lg shadow-md hover:shadow-xl hover:bg-[#F8F5F0] transition-all duration-300 hover:border-[#C19A6B]/40 ${className}`}
+          className={`block p-6 border border-[#A57C3A]/20 rounded-lg shadow-md hover:shadow-xl hover:bg-[#F8F5F0] transition-all duration-300 hover:border-[#A57C3A]/40 ${className}`}
         >
-          <h2 className="text-2xl font-semibold mb-2 text-[#583B1F] font-['Old_Roman'] hover:text-[#C19A6B] transition-colors duration-300">
+          <h2 className="text-2xl font-semibold mb-2 text-[#583B1F] font-['Old_Roman'] hover:text-[#A57C3A] transition-colors duration-300">
             {category.nome}
-          </h2>
-          {category.descricao && (
-            <p className="text-[#735B43] text-sm line-clamp-3 leading-relaxed">
+          </h2>          {category.descricao && (
+            <p className="text-[#7D6E63] text-sm line-clamp-3 leading-relaxed">
               {category.descricao}
             </p>
           )}
@@ -60,7 +58,7 @@ export default function BlogCategoryCard({
   if (variant === 'enhanced') {
     return (
       <MotionDiv
-        className={`group transform focus:outline-none focus:ring-4 focus:ring-[#C19A6B]/30 rounded-xl ${className}`}
+        className={`group transform focus:outline-none focus:ring-4 focus:ring-[#A57C3A]/30 rounded-xl ${className}`}
         whileHover={{ 
           scale: 1.03, 
           y: -8,
@@ -75,7 +73,7 @@ export default function BlogCategoryCard({
           href={`/blogflorescerhumano/${category.slug}`}
           className="block w-full h-full"
           aria-label={`Explorar categoria ${category.nome}${category.descricao ? `: ${category.descricao}` : ''}`}
-        >          <div className="relative h-[520px] rounded-xl overflow-hidden bg-white shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-[#C19A6B]/20 flex flex-col">
+        >          <div className="relative h-[520px] rounded-xl overflow-hidden bg-white shadow-lg group-hover:shadow-2xl transition-all duration-500 border border-[#A57C3A]/20 flex flex-col">
             {/* Enhanced Image Section */}
             {showImage && (
               <div className="relative h-72 overflow-hidden flex-shrink-0">
@@ -90,24 +88,23 @@ export default function BlogCategoryCard({
                 <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/20 to-transparent" />
                 
                 {/* Hover overlay effect */}
-                <div className="absolute inset-0 bg-[#C19A6B]/0 group-hover:bg-[#C19A6B]/10 transition-all duration-300" />
+                <div className="absolute inset-0 bg-[#A57C3A]/0 group-hover:bg-[#A57C3A]/10 transition-all duration-300" />
               </div>
             )}
             
             {/* Enhanced Content Section */}
             <div className="flex-1 p-8 flex flex-col justify-between min-h-0">
               <div className="flex-1 space-y-4">
-                <h3 className="text-xl font-bold text-[#583B1F] group-hover:text-[#C19A6B] transition-colors duration-300 line-clamp-2 font-['Old_Roman'] leading-tight">
+                <h3 className="text-xl font-bold text-[#583B1F] group-hover:text-[#A57C3A] transition-colors duration-300 line-clamp-2 font-['Old_Roman'] leading-tight">
                   {category.nome}
                 </h3>
                 
-                <div className="flex-1 min-h-0">
-                  {category.descricao ? (
-                    <p className="text-[#735B43] text-sm line-clamp-3 leading-relaxed">
+                <div className="flex-1 min-h-0">                  {category.descricao ? (
+                    <p className="text-[#7D6E63] text-sm line-clamp-3 leading-relaxed">
                       {category.descricao}
                     </p>
                   ) : (
-                    <p className="text-[#735B43]/60 text-sm italic">
+                    <p className="text-[#7D6E63]/60 text-sm italic">
                       Explore os artigos desta categoria
                     </p>
                   )}
@@ -115,13 +112,13 @@ export default function BlogCategoryCard({
               </div>
               
               {/* Enhanced CTA - Sempre visível */}
-              <div className="flex items-center justify-between pt-4 mt-auto border-t border-[#C19A6B]/10">
-                <span className="text-[#C19A6B] font-medium text-sm group-hover:text-[#583B1F] transition-colors duration-200">
+              <div className="flex items-center justify-between pt-4 mt-auto border-t border-[#A57C3A]/10">
+                <span className="text-[#A57C3A] font-medium text-sm group-hover:text-[#583B1F] transition-colors duration-200">
                   Explorar categoria
                 </span>
-                <div className="p-2 rounded-full bg-[#F8F5F0] group-hover:bg-[#C19A6B]/10 transition-colors duration-200">
+                <div className="p-2 rounded-full bg-[#F8F5F0] group-hover:bg-[#A57C3A]/10 transition-colors duration-200">
                   <svg 
-                    className="w-4 h-4 text-[#C19A6B] group-hover:translate-x-1 transition-transform duration-200" 
+                    className="w-4 h-4 text-[#A57C3A] group-hover:translate-x-1 transition-transform duration-200" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -133,7 +130,7 @@ export default function BlogCategoryCard({
             </div>
             
             {/* Enhanced border effect */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#C19A6B]/30 rounded-xl transition-all duration-300" />
+            <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#A57C3A]/30 rounded-xl transition-all duration-300" />
           </div>
         </Link>
       </MotionDiv>
@@ -216,7 +213,7 @@ export default function BlogCategoryCard({
       initial="initial"
       whileHover="hover"
       whileTap="tap"
-      className={`group block transform focus:outline-none focus:ring-4 focus:ring-[#C19A6B]/30 rounded-xl ${className}`}
+      className={`group block transform focus:outline-none focus:ring-4 focus:ring-[#A57C3A]/30 rounded-xl ${className}`}
     >
       <Link 
         href={`/blogflorescerhumano/${category.slug}`}
@@ -244,7 +241,7 @@ export default function BlogCategoryCard({
           {/* Fallback sem imagem */}
           {!showImage && (
             <MotionDiv 
-              className="absolute inset-0 bg-gradient-to-br from-[#583B1F] via-[#735B43] to-[#C19A6B] group-hover:from-[#4A311A] group-hover:via-[#654F3A] group-hover:to-[#B8895E] transition-all duration-500"
+              className="absolute inset-0 bg-gradient-to-br from-[#583B1F] via-[#5B3E22] to-[#A57C3A] group-hover:from-[#4A311A] group-hover:via-[#4A331C] group-hover:to-[#9B7035] transition-all duration-500"
               whileHover={{ scale: 1.05 }}
             />
           )}
@@ -254,7 +251,7 @@ export default function BlogCategoryCard({
           
           {/* Efeito de brilho sutil no hover - melhorado */}
           <MotionDiv 
-            className="absolute inset-0 bg-gradient-to-t from-[#C19A6B]/0 via-[#C19A6B]/5 to-[#C19A6B]/0"
+            className="absolute inset-0 bg-gradient-to-t from-[#A57C3A]/0 via-[#A57C3A]/5 to-[#A57C3A]/0"
             variants={overlayVariants}
           />
           
@@ -269,7 +266,7 @@ export default function BlogCategoryCard({
           
           {/* Indicador visual aprimorado */}
           <MotionDiv 
-            className={`absolute top-4 right-4 ${featured ? 'w-3 h-3' : 'w-2 h-2'} bg-[#C19A6B] rounded-full opacity-60`}
+            className={`absolute top-4 right-4 ${featured ? 'w-3 h-3' : 'w-2 h-2'} bg-[#A57C3A] rounded-full opacity-60`}
             whileHover={{ 
               scale: 1.3,
               opacity: 1,
@@ -281,7 +278,7 @@ export default function BlogCategoryCard({
           {/* Badge para categoria destaque */}
           {featured && (
             <MotionDiv
-              className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-[#C19A6B] to-[#D4A574] text-white text-xs font-medium rounded-full shadow-md"
+              className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-[#A57C3A] to-[#6B7B3F] text-white text-xs font-medium rounded-full shadow-md"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
@@ -338,7 +335,7 @@ export default function BlogCategoryCard({
           
           {/* Borda sutil no hover - melhorada */}
           <MotionDiv 
-            className="absolute inset-0 border-2 border-[#C19A6B]/0 rounded-xl"
+            className="absolute inset-0 border-2 border-[#A57C3A]/0 rounded-xl"
             whileHover={{ 
               borderColor: "rgba(193, 154, 107, 0.4)",
               boxShadow: "inset 0 0 20px rgba(193, 154, 107, 0.1)"

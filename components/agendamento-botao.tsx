@@ -39,7 +39,7 @@ export default function AgendamentoBotao({
   // Estilos de variante
   const variantStyles = {
     primary: "bg-[#583B1F] text-white hover:bg-[#735B43]",
-    secondary: "bg-[#C19A6B] text-white hover:bg-[#D4B08C]",
+    secondary: "bg-[#A57C3A] text-white hover:bg-[#5B3E22]",
     ghost: "bg-transparent text-[#583B1F] border border-[#583B1F] hover:bg-[#583B1F]/10"
   };
   

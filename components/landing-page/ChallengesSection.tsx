@@ -12,10 +12,9 @@ import {
 // Componente de separador para usar entre seções e conteúdo
 const Divider = () => (
   <div className="flex justify-center my-3">
-    <div className="flex items-center space-x-1">
-      <div className="h-1 w-1 rounded-full bg-[#C19A6B]"></div>
-      <div className="h-1 w-3 rounded-full bg-[#C19A6B]"></div>
-      <div className="h-1 w-1 rounded-full bg-[#C19A6B]"></div>
+    <div className="flex items-center space-x-1">      <div className="h-1 w-1 rounded-full bg-[#A57C3A]"></div>
+      <div className="h-1 w-3 rounded-full bg-[#A57C3A]"></div>
+      <div className="h-1 w-1 rounded-full bg-[#A57C3A]"></div>
     </div>
   </div>
 );
@@ -39,7 +38,7 @@ const CarouselIndicator = ({
           className={`w-2 h-2 rounded-full transition-all duration-300 ${
             activeIndex === index
               ? "bg-[#583B1F] w-6"
-              : "bg-[#C19A6B]/50 hover:bg-[#C19A6B]"
+              : "bg-[#A57C3A]/50 hover:bg-[#A57C3A]"
           }`}
           aria-label={`Ir para slide ${index + 1}`}
         />
@@ -130,18 +129,17 @@ const ChallengesSection = () => {
                 >
                   {/* Card individual com efeitos hover aprimorados */}
                   <div
-                    className="bg-white p-6 md:p-8 rounded-xl shadow-md transition-all duration-500 h-full flex flex-col border-l-4 border-[#C19A6B] relative overflow-hidden group"
+                    className="bg-white p-6 md:p-8 rounded-xl shadow-md transition-all duration-500 h-full flex flex-col border-l-4 border-[#A57C3A] relative overflow-hidden group"
                     onMouseEnter={() => setIsHovered(index)}
                     onMouseLeave={() => setIsHovered(null)}
                   >
-                    {/* Elementos decorativos */}
-                    <div className="absolute -top-4 -left-4 w-20 h-20 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
-                    <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-[#C19A6B] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100"></div>
+                    {/* Elementos decorativos */}                    <div className="absolute -top-4 -left-4 w-20 h-20 bg-[#A57C3A] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+                    <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-[#A57C3A] opacity-5 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100"></div>
 
                     {/* Cabeçalho com ícone */}
                     <div className="flex items-center mb-6 relative z-10">
                       <div
-                        className={`bg-[#C19A6B] p-3 rounded-full mr-4 flex-shrink-0 shadow-md transition-all duration-300 ${
+                        className={`bg-[#A57C3A] p-3 rounded-full mr-4 flex-shrink-0 shadow-md transition-all duration-300 ${
                           isHovered === index ? "scale-110" : ""
                         }`}
                       >

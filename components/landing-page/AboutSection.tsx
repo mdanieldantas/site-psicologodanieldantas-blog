@@ -3,10 +3,9 @@ import Image from "next/image"; // Adiciona a importação correta do Image
 // Componente de separador para usar entre parágrafos
 const Divider = () => (
   <div className="flex justify-center my-3">
-    <div className="flex items-center space-x-1">
-      <div className="h-1 w-1 rounded-full bg-[#C19A6B]"></div>
-      <div className="h-1 w-3 rounded-full bg-[#C19A6B]"></div>
-      <div className="h-1 w-1 rounded-full bg-[#C19A6B]"></div>
+    <div className="flex items-center space-x-1">      <div className="h-1 w-1 rounded-full bg-[#A57C3A]"></div>
+      <div className="h-1 w-3 rounded-full bg-[#A57C3A]"></div>
+      <div className="h-1 w-1 rounded-full bg-[#A57C3A]"></div>
     </div>
   </div>
 );
@@ -37,7 +36,7 @@ const AboutSection = () => {
             </p>
             
             {/* Citação em destaque */}
-            <div className="pl-4 border-l-4 border-[#C19A6B] italic my-8 md:my-10">
+            <div className="pl-4 border-l-4 border-[#A57C3A] italic my-8 md:my-10">
               <p className="text-[#735B43] text-lg md:text-xl">
                 Algumas dores não cabem em palavras. Outras precisam ser nomeadas para serem curadas.
               </p>

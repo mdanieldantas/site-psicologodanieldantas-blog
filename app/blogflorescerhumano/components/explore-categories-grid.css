@@ -25,10 +25,10 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(193, 154, 107, 0.3);
+    box-shadow: 0 0 0 0 rgba(165, 124, 58, 0.2);
   }
   50% {
-    box-shadow: 0 0 0 10px rgba(193, 154, 107, 0);
+    box-shadow: 0 0 0 8px rgba(165, 124, 58, 0);
   }
 }
 
@@ -66,15 +66,15 @@
 .category-card:hover .category-overlay {
   background: linear-gradient(
     to top, 
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(193, 154, 107, 0.1) 50%,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(165, 124, 58, 0.1) 50%,
     transparent 100%
   );
 }
 
 /* Estados de foco para acessibilidade */
 .category-card:focus-visible {
-  outline: 3px solid #C19A6B;
+  outline: 3px solid #A57C3A;
   outline-offset: 4px;
   border-radius: 12px;
 }
@@ -106,7 +106,7 @@
   background: linear-gradient(
     90deg,
     #F8F5F0 25%,
-    #F4EED9 50%,
+    #E8E6E2 50%,
     #F8F5F0 75%
   );
   background-size: 200% 100%;

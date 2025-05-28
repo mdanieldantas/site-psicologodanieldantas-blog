@@ -49,10 +49,9 @@ export default function ContactForm() {
           type="text"
           id="name"
           value={formState.name}
-          onChange={handleChange}
-          required
+          onChange={handleChange}          required
           placeholder="Como gostaria de ser chamado(a)?"
-          className="w-full p-3 border border-[#C19A6B] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
+          className="w-full p-3 border border-[#A57C3A] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
         />
       </div>
 
@@ -64,10 +63,9 @@ export default function ContactForm() {
           type="email"
           id="email"
           value={formState.email}
-          onChange={handleChange}
-          required
+          onChange={handleChange}          required
           placeholder="Seu melhor e-mail"
-          className="w-full p-3 border border-[#C19A6B] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
+          className="w-full p-3 border border-[#A57C3A] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
         />
       </div>
 
@@ -79,9 +77,8 @@ export default function ContactForm() {
           type="tel"
           id="phone"
           value={formState.phone}
-          onChange={handleChange}
-          placeholder="Para contato via WhatsApp, se preferir"
-          className="w-full p-3 border border-[#C19A6B] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
+          onChange={handleChange}          placeholder="Para contato via WhatsApp, se preferir"
+          className="w-full p-3 border border-[#A57C3A] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
         />
       </div>
 
@@ -93,9 +90,8 @@ export default function ContactForm() {
           id="message"
           rows={4}
           value={formState.message}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border border-[#C19A6B] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
+          onChange={handleChange}          required
+          className="w-full p-3 border border-[#A57C3A] bg-[#F8F5F0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#583B1F]"
           placeholder="Como posso te auxiliar?"
         ></textarea>
       </div>

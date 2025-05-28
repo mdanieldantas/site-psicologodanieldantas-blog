@@ -47,7 +47,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
 
         {/* Filtros rápidos */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
-          <button className="px-4 py-2 bg-[#C19A6B] text-white rounded-full hover:bg-[#583B1F] transition-colors duration-300">
+          <button className="px-4 py-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#583B1F] transition-colors duration-300">
             Todos
           </button>
           <button className="px-4 py-2 bg-white text-[#583B1F] rounded-full hover:bg-[#F8F5F0] transition-colors duration-300">
@@ -98,17 +98,17 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
         </Carousel>        {/* Indicadores de navegação do carrossel aprimorados */}
         <div className="flex justify-center mt-6 space-x-2">
           <button 
-            className="w-8 h-2 rounded-full bg-[#C19A6B] shadow-sm transition-all duration-300"
+            className="w-8 h-2 rounded-full bg-[#A57C3A] shadow-sm transition-all duration-300"
             aria-label="Ir para slide 1"
             role="button"
           ></button>
           <button 
-            className="w-2 h-2 rounded-full bg-[#C19A6B]/40 hover:bg-[#C19A6B]/70 hover:w-6 transition-all duration-300"
+            className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
             aria-label="Ir para slide 2"
             role="button"
           ></button>
           <button 
-            className="w-2 h-2 rounded-full bg-[#C19A6B]/40 hover:bg-[#C19A6B]/70 hover:w-6 transition-all duration-300"
+            className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
             aria-label="Ir para slide 3"
             role="button"
           ></button>

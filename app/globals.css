@@ -96,7 +96,7 @@ html.contrast-normal,
   --text-primary: #583B1F !important;
   --text-secondary: #735B43 !important;
   --background-primary: #F8F5F0 !important;
-  --link-color: #C19A6B !important;
+  --link-color: #A57C3A !important;
   color-scheme: light !important;
 }
 
@@ -558,7 +558,7 @@ html.contrast-dark,
   animation-delay: 600ms;
 }
 .icon-social:hover {
-  color: #C19A6B !important;
+  color: #A57C3A !important;
   background: #8d6a3e !important;
   transform: translateY(-3px) scale(1.12) rotate(-6deg);
   box-shadow: 0 6px 18px 0 rgba(193,154,107,0.18);

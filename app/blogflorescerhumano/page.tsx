@@ -90,7 +90,7 @@ export default async function BlogHomePage() {
               <p className="text-lg md:text-xl text-[#583B1F]/80 font-light tracking-wide">
                 por <span className="font-semibold text-[#583B1F]">Psicólogo Daniel Dantas</span>
               </p>
-              <div className="w-16 h-0.5 bg-[#C19A6B] mt-2"></div>
+              <div className="w-16 h-0.5 bg-[#A57C3A] mt-2"></div>
             </div>
 
             {/* Descrição principal */}
@@ -117,7 +117,7 @@ export default async function BlogHomePage() {
               
               <Link
                 href="/blogflorescerhumano/categorias"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#583B1F] rounded-xl border-2 border-[#C19A6B] hover:bg-[#F8F5F0] transition-all duration-300 font-medium"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#583B1F] rounded-xl border-2 border-[#A57C3A] hover:bg-[#F8F5F0] transition-all duration-300 font-medium"
               >
                 Ver Categorias
               </Link>
@@ -130,19 +130,18 @@ export default async function BlogHomePage() {
                 Artigos semanais
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-[#C19A6B] rounded-full mr-2"></div>
+                <div className="w-2 h-2 bg-[#A57C3A] rounded-full mr-2"></div>
                 Conteúdo gratuito
               </div>
             </div>
           </div>{" "}          {/* Coluna da imagem */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center">
             <div className="relative group">
-              {/* Container da imagem com moldura elegante */}
-              <div className="relative overflow-hidden rounded-2xl shadow-xl border border-[#C19A6B]/20 transform transition-all duration-500 hover:scale-105">
+              {/* Container da imagem com moldura elegante */}              <div className="relative overflow-hidden rounded-2xl shadow-xl border border-[#A57C3A]/20 transform transition-all duration-500 hover:scale-105">
                 {/* Elementos decorativos */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-[#6B8E23]/20 rounded-full z-10"></div>
-                <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#6B8E23] rounded-full z-10"></div>
-                <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#C19A6B]/30 rounded-full z-10"></div>
+                <div className="absolute -top-4 -right-4 w-8 h-8 bg-[#6B7B3F]/20 rounded-full z-10"></div>
+                <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#6B7B3F] rounded-full z-10"></div>
+                <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#A57C3A]/30 rounded-full z-10"></div>
                   {/* Imagem principal */}
                 <div className="w-[300px] h-[350px] md:w-[400px] md:h-[450px] relative">
                   <Image

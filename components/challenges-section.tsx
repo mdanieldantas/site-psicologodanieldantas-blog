@@ -11,9 +11,8 @@ export default function ChallengesSection() {
         </p>
 
         <div className="grid gap-8 md:grid-cols-3">
-          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center mb-4">
-              <div className="bg-[#C19A6B] p-3 rounded-full mr-4">
+          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">            <div className="flex items-center mb-4">
+              <div className="bg-[#A57C3A] p-3 rounded-full mr-4">
                 <Heart className="h-6 w-6 text-[#F8F5F0]" />
               </div>
               <h3 className="text-xl font-medium text-[#583B1F]">Adaptação a Mudanças</h3>
@@ -25,9 +24,8 @@ export default function ChallengesSection() {
             </p>
           </div>
 
-          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center mb-4">
-              <div className="bg-[#C19A6B] p-3 rounded-full mr-4">
+          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">            <div className="flex items-center mb-4">
+              <div className="bg-[#A57C3A] p-3 rounded-full mr-4">
                 <Users className="h-6 w-6 text-[#F8F5F0]" />
               </div>
               <h3 className="text-xl font-medium text-[#583B1F]">Distância e Conexões</h3>
@@ -39,9 +37,8 @@ export default function ChallengesSection() {
             </p>
           </div>
 
-          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center mb-4">
-              <div className="bg-[#C19A6B] p-3 rounded-full mr-4">
+          <div className="bg-[#F8F5F0] p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">            <div className="flex items-center mb-4">
+              <div className="bg-[#A57C3A] p-3 rounded-full mr-4">
                 <Compass className="h-6 w-6 text-[#F8F5F0]" />
               </div>
               <h3 className="text-xl font-medium text-[#583B1F]">Identidade e Propósito</h3>

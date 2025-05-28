@@ -63,16 +63,14 @@ const FaqSection = () => {
             {/* Mapeia os itens do FAQ */}
             {faqItems.map((item, index) => (                <AccordionItem
                 key={item.value}
-                value={item.value}
-                className={`px-4 sm:px-6 ${
+                value={item.value}                className={`px-4 sm:px-6 ${
                   index < faqItems.length - 1
-                    ? "border-b border-[#C19A6B]/40"
+                    ? "border-b border-[#A57C3A]/40"
                     : "border-b-0"
                 } transition-all duration-300`}
               >
-                <AccordionTrigger
-                  className="text-base sm:text-lg font-medium text-[#583B1F] hover:text-[#C19A6B] hover:no-underline text-left py-5 
-                    focus:outline-none transition-all duration-300 data-[state=open]:text-[#C19A6B]"
+                <AccordionTrigger                  className="text-base sm:text-lg font-medium text-[#583B1F] hover:text-[#A57C3A] hover:no-underline text-left py-5 
+                    focus:outline-none transition-all duration-300 data-[state=open]:text-[#A57C3A]"
                 >
                   {item.question}
                 </AccordionTrigger>
@@ -90,10 +88,9 @@ const FaqSection = () => {
         {/* Botão de Contato Abaixo do Container - Melhorado com ícone */}
         <div className="mt-12 text-center">          <button
             type="button"
-            onClick={openModal}
-            className="px-4 py-2 sm:px-6 md:px-8 sm:py-3 md:py-4 text-sm sm:text-base bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-all duration-300 
+            onClick={openModal}            className="px-4 py-2 sm:px-6 md:px-8 sm:py-3 md:py-4 text-sm sm:text-base bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-all duration-300 
               rounded-lg inline-flex items-center justify-center gap-1 sm:gap-2 shadow-md
-              border border-transparent hover:border-[#C19A6B] focus:outline-none focus:ring-2 focus:ring-[#C19A6B]"
+              border border-transparent hover:border-[#A57C3A] focus:outline-none focus:ring-2 focus:ring-[#A57C3A]"
           >
             <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>Ainda tem dúvidas? Entre em contato</span>

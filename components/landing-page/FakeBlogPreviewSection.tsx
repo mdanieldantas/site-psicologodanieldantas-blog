@@ -61,7 +61,7 @@ const FakeBlogPreviewSection: React.FC = () => {
             {fakePosts.map((post, index) => (
               <CarouselItem key={post.slug || index} className="pl-4 basis-full lg:basis-4/5 xl:basis-3/4">
                 <div className="p-1 h-full">
-                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#C19A6B] min-h-[400px] hover:shadow-lg transition-all duration-300">
+                  <div className="bg-[#F8F5F0] rounded-lg shadow-md overflow-hidden h-full flex flex-col sm:flex-row border-l-4 border-[#A57C3A] min-h-[400px] hover:shadow-lg transition-all duration-300">
                     {/* Link principal para /em-construcao */}
                     <div className="cursor-pointer h-full flex flex-col sm:flex-row w-full">
                       <div className="relative w-full sm:min-w-[340px] sm:w-2/5 h-[240px] sm:h-[280px] md:h-[360px] mx-auto">                        <Link href="/em-construcao" passHref className="block w-full h-full relative">
@@ -81,7 +81,7 @@ const FakeBlogPreviewSection: React.FC = () => {
                       </div>
                       <div className="p-6 sm:p-8 flex flex-col flex-grow w-full sm:w-3/5 justify-center">
                         <Link href="/em-construcao" passHref>
-                          <h3 className="text-2xl sm:text-3xl font-light mb-3 sm:mb-4 text-[#583B1F] hover:text-[#C19A6B] transition-colors duration-300">{post.title}</h3>
+                          <h3 className="text-2xl sm:text-3xl font-light mb-3 sm:mb-4 text-[#583B1F] hover:text-[#A57C3A] transition-colors duration-300">{post.title}</h3>
                         </Link>
                         <p className="text-[#735B43] font-light mb-6 sm:mb-8 line-clamp-4 sm:line-clamp-3 flex-grow text-base sm:text-lg">{post.excerpt}</p>
                         <div className="flex justify-between items-center mt-auto">
@@ -98,7 +98,7 @@ const FakeBlogPreviewSection: React.FC = () => {
                               e.preventDefault();
                               alert("Funcionalidade de compartilhar em desenvolvimento");
                             }}
-                            className="p-2 rounded-full hover:bg-[#C19A6B]/20 transition-colors"
+                            className="p-2 rounded-full hover:bg-[#A57C3A]/20 transition-colors"
                           >
                             <Share2 className="h-5 w-5 text-[#583B1F]" />
                           </button>
@@ -121,8 +121,8 @@ const FakeBlogPreviewSection: React.FC = () => {
               key={index} 
               className={`h-2 rounded-full transition-all duration-300 ${
                 currentIndex === index 
-                  ? "w-8 bg-[#C19A6B]" 
-                  : "w-2 bg-[#C19A6B]/40"
+                  ? "w-8 bg-[#A57C3A]" 
+                  : "w-2 bg-[#A57C3A]/40"
               }`}
               aria-label={`Slide ${index + 1} de ${fakePosts.length}`}
             />

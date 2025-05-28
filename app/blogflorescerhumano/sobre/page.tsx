@@ -120,13 +120,13 @@ export default async function SobrePage() {
       </section>
 
       {/* Breadcrumb Navigation */}
-      <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
+      <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#A57C3A]/20 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
               <Link 
                 href="/" 
-                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+                className="flex items-center text-[#7D6E63] hover:text-[#A57C3A] transition-colors duration-200"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -140,7 +140,7 @@ export default async function SobrePage() {
             <li>
               <Link 
                 href="/blogflorescerhumano" 
-                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+                className="text-[#7D6E63] hover:text-[#A57C3A] transition-colors duration-200"
               >
                 Blog
               </Link>
@@ -159,14 +159,12 @@ export default async function SobrePage() {
       <main className="container mx-auto px-4 pb-12 mt-4">
         {/* Stats Section REMOVIDA */}
         
-        {/* Seção: Missão e Inspiração */}
-        <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20">
-          <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Nossa Missão e Inspiração</h2>
+        {/* Seção: Missão e Inspiração */}        <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#A57C3A]/20">
+          <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#A57C3A]/20 pb-3">Nossa Missão e Inspiração</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-medium mb-3 text-[#583B1F] flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div>              <h3 className="text-xl font-medium mb-3 text-[#583B1F] flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-[#A57C3A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
                 Missão
@@ -175,9 +173,8 @@ export default async function SobrePage() {
                 A missão do blog "Florescer Humano" reside em cultivar a compreensão e a vivência dos princípios do humanismo em todas as esferas da existência, oferecendo um jardim de reflexão, aprendizado e encontro. Buscamos valorizar a inteireza do potencial humano, a beleza da experiência íntima, a autonomia de cada indivíduo e o incessante movimento de crescimento pessoal.
               </p>
             </div>
-            <div>
-              <h3 className="text-xl font-medium mb-3 text-[#583B1F] flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-[#C19A6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div>              <h3 className="text-xl font-medium mb-3 text-[#583B1F] flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-[#A57C3A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
                 Valores
@@ -195,7 +192,7 @@ export default async function SobrePage() {
           <p className="text-lg text-[#735B43] mb-8">
             Inspirados pela metáfora do cultivo e do florescimento, queremos adubar o solo da consciência através da sabedoria da psicologia humanista, incentivando seres mais conscientes do que semeiam e colhem em suas jornadas.
           </p>
-            <div className="relative overflow-hidden bg-white rounded-xl shadow-lg border border-[#C19A6B]/30 transform transition-all hover:shadow-xl">
+            <div className="relative overflow-hidden bg-white rounded-xl shadow-lg border border-[#A57C3A]/30 transform transition-all hover:shadow-xl">
           <div className="flex flex-col lg:flex-row">
             {/* Coluna da imagem - visível apenas em telas maiores */}
             <div className="hidden lg:block lg:w-1/2 relative">
@@ -226,7 +223,7 @@ export default async function SobrePage() {
               </div>
               
               <div className="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-[#C19A6B]/20 absolute -top-4 -left-2" fill="currentColor" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-[#A57C3A]/20 absolute -top-4 -left-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h10zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
                 </svg>
                 
@@ -249,19 +246,17 @@ export default async function SobrePage() {
         </div>
       </section>
       
-      {/* Seção: Abordagens Teóricas */}
-      <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-        <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Nossas Abordagens</h2>
+      {/* Seção: Abordagens Teóricas */}      <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#A57C3A]/20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+        <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F] border-b border-[#A57C3A]/20 pb-3">Nossas Abordagens</h2>
         <p className="text-lg text-[#735B43] mb-6">
           Nosso olhar tem um foco especial na <strong className="font-semibold text-[#583B1F]">Psicologia Humanista</strong>, incluindo a <strong className="font-semibold text-[#583B1F]">Abordagem Centrada na Pessoa (ACP)</strong> de Carl Rogers e a <strong className="font-semibold text-[#583B1F]">Focalização (Focusing)</strong> de Eugene Gendlin. Valorizamos também o intercâmbio de conhecimentos com outras práticas e saberes, como técnicas de <strong className="font-semibold text-[#583B1F]">Mindfulness (Atenção Plena)</strong> e insights da <strong className="font-semibold text-[#583B1F]">Neuropsicologia</strong>, buscando sempre uma compreensão mais integrada do ser humano.
         </p>
         <p className="text-lg text-[#735B43]">
-          Explore nossos artigos por <Link href="/blogflorescerhumano/categorias" className="text-[#C19A6B] font-medium hover:text-[#583B1F] transition-colors duration-200">categorias</Link> para aprofundar-se nesses temas.
+          Explore nossos artigos por <Link href="/blogflorescerhumano/categorias" className="text-[#A57C3A] font-medium hover:text-[#583B1F] transition-colors duration-200">categorias</Link> para aprofundar-se nesses temas.
         </p>
       </section>      {/* Seção: Sobre o Autor */}
-      {autor && (
-        <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-600">
-          <h2 className="text-3xl font-['Old_Roman'] mb-8 text-[#583B1F] text-center border-b border-[#C19A6B]/20 pb-3">Sobre o Autor</h2>
+      {autor && (        <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#A57C3A]/20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-600">
+          <h2 className="text-3xl font-['Old_Roman'] mb-8 text-[#583B1F] text-center border-b border-[#A57C3A]/20 pb-3">Sobre o Autor</h2>
           
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-shrink-0 w-40 h-40 md:w-48 md:h-48 relative rounded-full overflow-hidden shadow-md border-4 border-[#F8F5F0] group">
@@ -278,7 +273,7 @@ export default async function SobrePage() {
                 className="rounded-full transition-transform duration-500 group-hover:scale-105"
                 priority
               />
-              <div className="absolute inset-0 rounded-full border-8 border-[#C19A6B]/10 group-hover:border-[#C19A6B]/30 transition-all duration-500"></div>
+              <div className="absolute inset-0 rounded-full border-8 border-[#A57C3A]/10 group-hover:border-[#A57C3A]/30 transition-all duration-500"></div>
             </div>
             
             <div className="text-center md:text-left flex-1">
@@ -294,7 +289,7 @@ export default async function SobrePage() {
                 <p className="text-[#735B43] mb-6 leading-relaxed">{autor.biografia}</p>
               )}
               
-              <div className="border-t border-[#C19A6B]/20 pt-6 mt-4">
+              <div className="border-t border-[#A57C3A]/20 pt-6 mt-4">
                 <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
                   <a
                     href="https://psicologodanieldantas.com.br/"
@@ -318,7 +313,7 @@ export default async function SobrePage() {
 
       {/* Seção: Contato e Colaboração */}
       <section className="text-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700">
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 max-w-2xl mx-auto">
+        <div className="bg-white p-8 rounded-xl shadow-lg border border-[#A57C3A]/20 max-w-2xl mx-auto">
           <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F]">Conecte-se Conosco</h2>
           <p className="text-lg text-[#735B43] mb-6">
             Tem dúvidas, sugestões ou interesse em colaborar? Adoraríamos ouvir você!
@@ -326,7 +321,7 @@ export default async function SobrePage() {
           
           <Link 
             href="/blogflorescerhumano/contato" 
-            className="inline-flex items-center gap-2 bg-[#C19A6B] hover:bg-[#583B1F] text-white px-8 py-3.5 rounded-lg font-medium transition-colors duration-300 shadow-md"
+            className="inline-flex items-center gap-2 bg-[#A57C3A] hover:bg-[#583B1F] text-white px-8 py-3.5 rounded-lg font-medium transition-colors duration-300 shadow-md"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

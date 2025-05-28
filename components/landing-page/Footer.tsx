@@ -56,16 +56,15 @@ const Footer = () => {
             <h4 className="font-semibold mb-4 text-[#F8F5F0] pb-2 border-b border-[#735B43] tracking-wide text-lg uppercase"> 
               Links Rápidos
             </h4>
-            {/* Lista: removido inline-block text-left */}
-            <ul className="space-y-2 text-base font-light mt-2"> 
+            {/* Lista: removido inline-block text-left */}            <ul className="space-y-2 text-base font-light mt-2"> 
               {/* Cores dos links ajustadas */}
-              <li><a href="#inicio" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Início</a></li>
-              <li><a href="#sobre" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Sobre</a></li>
-              <li><a href="#servicos" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Serviços</a></li>
-              <li><a href="#faq" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>FAQ</a></li>
-              <li><Link href="/em-construcao" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Blog</Link></li>
-              <li><a href="#contato" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Contato</a></li>
-              <li><Link href="/politica-de-privacidade" className="text-[#EAE6E1] hover:text-[#C19A6B] flex items-center"><span className="mr-2">•</span>Política de Privacidade</Link></li>
+              <li><a href="#inicio" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Início</a></li>
+              <li><a href="#sobre" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Sobre</a></li>
+              <li><a href="#servicos" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Serviços</a></li>
+              <li><a href="#faq" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>FAQ</a></li>
+              <li><Link href="/em-construcao" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Blog</Link></li>
+              <li><a href="#contato" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Contato</a></li>
+              <li><Link href="/politica-de-privacidade" className="text-[#EAE6E1] hover:text-[#A57C3A] flex items-center"><span className="mr-2">•</span>Política de Privacidade</Link></li>
             </ul>
           </div>
 
@@ -77,19 +76,18 @@ const Footer = () => {
             </h4>
             {/* Lista: removido inline-block text-left */}
             <ul className="space-y-3 text-base font-light mt-2"> 
-              {/* Cores dos ícones e links ajustadas */}
-              <li className="flex items-start">
-                <Phone size={16} className="mr-2 mt-1 text-[#C19A6B] flex-shrink-0" />
-                <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="text-[#EAE6E1] hover:text-[#C19A6B]">
+              {/* Cores dos ícones e links ajustadas */}              <li className="flex items-start">
+                <Phone size={16} className="mr-2 mt-1 text-[#A57C3A] flex-shrink-0" />
+                <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="text-[#EAE6E1] hover:text-[#A57C3A]">
                   {formattedPhoneNumber}
                 </a>
               </li>
               <li className="flex items-start">
-                <Mail size={16} className="mr-2 mt-1 text-[#C19A6B] flex-shrink-0" />
-                <a href={`mailto:${emailAddress}`} className="text-[#EAE6E1] hover:text-[#C19A6B] break-all">{emailAddress}</a>
+                <Mail size={16} className="mr-2 mt-1 text-[#A57C3A] flex-shrink-0" />
+                <a href={`mailto:${emailAddress}`} className="text-[#EAE6E1] hover:text-[#A57C3A] break-all">{emailAddress}</a>
               </li>
               <li className="flex items-start">
-                <MapPin size={16} className="mr-2 mt-1 text-[#C19A6B] flex-shrink-0" />
+                <MapPin size={16} className="mr-2 mt-1 text-[#A57C3A] flex-shrink-0" />
                 {/* Cor do texto ajustada */}
                 <span className="text-[#EAE6E1]">Brazil, Fortaleza-CE</span>
               </li>
@@ -98,7 +96,7 @@ const Footer = () => {
               <button
                 type="button"
                 onClick={openModal}
-                className="inline-flex items-center px-7 py-3 bg-[#C19A6B] text-[#583B1F] hover:bg-[#D1AA7B] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105"
+                className="inline-flex items-center px-7 py-3 bg-[#A57C3A] text-[#583B1F] hover:bg-[#9B7035] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105"
               >
                 <Calendar className="mr-2 h-5 w-5" />
                 Agende sua Consulta
