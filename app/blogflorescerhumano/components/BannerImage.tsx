@@ -16,13 +16,20 @@ export default function BannerImage({
   alt,
   className = "brightness-75"
 }: BannerImageProps) {
-  // Adiciona um parâmetro de cache busting para forçar o recarregamento da imagem
-  const timestamp = Date.now();
-  const [imagePath, setImagePath] = useState(`${bannerPath}?v=${timestamp}`);
+  // Inicialize com o caminho base sem parâmetros de consulta
+  const [imagePath, setImagePath] = useState(bannerPath);
   const [imageError, setImageError] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // Verificação prévia da existência da imagem com cache-busting
+  // Primeiro efeito para marcar quando estamos no cliente
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Segundo efeito para verificar a existência da imagem, executado apenas após a hidratação
+  useEffect(() => {
+    if (!isClient) return; // Não executa no servidor ou durante a hidratação
+
     const checkImageExists = async () => {
       try {
         // Usa no-cache para evitar que o fetch pegue versões em cache
@@ -33,18 +40,16 @@ export default function BannerImage({
         
         if (!res.ok) {
           console.warn(`Banner ${bannerPath} não encontrado, usando fallback`);
-          setImagePath(`${fallbackPath}?v=${timestamp}`);
+          setImagePath(fallbackPath);
         }
       } catch (error) {
         console.error(`Erro ao verificar banner ${bannerPath}:`, error);
-        setImagePath(`${fallbackPath}?v=${timestamp}`);
+        setImagePath(fallbackPath);
       }
     };
     
     checkImageExists();
-  }, [bannerPath, fallbackPath, timestamp]);
-
-  return (
+  }, [bannerPath, fallbackPath, isClient]);  return (
     <Image
       src={imagePath}
       alt={alt}
@@ -60,7 +65,7 @@ export default function BannerImage({
         // Este tratamento é um fallback adicional caso o useEffect não funcione
         console.log('Usando banner alternativo após erro de carregamento');
         setImageError(true);
-        setImagePath(`${fallbackPath}?v=${timestamp}`);
+        setImagePath(fallbackPath);
       }}
     />
   );

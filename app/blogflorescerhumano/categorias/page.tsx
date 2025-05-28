@@ -74,24 +74,34 @@ export default async function CategoriasPage({
 
   // Log para depuração
   console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);  return (
-    <div className="min-h-screen bg-[#F8F5F0]">
-      {/* Hero Banner Section */}      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+    <div className="min-h-screen bg-[#F8F5F0]">      {/* Hero Banner Section - Aprimorado */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]/10">
+        {/* Banner Image */}
         <BannerImage 
           bannerPath="/blogflorescerhumano/banners-blog/categories-banner.webp"
           fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
           alt="Banner de Categorias do Blog Florescer Humano"
         />
         
-        {/* Hero Content Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/70 via-transparent to-transparent" />
+        {/* Hero Content Overlay com gradiente melhorado */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/80 via-[#583B1F]/30 to-transparent" />
+        
+        {/* Conteúdo centralizado */}
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-          <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
+          <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000 max-w-4xl">
+            {/* Linha decorativa superior */}
+            <div className="w-16 h-1 bg-[#A57C3A] mx-auto mb-6 rounded-full"></div>
+            
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
               Categorias
             </h1>
+            
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
               Explore os artigos organizados por temas para encontrar exatamente o que procura
             </p>
+            
+            {/* Linha decorativa inferior */}
+            <div className="w-16 h-1 bg-[#A57C3A] mx-auto mt-6 rounded-full"></div>
           </div>
         </div>
       </section>
@@ -126,6 +136,17 @@ export default async function CategoriasPage({
         </div>
       </nav>      {/* Main Content */}
       <main className="container mx-auto px-4 pb-12">
+        {/* Título da seção de categorias */}
+        <div className="py-10 mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#583B1F] mb-4 font-['Old_Roman']">
+            Navegue por Tema
+          </h2>
+          <div className="w-20 h-1 bg-[#A57C3A] mx-auto mb-4"></div>
+          <p className="text-[#7D6E63] max-w-2xl mx-auto">
+            Selecione uma categoria para explorar artigos relacionados e aprofundar seu conhecimento em temas específicos.
+          </p>
+        </div>
+        
         {/* Categories Grid */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
