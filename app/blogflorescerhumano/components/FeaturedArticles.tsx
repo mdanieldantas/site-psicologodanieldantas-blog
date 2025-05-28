@@ -21,15 +21,9 @@ interface FeaturedArticlesProps {
 }
 
 export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
-  if (!articles?.length) return null;
-  return (    <section className="pt-6 pb-16 bg-gradient-to-b from-[#F8F5F0] to-white relative overflow-hidden" id="featured-articles">
-      {/* Decoração de fundo sutil */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-[#A57C3A]/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-48 h-48 bg-[#6B7B3F]/10 rounded-full blur-3xl"></div>
-      </div>
+  if (!articles?.length) return null;  return (    <section className="pt-6 pb-16 bg-[#f9f6f2] relative overflow-hidden" id="featured-articles">
       
-      <div className="container mx-auto px-4 relative">        {/* Header da seção melhorado */}
+      <div className="container mx-auto px-4 relative">{/* Header da seção melhorado */}
         <div className="text-center mb-12 mt-0">          
           <h2 className="text-4xl md:text-5xl font-light text-[#583B1F] mb-4 font-['Old_Roman']">
             Artigos em 
