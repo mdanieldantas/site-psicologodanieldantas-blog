@@ -6,15 +6,13 @@ import Link from "next/link";
  * Exibe uma introdução breve sobre a história/missão do blog e direciona para a página completa
  */
 const AboutTeaserBanner = () => {
-  return (    <section className="py-16 bg-gradient-to-br from-[#F8F5F0] to-[#F8F5F0]/80">
-      <div className="container mx-auto px-4">
+  return (    <section className="py-16 bg-gradient-to-br from-[#F8F5F0] to-[#F8F5F0]/80">      <div className="container mx-auto px-4">
         {/* Container principal */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-lg border border-[#A57C3A]/10 max-w-5xl mx-auto relative">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-lg border border-[#A57C3A]/10 max-w-6xl mx-auto relative">
           {/* Linha decorativa superior */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#A57C3A] to-transparent"></div>
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">            {/* Coluna de imagem */}
-            <div className="w-full md:w-2/5">
-              <div className="bg-[#F8F5F0] p-4 rounded-xl shadow-md mx-auto flex items-center justify-center">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#A57C3A] to-transparent"></div>            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-6">            {/* Coluna de imagem */}
+            <div className="w-full md:w-1/2 lg:w-1/2">
+              <div className="bg-[#F8F5F0] p-4 md:p-5 lg:p-6 rounded-xl shadow-lg mx-auto flex items-center justify-center">
                 {/* Imagem do Autor */}
                 <img 
                   src="/blogflorescerhumano/autores/autores-aquarela-daniel.webp" 
@@ -26,7 +24,7 @@ const AboutTeaserBanner = () => {
             </div>
             
             {/* Coluna de texto */}
-            <div className="w-full md:w-3/5 text-left">              <h2 className="text-3xl md:text-4xl text-[#583B1F] font-normal mb-3 font-['Old Roman'] relative inline-block">
+            <div className="w-full md:w-1/2 lg:w-1/2 text-left"><h2 className="text-3xl md:text-4xl text-[#583B1F] font-normal mb-3 font-['Old Roman'] relative inline-block">
                 Nossa História
                 <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-[#A57C3A] rounded-full"></span>
               </h2>
