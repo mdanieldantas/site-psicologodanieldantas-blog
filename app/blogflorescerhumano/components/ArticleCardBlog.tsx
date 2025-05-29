@@ -88,8 +88,7 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
       month: '2-digit',
       year: 'numeric' 
     });
-  };
-    // Ícone com base no tipo de conteúdo - Design mais moderno
+  };    // Ícone com base no tipo de conteúdo - Design mais moderno
   const renderIconeTipoConteudo = () => {
     const baseClasses = "absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium shadow-lg border-2 border-white/20";
     
@@ -101,7 +100,7 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
       case 'infografico':
         return <span className={`${baseClasses} bg-gradient-to-r from-blue-500 to-blue-600 text-white`}>📊 Infográfico</span>;
       default:
-        return <span className={`${baseClasses} bg-gradient-to-r from-[#A57C3A] to-[#C19A6B] text-white`}>📄 Artigo</span>;
+        return null; // Não renderizar tag para artigos
     }
   };
 
