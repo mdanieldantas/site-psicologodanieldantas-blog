@@ -99,7 +99,7 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
           </div>
           <Link href="/blogflorescerhumano/artigos">
             <ButtonBlog 
-              variant="secondaryButtonBrown"
+              variant="primary"
               className="text-center"
             >
               Ver Mais Artigos
