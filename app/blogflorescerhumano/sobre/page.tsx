@@ -7,6 +7,7 @@ import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase'; 
 import BannerImage from '../components/BannerImage';
 import ButtonBlog from '../components/ButtonBlog';
+import { Mail } from 'lucide-react';
 
 // --- Metadados para a Página Sobre --- //
 export const metadata: Metadata = {
@@ -318,16 +319,12 @@ export default async function SobrePage() {
           <h2 className="text-3xl font-['Old_Roman'] mb-6 text-[#583B1F]">Conecte-se Conosco</h2>
           <p className="text-lg text-[#735B43] mb-6">
             Tem dúvidas, sugestões ou interesse em colaborar? Adoraríamos ouvir você!
-          </p>
-          
-          <Link href="/blogflorescerhumano/contato">
+          </p>          <Link href="/blogflorescerhumano/contato">
             <ButtonBlog
               variant="primary"
-              className="inline-flex items-center gap-2 px-8 py-3.5 text-lg group"
+              className="inline-flex items-center gap-3 px-8 py-3.5 text-lg"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v10a2 2 0 002 2z" />
-              </svg>
+              <Mail className="h-5 w-5 flex-shrink-0" />
               Entre em Contato
             </ButtonBlog>
           </Link>
