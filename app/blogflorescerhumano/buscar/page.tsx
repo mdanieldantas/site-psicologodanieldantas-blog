@@ -4,7 +4,9 @@ import { supabaseServer } from '@/lib/supabase/server'; // Importa a instância 
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from '../components/ArticleCardBlog';
 import PaginationControls from '../components/PaginationControls';
+import BannerImage from '../components/BannerImage';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { Search, Filter, BookOpen } from 'lucide-react';
 
 // Interface para os parâmetros de busca (vem da URL)
 interface SearchParams {
@@ -169,27 +171,75 @@ async function SearchResults({
 
     artigos = rpcData?.articles ?? [];
     totalCount = rpcData?.totalCount ?? 0;
-    error = rpcError;
-  } else {
+    error = rpcError;  } else {
     // Nenhum query e nenhuma categoria
-    return <p className="text-center text-gray-500">Digite algo para buscar ou selecione uma categoria.</p>;
+    return (
+      <div className="text-center py-16">
+        <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 max-w-md mx-auto">
+          <Search className="h-16 w-16 text-[#C19A6B] mx-auto mb-4" />
+          <h3 className="font-serif text-xl font-semibold text-[#583B1F] mb-3">
+            Comece sua busca
+          </h3>
+          <p className="font-sans text-[#7D6E63] leading-relaxed">
+            Digite algo para buscar ou selecione uma categoria para explorar nossos artigos.
+          </p>
+        </div>
+      </div>
+    );
   }
-
   if (error) {
     console.error('Erro ao buscar artigos:', JSON.stringify(error, null, 2)); // Log do erro
-    return <p className="text-center text-red-500">Erro ao buscar artigos. Tente novamente mais tarde.</p>;
+    return (
+      <div className="text-center py-16">
+        <div className="bg-white rounded-xl shadow-lg p-12 border border-red-200 max-w-md mx-auto">
+          <div className="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="h-8 w-8 text-red-600" />
+          </div>
+          <h3 className="font-serif text-xl font-semibold text-[#583B1F] mb-3">
+            Ops! Algo deu errado
+          </h3>
+          <p className="font-sans text-[#7D6E63] leading-relaxed">
+            Erro ao buscar artigos. Tente novamente mais tarde.
+          </p>
+        </div>
+      </div>
+    );
   }
-
   if (totalCount === 0) {
     const message = categoryId
       ? `Nenhum artigo encontrado na categoria especificada.`
       : `Nenhum artigo encontrado para "${query}".`;
-    return <p className="text-center text-gray-500">{message}</p>;
+    
+    return (
+      <div className="text-center py-16">
+        <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 max-w-md mx-auto">
+          <BookOpen className="h-16 w-16 text-[#C19A6B] mx-auto mb-4" />
+          <h3 className="font-serif text-xl font-semibold text-[#583B1F] mb-3">
+            Nenhum resultado encontrado
+          </h3>
+          <p className="font-sans text-[#7D6E63] leading-relaxed">
+            {message}
+          </p>
+          <p className="font-sans text-sm text-[#7D6E63] mt-3">
+            Tente buscar por outros termos ou explore nossas categorias.
+          </p>
+        </div>
+      </div>
+    );
   }
-
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">        {/* Mapeia os artigos recebidos */}
+      {/* Indicador de resultados */}
+      <div className="mb-8 text-center">
+        <div className="inline-flex items-center bg-[#F8F5F0] border border-[#C19A6B]/30 rounded-full px-6 py-3">
+          <Filter className="h-4 w-4 text-[#C19A6B] mr-2" />
+          <span className="font-sans text-sm font-medium text-[#583B1F]">
+            {totalCount} {totalCount === 1 ? 'artigo encontrado' : 'artigos encontrados'}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">        {/* Mapeia os artigos recebidos */}
         {artigos.map((artigo) => (
           <ArticleCardBlog
             key={artigo.id}
@@ -250,20 +300,94 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8 text-center">Buscar Artigos</h1>
-      <h2 className="text-2xl font-semibold mb-6">
-        {query ? searchTitle : 'Digite algo para buscar'}
-      </h2>
-      <Suspense fallback={<p className="text-center">Carregando resultados...</p>}>
-        {/* Passa query E categoryId (se encontrado) para SearchResults */}
-        <SearchResults
-          query={query} // Passa a query original
-          categoryId={categoryId} // CORRIGIDO: Passa o ID da categoria
-          currentPage={currentPage}
+    <div className="min-h-screen bg-[#F8F5F0]">
+      {/* Hero Banner Section */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]/10">
+        <BannerImage 
+          bannerPath="/blogflorescerhumano/banners-blog/banner-search.webp"
+          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
+          alt="Banner de Busca do Blog Florescer Humano"
         />
-      </Suspense>
-    </main>
+        
+        {/* Hero Content Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+          <div className="container mx-auto px-4 h-full flex items-center justify-center">
+            <div className="text-center text-white max-w-4xl">
+              <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
+                <Search className="h-4 w-4 mr-2" />
+                <span className="font-sans text-sm font-medium">Busca de Artigos</span>
+              </div>
+              
+              <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                Encontre o Conhecimento que Procura
+              </h1>
+              
+              <p className="font-sans text-lg md:text-xl font-light leading-relaxed opacity-95 max-w-2xl mx-auto">
+                Explore nossa biblioteca de artigos sobre psicologia humanista, desenvolvimento pessoal e bem-estar emocional
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Breadcrumbs */}
+      <nav className="bg-white border-b border-[#C19A6B]/20 py-4">
+        <div className="container mx-auto px-4">
+          <ol className="flex items-center space-x-2 text-sm font-sans">
+            <li>
+              <a href="/blogflorescerhumano" className="text-[#C19A6B] hover:text-[#583B1F] transition-colors">
+                Início
+              </a>
+            </li>
+            <li className="text-[#7D6E63]">/</li>
+            <li className="text-[#583B1F] font-medium">Buscar</li>
+          </ol>
+        </div>
+      </nav>
+
+      {/* Conteúdo Principal */}
+      <main className="container mx-auto px-4 py-12">
+        {/* Título da Página */}
+        <div className="text-center mb-12">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#583B1F] mb-4">
+            {query ? searchTitle : 'Buscar Artigos'}
+          </h2>
+          
+          {query && (
+            <div className="inline-flex items-center bg-[#E8E6E2] rounded-full px-6 py-2">
+              <span className="font-sans text-sm text-[#583B1F]">
+                Termo de busca: <strong>"{query}"</strong>
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Resultados da Busca */}
+        <Suspense fallback={
+          <div className="text-center py-16">
+            <div className="animate-pulse">
+              <div className="h-8 w-48 bg-[#E8E6E2] rounded mx-auto mb-8"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-white rounded-lg shadow-sm border border-[#C19A6B]/20 p-6">
+                    <div className="h-40 bg-[#E8E6E2] rounded mb-4"></div>
+                    <div className="h-4 bg-[#E8E6E2] rounded mb-2"></div>
+                    <div className="h-4 bg-[#E8E6E2] rounded w-3/4"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        }>
+          {/* Passa query E categoryId (se encontrado) para SearchResults */}
+          <SearchResults
+            query={query} // Passa a query original
+            categoryId={categoryId} // CORRIGIDO: Passa o ID da categoria
+            currentPage={currentPage}
+          />
+        </Suspense>
+      </main>
+    </div>
   );
 }
 
