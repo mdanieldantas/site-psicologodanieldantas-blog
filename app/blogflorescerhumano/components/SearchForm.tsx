@@ -34,7 +34,7 @@ export default function SearchForm() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar por artigo, autor, categoria, tag ou conteúdo..."
-          className="block w-full py-2 pl-4 pr-28 text-base border border-[#C19A6B] rounded-md bg-[#F8F5F0] text-[#583B1F] placeholder:text-[#735B43]/70 shadow-sm font-light focus:ring-2 focus:ring-[#735B43] focus:border-[#735B43] transition-all"
+          className="block w-full py-2 pl-4 pr-28 text-base border border-[#C19A6B] rounded-md bg-[#F8F5F0] text-[#583B1F] placeholder:text-[#5A4632] shadow-sm font-light focus:ring-2 focus:ring-[#735B43] focus:border-[#735B43] transition-all"
         />
         <span className="absolute right-2 top-1/2 -translate-y-1/2">
           <ButtonBlog type="submit" className="text-sm px-4 py-1 rounded bg-[#F8F5F0] text-[#583B1F] border border-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0] transition-colors">

@@ -31,17 +31,22 @@ const CarouselIndicator = ({
 }) => {
   return (
     <div className="flex justify-center gap-2 mt-6">
-      {Array.from({ length: slides }).map((_, index) => (
-        <button
+      {Array.from({ length: slides }).map((_, index) => (        <button
           key={index}
           onClick={() => onClick(index)}
-          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+          className={`min-w-[44px] min-h-[44px] rounded-full transition-all duration-300 flex items-center justify-center ${
             activeIndex === index
-              ? "bg-[#583B1F] w-6"
+              ? "bg-[#583B1F]"
               : "bg-[#A57C3A]/50 hover:bg-[#A57C3A]"
           }`}
           aria-label={`Ir para slide ${index + 1}`}
-        />
+        >
+          <div className={`rounded-full transition-all duration-300 ${
+            activeIndex === index
+              ? "w-6 h-2 bg-white/90"
+              : "w-2 h-2 bg-white/90"
+          }`} />
+        </button>
       ))}
     </div>
   );

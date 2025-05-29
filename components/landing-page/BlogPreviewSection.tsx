@@ -96,19 +96,25 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
           <CarouselPrevious className="absolute left-[-15px] sm:left-[-20px] md:left-[-30px] lg:left-[-40px] top-1/2 -translate-y-1/2 fill-[#583B1F] text-[#F8F5F0] bg-[#583B1F]/80 hover:bg-[#735B43] p-1 sm:p-2 rounded-full z-10 transition-all duration-200 shadow-md" />
           <CarouselNext className="absolute right-[-15px] sm:right-[-20px] md:right-[-30px] lg:right-[-40px] top-1/2 -translate-y-1/2 fill-[#583B1F] text-[#F8F5F0] bg-[#583B1F]/80 hover:bg-[#735B43] p-1 sm:p-2 rounded-full z-10 transition-all duration-200 shadow-md" />
         </Carousel>        {/* Indicadores de navegação do carrossel aprimorados */}
-        <div className="flex justify-center mt-6 space-x-2">
-          <div 
-            className="w-8 h-2 rounded-full bg-[#A57C3A] shadow-sm transition-all duration-300"
-            aria-hidden="true"
-          ></div>
-          <div 
-            className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
-            aria-hidden="true"
-          ></div>
-          <div 
-            className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
-            aria-hidden="true"
-          ></div>
+        <div className="flex justify-center mt-6 space-x-3">
+          <button 
+            className="min-w-[44px] min-h-[44px] rounded-full bg-[#A57C3A] shadow-sm transition-all duration-300 flex items-center justify-center"
+            aria-label="Slide 1"
+          >
+            <div className="w-8 h-2 rounded-full bg-white/90"></div>
+          </button>
+          <button 
+            className="min-w-[44px] min-h-[44px] rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 transition-all duration-300 flex items-center justify-center"
+            aria-label="Slide 2"
+          >
+            <div className="w-2 h-2 rounded-full bg-white/90"></div>
+          </button>
+          <button 
+            className="min-w-[44px] min-h-[44px] rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 transition-all duration-300 flex items-center justify-center"
+            aria-label="Slide 3"
+          >
+            <div className="w-2 h-2 rounded-full bg-white/90"></div>
+          </button>
         </div>
 
         {/* Botão para ver todos os posts */}

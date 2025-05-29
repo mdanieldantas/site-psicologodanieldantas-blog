@@ -161,17 +161,16 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
                 </li>
               </ul>
               
-              {/* Botão CTA aprimorado */}
-              <button
+              {/* Botão CTA aprimorado */}              <button
                 type="button"
                 onClick={openModal}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="mt-4 px-8 py-4 bg-[#C19A6B] text-[#F8F5F0] rounded-md shadow-md flex items-center justify-center group transition-all duration-300 hover:bg-[#D1AA7B] hover:shadow-lg hover:transform hover:-translate-y-1 w-full md:w-auto relative overflow-hidden"
+                className="mt-4 px-8 py-4 bg-[#6B5139] text-[#F8F5F0] rounded-md shadow-md flex items-center justify-center group transition-all duration-300 hover:bg-[#7D5F47] hover:shadow-lg hover:transform hover:-translate-y-1 w-full md:w-auto relative overflow-hidden"
               >
                 <span className="absolute inset-0 bg-[#735B43] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
                 <Calendar className="mr-3 h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
-                <span className="text-base font-medium relative z-10">Agendar primeira sessão</span>
+                <span className="text-base font-medium relative z-10 text-[#F8F5F0]">Agendar primeira sessão</span>
                 <span className={`ml-2 relative z-10 transform transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-1' : 'opacity-0 -translate-x-2'}`}>→</span>
               </button>            </div>              {/* Imagem - Ocupa metade (1/2) em desktop, escondida em mobile onde é substituída por versão abaixo */}            <div className="relative h-auto min-h-[300px] hidden md:block">
               <div className="absolute inset-0 bg-[#583B1F]/10 z-10"></div><Image                src="/atendimento-online-image.webp" 
@@ -282,9 +281,8 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ isMobile }) => {
                 ))}
               </div>
             </div>
-            
-            {/* Adiciona dicas de acessibilidade para usuários de dispositivos móveis */}
-            <p className="text-center text-xs text-[#735B43]/70 mt-4 md:hidden">
+              {/* Adiciona dicas de acessibilidade para usuários de dispositivos móveis */}
+            <p className="text-center text-xs text-[#5A4632] mt-4 md:hidden">
               Deslize para navegar entre os serviços
             </p>
           </div>

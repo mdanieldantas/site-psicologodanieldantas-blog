@@ -744,7 +744,7 @@ export default async function ArtigoEspecificoPage({
                     <span className="tracking-tight">{tag.nome}</span>
                   </Link>
                 ))}
-              </div>              <p className="mt-3 text-xs text-[#735B43]/70 italic flex items-center">
+              </div>              <p className="mt-3 text-xs text-[#5A4632] italic flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3 w-3 mr-1 text-[#C19A6B]/60"

@@ -91,12 +91,11 @@ const Footer = () => {
                 {/* Cor do texto ajustada */}
                 <span className="text-[#EAE6E1]">Brazil, Fortaleza-CE</span>
               </li>
-            </ul>            {/* Botão Agende sua Consulta (centralizado) */}
-            <div className="mt-8 flex justify-center">
+            </ul>            {/* Botão Agende sua Consulta (centralizado) */}            <div className="mt-8 flex justify-center">
               <button
                 type="button"
                 onClick={openModal}
-                className="inline-flex items-center px-7 py-3 bg-[#A57C3A] text-[#583B1F] hover:bg-[#9B7035] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105"
+                className="inline-flex items-center px-7 py-3 bg-[#6B5139] text-[#F8F5F0] hover:bg-[#7D5F47] transition-all duration-300 rounded-lg text-base font-semibold shadow-lg focus:ring-2 focus:ring-[#735B43] scale-100 hover:scale-105"
               >
                 <Calendar className="mr-2 h-5 w-5" />
                 Agende sua Consulta
