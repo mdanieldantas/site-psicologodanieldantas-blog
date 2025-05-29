@@ -43,7 +43,7 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
               <h3 className="text-lg font-semibold mb-3 text-[#583B1F] flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 Gostaria de agendar uma sessão?
-              </h3>              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-3">
+              </h3>              <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-3">
                 <div className="relative overflow-hidden w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">
                   <Image 
                     src={contactInfo.profileImage} 
@@ -59,10 +59,12 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
                     }}
                   />
                 </div>
-                <p className="text-xs leading-relaxed text-[#7D6E63] text-center sm:text-left">
-                  Se você está considerando buscar um espaço para você, te convido a entrar em contato.
-                </p>
-              </div>              <AgendamentoBotao 
+                <div className="flex items-center justify-center sm:justify-start h-full">
+                  <p className="text-xs leading-relaxed text-[#7D6E63] text-center sm:text-left">
+                    Se você está considerando buscar um espaço para você, te convido a entrar em contato.
+                  </p>
+                </div>
+              </div><AgendamentoBotao 
                 variant="primary" 
                 size="sm" 
                 fullWidth={true}
