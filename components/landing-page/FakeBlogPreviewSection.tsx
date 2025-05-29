@@ -112,20 +112,27 @@ const FakeBlogPreviewSection: React.FC = () => {
           </CarouselContent>
             <CarouselPrevious className="absolute left-0 sm:left-2 md:left-2 top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
           <CarouselNext className="absolute right-0 sm:right-2 md:right-2 top-1/2 -translate-y-1/2 text-white bg-[#583B1F]/90 hover:bg-[#735B43] p-2 sm:p-3 rounded-full z-10 transition-all duration-200 border-2 border-white shadow-md" />
-        </Carousel>
-
-        {/* Indicadores de posição do carrossel */}
-        <div className="flex justify-center gap-2 mt-6">
+        </Carousel>        {/* Indicadores de posição do carrossel */}
+        <div className="flex justify-center gap-3 mt-6">
           {fakePosts.map((_, index) => (
-            <div 
+            <button 
               key={index} 
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`min-w-[44px] min-h-[44px] rounded-full transition-all duration-300 flex items-center justify-center ${
                 currentIndex === index 
-                  ? "w-8 bg-[#A57C3A]" 
-                  : "w-2 bg-[#A57C3A]/40"
+                  ? "bg-[#A57C3A]" 
+                  : "bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70"
               }`}
-              aria-label={`Slide ${index + 1} de ${fakePosts.length}`}
-            />
+              aria-label={`Ir para slide ${index + 1} de ${fakePosts.length}`}
+              onClick={() => {/* Funcionalidade de navegação pode ser adicionada aqui */}}
+            >
+              <div 
+                className={`rounded-full transition-all duration-300 ${
+                  currentIndex === index 
+                    ? "w-8 h-2 bg-white/90" 
+                    : "w-2 h-2 bg-white/90"
+                }`}
+              />
+            </button>
           ))}
         </div>
 
