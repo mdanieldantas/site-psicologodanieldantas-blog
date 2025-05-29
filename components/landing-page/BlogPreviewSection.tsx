@@ -97,21 +97,18 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
           <CarouselNext className="absolute right-[-15px] sm:right-[-20px] md:right-[-30px] lg:right-[-40px] top-1/2 -translate-y-1/2 fill-[#583B1F] text-[#F8F5F0] bg-[#583B1F]/80 hover:bg-[#735B43] p-1 sm:p-2 rounded-full z-10 transition-all duration-200 shadow-md" />
         </Carousel>        {/* Indicadores de navegação do carrossel aprimorados */}
         <div className="flex justify-center mt-6 space-x-2">
-          <button 
+          <div 
             className="w-8 h-2 rounded-full bg-[#A57C3A] shadow-sm transition-all duration-300"
-            aria-label="Ir para slide 1"
-            role="button"
-          ></button>
-          <button 
+            aria-hidden="true"
+          ></div>
+          <div 
             className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
-            aria-label="Ir para slide 2"
-            role="button"
-          ></button>
-          <button 
+            aria-hidden="true"
+          ></div>
+          <div 
             className="w-2 h-2 rounded-full bg-[#A57C3A]/40 hover:bg-[#A57C3A]/70 hover:w-6 transition-all duration-300"
-            aria-label="Ir para slide 3"
-            role="button"
-          ></button>
+            aria-hidden="true"
+          ></div>
         </div>
 
         {/* Botão para ver todos os posts */}
