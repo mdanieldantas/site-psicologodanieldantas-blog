@@ -187,10 +187,8 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
             </li>
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12">
+      </nav>      {/* Main Content */}
+      <main className="container mx-auto px-4 pb-12 pt-8">
         {/* Stats Section REMOVIDA */}
 
         {/* Articles Grid */}

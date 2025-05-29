@@ -153,10 +153,8 @@ export default async function SobrePage() {
             </li>
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12 mt-4">
+      </nav>      {/* Main Content */}
+      <main className="container mx-auto px-4 pb-12 pt-8">
         {/* Stats Section REMOVIDA */}
         
         {/* Seção: Missão e Inspiração */}        <section className="mb-16 bg-white p-8 rounded-xl shadow-lg border border-[#A57C3A]/20">

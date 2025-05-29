@@ -225,10 +225,8 @@ export default async function CategoriaEspecificaPage({
             {/* Removido nome da categoria do breadcrumb */}
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12">
+      </nav>      {/* Main Content */}
+      <main className="container mx-auto px-4 pb-12 pt-8">
         {/* Articles Grid */}
         {artigos && artigos.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">

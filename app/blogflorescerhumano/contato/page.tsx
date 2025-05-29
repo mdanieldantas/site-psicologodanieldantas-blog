@@ -48,34 +48,30 @@ export default function ContatoPage() {
             <li>
               <Link 
                 href="/" 
-                className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+                className="flex items-center text-[#5A4632] hover:text-[#6B5139] transition-colors duration-200"
               >
                 <Home className="h-4 w-4 mr-1" />                Início
-              </Link>
-            </li>
-            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
+              </Link>            </li>
+            <ChevronRight className="h-4 w-4 text-[#5A4632]/60" />
             <li>
               <Link 
                 href="/blogflorescerhumano" 
-                className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
+                className="text-[#5A4632] hover:text-[#6B5139] transition-colors duration-200"
               >                Blog
-              </Link>
-            </li>
-            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
+              </Link>            </li>
+            <ChevronRight className="h-4 w-4 text-[#5A4632]/60" />
             <li className="text-[#583B1F] font-medium">
               Contato
             </li>
           </ol>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      </nav>      {/* Main Content */}
+      <main className="container mx-auto px-4 pt-8 pb-12">
         {/* Grid de cards com espaçamento uniforme */}        <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
           {/* Apenas as Informações de Contato */}
           <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-[#C19A6B]/20">
             <h2 className="text-2xl md:text-3xl font-['Old_Roman'] mb-4 md:mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
-            <p className="text-[#735B43] mb-6 md:mb-8 text-sm md:text-base">
+            <p className="text-[#5A4632] mb-6 md:mb-8 text-sm md:text-base">
               Tem alguma dúvida, sugestão, ou gostaria de propor uma parceria?
               Envie um e-mail para o endereço abaixo que entraremos em contato o mais breve possível.
             </p>
@@ -90,7 +86,7 @@ export default function ContatoPage() {
                   <span className="block font-medium text-[#583B1F] mb-1 text-sm md:text-base">E-mail</span>
                   <a
                     href={`mailto:${contactInfo.email}`}
-                    className="text-[#735B43] hover:text-[#C19A6B] transition-colors text-xs md:text-sm break-all"
+                    className="text-[#5A4632] hover:text-[#6B5139] transition-colors text-xs md:text-sm break-all"
                   >
                     {contactInfo.email}
                   </a>
@@ -102,7 +98,7 @@ export default function ContatoPage() {
                 </div>
                 <div>
                   <span className="block font-medium text-[#583B1F] mb-1 text-sm md:text-base">Endereço</span>
-                  <p className="text-[#735B43] text-xs md:text-sm">{contactInfo.address}</p>
+                  <p className="text-[#5A4632] text-xs md:text-sm">{contactInfo.address}</p>
                 </div>
               </li>
             </ul>
