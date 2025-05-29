@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationControlsProps {
   totalCount: number;
@@ -93,11 +93,11 @@ export default function PaginationControls({
             className="p-2 rounded-md border border-[#C19A6B]/30 hover:bg-[#F8F5F0] transition-all duration-300 flex items-center"
             aria-label="Página anterior"
           >
-            <ChevronLeftIcon className="h-5 w-5 text-[#583B1F]" />
+            <ChevronLeft className="h-5 w-5 text-[#583B1F]" />
           </Link>
         ) : (
           <span className="p-2 rounded-md border border-[#C19A6B]/20 text-[#C19A6B]/40 cursor-not-allowed flex items-center">
-            <ChevronLeftIcon className="h-5 w-5" />
+            <ChevronLeft className="h-5 w-5" />
           </span>
         )}
 
@@ -138,11 +138,11 @@ export default function PaginationControls({
             className="p-2 rounded-md border border-[#C19A6B]/30 hover:bg-[#F8F5F0] transition-all duration-300 flex items-center"
             aria-label="Próxima página"
           >
-            <ChevronRightIcon className="h-5 w-5 text-[#583B1F]" />
+            <ChevronRight className="h-5 w-5 text-[#583B1F]" />
           </Link>
         ) : (
           <span className="p-2 rounded-md border border-[#C19A6B]/20 text-[#C19A6B]/40 cursor-not-allowed flex items-center">
-            <ChevronRightIcon className="h-5 w-5" />
+            <ChevronRight className="h-5 w-5" />
           </span>
         )}
       </div>

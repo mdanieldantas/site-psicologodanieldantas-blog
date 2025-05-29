@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PaginationControls from '../components/PaginationControls';
 import BlogCategoryCard from '@/components/blog-category-card';
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
+import { ChevronRight, Home } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];
@@ -109,17 +109,16 @@ export default async function CategoriasPage({
       {/* Breadcrumb Navigation */}
       <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
-          <ol className="flex items-center space-x-2 text-sm">
-            <li>
+          <ol className="flex items-center space-x-2 text-sm">            <li>
               <Link 
                 href="/" 
                 className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
-                <HomeIcon className="h-4 w-4 mr-1" />
+                <Home className="h-4 w-4 mr-1" />
                 Início
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li>
               <Link 
                 href="/blogflorescerhumano" 
@@ -128,7 +127,7 @@ export default async function CategoriasPage({
                 Blog
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li className="text-[#583B1F] font-medium">
               Categorias
             </li>

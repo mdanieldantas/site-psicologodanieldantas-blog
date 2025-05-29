@@ -4,8 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
-import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Mail, MapPin, Facebook, Instagram, Youtube, Home, ChevronRight } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 
 export default function ContatoPage() {
@@ -51,20 +50,18 @@ export default function ContatoPage() {
                 href="/" 
                 className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
-                <HomeIcon className="h-4 w-4 mr-1" />
-                Início
+                <Home className="h-4 w-4 mr-1" />                Início
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li>
               <Link 
                 href="/blogflorescerhumano" 
                 className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
-              >
-                Blog
+              >                Blog
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li className="text-[#583B1F] font-medium">
               Contato
             </li>

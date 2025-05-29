@@ -7,7 +7,7 @@ import PaginationControls from '../components/PaginationControls';
 import type { Metadata } from 'next';
 import { ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Home, ChevronRight } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 
 // --- Metadados dinâmicos para SEO conforme paginação --- //
@@ -170,20 +170,18 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
                 href="/" 
                 className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
-                <HomeIcon className="h-4 w-4 mr-1" />
-                Início
+                <Home className="h-4 w-4 mr-1" />                Início
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li>
               <Link 
                 href="/blogflorescerhumano" 
                 className="text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
-              >
-                Blog
+              >                Blog
               </Link>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li className="text-[#583B1F] font-medium">
               Artigos
             </li>

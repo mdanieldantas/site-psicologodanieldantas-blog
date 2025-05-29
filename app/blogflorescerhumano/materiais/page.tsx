@@ -1,8 +1,7 @@
 // Página de Materiais do Blog
 // Localização: app/blogflorescerhumano/materiais/page.tsx
 import { Metadata } from 'next';
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
-import { BookOpen, FileText, Video, Headphones } from 'lucide-react';
+import { ChevronRight, Home, BookOpen, FileText, Video, Headphones } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 
 // Metadados dinâmicos para SEO (Next.js App Router)
@@ -71,16 +70,15 @@ export default function MateriaisPage() {
       <nav className="bg-[#F8F5F0]/80 backdrop-blur-sm border-b border-[#C19A6B]/20 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3">
           <ol className="flex items-center space-x-2 text-sm">
-            <li>
-              <a 
+            <li>              <a 
                 href="/" 
                 className="flex items-center text-[#735B43] hover:text-[#C19A6B] transition-colors duration-200"
               >
-                <HomeIcon className="h-4 w-4 mr-1" />
+                <Home className="h-4 w-4 mr-1" />
                 Início
               </a>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li>
               <a 
                 href="/blogflorescerhumano" 
@@ -89,7 +87,7 @@ export default function MateriaisPage() {
                 Blog
               </a>
             </li>
-            <ChevronRightIcon className="h-4 w-4 text-[#735B43]/60" />
+            <ChevronRight className="h-4 w-4 text-[#735B43]/60" />
             <li className="text-[#583B1F] font-medium">
               Materiais
             </li>
@@ -180,7 +178,7 @@ export default function MateriaisPage() {
               className="inline-flex items-center bg-white text-[#583B1F] px-6 py-3 rounded-lg font-sans font-medium hover:bg-[#F8F5F0] transition-colors duration-200"
             >
               Explorar Blog
-              <ChevronRightIcon className="ml-2 h-4 w-4" />
+              <ChevronRight className="ml-2 h-4 w-4" />
             </a>
           </div>
         </div>
