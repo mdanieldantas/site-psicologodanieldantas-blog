@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from './ArticleCardBlog';
-import ButtonBlog from './ButtonBlog';
 
 // Tipagem para os artigos relacionados
 type RelatedArticle = Pick<
@@ -78,8 +77,12 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
           numeroComentarios={0}
           tipoConteudo={'artigo'}
         />
-      ))}      {relatedArticles.length < limit && (
-        <div className="relative bg-[#F8F5F0]/70 rounded-lg overflow-hidden h-full flex flex-col justify-center items-center p-8 border-[0.5px] border-[#C19A6B]/20 hover:bg-[#F8F5F0] transition-all duration-300 hover:shadow-md">
+      ))}
+      {relatedArticles.length < limit && (
+        <Link 
+          href="/blogflorescerhumano/artigos" 
+          className="relative bg-[#F8F5F0]/70 rounded-lg overflow-hidden h-full flex flex-col justify-center items-center p-8 border-[0.5px] border-[#C19A6B]/20 hover:bg-[#F8F5F0] transition-all duration-300 hover:shadow-md"
+        >
           <div className="w-12 h-12 rounded-full bg-[#F8F5F0] flex items-center justify-center mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,15 +100,8 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
               <path d="M12 5v14"/>
             </svg>
           </div>
-          <Link href="/blogflorescerhumano/artigos">
-            <ButtonBlog 
-              variant="primary"
-              className="text-center"
-            >
-              Ver Mais Artigos
-            </ButtonBlog>
-          </Link>
-        </div>
+          <span className="text-center text-[#583B1F] font-medium">Ver Mais Artigos</span>
+        </Link>
       )}
     </div>
   );
