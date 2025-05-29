@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { MotionDiv, staggerContainer, cardVariants } from '@/components/ui/motion-components';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from './ArticleCardBlog';
@@ -71,13 +71,11 @@ export default function FeaturedArticles({ articles }: FeaturedArticlesProps) {
           ))}
         </MotionDiv>
 
-        {/* CTA melhorado */}
-        <div className="text-center">
+        {/* CTA melhorado */}        <div className="text-center">
           <Link 
             href="/blogflorescerhumano/artigos" 
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#583B1F] to-[#5B3E22] text-white rounded-2xl font-medium shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-[#583B1F] text-white rounded-2xl font-medium shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:bg-[#6B7B3F]"
           >
-            <TrendingUp className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
             <span>Ver todos os artigos</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
           </Link>
