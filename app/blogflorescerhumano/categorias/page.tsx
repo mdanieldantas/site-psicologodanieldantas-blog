@@ -135,18 +135,7 @@ export default async function CategoriasPage({
           </ol>
         </div>
       </nav>      {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12">
-        {/* Título da seção de categorias */}
-        <div className="py-10 mb-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#583B1F] mb-4 font-['Old_Roman']">
-            Navegue por Tema
-          </h2>
-          <div className="w-20 h-1 bg-[#A57C3A] mx-auto mb-4"></div>
-          <p className="text-[#7D6E63] max-w-2xl mx-auto">
-            Selecione uma categoria para explorar artigos relacionados e aprofundar seu conhecimento em temas específicos.
-          </p>
-        </div>
-        
+      <main className="container mx-auto px-4 pb-12 pt-8">
         {/* Categories Grid */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
