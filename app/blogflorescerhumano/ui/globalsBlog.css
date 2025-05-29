@@ -1,87 +1,50 @@
-/**
- * Estilos Globais do Blog Florescer Humano
- * Implementação do Sistema Tipográfico e Paleta de Cores Oficial
- * Seguindo rigorosamente o Designer Guide para consistência visual
- */
-
-/* Importação das Google Fonts - Sistema Tipográfico Oficial */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-
+/* globalsBlog.css - Estilos globais e tokens exclusivos do blog Florescer Humano */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /* === TOKENS DE CORES - PALETA OFICIAL FLORESCER HUMANO === */
   :root {
-    /* Cores principais da marca - HEX para referência */
-    --blog-bege-claro: #F8F5F0;      /* Fundo geral, áreas externas */
-    --blog-branco: #FFFFFF;          /* Cards, áreas internas */
-    --blog-marrom-escuro: #583B1F;   /* Títulos, botões principais */
-    --blog-marrom-medio: #5B3E22;    /* Botões, destaques, hover */
-    --blog-marrom-dourado: #A57C3A;  /* Detalhes, elementos decorativos */
-    --blog-verde-oliva: #6B7B3F;     /* Elementos naturais, hover especial */
-    --blog-bege-suave: #E8E6E2;      /* Badges, fundos de destaque */
-    --blog-cinza-texto: #7D6E63;     /* Texto de parágrafo, descrições */
-    
-    /* Sistema de cores em HSL para Tailwind */
-    --blog-background: 39 29% 97%;        /* #F8F5F0 - Bege Claro */
-    --blog-foreground: 30 45% 23%;        /* #583B1F - Marrom Escuro */
-    --blog-card: 0 0% 100%;               /* #FFFFFF - Branco */
-    --blog-card-foreground: 30 45% 23%;   /* #583B1F - Marrom Escuro */
-    --blog-primary: 30 45% 23%;           /* #583B1F - Marrom Escuro */
-    --blog-primary-foreground: 0 0% 100%; /* #FFFFFF - Branco */
-    --blog-secondary: 36 15% 89%;         /* #E8E6E2 - Bege Suave */
-    --blog-secondary-foreground: 30 45% 23%; /* #583B1F - Marrom Escuro */
-    --blog-muted: 36 15% 89%;             /* #E8E6E2 - Bege Suave */
-    --blog-muted-foreground: 30 20% 49%;  /* #7D6E63 - Cinza Texto */
-    --blog-accent: 33 37% 49%;            /* #A57C3A - Marrom Dourado */
-    --blog-accent-foreground: 0 0% 100%;  /* #FFFFFF - Branco */
-    --blog-border: 36 15% 89%;            /* #E8E6E2 - Bege Suave */
-    --blog-input: 36 15% 89%;             /* #E8E6E2 - Bege Suave */
-    --blog-ring: 30 45% 23%;              /* #583B1F - Marrom Escuro */
+    --blog-background: 36 33% 97%; /* bege claro igual ao site principal */
+    --blog-foreground: 30 45% 23%;
+    --blog-card: 36 33% 97%;
+    --blog-card-foreground: 30 45% 23%;
+    --blog-popover: 36 33% 97%;
+    --blog-popover-foreground: 30 45% 23%;
+    --blog-primary: 30 45% 23%;
+    --blog-primary-foreground: 36 33% 97%;
+    --blog-secondary: 36 33% 97%;
+    --blog-secondary-foreground: 30 45% 23%;
+    --blog-muted: 36 33% 97%;
+    --blog-muted-foreground: 30 30% 36%;
+    --blog-accent: 36 33% 97%;
+    --blog-accent-foreground: 30 45% 23%;
     --blog-destructive: 0 84.2% 60.2%;
-    --blog-destructive-foreground: 0 0% 100%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 76%;
+    --blog-input: 30 30% 76%;
+    --blog-ring: 30 45% 23%;
     --blog-radius: 0.5rem;
-    
-    /* Variáveis de fontes - Sistema Tipográfico */
-    --font-playfair: 'Playfair Display', serif;
-    --font-sourcesans: 'Source Sans 3', sans-serif;
-  }  
-  /* === MODO ESCURO DESABILITADO === */
-  /* O blog mantém sempre o tema claro para consistência da marca */
-  .dark {
-    /* Mantém as mesmas cores do modo claro */
-    --blog-background: 39 29% 97%;        
-    --blog-foreground: 30 45% 23%;        
-    --blog-card: 0 0% 100%;               
-    --blog-card-foreground: 30 45% 23%;   
-    --blog-primary: 30 45% 23%;           
-    --blog-primary-foreground: 0 0% 100%; 
-    --blog-secondary: 36 15% 89%;         
-    --blog-secondary-foreground: 30 45% 23%; 
-    --blog-muted: 36 15% 89%;             
-    --blog-muted-foreground: 30 20% 49%;  
-    --blog-accent: 33 37% 49%;            
-    --blog-accent-foreground: 0 0% 100%;  
-    --blog-border: 36 15% 89%;            
-    --blog-input: 36 15% 89%;             
-    --blog-ring: 30 45% 23%;              
-    --blog-destructive: 0 84.2% 60.2%;
-    --blog-destructive-foreground: 0 0% 100%;
-  }
-  
-  /* === BASE DO SISTEMA TIPOGRÁFICO === */
-  /* Aplicação das fontes oficiais em elementos base */
-  * {
-    border-color: hsl(var(--blog-border));
-  }
-
-  body {
-    background-color: hsl(var(--blog-background));
-    color: hsl(var(--blog-foreground));
-    font-family: var(--font-sourcesans);
-    font-feature-settings: "rlig" 1, "calt" 1;
+  }  .dark {
+    --blog-background: 36 33% 97%; /* SEM dark mode no fundo do blog */
+    --blog-foreground: 30 45% 23%;
+    --blog-card: 36 33% 97%;
+    --blog-card-foreground: 30 45% 23%;
+    --blog-popover: 30 45% 23%;
+    --blog-popover-foreground: 36 33% 97%;
+    --blog-primary: 36 33% 97%;
+    --blog-primary-foreground: 30 45% 23%;
+    --blog-secondary: 30 30% 36%;
+    --blog-secondary-foreground: 36 33% 97%;
+    --blog-muted: 30 30% 36%;
+    --blog-muted-foreground: 36 20% 80%;
+    --blog-accent: 30 30% 36%;
+    --blog-accent-foreground: 36 33% 97%;
+    --blog-destructive: 0 62.8% 30.6%;
+    --blog-destructive-foreground: 36 33% 97%;
+    --blog-border: 30 30% 36%;
+    --blog-input: 30 30% 36%;
+    --blog-ring: 36 33% 97%;
   }
 }
 
@@ -93,329 +56,21 @@
   }
 }
 
-/* === SISTEMA TIPOGRÁFICO FLORESCER HUMANO === */
-/* Implementação da hierarquia oficial do Designer Guide */
-
-@layer components {
-  /* === TÍTULOS E HEADINGS - PLAYFAIR DISPLAY === */
-  
-  /* Título principal da página - H1 */
-  .blog-title-main,
-  .blog-h1 {
-    font-family: var(--font-playfair);
-    font-size: 3rem; /* 48px */
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--blog-marrom-escuro);
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Títulos de seção - H2 */
-  .blog-section-title,
-  .blog-h2 {
-    font-family: var(--font-playfair);
-    font-size: 2.5rem; /* 40px */
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--blog-marrom-escuro);
-    margin-bottom: 1.25rem;
-  }
-  
-  /* Subtítulos principais - H3 */
-  .blog-h3 {
-    font-family: var(--font-playfair);
-    font-size: 2rem; /* 32px */
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--blog-marrom-escuro);
-    margin-bottom: 1rem;
-  }
-  
-  /* Títulos de artigos - H4 */
-  .blog-article-title,
-  .blog-h4 {
-    font-family: var(--font-playfair);
-    font-size: 1.5rem; /* 24px */
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--blog-marrom-medio);
-    margin-bottom: 0.75rem;
-  }
-  
-  /* === TEXTO E NAVEGAÇÃO - SOURCE SANS 3 === */
-  
-  /* Subtítulos e descrições */
-  .blog-subtitle {
-    font-family: var(--font-sourcesans);
-    font-size: 1.25rem; /* 20px */
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--blog-marrom-medio);
-    margin-bottom: 0.75rem;
-  }
-  
-  /* Texto principal de parágrafos */
-  .blog-text,
-  .blog-paragraph {
-    font-family: var(--font-sourcesans);
-    font-size: 1rem; /* 16px */
-    font-weight: 400;
-    line-height: 1.6;
-    color: var(--blog-cinza-texto);
-    margin-bottom: 1rem;
-  }
-  
-  /* Texto pequeno e legendas */
-  .blog-small,
-  .blog-caption {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 400;
-    line-height: 1.6;
-    color: var(--blog-cinza-texto);
-  }
-  
-  /* Citações e destaques */
-  .blog-quote {
-    font-family: var(--font-sourcesans);
-    font-size: 1.25rem; /* 20px */
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.5;
-    color: var(--blog-marrom-escuro);
-    margin: 1.5rem 0;
-    padding-left: 1rem;
-    border-left: 4px solid var(--blog-marrom-dourado);
-  }
-  
-  /* === ELEMENTOS DE INTERFACE === */
-    /* Navegação e menus */
-  .blog-nav-item {
-    font-family: var(--font-sourcesans);
-    font-size: 1rem; /* 16px */
-    font-weight: 500;
-    color: var(--blog-marrom-escuro);
-    text-decoration: none !important; /* Remover qualquer sublinhado */
-    transition: color 0.2s ease;
-  }
-  
-  .blog-nav-item:hover {
-    color: var(--blog-marrom-dourado);
-    text-decoration: none !important;
-  }
-  
-  /* Menu de navegação sem sublinhados */
-  nav a, header a, .navbar a, .menu a {
-    text-decoration: none !important;
-  }
-    /* Botões */
-  .blog-btn {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 500;
-    background-color: var(--blog-marrom-escuro);
-    color: var(--blog-branco);
-    padding: 0.5rem 1rem;
-    border-radius: var(--blog-radius);
-    border: none;
-    cursor: pointer;
-    text-decoration: none !important; /* Remover qualquer sublinhado */
-    transition: background-color 0.2s ease;
-    display: inline-block;
-  }
-  
-  /* Hover especial para botões - Verde Oliva conforme Designer Guide */
-  .blog-btn:hover {
-    background-color: var(--blog-verde-oliva);
-    text-decoration: none !important;
-  }
-  
-  .blog-btn-secondary {
-    background-color: transparent;
-    color: var(--blog-marrom-escuro);
-    border: 2px solid var(--blog-marrom-escuro);
-    text-decoration: none !important;
-  }
-  
-  .blog-btn-secondary:hover {
-    background-color: var(--blog-bege-suave);
-    text-decoration: none !important;
-  }
-  
-  /* Links que parecem botões não devem ter sublinhado */
-  a.blog-btn, a[role="button"] {
-    text-decoration: none !important;
-  }
-  
-  /* Rodapé */
-  .blog-footer-text {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 400;
-    color: var(--blog-cinza-texto);
-  }
-  
-  /* === ELEMENTOS DE ACESSIBILIDADE === */
-  
-  /* Modais e controles */
-  .blog-modal-title {
-    font-family: var(--font-sourcesans);
-    font-size: 1rem; /* 16px */
-    font-weight: 600;
-    color: var(--blog-marrom-escuro);
-  }
-  
-  .blog-modal-subtitle {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 500;
-    color: var(--blog-marrom-medio);
-  }
-  
-  .blog-accessibility-btn {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 500;
-    background-color: var(--blog-bege-suave);
-    color: var(--blog-marrom-escuro);
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--blog-radius);
-    border: 1px solid var(--blog-marrom-dourado);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .blog-accessibility-btn:hover {
-    background-color: var(--blog-marrom-dourado);
-    color: var(--blog-branco);
-  }
-  
-  /* Campo de pesquisa */
-  .blog-search-input {
-    font-family: var(--font-sourcesans);
-    font-size: 0.875rem; /* 14px */
-    font-weight: 400;
-    background-color: var(--blog-branco);
-    color: var(--blog-marrom-escuro);
-    padding: 0.5rem;
-    border: 2px solid var(--blog-bege-suave);
-    border-radius: var(--blog-radius);
-    transition: border-color 0.2s ease;
-  }
-  
-  .blog-search-input:focus {
-    outline: none;
-    border-color: var(--blog-marrom-dourado);
-  }
-  
-  .blog-search-input::placeholder {
-    color: var(--blog-cinza-texto);
-  }
+@font-face {
+  font-family: "Kaisei Opti";
+  src: url("https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@400;500;700&display=swap");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* === RESPONSIVIDADE === */
-/* Ajustes para telas menores conforme Designer Guide */
-
-@media (max-width: 768px) {
-  .blog-title-main,
-  .blog-h1 {
-    font-size: 2rem; /* 32px em mobile */
-  }
-  
-  .blog-section-title,
-  .blog-h2 {
-    font-size: 1.5rem; /* 24px em mobile */
-  }
-  
-  .blog-h3 {
-    font-size: 1.25rem; /* 20px em mobile */
-  }
-  
-  .blog-article-title,
-  .blog-h4 {
-    font-size: 1.125rem; /* 18px em mobile */
-  }
-  
-  .blog-subtitle {
-    font-size: 1rem; /* 16px em mobile */
-  }
+@font-face {
+  font-family: "Old Roman";
+  src: url("/fonts/OldRoman.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
-
-/* === ELEMENTOS BASE ATUALIZADOS === */
-/* Aplicação das novas fontes em elementos HTML básicos */
-
-@layer base {  /* Títulos HTML padrão usam Playfair Display */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair);
-    color: var(--blog-marrom-escuro);
-    text-decoration: none !important; /* Remover qualquer sublinhado */
-  }
-  
-  h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
-  .blog-h1 a, .blog-h2 a, .blog-h3 a, .blog-h4 a {
-    text-decoration: none !important;
-  }
-  
-  h1 {
-    @apply blog-h1;
-  }
-  
-  h2 {
-    @apply blog-h2;
-  }
-  
-  h3 {
-    @apply blog-h3;
-  }
-  
-  h4 {
-    @apply blog-h4;
-  }
-  
-  /* Texto padrão usa Source Sans 3 */
-  p, li, span, div {
-    font-family: var(--font-sourcesans);
-    color: var(--blog-cinza-texto);
-  }
-    /* Links - apenas links de texto com sublinhado, não em navegação ou títulos */
-  a {
-    color: var(--blog-marrom-escuro);
-    transition: color 0.2s ease;
-  }
-  
-  /* Apenas links dentro de parágrafos recebem sublinhado */
-  p a, li a, .blog-text a, .blog-paragraph a {
-    text-decoration: underline;
-    text-decoration-color: var(--blog-marrom-dourado);
-  }
-  
-  /* Sem sublinhado para links de navegação, títulos e botões */
-  nav a, h1 a, h2 a, h3 a, h4 a, .blog-title-main a, .blog-section-title a,
-  .blog-h1 a, .blog-h2 a, .blog-h3 a, .blog-h4 a, .blog-article-title a,
-  .blog-nav-item, .blog-btn, a.blog-btn, a[role="button"] {
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: var(--blog-marrom-dourado);
-  }
-    /* Botões base - EXCETO para os ícones do header */
-  button:not(.blog-header button):not([class*="icon"]):not([aria-label]) {
-    @apply blog-btn;
-  }
-  
-  /* Preservar os botões de ícone */
-  button.icon-button,
-  button[aria-label],
-  header button {
-    background-color: transparent;
-    color: var(--blog-marrom-escuro);
-    border: none;
-    padding: 0.25rem;
-  }
-}
-
-/* === CONFIGURAÇÕES DE ACESSIBILIDADE E PERFORMANCE === */
 
 /* Melhorias de acessibilidade */
 @media (prefers-reduced-motion: reduce) {
@@ -440,19 +95,17 @@
 }
 
 :focus-visible {
-  outline: 3px solid var(--blog-marrom-escuro);
+  outline: 3px solid #583b1f;
   outline-offset: 3px;
 }
 
 .text-enhanced-contrast {
-  color: var(--blog-marrom-escuro);
+  color: #4a3114;
 }
 
 html {
   scroll-behavior: smooth;
 }
-
-/* === COMPONENTES ESPECÍFICOS DO BLOG === */
 
 .navbar-scrolled {
   background-color: rgba(248, 245, 240, 0.95);
@@ -461,16 +114,40 @@ html {
   transition: all 0.3s ease;
 }
 
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--blog-background);
+  color: var(--blog-secondary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Old Roman", serif;
+  color: var(--blog-secondary);
+}
+
+button {
+  background-color: var(--blog-primary);
+  color: var(--blog-muted);
+  border-radius: var(--blog-radius);
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--blog-accent);
+}
+
 .navbar {
-  background-color: rgba(232, 230, 226, 0.7); /* Bege Suave com opacidade */
+  background-color: rgba(217, 193, 184, 0.7); /* Barra de navegação com opacidade */
   backdrop-filter: blur(4px);
 }
 
 .navbar a {
-  @apply blog-nav-item;
+  color: var(--blog-secondary);
 }
 
-/* === OTIMIZAÇÕES DE PERFORMANCE === */
+.navbar a:hover {
+  color: var(--blog-accent);
+}
 
 .will-change-transform {
   will-change: transform;

@@ -99,9 +99,10 @@ export default async function BlogHomePage() {
             </p>
 
             {/* Botões de ação */}
-            <div className="flex flex-col sm:flex-row gap-4 pl-5">              <Link
+            <div className="flex flex-col sm:flex-row gap-4 pl-5">
+              <Link
                 href="/blogflorescerhumano/artigos"
-                className="inline-flex items-center justify-center px-8 py-4 bg-[#583B1F] text-white rounded-xl hover:bg-[#6B8E23] hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg font-medium group"
+                className="inline-flex items-center justify-center px-8 py-4 bg-[#583B1F] text-white rounded-xl hover:bg-[#6B8E23] transition-all duration-300 transform hover:scale-105 shadow-lg font-medium group"
               >
                 Explorar Artigos
                 <svg

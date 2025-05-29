@@ -1224,7 +1224,7 @@ const BlogHeader = () => {
                 aria-label="Preferências de leitura"
                 aria-expanded={preferencesMenuOpen}
               >
-                <Settings size={18} className="settings-icon" />
+                <Settings size={18} />
               </button>
               
               {/* Menu de preferências - Desktop */}
@@ -1360,7 +1360,7 @@ const BlogHeader = () => {
               aria-label="Preferências de leitura"
               aria-expanded={preferencesMenuOpen}
             >
-              <Settings className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform settings-icon`} />
+              <Settings className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
             </button>
               {/* Botão de Compartilhamento */}
             <button 
@@ -1376,20 +1376,21 @@ const BlogHeader = () => {
               <div className={`relative transition-all duration-300 ${isScrolled ? 'scale-95' : 'scale-100'}`}>
               <HeaderSearchInline />
             </div>
-              <button              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`p-1.5 transition-all duration-300 focus:outline-none 
-                flex items-center justify-center icon-button menu-button
+                flex items-center justify-center
                 focus:ring-2 focus:ring-[#C19A6B]/70 active:scale-95
                 ${isMobileMenuOpen 
                   ? 'text-[#C19A6B]' 
                   : 'text-[#583B1F] hover:text-[#C19A6B]'
-                }`}              
+                }`}
               aria-expanded={isMobileMenuOpen}
               aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
               ref={buttonRef}
             >{isMobileMenuOpen 
-                ? <X className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform menu-icon`} /> 
-                : <Menu className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform menu-icon`} />
+                ? <X className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} /> 
+                : <Menu className={`w-5 h-5 ${isScrolled ? 'scale-90' : 'scale-100'} transition-transform`} />
               }
             </button>
           </div>{/* Desktop: Busca e Botão */}          <div className="hidden md:flex items-center space-x-4">
