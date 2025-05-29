@@ -15,12 +15,11 @@ const ButtonBlog: React.FC<ButtonBlogProps> = ({
   ...props
 }) => {
   const base =
-    'px-6 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blogPrimary focus:ring-offset-2';
-  const variants = {
+    'px-6 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blogPrimary focus:ring-offset-2';  const variants = {
     primary:
-      'bg-blogPrimary text-blogPrimary-foreground border border-blogPrimary hover:bg-blogPrimary-foreground hover:text-blogPrimary',
+      'bg-[#583B1F] text-white border border-[#583B1F] hover:bg-[#6B7B3F]',
     secondary:
-      'bg-blogSecondary text-blogSecondary-foreground border border-blogBorder hover:bg-blogMuted',
+      'bg-transparent text-[#583B1F] border border-[#583B1F] hover:bg-[#F8F5F0]',
   };
   return (
     <button
