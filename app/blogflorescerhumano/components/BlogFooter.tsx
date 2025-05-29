@@ -133,15 +133,16 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
                   aria-label="Email"
                 >
                   <Mail className="w-5 h-5" />
+                </a>              </div>
+                {/* Email como texto para facilitar cópia */}
+              <div className="text-center mt-2">
+                <a 
+                  href={`mailto:${contactInfo.email}`}
+                  className="inline text-[#E8E6E2] text-sm"
+                >
+                  <span className="select-all cursor-text">{contactInfo.email}</span>
                 </a>
               </div>
-                {/* Email separado */}
-              <a 
-                href={`mailto:${contactInfo.email}`}
-                className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 text-sm hover:underline block"
-              >
-                {contactInfo.email}
-              </a>
             </div>
           </div>
         </div>
