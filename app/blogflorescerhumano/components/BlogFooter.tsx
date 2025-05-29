@@ -24,8 +24,9 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
   };  // Informações para o rodapé
 
   return (
-    <footer className="bg-[#583B1F] text-[#F8F5F0] mt-12 border-t border-[#735B43]">      {/* Seção principal do footer */}
-      <div className="container mx-auto px-4 py-12">        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <footer className="bg-[#583B1F] text-[#F8F5F0] mt-12 border-t border-[#735B43]">
+      {/* Seção principal do footer */}
+      <div className="container mx-auto px-4 py-12">        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* Seção da Newsletter */}
           <div>
@@ -34,75 +35,7 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
               Receba conteúdos sobre desenvolvimento pessoal e bem-estar emocional.
             </p>
             <NewsletterBlogForm />
-          </div>
-
-          {/* Seção Central - Logo e Conecte-se */}
-          <div className="text-center space-y-4">
-            {/* Logo do Blog */}            <div className="flex justify-center mb-4">
-              <Image
-                src="/blogflorescerhumano/logos-blog/logo-com-fundo-branco.webp"
-                alt="Logo Florescer Humano"
-                width={150}
-                height={150}
-                className="rounded-full shadow-md bg-white p-2"
-                priority
-              />
-            </div>
-            
-            {/* Slogan */}
-            <p className="text-[#E8E6E2] text-lg font-serif italic mb-4">
-              "Oferecendo um jardim de reflexão"
-            </p>
-
-            {/* Conecte-se Conosco */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-[#F8F5F0]">Conecte-se Conosco</h3>
-              <a 
-                href={`mailto:${contactInfo.email}`}
-                className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 text-sm hover:underline"
-              >
-                {contactInfo.email}
-              </a>
-            </div>
-
-            {/* Redes Sociais Centralizadas */}
-            <div className="flex justify-center gap-3 mt-4">
-              <a 
-                href={contactInfo.instagramUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                aria-label="Instagram"
-                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a 
-                href={contactInfo.linkedinUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                aria-label="LinkedIn"
-                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-              <a 
-                href={contactInfo.youtubeUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                aria-label="YouTube"
-                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
-              >
-                <Youtube className="h-4 w-4" />
-              </a>
-              <a 
-                href={`mailto:${contactInfo.email}`}
-                aria-label="Email"
-                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
-              >
-                <Mail className="h-4 w-4" />
-              </a>
-            </div>
-          </div>{/* Seção de Agendamento */}
+          </div>          {/* Seção de Agendamento */}
           <div>
             <div className="bg-[#F8F5F0] rounded-lg p-6 text-[#583B1F] shadow-sm border border-[#E8E6E2]">
               <h3 className="text-lg font-semibold mb-4 text-[#583B1F]">Gostaria de agendar uma sessão?</h3>
@@ -135,12 +68,53 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
               </AgendamentoBotao>
             </div>
           </div>
-        </div>        {/* Seção inferior - Copyright */}
+        </div>
+
+        {/* Seção inferior - Redes sociais e copyright */}
         <div className="mt-12 pt-8 border-t border-[#735B43]">
-          <div className="text-center">
-            <p className="text-sm text-[#E8E6E2]">
-              &copy; {new Date().getFullYear()} Psicólogo Marcos Daniel Gomes Dantas - CRP 11/11854
-            </p>
+          <div className="flex flex-col md:flex-row md:justify-between items-center gap-6">
+            {/* Redes Sociais */}
+            <div className="flex gap-4">
+              <a 
+                href={contactInfo.instagramUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a 
+                href={contactInfo.linkedinUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="LinkedIn"
+                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+              <a 
+                href={contactInfo.youtubeUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="YouTube"
+                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+              <a 
+                href={`mailto:${contactInfo.email}`}
+                aria-label="Email"
+                className="p-2 bg-[#A57C3A] text-white rounded-full hover:bg-[#6B7B3F] transition-colors duration-200"
+              >
+                <Mail className="h-5 w-5" />
+              </a>
+            </div>
+
+            {/* Copyright */}
+            <div className="text-center md:text-right text-sm">
+              <p>&copy; {new Date().getFullYear()} Psicólogo Marcos Daniel Gomes Dantas - CRP 11/11854</p>
+            </div>
           </div>
         </div>
       </div>

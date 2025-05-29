@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import MaterialCard, { MaterialCardProps } from './MaterialCard';
+import ButtonBlog from './ButtonBlog'; // Adicionar importação
 
 // Interface para dados do material compatível com MaterialCard
 interface Material extends Omit<MaterialCardProps, 'imageUrl'> {
@@ -82,15 +83,11 @@ export default function RecentMaterials() {
           ))}
         </div>        {/* Botão Ver todos os materiais */}
         <div className="mt-12 text-center">
-          <Link 
-            href="/blogflorescerhumano/materiais"
-            className="inline-flex items-center px-8 py-4 bg-[#583B1F] text-white 
-                     hover:bg-[#5B3E22] transition-all duration-300 rounded-lg 
-                     shadow-md hover:shadow-lg font-medium text-lg
-                     transform hover:scale-105"
-          >
-            <span>Ver todos os materiais</span>
-            <ArrowRight className="ml-3 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          <Link href="/blogflorescerhumano/materiais" passHref legacyBehavior>
+            <ButtonBlog variant="primary" className="px-8 py-3 inline-flex items-center gap-3 whitespace-nowrap">
+              <span>Ver todos os materiais</span>
+              <ArrowRight className="h-5 w-5 flex-shrink-0" />
+            </ButtonBlog>
           </Link>
         </div>
       </div>
