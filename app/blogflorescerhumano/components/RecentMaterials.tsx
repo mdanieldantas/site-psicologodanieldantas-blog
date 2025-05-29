@@ -84,9 +84,9 @@ export default function RecentMaterials() {
         </div>        {/* Botão Ver todos os materiais */}
         <div className="mt-12 text-center">
           <Link href="/blogflorescerhumano/materiais" passHref legacyBehavior>
-            <ButtonBlog variant="primary">
+            <ButtonBlog variant="primary" className="px-8 py-3 inline-flex items-center gap-3 whitespace-nowrap">
               <span>Ver todos os materiais</span>
-              <ArrowRight className="ml-3 h-5 w-5" />
+              <ArrowRight className="h-5 w-5 flex-shrink-0" />
             </ButtonBlog>
           </Link>
         </div>
