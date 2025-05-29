@@ -147,17 +147,17 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
         
         {/* Link para voltar ao site principal e política */}
         <div className="mt-6 pt-4 border-t border-[#735B43]">
-          <div className="flex flex-wrap justify-center gap-4 mb-3">
+          <div className="flex justify-center items-center gap-4 mb-3 flex-wrap">
             <Link 
               href="/" 
-              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline flex items-center gap-1"
+              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline flex items-center"
             >
               Voltar ao site principal
             </Link>
             <span className="text-xs text-[#735B43]">|</span>
             <Link 
               href="/politica-de-privacidade" 
-              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline"
+              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline flex items-center"
             >
               Política de Privacidade
             </Link>
