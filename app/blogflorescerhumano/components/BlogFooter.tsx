@@ -23,30 +23,34 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
     profileImage: '/blogflorescerhumano/autores/autores-daniel-psi-blog.webp', // Caminho correto para a imagem do perfil
   };  // Informações para o rodapé
 
-  return (
-    <footer className="bg-[#583B1F] text-[#F8F5F0] mt-12 border-t border-[#735B43]">
+  return (    <footer className="bg-[#583B1F] text-[#F8F5F0] mt-12 border-t border-[#735B43]">
       {/* Seção principal do footer */}
-      <div className="container mx-auto px-4 py-12">        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           
-          {/* Primeira Coluna - Newsletter */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3">Mantenha-se Atualizado</h3>
-            <p className="text-[#E8E6E2] mb-6 text-sm leading-relaxed">
+          {/* Primeira Coluna - Newsletter (prioridade mobile) */}
+          <div className="order-2 md:order-1 lg:order-1">
+            <h3 className="text-lg font-semibold mb-2 text-[#F8F5F0]">Mantenha-se Atualizado</h3>
+            <p className="text-[#E8E6E2] mb-4 text-sm leading-relaxed">
               Receba conteúdos sobre desenvolvimento pessoal e bem-estar emocional.
             </p>
             <NewsletterBlogForm />
           </div>
 
-          {/* Segunda Coluna - Agendamento */}
-          <div>
-            <div className="bg-[#F8F5F0] rounded-lg p-6 text-[#583B1F] shadow-sm border border-[#E8E6E2]">
-              <h3 className="text-lg font-semibold mb-4 text-[#583B1F]">Gostaria de agendar uma sessão?</h3>
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-4">                <div className="relative overflow-hidden w-20 h-20 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">
+          {/* Segunda Coluna - Agendamento (destaque mobile) */}
+          <div className="order-1 md:order-2 lg:order-2 lg:border-l lg:border-r lg:border-[#735B43] lg:px-6">
+            <div className="bg-[#F8F5F0] rounded-lg p-4 text-[#583B1F] shadow-sm border border-[#E8E6E2]">
+              <h3 className="text-lg font-semibold mb-3 text-[#583B1F] flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Gostaria de agendar uma sessão?
+              </h3>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-3">
+                <div className="relative overflow-hidden w-16 h-16 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">
                   <Image 
                     src={contactInfo.profileImage} 
                     alt="Dr. Daniel Dantas - Psicólogo" 
-                    width={80} 
-                    height={80} 
+                    width={64} 
+                    height={64} 
                     className="object-cover"
                     priority
                     onError={(e) => {
@@ -56,13 +60,12 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
                     }}
                   />
                 </div>
-                <p className="text-sm leading-relaxed text-[#7D6E63] text-center sm:text-left">
-                  Se você está considerando buscar um espaço para você, te convido a entrar em contato. Ficarei feliz em te receber para conversarmos.
+                <p className="text-xs leading-relaxed text-[#7D6E63] text-center sm:text-left">
+                  Se você está considerando buscar um espaço para você, te convido a entrar em contato.
                 </p>
-              </div>
-                <AgendamentoBotao 
+              </div>              <AgendamentoBotao 
                 variant="primary" 
-                size="md" 
+                size="sm" 
                 fullWidth={true}
                 className="bg-[#583B1F] hover:bg-[#5B3E22]"
               >
@@ -72,49 +75,100 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
           </div>
 
           {/* Terceira Coluna - Logo e Conecte-se */}
-          <div className="text-center space-y-4">
-            {/* Logo do Blog */}            <div className="flex justify-center mb-4">
+          <div className="order-3 text-center space-y-3">
+            {/* Logo do Blog - tamanho reduzido */}
+            <div className="flex justify-center mb-2">
               <Image
                 src="/blogflorescerhumano/logos-blog/logo-com-fundo-branco.webp"
                 alt="Logo Florescer Humano"
-                width={150}
-                height={150}
-                className="rounded-full shadow-md bg-white p-2"
+                width={100}
+                height={100}
+                className="rounded-full shadow-md bg-white p-1"
                 priority
               />
             </div>
             
             {/* Slogan */}
-            <p className="text-[#E8E6E2] text-lg font-serif italic mb-4">
+            <p className="text-[#E8E6E2] text-sm font-serif italic mb-3">
               "Oferecendo um jardim de reflexão"
             </p>
 
             {/* Conecte-se Conosco */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               <h3 className="text-lg font-semibold text-[#F8F5F0]">Conecte-se Conosco</h3>
+              
+              {/* Redes Sociais */}
+              <div className="flex justify-center gap-3 mb-2">
+                <a 
+                  href={contactInfo.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a 
+                  href={contactInfo.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a 
+                  href={contactInfo.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200"
+                  aria-label="YouTube"
+                >
+                  <Youtube className="w-5 h-5" />
+                </a>
+                <a 
+                  href={`mailto:${contactInfo.email}`}
+                  className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200"
+                  aria-label="Email"
+                >
+                  <Mail className="w-5 h-5" />
+                </a>
+              </div>
+                {/* Email separado */}
               <a 
                 href={`mailto:${contactInfo.email}`}
-                className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 text-sm hover:underline"
+                className="text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 text-sm hover:underline block"
               >
                 {contactInfo.email}
               </a>
             </div>
           </div>
-        </div>        {/* Seção inferior - Copyright */}
-        <div className="mt-12 pt-8 border-t border-[#735B43]">
-          <div className="text-center space-y-2">
-            <p className="text-sm text-[#E8E6E2]">
-              &copy; {new Date().getFullYear()} Psicólogo Marcos Daniel Gomes Dantas - CRP 11/11854
-            </p>
-            <p className="text-xs text-[#E8E6E2]/80">
-              <Link 
-                href="/politica-de-privacidade" 
-                className="hover:text-[#A57C3A] transition-colors duration-200 hover:underline"
-              >
-                Política de Privacidade
-              </Link>
-              {" | "}
-              <span>Todos os direitos reservados</span>
+        </div>
+        
+        {/* Link para voltar ao site principal e política */}
+        <div className="mt-6 pt-4 border-t border-[#735B43]">
+          <div className="flex flex-wrap justify-center gap-4 mb-3">
+            <Link 
+              href="/" 
+              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline flex items-center gap-1"
+            >
+              Voltar ao site principal
+            </Link>
+            <span className="text-xs text-[#735B43]">|</span>
+            <Link 
+              href="/politica-de-privacidade" 
+              className="text-xs text-[#E8E6E2] hover:text-[#A57C3A] transition-colors duration-200 hover:underline"
+            >
+              Política de Privacidade
+            </Link>
+          </div>
+        </div>
+
+        {/* Seção inferior - Copyright compacta */}
+        <div className="mt-4 pt-4 border-t border-[#735B43]">
+          <div className="text-center">
+            <p className="text-xs text-[#E8E6E2]">
+              &copy; {new Date().getFullYear()} Psicólogo Marcos Daniel Gomes Dantas - CRP 11/11854 | Todos os direitos reservados
             </p>
           </div>
         </div>
