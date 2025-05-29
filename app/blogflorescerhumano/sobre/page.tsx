@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { supabaseServer } from '@/lib/supabase/server'; 
 import type { Database } from '@/types/supabase'; 
 import BannerImage from '../components/BannerImage';
+import ButtonBlog from '../components/ButtonBlog';
 
 // --- Metadados para a Página Sobre --- //
 export const metadata: Metadata = {
@@ -319,14 +320,16 @@ export default async function SobrePage() {
             Tem dúvidas, sugestões ou interesse em colaborar? Adoraríamos ouvir você!
           </p>
           
-          <Link 
-            href="/blogflorescerhumano/contato" 
-            className="inline-flex items-center gap-2 bg-[#A57C3A] hover:bg-[#583B1F] text-white px-8 py-3.5 rounded-lg font-medium transition-colors duration-300 shadow-md"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Entre em Contato
+          <Link href="/blogflorescerhumano/contato">
+            <ButtonBlog
+              variant="primary"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-lg group"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v10a2 2 0 002 2z" />
+              </svg>
+              Entre em Contato
+            </ButtonBlog>
           </Link>
         </div>
       </section>
