@@ -18,9 +18,9 @@ interface Material extends Omit<MaterialCardProps, 'imageUrl'> {
 const sampleMaterials: Material[] = [
   {
     id: 1,
-    title: 'Guia Prático de Escuta Ativa',
+    title: 'Em breve...',
     type: 'E-book',
-    description: 'Um guia completo para desenvolver habilidades de escuta ativa na prática clínica e no desenvolvimento pessoal.',
+    description: 'Em breve.',
     imageUrl: '/blogflorescerhumano/test-image.webp',
     featured: true,
     tags: ['Escuta', 'Comunicação', 'Terapia'],
@@ -31,9 +31,9 @@ const sampleMaterials: Material[] = [
   },
   {
     id: 2,
-    title: 'Cartas para Reflexão Humanista',
+    title: 'Em breve...',
     type: 'Kit Digital',
-    description: 'Um conjunto de cartas inspiradoras para práticas de autoconhecimento e reflexão baseadas na abordagem humanista.',
+    description: 'Em breve...',
     imageUrl: '/blogflorescerhumano/test-image.webp',
     tags: ['Autoconhecimento', 'Reflexão', 'Humanismo'],
     fileSize: '15 MB',
@@ -43,9 +43,9 @@ const sampleMaterials: Material[] = [
   },
   {
     id: 3,
-    title: 'Meditação Guiada: Encontrando seu Felt Sense',
+    title: 'Em breve...',
     type: 'Áudio',
-    description: 'Uma meditação guiada baseada na Terapia Corporal para conectar-se com suas sensações internas e sabedoria do corpo.',
+    description: 'Em breve.',
     imageUrl: '/blogflorescerhumano/test-image.webp',
     tags: ['Meditação', 'Felt Sense', 'Corpo'],
     fileSize: '45 MB',
