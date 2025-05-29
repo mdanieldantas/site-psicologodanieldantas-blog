@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import AgendamentoCard from './components/AgendamentoCard';
 import BannerImage from '../components/BannerImage';
 
 export default function ContatoPage() {
@@ -75,10 +74,9 @@ export default function ContatoPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 md:py-12">
-        {/* Grid de cards com espaçamento uniforme */}
-        <div className="grid grid-cols-1 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {/* Informações de Contato */}
-          <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-[#C19A6B]/20 h-full">
+        {/* Grid de cards com espaçamento uniforme */}        <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {/* Apenas as Informações de Contato */}
+          <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-[#C19A6B]/20">
             <h2 className="text-2xl md:text-3xl font-['Old_Roman'] mb-4 md:mb-6 text-[#583B1F] border-b border-[#C19A6B]/20 pb-3">Fale Conosco</h2>
             <p className="text-[#735B43] mb-6 md:mb-8 text-sm md:text-base">
               Tem alguma dúvida, sugestão, ou gostaria de propor uma parceria?
@@ -133,11 +131,6 @@ export default function ContatoPage() {
                 <Youtube className="h-4 w-4 md:h-5 md:w-5 text-white" />
               </Link>
             </div>
-          </div>
-          
-          {/* Card de Agendamento */}
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-            <AgendamentoCard />
           </div>
         </div>
       </main>
