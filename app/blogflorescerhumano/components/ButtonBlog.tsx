@@ -13,9 +13,8 @@ const ButtonBlog: React.FC<ButtonBlogProps> = ({
   className,
   variant = 'primary',
   ...props
-}) => {
-  const base =
-    'px-6 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blogPrimary focus:ring-offset-2';  const variants = {
+}) => {  const base =
+    'px-6 py-2 rounded-md font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blogPrimary focus:ring-offset-2 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-xl';const variants = {
     primary:
       'bg-[#583B1F] text-white border border-[#583B1F] hover:bg-[#6B7B3F]',
     secondary:
