@@ -26,18 +26,17 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const query = searchParams.q;
   const baseTitle = 'Blog Florescer Humano';
-  const baseDescription = 'Encontre artigos sobre psicologia humanista, autoconhecimento, bem-estar e relacionamentos.';
+  const baseDescription = 'Encontre conteúdos, artigos, informações sobre psicologia, serviços e muito mais em nosso site.';
   const baseUrl = '/blogflorescerhumano/buscar';
   // CORRIGIDO: Usar a instância diretamente, sem chamar ()
   const supabase = supabaseServer;
-
-  let title = `Buscar Artigos | ${baseTitle}`;
+  let title = `Buscar no Site | ${baseTitle}`;
   let description = `Resultados da busca por "${query}" no ${baseTitle}. ${baseDescription}`;
   let url = `${baseUrl}?q=${encodeURIComponent(query || '')}`;
 
   if (!query) {
-    title = `Buscar Artigos | ${baseTitle}`;
-    description = `Use a busca para encontrar artigos no ${baseTitle}. ${baseDescription}`;
+    title = `Buscar no Site | ${baseTitle}`;
+    description = `Use a busca para encontrar conteúdos no ${baseTitle}. ${baseDescription}`;
     url = baseUrl;
   } else {
      // Tenta encontrar a categoria correspondente ao query
@@ -179,9 +178,8 @@ async function SearchResults({
           <Search className="h-16 w-16 text-[#C19A6B] mx-auto mb-4" />
           <h3 className="font-serif text-xl font-semibold text-[#583B1F] mb-3">
             Comece sua busca
-          </h3>
-          <p className="font-sans text-[#7D6E63] leading-relaxed">
-            Digite algo para buscar ou selecione uma categoria para explorar nossos artigos.
+          </h3>          <p className="font-sans text-[#7D6E63] leading-relaxed">
+            Digite algo para buscar ou selecione uma categoria para explorar o conteúdo do site.
           </p>
         </div>
       </div>
@@ -219,9 +217,8 @@ async function SearchResults({
           </h3>
           <p className="font-sans text-[#7D6E63] leading-relaxed">
             {message}
-          </p>
-          <p className="font-sans text-sm text-[#7D6E63] mt-3">
-            Tente buscar por outros termos ou explore nossas categorias.
+          </p>          <p className="font-sans text-sm text-[#7D6E63] mt-3">
+            Tente buscar por outros termos ou explore as diferentes seções do site.
           </p>
         </div>
       </div>
@@ -302,28 +299,26 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
       {/* Hero Banner Section */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]/10">
-        <BannerImage 
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]/10">        <BannerImage 
           bannerPath="/blogflorescerhumano/banners-blog/banner-search.webp"
           fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
-          alt="Banner de Busca do Blog Florescer Humano"
+          alt="Banner de Busca do Site Psicólogo Daniel Dantas"
         />
         
         {/* Hero Content Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
           <div className="container mx-auto px-4 h-full flex items-center justify-center">
-            <div className="text-center text-white max-w-4xl">
-              <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
+            <div className="text-center text-white max-w-4xl">              <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
                 <Search className="h-4 w-4 mr-2" />
-                <span className="font-sans text-sm font-medium">Busca de Artigos</span>
+                <span className="font-sans text-sm font-medium">Busca no Site</span>
               </div>
               
               <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                Encontre o Conhecimento que Procura
+                Encontre que Procura
               </h1>
               
               <p className="font-sans text-lg md:text-xl font-light leading-relaxed opacity-95 max-w-2xl mx-auto">
-                Explore nossa biblioteca de artigos sobre psicologia humanista, desenvolvimento pessoal e bem-estar emocional
+                Busque por artigos, conteúdos, categorias e temas em todo o nosso site
               </p>
             </div>
           </div>
@@ -346,11 +341,10 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
       </nav>
 
       {/* Conteúdo Principal */}
-      <main className="container mx-auto px-4 py-12">
-        {/* Título da Página */}
+      <main className="container mx-auto px-4 py-12">        {/* Título da Página */}
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#583B1F] mb-4">
-            {query ? searchTitle : 'Buscar Artigos'}
+            {query ? searchTitle : 'Buscar no Site'}
           </h2>
           
           {query && (
