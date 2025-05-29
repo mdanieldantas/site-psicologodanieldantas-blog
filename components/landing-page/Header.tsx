@@ -26,31 +26,29 @@ const Header: React.FC<HeaderProps> = ({
       <nav className="container mx-auto px-4">        {/* Container da navegação com estilo condicional baseado no scroll */}
         <div
           className={`flex items-center justify-between transition-all duration-300`}
-        >
-          {/* Logo: Visível sempre em desktop, muda de tamanho conforme scroll */}
+        >          {/* Logo: Visível sempre em desktop, muda de tamanho conforme scroll */}
           {!isMobile && (
             <Link href="/" className={`transition-all duration-300 ${
-              scrolledPastHero ? "w-[120px]" : "w-[200px]"
+              scrolledPastHero ? "w-[140px]" : "w-[240px]"
             }`}>
               <Image
                 src="/navbar-logo-horizontal-navbar.webp"
                 alt="Daniel Dantas - Psicólogo"
-                width={200}
-                height={80}
+                width={240}
+                height={96}
                 className="w-full h-auto transition-all duration-300"
                 priority
                 style={{ width: '100%', height: 'auto' }}
               />
             </Link>
-          )}
-          {isMobile && (
+          )}          {isMobile && (
             <div className="flex items-center justify-between w-full">
-              <Link href="/" className="w-[100px]">
+              <Link href="/" className="w-[140px]">
                 <Image
                   src="/navbar-logo-horizontal-navbar.webp"
                   alt="Daniel Dantas - Psicólogo"
-                  width={100}
-                  height={40}
+                  width={140}
+                  height={56}
                   className="w-full h-auto"
                   style={{ width: '100%', height: 'auto' }}
                   priority
