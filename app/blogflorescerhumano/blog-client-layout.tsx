@@ -9,12 +9,15 @@ import ContentWrapper from './components/ContentWrapper';
 import ScrollButton from './components/ScrollButton';
 import BlogSchema from './components/BlogSchema';
 import { ConnectionQualityAdjuster } from './components/ConnectionQualityAdjuster';
+import { fontVariables } from './fonts'; // Importação das fontes do sistema tipográfico
 import './ui/globalsBlog.css';
 import './ui/mobile-improvements.css';
+import './ui/header-icons-fix.css'; // Correção dos ícones do header
+import './ui/underline-fixes.css'; // Correção de sublinhados em títulos e botões
 
 // Removida a exportação de metadata daqui
 
-export default function BlogClientLayout({ children }: { children: React.ReactNode }) {  const pathname = usePathname();
+export default function BlogClientLayout({ children }: { children: React.ReactNode }) {const pathname = usePathname();
   const isHome = pathname === '/blogflorescerhumano';
     // Carrega scripts quando o componente monta
   React.useEffect(() => {
@@ -138,13 +141,13 @@ export default function BlogClientLayout({ children }: { children: React.ReactNo
         executarTodosTestes();
       }, 3000);
     }
-  }, []);
-  return (
+  }, []);  return (
     <>
       {/* Componente que ajusta a qualidade baseado na conexão do usuário */}
       <ConnectionQualityAdjuster />
       
-      <div className="min-h-screen flex flex-col bg-[#F8F5F0]">
+      {/* Container principal com variáveis de fontes aplicadas */}
+      <div className={`min-h-screen flex flex-col bg-[#F8F5F0] ${fontVariables}`}>
         {/* Navbar */}
         <BlogHeader />
 

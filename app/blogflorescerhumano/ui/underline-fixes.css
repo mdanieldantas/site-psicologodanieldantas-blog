@@ -1,0 +1,43 @@
+/**
+ * Correções de remoção de sublinhados - Blog Florescer Humano
+ * Este arquivo remove sublinhados indesejados de títulos, botões e elementos de navegação
+ */
+
+/* === CORREÇÕES DE SUBLINHADO PARA TÍTULOS === */
+h1, h2, h3, h4, h5, h6,
+.blog-title-main, .blog-section-title, .blog-article-title,
+.blog-h1, .blog-h2, .blog-h3, .blog-h4 {
+  text-decoration: none !important;
+}
+
+h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
+.blog-title-main *, .blog-section-title *, .blog-article-title *,
+.blog-h1 *, .blog-h2 *, .blog-h3 *, .blog-h4 * {
+  text-decoration: none !important;
+}
+
+/* === CORREÇÕES DE SUBLINHADO PARA BOTÕES E NAVEGAÇÃO === */
+button, .btn, .button, a.btn, a.button,
+.blog-btn, a.blog-btn, .blog-btn-secondary,
+nav a, header a, .navbar a, a[role="button"] {
+  text-decoration: none !important;
+}
+
+/* === LINKS EM PARÁGRAFOS MANTÊM SUBLINHADO === */
+p a, li a, .blog-paragraph a, .blog-text a {
+  text-decoration: underline;
+  text-decoration-color: var(--blog-marrom-dourado);
+}
+
+/* === BOTÕES ESPECÍFICOS === */
+header button, nav button, .icon-button, 
+button.icon, button[aria-label] {
+  text-decoration: none !important;
+  background: transparent;
+}
+
+/* === REMOVER SUBLINHADO EM HOVER === */
+a:hover, button:hover, .btn:hover, 
+.blog-nav-item:hover, .blog-btn:hover {
+  text-decoration: none !important;
+}

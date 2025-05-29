@@ -1,0 +1,71 @@
+/**
+ * Correção dos ícones do Header - Florescer Humano
+ * Este arquivo corrige a transformação indesejada dos ícones em botões marrom
+ */
+
+/* === CORREÇÃO DOS ÍCONES DO HEADER === */
+.blog-header button,
+.blog-header a[role="button"],
+.blog-header .icon,
+.blog-header svg {
+  /* Remover as propriedades do botão padrão */
+  background-color: transparent !important;
+  color: var(--blog-marrom-escuro) !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.25rem !important;
+  border-radius: 0.25rem !important;
+  font-family: inherit !important;
+  font-weight: normal !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+/* Hover específico para os ícones */
+.blog-header button:hover,
+.blog-header a[role="button"]:hover,
+.blog-header .icon:hover,
+.blog-header svg:hover {
+  background-color: var(--blog-bege-suave) !important;
+  color: var(--blog-marrom-escuro) !important;
+}
+
+/* Ícones específicos */
+.blog-header .search-icon,
+.blog-header .menu-icon,
+.blog-header .share-icon,
+.blog-header .settings-icon {
+  color: var(--blog-marrom-escuro) !important;
+  background-color: transparent !important;
+  stroke-width: 1.5;
+}
+
+/* Ícone do menu hamburger */
+.blog-header .menu-button {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0.5rem !important;
+}
+
+/* Correção para os ícones Lucide */
+.blog-header svg[data-lucide] {
+  color: var(--blog-marrom-escuro) !important;
+  stroke-width: 1.5;
+  width: 20px;
+  height: 20px;
+}
+
+/* Botões específicos para acessibilidade */
+.blog-header .accessibility-button {
+  background-color: transparent !important;
+  color: var(--blog-marrom-escuro) !important;
+  border: 1px solid var(--blog-marrom-escuro) !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+/* Estado ativo e hover para botões de acessibilidade */
+.blog-header .accessibility-button.active,
+.blog-header .accessibility-button:hover {
+  background-color: var(--blog-bege-suave) !important;
+  color: var(--blog-marrom-escuro) !important;
+}
