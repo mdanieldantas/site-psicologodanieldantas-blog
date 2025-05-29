@@ -63,34 +63,32 @@ const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
           )}
-          
-          {/* Navegação Desktop: Sempre visível em desktop, com design adaptado ao scroll */}
+            {/* Navegação Desktop: Sempre visível em desktop, com design adaptado ao scroll */}
           {!isMobile && (
-            <div className="flex items-center space-x-6">              <a href="#inicio" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+            <div className="flex items-center space-x-6">              <a href="#inicio" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Início
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#sobre" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+              <a href="#sobre" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Sobre
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#servicos" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+              <a href="#servicos" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Serviços
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
-              </a>              <a href="#faq" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+              </a>              <a href="#faq" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 FAQ
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#blog" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+              <a href="#blog" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Blog
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              <a href="#footer" className={`text-sm ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
+              <a href="#footer" className={`text-base ${scrolledPastHero ? 'text-[#583B1F]' : 'text-[#735B43]'} hover:text-[#583B1F] transition-colors duration-200 relative group px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A57C3A]`}>
                 Contato
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#A57C3A] transition-all duration-300 group-hover:w-full"></span>
               </a>
-              
-              {/* CTA mais destacado */}
+                {/* CTA mais destacado */}
               <button
                 type="button"
                 onClick={openModal}
@@ -98,7 +96,7 @@ const Header: React.FC<HeaderProps> = ({
                   scrolledPastHero 
                   ? "bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] shadow-md" 
                   : "border-2 border-[#735B43] text-[#735B43] hover:bg-[#735B43] hover:text-[#F8F5F0]"
-                } px-8 py-2 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] transform hover:scale-[1.02]`}
+                } px-8 py-2 text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C19A6B] transform hover:scale-[1.02]`}
               >
                 Agendar Consulta
               </button>
