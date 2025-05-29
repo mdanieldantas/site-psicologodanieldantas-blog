@@ -1,3 +1,5 @@
+"use client";
+
 // Componente Footer específico para o Blog
 // Localização: app/blogflorescerhumano/components/BlogFooter.tsx
 import React from 'react';
