@@ -11,7 +11,6 @@ import LazyLoadSection from "./components/LazyLoadSection";
 import Link from "next/link";
 import Image from "next/image";
 import ScrollToFeaturedButton from "./components/ScrollToFeaturedButton";
-import ButtonBlog from "./components/ButtonBlog";
 
 // --- Metadados Estáticos para a Página Inicial do Blog --- //
 export const metadata: Metadata = {
@@ -97,26 +96,30 @@ export default async function BlogHomePage() {
             {/* Descrição principal */}
             <p className="text-xl md:text-2xl text-[#583B1F]/90 font-light leading-relaxed max-w-lg mb-8 pl-5">
               Explorando o potencial humano através da psicologia humanista e do autoconhecimento.
-            </p>            {/* Botões de ação */}
+            </p>
+
+            {/* Botões de ação */}
             <div className="flex flex-col sm:flex-row gap-4 pl-5">
-              <Link href="/blogflorescerhumano/artigos">
-                <ButtonBlog variant="primary" className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-medium group">
-                  Explorar Artigos
-                  <svg
-                    className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </ButtonBlog>
+              <Link
+                href="/blogflorescerhumano/artigos"
+                className="inline-flex items-center justify-center px-8 py-4 bg-[#583B1F] text-white rounded-xl hover:bg-[#6B8E23] transition-all duration-300 transform hover:scale-105 shadow-lg font-medium group"
+              >
+                Explorar Artigos
+                <svg
+                  className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </Link>
               
-              <Link href="/blogflorescerhumano/categorias">
-                <ButtonBlog variant="secondary" className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-medium">
-                  Ver Categorias
-                </ButtonBlog>
+              <Link
+                href="/blogflorescerhumano/categorias"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#583B1F] rounded-xl border-2 border-[#A57C3A] hover:bg-[#F8F5F0] transition-all duration-300 font-medium"
+              >
+                Ver Categorias
               </Link>
             </div>
 

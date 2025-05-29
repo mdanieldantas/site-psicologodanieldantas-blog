@@ -32,13 +32,14 @@ export default function AgendamentoBotao({
   children = 'Agendar primeira sessão'
 }: AgendamentoBotaoProps) {
   const { openModal } = useWhatsAppModal();
-  // Definições de estilos base - seguindo padrões do ButtonBlog
-  const baseStyles = "font-medium rounded-lg transition-all duration-300 shadow-lg flex items-center justify-center gap-2 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl";
+
+  // Definições de estilos base
+  const baseStyles = "font-medium rounded-lg transition-all duration-300 shadow-md flex items-center justify-center gap-2 transform hover:translate-y-[-2px]";
   
-  // Estilos de variante - seguindo padrões do designer guide
+  // Estilos de variante
   const variantStyles = {
-    primary: "bg-[#583B1F] text-white hover:bg-[#6B7B3F]",
-    secondary: "bg-white text-[#583B1F] border border-[#583B1F] hover:bg-[#F8F5F0]",
+    primary: "bg-[#583B1F] text-white hover:bg-[#735B43]",
+    secondary: "bg-[#A57C3A] text-white hover:bg-[#5B3E22]",
     ghost: "bg-transparent text-[#583B1F] border border-[#583B1F] hover:bg-[#583B1F]/10"
   };
   

@@ -9,7 +9,6 @@ import { Menu, X, Search, Share2, Settings } from 'lucide-react';
 import HeaderSearchInline from './HeaderSearchInline';
 import { useIsHomePage } from '../hooks/useIsHomePage';
 import { useRouter, usePathname } from 'next/navigation';
-import ButtonBlog from './ButtonBlog';
 
 // Definições dos tamanhos de fonte
 const FONT_SIZES = {
@@ -1396,13 +1395,14 @@ const BlogHeader = () => {
             </button>
           </div>{/* Desktop: Busca e Botão */}          <div className="hidden md:flex items-center space-x-4">
             <div className="relative self-stretch flex items-center">
-              <HeaderSearchInline />            </div>            <Link href="/">
-              <ButtonBlog variant="primary" className="text-sm flex items-center gap-2">
+              <HeaderSearchInline />            </div>
+            <Link href="/" legacyBehavior>
+              <a className="px-4 py-2 rounded-md bg-[#583B1F] text-white font-medium hover:bg-[#6B7B3F] hover:text-white transition-all duration-300 text-sm shadow-md hover:shadow-lg flex items-center gap-2 border border-[#583B1F]/20">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Site Psi Daniel Dantas
-              </ButtonBlog>
+              </a>
             </Link></div>        </nav>          {/* Menu Mobile */}        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out -mt-[2px] border-t-0 ${
           isMobileMenuOpen 
             ? 'max-h-[500px] opacity-100 bg-gradient-to-b from-[#F8F5F0] to-[#F8F5F0]/95 backdrop-blur-md shadow-md border-t-0' 
@@ -1440,10 +1440,9 @@ const BlogHeader = () => {
                 </Link>
               );
             })}            <div className="pt-3">
-              <Link href="/">
-                <ButtonBlog 
-                  variant="primary" 
-                  className="mt-4 text-center flex items-center justify-center gap-2 w-full"
+              <Link href="/" legacyBehavior>
+                <a 
+                  className="mt-4 py-3.5 px-5 rounded-lg bg-[#583B1F] text-center text-white font-medium hover:bg-[#6B7B3F] hover:text-white transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg flex items-center justify-center gap-2 border border-[#583B1F]/20"
                   style={{
                     animation: isMobileMenuOpen ? 'fadeInUp 0.4s 300ms ease forwards' : 'none'
                   }}
@@ -1452,7 +1451,7 @@ const BlogHeader = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
                   Voltar ao Site Psi Daniel Dantas
-                </ButtonBlog>
+                </a>
               </Link>
             </div>
           </div>
