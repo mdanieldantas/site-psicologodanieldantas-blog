@@ -3,6 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 // Importações dos componentes UI
 import {
   Card,

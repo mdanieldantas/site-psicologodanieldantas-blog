@@ -8,6 +8,9 @@ import BannerImage from '../components/BannerImage';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Search, Filter, BookOpen } from 'lucide-react';
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 // Interface para os parâmetros de busca (vem da URL)
 interface SearchParams {
   q?: string;

@@ -11,6 +11,9 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import CategorySchema from '../components/CategorySchema';
 import BannerImage from '../components/BannerImage';
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 // Define quantos artigos serão exibidos por página
 const ARTICLES_PER_PAGE = 6; // Valor original
 // const ARTICLES_PER_PAGE = 2; // TEMPORÁRIO PARA TESTE DE PAGINAÇÃO

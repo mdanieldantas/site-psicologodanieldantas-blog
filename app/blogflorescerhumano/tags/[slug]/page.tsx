@@ -7,6 +7,9 @@ import ArticleCardBlog from '@/app/blogflorescerhumano/components/ArticleCardBlo
 import PaginationControls from '@/app/blogflorescerhumano/components/PaginationControls'; // Importa o componente de paginação
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 interface TagPageProps {
   params: {
     slug: string; // slug da tag

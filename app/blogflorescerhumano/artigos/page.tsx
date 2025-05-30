@@ -11,13 +11,16 @@ import { Home, ChevronRight } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 import { redirect } from 'next/navigation';
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 // --- Metadados dinâmicos para SEO conforme paginação --- //
 export async function generateMetadata(
-  { searchParams }: { searchParams?: Promise<{ page?: string }> },
+  { searchParams }: { searchParams: Promise<{ page?: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const params = await searchParams;
-  const currentPage = parseInt(params?.page ?? '1', 10);
+  const resolvedParams = await searchParams;
+  const currentPage = parseInt(resolvedParams?.page ?? '1', 10);
   const isFirstPage = currentPage === 1;
   const pageTitle = isFirstPage
     ? 'Todos os Artigos | Blog Florescer Humano'
@@ -84,8 +87,8 @@ interface TodosArtigosPageProps {
 export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
   try {
     // --- Lógica de Paginação --- //
-    const params = await searchParams;
-    const currentPage = parseInt(params.page ?? '1', 10);
+    const resolvedParams = await searchParams;
+    const currentPage = parseInt(resolvedParams?.page ?? '1', 10);
     
     // Validar página
     if (isNaN(currentPage) || currentPage < 1) {

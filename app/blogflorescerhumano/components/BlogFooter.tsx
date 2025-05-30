@@ -46,14 +46,12 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
                 <Calendar className="w-4 h-4" />
                 Gostaria de agendar uma sessão?
               </h3>              <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-3">
-                <div className="relative overflow-hidden w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">
-                  <Image 
+                <div className="relative overflow-hidden w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-[#A57C3A] flex-shrink-0 shadow-md">                  <Image 
                     src={contactInfo.profileImage} 
                     alt="Dr. Daniel Dantas - Psicólogo" 
                     width={96} 
                     height={96} 
                     className="object-cover"
-                    priority
                     onError={(e) => {
                       // Fallback para quando a imagem falhar
                       const imgElement = e.currentTarget as HTMLImageElement;
@@ -79,15 +77,13 @@ const BlogFooter = () => {  // Informações de contato e redes sociais
 
           {/* Terceira Coluna - Logo e Conecte-se */}
           <div className="order-3 text-center space-y-3">
-            {/* Logo do Blog - tamanho reduzido */}
-            <div className="flex justify-center mb-2">
+            {/* Logo do Blog - tamanho reduzido */}            <div className="flex justify-center mb-2">
               <Image
                 src="/blogflorescerhumano/logos-blog/logo-com-fundo-branco.webp"
                 alt="Logo Florescer Humano"
                 width={100}
                 height={100}
                 className="rounded-full shadow-md bg-white p-1"
-                priority
               />
             </div>
             

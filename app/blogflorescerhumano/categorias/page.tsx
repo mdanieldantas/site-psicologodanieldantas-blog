@@ -36,14 +36,18 @@ export const metadata: Metadata = {
 // Define quantas categorias serão exibidas por página
 const CATEGORIES_PER_PAGE = 9; // Ajuste conforme necessário
 
+// Força renderização dinâmica para Next.js 15
+export const dynamic = 'force-dynamic';
+
 // Cria uma função estática para processar a página no build time (em vez de usar searchParams diretamente)
 export default async function CategoriasPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {  // --- Lógica de Paginação --- //
-  // Acesso às propriedades com sintaxe de colchetes
-  const page = searchParams['page'] ?? "1";
+  // Aguardar searchParams antes de acessar suas propriedades
+  const resolvedParams = await searchParams;
+  const page = resolvedParams['page'] ?? "1";
   const currentPage = parseInt(page, 10);
   const from = (currentPage - 1) * CATEGORIES_PER_PAGE;
   const to = from + CATEGORIES_PER_PAGE - 1;
