@@ -18,8 +18,8 @@ import { Button } from "@/components/ui/button";
 // Icons - Requer instalação de lucide-react: npm install lucide-react
 import { CheckCircle, XCircle, AlertCircle, ArrowLeft, Mail, Info, AlertTriangle } from "lucide-react";
 
-export default async function ConfirmarNewsletterPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
-  const { token } = await searchParams;
+export default async function ConfirmarNewsletterPage({ searchParams }: { searchParams: { token?: string } }) {
+  const { token } = searchParams;
   // Variáveis para armazenar o estado e as mensagens
   type ResultStatus = 'success' | 'error' | 'already-confirmed';
   let status: ResultStatus = 'error';

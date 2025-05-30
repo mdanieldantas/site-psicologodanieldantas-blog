@@ -7,7 +7,6 @@ import BlogHeader from './components/BlogHeader';
 import BlogFooter from './components/BlogFooter';
 import ContentWrapper from './components/ContentWrapper';
 import ScrollButton from './components/ScrollButton';
-import BlogSchema from './components/BlogSchema';
 import { ConnectionQualityAdjuster } from './components/ConnectionQualityAdjuster';
 import './ui/globalsBlog.css';
 import './ui/mobile-improvements.css';
@@ -157,11 +156,7 @@ export default function BlogClientLayout({ children }: { children: React.ReactNo
 
         {/* Footer */}
         <BlogFooter />
-          {/* Botão de Scroll */}
-        <ScrollButton />
-        
-        {/* Schema JSON-LD do Blog */}
-        <BlogSchema />
+          {/* Botão de Scroll */}        <ScrollButton />
       </div>
     </>
   );

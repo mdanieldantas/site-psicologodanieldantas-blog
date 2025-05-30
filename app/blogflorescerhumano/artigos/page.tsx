@@ -75,14 +75,14 @@ const ARTICLES_PER_PAGE = 6;
 
 // Define as props da página, incluindo searchParams para paginação
 interface TodosArtigosPageProps {
-  searchParams: Promise<{
+  searchParams: {
     page?: string;
-  }>;
+  };
 }
 
 export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
   // --- Lógica de Paginação --- //
-  const params = await searchParams;
+  const params = searchParams;
   const currentPage = parseInt(params['page'] ?? '1', 10);
   const from = (currentPage - 1) * ARTICLES_PER_PAGE;
   const to = from + ARTICLES_PER_PAGE - 1;
