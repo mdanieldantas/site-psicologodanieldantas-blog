@@ -196,15 +196,7 @@ export default async function CancelarNewsletterPage({ searchParams }: { searchP
               <p className="text-sm text-[#7D6E63] font-sans leading-relaxed">
                 Respeitamos sua decisão de não receber mais nossos conteúdos. Foi um prazer fazer parte 
                 da sua jornada.
-              </p>
-            </div>
-
-            <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-              <p className="text-sm text-[#7D6E63] font-sans">
-                <strong className="text-[#583B1F]">E-mail para cancelamento:</strong><br />
-                <span className="break-all font-medium">{subscriber!.email}</span>
-              </p>
-            </div>
+              </p>            </div>
 
             <div className="bg-red-50 p-4 rounded-lg border border-red-200">
               <div className="flex items-start gap-3">
