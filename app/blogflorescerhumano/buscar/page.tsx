@@ -16,7 +16,7 @@ interface SearchParams {
 
 // Interface para props da página
 interface BuscarPageProps {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 // --- ATUALIZADO: Gerar Metadados Dinâmicos ---
@@ -24,7 +24,8 @@ export async function generateMetadata(
   { searchParams }: BuscarPageProps,
   parent: ResolvingMetadata // Mantém o parâmetro parent
 ): Promise<Metadata> {
-  const query = searchParams.q;
+  const params = await searchParams;
+  const query = params.q;
   const baseTitle = 'Blog Florescer Humano';
   const baseDescription = 'Encontre conteúdos, artigos, informações sobre psicologia, serviços e muito mais em nosso site.';
   const baseUrl = '/blogflorescerhumano/buscar';
@@ -272,8 +273,9 @@ async function SearchResults({
 
 // --- MODIFICADO: Componente principal da página de busca ---
 export default async function BuscarPage({ searchParams }: BuscarPageProps) {
-  const query = searchParams.q;
-  const currentPage = parseInt(searchParams.page || '1', 10);
+  const params = await searchParams;
+  const query = params.q;
+  const currentPage = parseInt(params.page || '1', 10);
   // CORRIGIDO: Usar a instância diretamente, sem chamar ()
   const supabase = supabaseServer;
 

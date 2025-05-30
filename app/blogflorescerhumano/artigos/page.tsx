@@ -9,6 +9,7 @@ import { ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
+import { redirect } from 'next/navigation';
 
 // --- Metadados dinâmicos para SEO conforme paginação --- //
 export async function generateMetadata(
@@ -75,68 +76,81 @@ const ARTICLES_PER_PAGE = 6;
 
 // Define as props da página, incluindo searchParams para paginação
 interface TodosArtigosPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function TodosArtigosPage({ searchParams }: TodosArtigosPageProps) {
-  // --- Lógica de Paginação --- //
-  const params = searchParams;
-  const currentPage = parseInt(params['page'] ?? '1', 10);
-  const from = (currentPage - 1) * ARTICLES_PER_PAGE;
-  const to = from + ARTICLES_PER_PAGE - 1;
+  try {
+    // --- Lógica de Paginação --- //
+    const params = await searchParams;
+    const currentPage = parseInt(params.page ?? '1', 10);
+    
+    // Validar página
+    if (isNaN(currentPage) || currentPage < 1) {
+      redirect('/blogflorescerhumano/artigos');
+    }
+    
+    const from = (currentPage - 1) * ARTICLES_PER_PAGE;
+    const to = from + ARTICLES_PER_PAGE - 1;
 
-  // --- Busca da Contagem Total de Artigos --- //
-  const { count: totalCount, error: countError } = await supabaseServer
-    .from('artigos')
-    .select('* ', { count: 'exact', head: true })
-    .eq('status', 'publicado')
-    .lte('data_publicacao', new Date().toISOString());
-  
-  if (countError) {
-    console.error('Erro ao contar todos os artigos:', countError);
-  }
+    // --- Busca da Contagem Total de Artigos --- //
+    const { count: totalCount, error: countError } = await supabaseServer
+      .from('artigos')
+      .select('* ', { count: 'exact', head: true })
+      .eq('status', 'publicado')
+      .lte('data_publicacao', new Date().toISOString());
+    
+    if (countError) {
+      console.error('Erro ao contar todos os artigos:', countError);
+      throw new Error('Falha ao carregar artigos');
+    }
+    const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
+    
+    // Validar se a página existe
+    if (currentPage > totalPages && totalPages > 0) {
+      redirect('/blogflorescerhumano/artigos');
+    }
+    
+    // --- Busca de Artigos da Página Atual --- //
+    const { data: artigos, error } = await supabaseServer
+      .from('artigos')
+      .select(`
+        id,
+        titulo,
+        slug,
+        resumo,
+        imagem_capa_arquivo,
+        data_publicacao,
+        data_atualizacao,
+        autor:autores (
+          id,
+          nome,
+          foto_arquivo,
+          biografia
+        ),      
+        categorias ( 
+          id,
+          nome,
+          slug 
+        ),
+        tags ( 
+          id,
+          nome,
+          slug 
+        )
+      `)
+      .eq('status', 'publicado')
+      .lte('data_publicacao', new Date().toISOString())
+      .order('data_publicacao', { ascending: false })
+      .range(from, to)
+      .returns<ArtigoComCategoriaSlug[]>();
 
-  const totalPages = totalCount ? Math.ceil(totalCount / ARTICLES_PER_PAGE) : 1;
-  
-  // --- Busca de Artigos da Página Atual --- //
-  const { data: artigos, error } = await supabaseServer
-    .from('artigos')
-    .select(`
-      id,
-      titulo,
-      slug,
-      resumo,
-      imagem_capa_arquivo,
-      data_publicacao,
-      data_atualizacao,
-      autor:autores (
-        id,
-        nome,
-        foto_arquivo,
-        biografia
-      ),      
-      categorias ( 
-        id,
-        nome,
-        slug 
-      ),
-      tags ( 
-        id,
-        nome,
-        slug 
-      )
-    `)
-    .eq('status', 'publicado')
-    .lte('data_publicacao', new Date().toISOString())
-    .order('data_publicacao', { ascending: false })
-    .range(from, to)
-    .returns<ArtigoComCategoriaSlug[]>();
-
-  if (error) {
-    console.error(`Erro ao buscar artigos (Página ${currentPage}):`, error);
-  }
+    if (error) {
+      console.error(`Erro ao buscar artigos (Página ${currentPage}):`, error);
+      throw new Error('Falha ao buscar artigos');
+    }
 
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
@@ -242,9 +256,29 @@ export default async function TodosArtigosPage({ searchParams }: TodosArtigosPag
             totalCount={totalCount ?? 0}
             pageSize={ARTICLES_PER_PAGE}
             basePath="/blogflorescerhumano/artigos"
-          />
-        </Suspense>
+          />        </Suspense>
       </main>
     </div>
   );
+  } catch (error) {
+    console.error('Erro na página de artigos:', error);
+    return (
+      <div className="min-h-screen bg-[#F8F5F0] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-[#583B1F] mb-4">
+            Erro ao carregar artigos
+          </h1>
+          <p className="text-[#735B43] mb-4">
+            Ocorreu um problema ao carregar os artigos. Tente novamente.
+          </p>
+          <Link 
+            href="/blogflorescerhumano" 
+            className="bg-[#583B1F] text-white px-6 py-3 rounded-lg hover:bg-[#735B43] transition-colors"
+          >
+            Voltar ao Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }

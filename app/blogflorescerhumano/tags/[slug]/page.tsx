@@ -12,7 +12,7 @@ interface TagPageProps {
     slug: string; // slug da tag
   };
   // Adiciona searchParams à interface
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // Tipagem para o artigo com slug da categoria (necessário para o ArticleCardBlog)
@@ -79,8 +79,9 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   const tagSlug = params.slug;
 
   // --- Obter parâmetros de paginação --- //
-  const page = searchParams['page'] ?? '1';
-  const perPage = searchParams['per_page'] ?? '6'; // Define um padrão, ex: 6 artigos por página
+  const searchParamsData = await searchParams;
+  const page = searchParamsData['page'] ?? '1';
+  const perPage = searchParamsData['per_page'] ?? '6'; // Define um padrão, ex: 6 artigos por página
   const pageNumber = Math.max(1, parseInt(page as string, 10) || 1);
   const perPageNumber = Math.max(1, parseInt(perPage as string, 10) || 6);
   const offset = (pageNumber - 1) * perPageNumber;

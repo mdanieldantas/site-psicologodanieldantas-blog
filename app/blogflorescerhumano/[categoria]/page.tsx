@@ -24,9 +24,9 @@ interface CategoriaPageProps {
   params: {
     categoria: string; // slug da categoria
   };
-  searchParams: {
+  searchParams: Promise<{
     page?: string; // Parâmetro opcional para a página
-  };
+  }>;
 }
 
 // --- Geração de Metadados Dinâmicos para Categoria --- //
@@ -106,10 +106,12 @@ export default async function CategoriaEspecificaPage({
   searchParams,
 }: {
   params: { categoria: string };
-  searchParams: { page?: string };
-}) {  // Acesso direto à propriedade categoria de params e notação de colchetes para searchParams
+  searchParams: Promise<{ page?: string }>;
+}) {  
+  // Acesso direto à propriedade categoria de params e await para searchParams
   const categoriaSlug = params.categoria;
-  const page = searchParams['page'] ?? "1";
+  const searchParamsData = await searchParams;
+  const page = searchParamsData.page ?? "1";
     // Validação: filtrar slugs inválidos antes de fazer consulta ao banco
   // Aceita apenas slugs com letras minúsculas, números e hífens, com pelo menos 3 caracteres
   const validSlugPattern = /^[a-z0-9-]{3,50}$/;
