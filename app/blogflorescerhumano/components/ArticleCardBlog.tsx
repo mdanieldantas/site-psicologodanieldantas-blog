@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Clock, MessageSquare, Calendar, Tag } from "lucide-react";
 import { MotionDiv } from '@/components/ui/motion-components';
+import { getImageUrl, hasValidImage } from '@/lib/image-utils';
 
 export interface ArticleCardBlogProps {
   titulo: string;
@@ -40,44 +41,11 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
   tempoLeitura,
   numeroComentarios,
   tipoConteudo = 'artigo',
-}) => {
-  const linkArtigo = `/blogflorescerhumano/${categoriaSlug}/${slug}`;
-  const fallbackImage = '/placeholder.jpg'; // Imagem padrão caso não haja imagemUrl
-    // Função para processar URL da imagem com fallback e validação
-  const processarImagemUrl = (imagemUrl?: string) => {
-    if (!imagemUrl) return fallbackImage;
-    
-    // Se já tem o caminho completo, usar como está
-    if (imagemUrl.startsWith('/blogflorescerhumano/') || imagemUrl.startsWith('http')) {
-      return imagemUrl;
-    }
-    
-    // Mapeamento de correções para imagens conhecidas no banco
-    const correcaoImagens: Record<string, string> = {
-      'importancia-empatia-image-blog.png': 'images-general-blog/importância-da-empatia-image-blog.png',
-      'mindfulness-exercicios-blog.webp': 'images-general-blog/mindfulness-autorregulacao.png',
-      'autocompaixao-blog.jpg': 'placeholder.jpg', // Usar placeholder até a imagem ser criada
-    };
-    
-    // Verificar se precisa de correção
-    if (correcaoImagens[imagemUrl]) {
-      const imagemCorrigida = correcaoImagens[imagemUrl];
-      // Se for placeholder, retornar do diretório public principal
-      if (imagemCorrigida === 'placeholder.jpg') {
-        return `/placeholder.jpg`;
-      }
-      return `/blogflorescerhumano/${imagemCorrigida}`;
-    }
-    
-    // Se tem apenas o nome do arquivo, construir o caminho baseado na categoria
-    if (imagemUrl.includes('/')) {
-      // Já tem o caminho da categoria incluído
-      return `/blogflorescerhumano/${imagemUrl}`;
-    } else {
-      // Apenas nome do arquivo, usar a categoria para construir o caminho
-      return `/blogflorescerhumano/${categoriaSlug}/${imagemUrl}`;
-    }
-  };
+}) => {  const linkArtigo = `/blogflorescerhumano/${categoriaSlug}/${slug}`;
+  
+  // Usar nossos utilitários para processar a imagem
+  const imagemProcessada = getImageUrl(imagemUrl || null, categoriaSlug);
+  const temImagemValida = hasValidImage(imagemUrl || null);
   
   // Formatar data no padrão brasileiro
   const formatarData = (dataString?: string) => {
@@ -113,10 +81,9 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
         <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-lg group-hover:shadow-2xl border border-[#E8E6E2] transition-all duration-500 group-hover:border-[#A57C3A]/30">
           
           {/* Imagem do Artigo */}
-          <div className="relative w-full h-56 overflow-hidden">
-            <Image
-              src={processarImagemUrl(imagemUrl)}
-              alt={`Imagem para ${titulo}`}
+          <div className="relative w-full h-56 overflow-hidden">            <Image
+              src={imagemProcessada}
+              alt={temImagemValida ? `Imagem para ${titulo}` : `Imagem padrão do blog Florescer Humano - ${titulo}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -16,6 +16,7 @@ import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // I
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
 import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
+import { getImageUrl, getOgImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
 type Artigo = Database["public"]["Tables"]["artigos"]["Row"];
 type Categoria = Database["public"]["Tables"]["categorias"]["Row"];
@@ -70,15 +71,12 @@ export async function generateMetadata(
     // Isso evita o erro no console e mostra a página 404 corretamente
     notFound();
   }
-
-  // Gera URL da imagem a partir da pasta public
-  let ogImageUrl = null;
-  if (artigo.imagem_capa_arquivo) {
-    // Constrói o caminho relativo à pasta public
-    // Assumindo que imagem_capa_arquivo contém o caminho completo dentro de blogflorescerhumano
-    // Ex: 'autoconhecimento-desenvolvimento-pessoal/focalizacao-sabedoria-corpo.png'
-    ogImageUrl = `/blogflorescerhumano/${artigo.imagem_capa_arquivo}`;
-  }
+  // Gera URL da imagem com fallback e retrocompatibilidade
+  const ogImageUrl = getOgImageUrl(
+    artigo.imagem_capa_arquivo, 
+    categoriaSlugParam,
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  );
 
   const pageTitle = `${artigo.titulo ?? "Artigo"} | Blog Florescer Humano`;
   const pageDescription =
@@ -96,21 +94,16 @@ export async function generateMetadata(
       title: pageTitle,
       description: pageDescription,
       url: canonicalUrl,
-      siteName: "Blog Florescer Humano",
-      images: ogImageUrl
-        ? [
-            {
-              // Para URLs relativas, o Next.js precisa da URL base para gerar a URL absoluta para OG
-              url: new URL(
-                ogImageUrl,
-                process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-              ).toString(),
-              width: 1200, // Ajuste conforme necessário
-              height: 630, // Ajuste conforme necessário
-              alt: `Imagem para ${artigo.titulo}`,
-            },
-          ]
-        : [], // Usa imagem padrão do layout pai se não houver específica
+      siteName: "Blog Florescer Humano",      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: hasValidImage(artigo.imagem_capa_arquivo) 
+            ? `Imagem para ${artigo.titulo}` 
+            : 'Blog Florescer Humano - Artigo',
+        },
+      ],
       locale: "pt_BR",
       type: "article", // Define o tipo como artigo para OG
       // publishedTime: artigo.data_publicacao, // Requer buscar data_publicacao
@@ -119,16 +112,7 @@ export async function generateMetadata(
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
-      description: pageDescription,
-      // Twitter também precisa de URLs absolutas
-      images: ogImageUrl
-        ? [
-            new URL(
-              ogImageUrl,
-              process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-            ).toString(),
-          ]
-        : [], // URL da imagem para Twitter
+      description: pageDescription,      images: [ogImageUrl],
       // site: '@seuTwitter', // Opcional: seu handle do Twitter
       // creator: '@autorTwitter', // Opcional: handle do autor
     },
@@ -189,27 +173,22 @@ export default async function ArtigoEspecificoPage({
     categorias,
     autores,
     tags,
-    resumo,
-  } = artigo; // Extrai o ID e resumo também
+    resumo,  } = artigo; // Extrai o ID e resumo também
+  
   const nomeAutor = autores?.nome ?? "Autor Desconhecido";
   const nomeCategoria = categorias?.nome ?? "Categoria Desconhecida";
   const categoriaSlug = categorias?.slug ?? "sem-categoria";
+
+  // --- Geração de URL da Imagem com Fallback --- //
+  const imageUrl = getImageUrl(imagem_capa_arquivo, categoriaSlug);
 
   // --- Formatação da Data --- //
   const dataFormatada = data_publicacao
     ? new Date(data_publicacao).toLocaleDateString("pt-BR", {
         year: "numeric",
         month: "long",
-        day: "numeric",
-      })
+        day: "numeric",      })
     : "Data não disponível";
-
-  // --- Geração de URL da Imagem --- //
-  let imageUrl = null;
-  if (imagem_capa_arquivo) {
-    // Constrói o caminho relativo à pasta public
-    imageUrl = `/blogflorescerhumano/${imagem_capa_arquivo}`;
-  }
 
   // --- Construção da URL Completa para Compartilhamento --- //
   const baseUrl =
@@ -224,11 +203,7 @@ export default async function ArtigoEspecificoPage({
         description={resumo || ""}
         publishDate={data_publicacao || ""}
         authorName={nomeAutor}
-        imagePath={
-          imagem_capa_arquivo
-            ? `/blogflorescerhumano/${imagem_capa_arquivo}`
-            : undefined
-        }
+        imagePath={imageUrl}
         categoryName={categorias?.nome || ""}
         tags={tags || []}
         url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
@@ -399,30 +374,31 @@ export default async function ArtigoEspecificoPage({
                 </span>
               </div>
             </div>
-          </div>{/* Imagem de Capa Aprimorada */}
-          {imageUrl && (
-            <div className="mb-3 relative w-full overflow-hidden rounded-lg shadow-lg">
-              <AspectRatio.Root ratio={16 / 9}>
-                <Image
-                  src={imageUrl}
-                  alt={`Imagem de capa para ${titulo ?? "artigo"}`}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+          </div>          {/* Imagem de Capa Aprimorada */}
+          <div className="mb-3 relative w-full overflow-hidden rounded-lg shadow-lg">
+            <AspectRatio.Root ratio={16 / 9}>
+              <Image
+                src={imageUrl}
+                alt={hasValidImage(imagem_capa_arquivo) 
+                  ? `Imagem de capa para ${titulo ?? "artigo"}` 
+                  : 'Blog Florescer Humano - Artigo'
+                }
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-60 pointer-events-none"></div>
                 {resumo && (
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
                     <p className="text-white text-sm md:text-base font-medium drop-shadow-md hidden md:block">
                       {resumo}
                     </p>
-                  </div>
-                )}
+                  </div>                )}
               </AspectRatio.Root>
             </div>
-          )}
-            {/* Exibição das Tags - Design elegante e refinado */}          {tags && Array.isArray(tags) && tags.length > 0 && (
+
+            {/* Exibição das Tags - Design elegante e refinado */}{tags && Array.isArray(tags) && tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3">              <div className="flex items-center text-xs text-[#735B43] mr-1">
                 <div className="flex items-center justify-center w-4 h-4 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
                   <svg

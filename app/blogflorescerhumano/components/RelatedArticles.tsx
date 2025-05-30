@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import type { Database } from '@/types/supabase';
 import ArticleCardBlog from './ArticleCardBlog';
+import { getImageUrl } from '@/lib/image-utils';
 
 // Tipagem para os artigos relacionados
 type RelatedArticle = Pick<
@@ -65,7 +66,8 @@ export default async function RelatedArticles({ currentArticleId, tags, limit = 
           resumo={artigo.resumo || undefined}
           slug={artigo.slug}
           categoriaSlug={artigo.categorias?.slug || 'sem-categoria'}
-          imagemUrl={artigo.imagem_capa_arquivo || undefined}          autor={{
+          imagemUrl={artigo.imagem_capa_arquivo || undefined}
+          autor={{
             nome: "Psicólogo Daniel Dantas",
             fotoUrl: "/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
           }}
