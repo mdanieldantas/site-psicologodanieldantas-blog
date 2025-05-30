@@ -23,10 +23,10 @@ type Categoria = Database["public"]["Tables"]["categorias"]["Row"];
 type Autor = Database["public"]["Tables"]["autores"]["Row"];
 
 interface ArtigoPageProps {
-  params: {
+  params: Promise<{
     categoria: string; // slug da categoria
     slug: string; // slug do artigo
-  };
+  }>;
 }
 
 // --- Tipagem Explícita para Dados do Artigo --- //
@@ -52,9 +52,10 @@ export async function generateMetadata(
   { params }: ArtigoPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Acesso direto às propriedades de params sem desestruturação
-  const categoriaSlugParam = params.categoria;
-  const artigoSlugParam = params.slug;
+  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const categoriaSlugParam = resolvedParams.categoria;
+  const artigoSlugParam = resolvedParams.slug;
 
   // Busca apenas os dados necessários para metadata
   const { data: artigo, error } = await supabaseServer
@@ -123,9 +124,10 @@ export async function generateMetadata(
 export default async function ArtigoEspecificoPage({
   params,
 }: ArtigoPageProps) {
-  // Acesso direto às propriedades de params sem desestruturação
-  const categoriaSlugParam = params.categoria;
-  const artigoSlugParam = params.slug;
+  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const categoriaSlugParam = resolvedParams.categoria;
+  const artigoSlugParam = resolvedParams.slug;
 
   // --- LOG: Parâmetros recebidos --- //
   console.log(

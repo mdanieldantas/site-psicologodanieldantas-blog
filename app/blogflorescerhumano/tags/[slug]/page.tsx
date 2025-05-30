@@ -11,9 +11,9 @@ import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Met
 export const dynamic = 'force-dynamic';
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     slug: string; // slug da tag
-  };
+  }>;
   // Adiciona searchParams à interface
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -30,8 +30,9 @@ export async function generateMetadata(
   { params }: TagPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Acesso direto às propriedades sem operador opcional
-  const tagSlug = params.slug;
+  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const tagSlug = resolvedParams.slug;
 
   // Busca nome da tag
   const { data: tag, error } = await supabaseServer
@@ -79,7 +80,9 @@ export async function generateMetadata(
 
 // --- Componente da Página --- //
 export default async function TagPage({ params, searchParams }: TagPageProps) {
-  const tagSlug = params.slug;
+  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const tagSlug = resolvedParams.slug;
 
   // --- Obter parâmetros de paginação --- //
   const searchParamsData = await searchParams;

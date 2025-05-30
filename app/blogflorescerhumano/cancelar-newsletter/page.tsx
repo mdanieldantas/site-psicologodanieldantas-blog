@@ -47,8 +47,9 @@ async function getSubscriberInfo(token: string | undefined) {
 }
 
 // Componente principal da página
-export default async function CancelarNewsletterPage({ searchParams }: { searchParams: { token?: string } }) {
-  const { token } = searchParams;
+export default async function CancelarNewsletterPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
+  const resolvedSearchParams = await searchParams;
+  const { token } = resolvedSearchParams;
   const { error, subscriber } = await getSubscriberInfo(token);
   // Caso de erro sem informações do subscriber
   if (error && !subscriber?.email) {

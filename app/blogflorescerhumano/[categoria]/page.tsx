@@ -24,9 +24,9 @@ type Artigo = Database['public']['Tables']['artigos']['Row'] & {
 };
 
 interface CategoriaPageProps {
-  params: {
+  params: Promise<{
     categoria: string; // slug da categoria
-  };
+  }>;
   searchParams: Promise<{
     page?: string; // Parâmetro opcional para a página
   }>;
@@ -34,11 +34,11 @@ interface CategoriaPageProps {
 
 // --- Geração de Metadados Dinâmicos para Categoria --- //
 export async function generateMetadata(
-  { params }: { params: { categoria: string } }, 
+  { params }: { params: Promise<{ categoria: string }> }, 
   parent: ResolvingMetadata
-): Promise<Metadata> {
-  // Acesso direto à propriedade sem usar operador opcional
-  const categoriaSlug = params.categoria;
+): Promise<Metadata> {  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const categoriaSlug = resolvedParams.categoria;
   // Validação: filtrar slugs inválidos (arquivos internos do Next.js, extensões, etc.)
   // Aceita apenas slugs com letras minúsculas, números e hífens, com pelo menos 3 caracteres
   const validSlugPattern = /^[a-z0-9-]{3,50}$/;
@@ -107,12 +107,10 @@ export async function generateMetadata(
 export default async function CategoriaEspecificaPage({
   params,
   searchParams,
-}: {
-  params: { categoria: string };
-  searchParams: Promise<{ page?: string }>;
-}) {  
-  // Acesso direto à propriedade categoria de params e await para searchParams
-  const categoriaSlug = params.categoria;
+}: CategoriaPageProps) {  
+  // Await params para Next.js 15
+  const resolvedParams = await params;
+  const categoriaSlug = resolvedParams.categoria;
   const searchParamsData = await searchParams;
   const page = searchParamsData.page ?? "1";
     // Validação: filtrar slugs inválidos antes de fazer consulta ao banco
