@@ -36,6 +36,23 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // Acesso direto à propriedade sem usar operador opcional
   const categoriaSlug = params.categoria;
+  // Validação: filtrar slugs inválidos (arquivos internos do Next.js, extensões, etc.)
+  // Aceita apenas slugs com letras minúsculas, números e hífens, com pelo menos 3 caracteres
+  const validSlugPattern = /^[a-z0-9-]{3,50}$/;
+  
+  if (!categoriaSlug || 
+      !validSlugPattern.test(categoriaSlug) ||
+      categoriaSlug.includes('.') || 
+      categoriaSlug.includes('_') ||
+      categoriaSlug.startsWith('api') ||
+      categoriaSlug === 'not-found' ||
+      categoriaSlug.startsWith('-') ||
+      categoriaSlug.endsWith('-')) {
+    return {
+      title: 'Página não encontrada | Blog Florescer Humano',
+      description: 'A página que você procura não foi encontrada.',
+    };
+  }
 
   // Busca nome e descrição da categoria
   const { data: categoria, error } = await supabaseServer
@@ -43,10 +60,12 @@ export async function generateMetadata(
     .select('nome, descricao') // Seleciona nome e descrição
     .eq('slug', categoriaSlug)
     .maybeSingle();
-
   // Se não encontrar a categoria ou houver erro
   if (error || !categoria) {
-    console.error(`[Metadata] Categoria não encontrada para slug: ${categoriaSlug}`, error);
+    // Log silencioso apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[Dev] Categoria não encontrada para slug: ${categoriaSlug}`);
+    }
     return {
       title: 'Categoria não encontrada | Blog Florescer Humano',
       description: 'A categoria de artigos que você procura não foi encontrada.',
@@ -91,16 +110,33 @@ export default async function CategoriaEspecificaPage({
 }) {  // Acesso direto à propriedade categoria de params e notação de colchetes para searchParams
   const categoriaSlug = params.categoria;
   const page = searchParams['page'] ?? "1";
+    // Validação: filtrar slugs inválidos antes de fazer consulta ao banco
+  // Aceita apenas slugs com letras minúsculas, números e hífens, com pelo menos 3 caracteres
+  const validSlugPattern = /^[a-z0-9-]{3,50}$/;
+  
+  if (!categoriaSlug || 
+      !validSlugPattern.test(categoriaSlug) ||
+      categoriaSlug.includes('.') || 
+      categoriaSlug.includes('_') ||
+      categoriaSlug.startsWith('api') ||
+      categoriaSlug === 'not-found' ||
+      categoriaSlug.startsWith('-') ||
+      categoriaSlug.endsWith('-')) {
+    notFound();
+  }
+  
   // --- 1. Busca de Dados da Categoria --- //
   const { data: categoria, error: categoriaError } = await supabaseServer
     .from('categorias')
     .select('id, nome, slug, descricao, imagem_url')
     .eq('slug', categoriaSlug)
     .single<Categoria>();
-
   // --- Validação da Categoria --- //
   if (categoriaError || !categoria) {
-    console.error(`Erro ao buscar categoria com slug \"${categoriaSlug}\" ou categoria não encontrada:`, categoriaError);
+    // Log silencioso apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[Dev] Categoria "${categoriaSlug}" não encontrada ou erro:`, categoriaError);
+    }
     notFound();
   }
 
@@ -116,9 +152,11 @@ export default async function CategoriaEspecificaPage({
     .eq('categoria_id', categoria.id)
     .eq('status', 'publicado')
     .lte('data_publicacao', new Date().toISOString());
-
   if (countError) {
-    console.error(`Erro ao contar artigos para a categoria "${categoria.nome}":`, countError);
+    // Log silencioso apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[Dev] Erro ao contar artigos para categoria "${categoria.nome}":`, countError);
+    }
     // Considerar como lidar com este erro, talvez mostrar 0 ou uma mensagem?
   }
 
@@ -145,15 +183,19 @@ export default async function CategoriaEspecificaPage({
     .lte('data_publicacao', new Date().toISOString())
     .order('data_publicacao', { ascending: false })
     .range(from, to); // Aplica o range para a paginação
-
   // --- Tratamento de Erro (Artigos) --- //
   if (artigosError) {
-    console.error(`Erro ao buscar artigos para a categoria "${categoria.nome}" (Página ${currentPage}):`, artigosError);
+    // Log silencioso apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[Dev] Erro ao buscar artigos para categoria "${categoria.nome}" (Página ${currentPage}):`, artigosError);
+    }
     // Não chama notFound(), apenas mostra mensagem de erro
   }
 
-  // Log para depuração
-  console.log(`Categoria: ${categoria.nome}, Página Atual: ${currentPage}, Total de Artigos: ${totalCount}, Total de Páginas: ${totalPages}`);  // Função para obter a URL da imagem da categoria a partir do campo imagem_url do banco de dados
+  // Log para depuração apenas em desenvolvimento
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[Dev] Categoria: ${categoria.nome}, Página: ${currentPage}, Total: ${totalCount}, Páginas: ${totalPages}`);
+  }// Função para obter a URL da imagem da categoria a partir do campo imagem_url do banco de dados
   const getCategoryImageUrl = (categoria: Categoria) => {
     if (categoria.imagem_url) {
       return `/blogflorescerhumano/category-images/${categoria.imagem_url}`;
