@@ -64,17 +64,11 @@ export async function generateMetadata(
     .eq("status", "publicado")
     .lte("data_publicacao", new Date().toISOString())
     .maybeSingle();
-
-  // Se não encontrar o artigo ou houver erro, retorna metadados padrão ou vazios
+  // Se não encontrar o artigo ou houver erro, chama notFound()
   if (error || !artigo) {
-    console.error(
-      `[Metadata] Artigo não encontrado para slug: ${artigoSlugParam} na categoria ${categoriaSlugParam}`,
-      error
-    );
-    return {
-      title: "Artigo não encontrado | Blog Florescer Humano",
-      description: "O artigo que você procura não foi encontrado.",
-    };
+    // Em vez de retornar metadados padrão, chama notFound() diretamente
+    // Isso evita o erro no console e mostra a página 404 corretamente
+    notFound();
   }
 
   // Gera URL da imagem a partir da pasta public
@@ -179,18 +173,9 @@ export default async function ArtigoEspecificoPage({
     .eq("status", "publicado") // Garante que o artigo esteja publicado
     .lte("data_publicacao", new Date().toISOString()) // Garante que a data de publicação não seja futura
     .maybeSingle<ArtigoComRelacoes>(); // Especifica o tipo esperado para maybeSingle
-
   // --- Tratamento de Erro ou Artigo Não Encontrado --- //
-  if (artigoError) {
-    console.error("[Artigo Page] Erro ao buscar artigo:", artigoError);
-    // Não chama notFound() aqui ainda, pode ser erro de rede
-  }
-
   // Se houve erro na busca OU o artigo não foi encontrado OU não está publicado OU data futura
   if (artigoError || !artigo) {
-    console.log(
-      "[Artigo Page] Chamando notFound() devido a erro na busca ou artigo não encontrado/publicado/data futura."
-    );
     notFound(); // Exibe a página 404
   }
 
