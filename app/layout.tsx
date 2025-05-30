@@ -111,6 +111,10 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+// Configurações específicas para Next.js 15
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // Componente RootLayout: define a estrutura HTML base da aplicação
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {  return (
     <html lang="pt-BR" suppressHydrationWarning>

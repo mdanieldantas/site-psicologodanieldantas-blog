@@ -50,4 +50,9 @@ export const config = {
      */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
+  // Configuração para Next.js 15 - permite código dinâmico no middleware
+  unstable_allowDynamic: [
+    '/lib/**',
+    '**/node_modules/@supabase/**',
+  ],
 };
