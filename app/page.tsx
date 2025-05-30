@@ -164,7 +164,27 @@ export default function LandingPage() {  // Estados para controle da UI
   // Função para fechar o menu mobile (usada nos links do menu)
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
-  }
+  }  // Adicionar preloads das imagens hero específicas desta página
+  useEffect(() => {
+    // Adicionar preloads para imagens hero
+    const preloadLinks = [
+      { href: "/hero-daniel-psi-2.webp", as: "image", type: "image/webp" },
+      { href: "/hero-sofa.webp", as: "image", type: "image/webp" }
+    ];
+
+    preloadLinks.forEach(({ href, as, type }) => {
+      const existingLink = document.querySelector(`link[href="${href}"]`);
+      if (!existingLink) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = href;
+        link.as = as;
+        link.type = type;
+        link.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(link);
+      }
+    });
+  }, []);
 
   return (    // Container principal da página
     <div className="min-h-screen bg-[#F8F5F0] font-['Kaisei_Opti'] text-[#583B1F] overflow-x-hidden w-full">

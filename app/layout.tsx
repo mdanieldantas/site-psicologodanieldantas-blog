@@ -112,14 +112,9 @@ export const viewport: Viewport = {
 };
 
 // Componente RootLayout: define a estrutura HTML base da aplicação
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-  return (
+export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {  return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        {/* Preload para recursos críticos LCP */}
-        <link rel="preload" href="/hero-daniel-psi-2.webp" as="image" type="image/webp" fetchPriority="high"/>
-        <link rel="preload" href="/hero-sofa.webp" as="image" type="image/webp" fetchPriority="high"/>
-        
         {/* Otimização para recursos de terceiros */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
         <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
@@ -141,8 +136,8 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
               <Analytics/>
               <SpeedInsights debug={false}/>
             </Suspense>
-          </ThemeProvider>
-        </WhatsAppModalProvider>
+          </ThemeProvider>        </WhatsAppModalProvider>
       </body>
-    </html>  );
+    </html>
+  );
 }
