@@ -19,7 +19,7 @@ export default function EmConstrucao() {
         <div className="container mx-auto">
           <Link href="/" className="w-[200px] block">
             <Image
-              src="/navbar-logo-horizontal-navbar.png"
+              src="/navbar-logo-horizontal-navbar-danieldantas.webp"
               alt="Daniel Dantas - Psicólogo"
               width={200}
               height={80}

@@ -82,7 +82,7 @@ export default function ArticleSchema({
       name: 'Psicólogo Daniel Dantas',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/navbar-logo-horizontal-navbar.png`,
+        url: `${baseUrl}/navbar-logo-horizontal-navbar-danieldantas.webp`,
       }
     },
     datePublished: publishDate,

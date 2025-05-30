@@ -1156,19 +1156,16 @@ const BlogHeader = () => {
                 /* Logo completa para desktop ou mobile quando não está rolado */
                 <div className={`overflow-hidden transition-all duration-300 ${
                   isScrolled && isMobile ? 'opacity-0' : 'opacity-100'
-                }`}>
-                  <Image
+                }`}>                  <Image
                     src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp"
                     alt="Logo Florescer Humano"
                     width={140}
                     height={35}
-                    priority
                   />
                 </div>
               ) : (
                 /* Ícone compacto apenas para mobile quando rolado */                <div className="flex items-center justify-center h-10">                  {/* Solução baseada na documentação oficial do Next.js para manter proporção */}
-                  <Image
-                    src="/blogflorescerhumano/logos-blog/icone-florescer-humano.webp"
+                  <Image                    src="/blogflorescerhumano/logos-blog/icone-logo-florescer-humano-horizontal.png"
                     alt="Ícone Florescer Humano"
                     width={36}
                     height={36}

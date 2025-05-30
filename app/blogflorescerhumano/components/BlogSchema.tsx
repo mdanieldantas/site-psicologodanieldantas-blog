@@ -20,7 +20,7 @@ export default function BlogSchema() {
       name: 'Psicólogo Daniel Dantas',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/navbar-logo-horizontal-navbar.png`
+        url: `${baseUrl}/navbar-logo-horizontal-navbar-danieldantas.webp`
       }
     },
     inLanguage: 'pt-BR'

@@ -30,9 +30,8 @@ const Header: React.FC<HeaderProps> = ({
           {!isMobile && (
             <Link href="/" className={`transition-all duration-300 ${
               scrolledPastHero ? "w-[140px]" : "w-[240px]"
-            }`}>
-              <Image
-                src="/navbar-logo-horizontal-navbar.webp"
+            }`}>              <Image
+                src="/navbar-logo-horizontal-navbar-danieldantas.webp"
                 alt="Daniel Dantas - Psicólogo"
                 width={240}
                 height={96}
@@ -43,9 +42,8 @@ const Header: React.FC<HeaderProps> = ({
             </Link>
           )}          {isMobile && (
             <div className="flex items-center justify-between w-full">
-              <Link href="/" className="w-[140px]">
-                <Image
-                  src="/navbar-logo-horizontal-navbar.webp"
+              <Link href="/" className="w-[140px]">                <Image
+                  src="/navbar-logo-horizontal-navbar-danieldantas.webp"
                   alt="Daniel Dantas - Psicólogo"
                   width={140}
                   height={56}
