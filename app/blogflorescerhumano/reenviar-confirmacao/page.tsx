@@ -92,7 +92,7 @@ export default function ReenviarConfirmacaoPage() {
         <CardHeader className="flex flex-col items-center text-center pb-2">
           <div className="w-40 h-20 relative mb-4">
             <Image 
-              src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.png" 
+              src="/blogflorescerhumano/logos-blog/navbar-logo-florescer-humano-horizontal.webp" 
               alt="Logo Florescer Humano" 
               fill 
               style={{objectFit: 'contain'}} 
