@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel"; // Importar componentes do carrossel
 import ButtonBlog from '@/app/blogflorescerhumano/components/ButtonBlog';
 import ArticleCardBlog from '@/app/blogflorescerhumano/components/ArticleCardBlog';
+import ErrorBoundary from '@/app/blogflorescerhumano/components/ErrorBoundary';
 
 // Define a estrutura esperada para cada post do blog
 // Adicionada a propriedade 'date' e 'id' (opcional, mas presente nos dados de exemplo)
@@ -115,14 +116,14 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({ posts }) => {
           >
             <div className="w-2 h-2 rounded-full bg-white/90"></div>
           </button>
-        </div>
-
-        {/* Botão para ver todos os posts */}
+        </div>        {/* Botão para ver todos os posts */}
         <div className="mt-12 flex justify-center">
           <Link href="/em-construcao" passHref>
-            <ButtonBlog className="text-sm px-8 py-3 inline-flex items-center shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-1 group">
-              Ver todos os artigos <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </ButtonBlog>
+            <ErrorBoundary>
+              <ButtonBlog className="text-sm px-8 py-3 inline-flex items-center shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-1 group">
+                Ver todos os artigos <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </ButtonBlog>
+            </ErrorBoundary>
           </Link>
         </div>
       </div>

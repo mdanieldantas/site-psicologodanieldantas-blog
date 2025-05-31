@@ -4,7 +4,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import type { Database } from "@/types/supabase";
 import type { Metadata } from "next";
 import ExploreCategoriesGrid from "./components/ExploreCategoriesGrid";
-import FeaturedArticles from "./components/FeaturedArticles";
+import FeaturedArticles from "./components/FeaturedArticles";  
 import RecentMaterials from "./components/RecentMaterials";
 import AboutTeaserBanner from "./components/AboutTeaserBanner";
 import LazyLoadSection from "./components/LazyLoadSection";
