@@ -35,7 +35,7 @@ const Footer = () => {
             </Link>
             {/* Cor do texto do parágrafo ajustada e texto centralizado */}
             <p className="text-base font-light text-[#EAE6E1] text-center">
-              Psicoterapia humanizada e acolhedora para ajudar você em sua jornada de autoconhecimento e bem-estar emocional.
+              Psicoterapia humanizada cultivando a compreensão.
             </p>            {/* Ícones Sociais - Cores ajustadas e centralizados */}
             <div className="flex space-x-4 pt-2 justify-center">
               <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="p-2 bg-[#F8F5F0]/10 hover:bg-[#F8F5F0]/20 text-[#F8F5F0] rounded-full transition-colors">
