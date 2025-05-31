@@ -78,34 +78,98 @@ export default async function CategoriasPage({
 
   // Log para depuração
   console.log(`Categorias - Página Atual: ${currentPage}, Total de Categorias: ${totalCount}, Total de Páginas: ${totalPages}`);  return (
-    <div className="min-h-screen bg-[#F8F5F0]">      {/* Hero Banner Section - Aprimorado */}
-      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#583B1F]/10">
-        {/* Banner Image */}
-        <BannerImage 
-          bannerPath="/blogflorescerhumano/banners-blog/categories-banner.webp"
-          fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
-          alt="Banner de Categorias do Blog Florescer Humano"
-        />
-        
-        {/* Hero Content Overlay com gradiente melhorado */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/80 via-[#583B1F]/30 to-transparent" />
-        
-        {/* Conteúdo centralizado */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-          <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000 max-w-4xl">
-            {/* Linha decorativa superior */}
-            <div className="w-16 h-1 bg-[#A57C3A] mx-auto mb-6 rounded-full"></div>
+    <div className="min-h-screen bg-[#F8F5F0]">      {/* Hero Banner Section - Split Screen com Designer Guide */}
+      <section className="relative h-64 md:h-80 lg:h-96 overflow-hidden bg-[#F8F5F0]">
+        {/* Mobile: Banner tradicional */}
+        <div className="md:hidden relative h-full">
+          <BannerImage 
+            bannerPath="/blogflorescerhumano/banners-blog/categories-banner.webp"
+            fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
+            alt="Banner de Categorias do Blog Florescer Humano"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/80 via-[#583B1F]/30 to-transparent" />
+          
+          {/* Conteúdo mobile centralizado */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+            <div className="animate-in fade-in zoom-in-75 slide-in-from-top-4 duration-1000">
+              <div className="w-16 h-1 bg-[#A57C3A] mx-auto mb-6 rounded-full shadow-md"></div>
+              <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg font-serif">
+                Categorias
+              </h1>
+              <p className="text-lg text-white/90 max-w-2xl mx-auto drop-shadow-md font-sans">
+                Explore os artigos organizados por temas para encontrar exatamente o que procura
+              </p>
+              <div className="w-16 h-1 bg-[#A57C3A] mx-auto mt-6 rounded-full shadow-md"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: Split layout aprimorado */}
+        <div className="hidden md:flex h-full">
+          {/* Lado esquerdo: Conteúdo com elementos decorativos */}
+          <div className="w-1/2 bg-gradient-to-br from-[#583B1F] via-[#5B3E22] to-[#583B1F] flex flex-col justify-center px-8 lg:px-12 relative overflow-hidden">
+            {/* Elementos decorativos de fundo */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-4 left-4 w-24 h-24 rounded-full bg-[#A57C3A] blur-xl"></div>
+              <div className="absolute bottom-8 right-8 w-32 h-32 rounded-full bg-[#6B7B3F] blur-2xl"></div>
+              <div className="absolute top-1/2 left-1/3 w-16 h-16 rounded-full bg-[#A57C3A] blur-lg"></div>
+            </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg font-['Old_Roman']">
-              Categorias
-            </h1>
+            <div className="relative z-10 animate-in fade-in slide-in-from-left-6 duration-1000">
+              {/* Ornamento superior */}
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-1 bg-[#A57C3A] rounded-full shadow-lg"></div>
+                <div className="w-2 h-2 bg-[#A57C3A] rounded-full mx-3 shadow-lg"></div>
+                <div className="w-8 h-1 bg-[#A57C3A]/60 rounded-full shadow-lg"></div>
+              </div>
+              
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 font-serif leading-tight">
+                Categorias
+              </h1>
+              
+              <p className="text-lg lg:text-xl text-white/90 leading-relaxed font-sans mb-8 max-w-md">
+                Explore os artigos organizados por temas para encontrar exatamente o que procura
+              </p>
+                {/* CTA Button seguindo o padrão do designer guide */}
+              <div className="mb-6">
+                <button className="px-8 py-3 bg-[#583B1F] text-white rounded-lg font-medium font-sans
+                                 transform hover:scale-105 hover:-translate-y-1 
+                                 shadow-lg hover:shadow-xl hover:bg-[#6B7B3F] 
+                                 border border-[#A57C3A]/30 transition-all duration-300
+                                 animate-in fade-in slide-in-from-left-6 delay-300">
+                  Ver Todas as Categorias
+                </button>
+              </div>
+              
+              {/* Ornamento inferior */}
+              <div className="flex items-center">
+                <div className="w-8 h-1 bg-[#A57C3A]/60 rounded-full shadow-lg"></div>
+                <div className="w-2 h-2 bg-[#A57C3A] rounded-full mx-3 shadow-lg"></div>
+                <div className="w-12 h-1 bg-[#A57C3A] rounded-full shadow-lg"></div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Lado direito: Imagem com moldura elegante */}
+          <div className="w-1/2 relative">
+            {/* Moldura decorativa */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#A57C3A]/20 via-transparent to-[#6B7B3F]/20 z-10 pointer-events-none"></div>
+            <div className="absolute top-4 left-4 right-4 bottom-4 border-2 border-[#A57C3A]/30 rounded-lg z-10 pointer-events-none"></div>
             
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
-              Explore os artigos organizados por temas para encontrar exatamente o que procura
-            </p>
+            {/* Elementos decorativos nos cantos */}
+            <div className="absolute top-2 left-2 w-8 h-8 border-l-4 border-t-4 border-[#A57C3A] rounded-tl-lg z-20"></div>
+            <div className="absolute top-2 right-2 w-8 h-8 border-r-4 border-t-4 border-[#A57C3A] rounded-tr-lg z-20"></div>
+            <div className="absolute bottom-2 left-2 w-8 h-8 border-l-4 border-b-4 border-[#A57C3A] rounded-bl-lg z-20"></div>
+            <div className="absolute bottom-2 right-2 w-8 h-8 border-r-4 border-b-4 border-[#A57C3A] rounded-br-lg z-20"></div>
+              <BannerImage 
+              bannerPath="/blogflorescerhumano/banners-blog/categories-banner.webp"
+              fallbackPath="/blogflorescerhumano/banners-blog/hero-home-banner.webp"
+              alt="Banner de Categorias do Blog Florescer Humano"
+              className="animate-in fade-in slide-in-from-right-6 duration-1000 delay-300 hover:scale-105 transition-transform"
+            />
             
-            {/* Linha decorativa inferior */}
-            <div className="w-16 h-1 bg-[#A57C3A] mx-auto mt-6 rounded-full"></div>
+            {/* Overlay sutil com padrão */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/5 via-transparent to-[#583B1F]/5"></div>
           </div>
         </div>
       </section>
