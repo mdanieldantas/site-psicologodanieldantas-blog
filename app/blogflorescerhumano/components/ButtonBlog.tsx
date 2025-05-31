@@ -2,12 +2,16 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface ButtonBlogProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'golden' | 'green';
 }
 
 /**
  * Botão padronizado do blog, usando tokens do Design System do blog.
- * - Fundo marrom escuro, texto claro, borda arredondada, hover marrom médio.
+ * Variantes disponíveis:
+ * - primary: Marrom escuro (#583B1F) com hover verde oliva (#6B7B3F)
+ * - secondary: Branco com borda marrom e hover bege (#F8F5F0)
+ * - golden: Dourado (#A57C3A) com hover marrom escuro (#583B1F)
+ * - green: Verde oliva (#6B7B3F) com hover verde escuro (#5B6B35)
  */
 const ButtonBlog: React.FC<ButtonBlogProps> = ({
   className,
@@ -19,6 +23,10 @@ const ButtonBlog: React.FC<ButtonBlogProps> = ({
       'bg-[#583B1F] text-white border border-[#583B1F] hover:bg-[#6B7B3F]',
     secondary:
       'bg-white text-[#583B1F] border border-[#583B1F] hover:bg-[#F8F5F0]',
+    golden:
+      'bg-[#A57C3A] text-white border border-[#A57C3A] hover:bg-[#583B1F]',
+    green:
+      'bg-[#6B7B3F] text-white border border-[#6B7B3F] hover:bg-[#5B6B35]',
   };
   return (
     <button
