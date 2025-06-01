@@ -23,17 +23,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-[10%]">
         {/* Grid com divisores verticais no desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 mb-10 md:divide-x md:divide-[#735B43]">
-          {/* Coluna 1: Logo e Descrição - Centralizada */}          <div className="space-y-4 flex flex-col items-center md:pr-10">            <Link href="/" className="inline-block mb-2">
-              <div style={{ width: '150px', height: '75px', position: 'relative' }}>
+          {/* Coluna 1: Logo e Descrição - Centralizada */}          <div className="space-y-4 flex flex-col items-center md:pr-10">            <Link href="/" className="inline-block">
+              <div className="relative w-[200px] h-[100px] mx-auto mb-4">
                 <Image
                   src="/Daniel-Dantas-logo-footer-correta.webp"
                   alt="Daniel Dantas - Psicólogo Logo Rodapé"
                   fill
-                  sizes="150px"
                   priority
-                  style={{
-                    objectFit: 'contain'
-                  }}
+                  style={{ objectFit: 'contain' }}
+                  sizes="200px"
                 />
               </div>
             </Link>
