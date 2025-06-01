@@ -131,15 +131,11 @@ export default async function CategoriasPage({
                 Explore os artigos organizados por temas para encontrar exatamente o que procura
               </p>
                 {/* CTA Button seguindo o padrão do designer guide */}
-              <div className="mb-6">
-                <button className="px-8 py-3 bg-[#583B1F] text-white rounded-lg font-medium font-sans
-                                 transform hover:scale-105 hover:-translate-y-1 
-                                 shadow-lg hover:shadow-xl hover:bg-[#6B7B3F] 
-                                 border border-[#A57C3A]/30 transition-all duration-300
-                                 animate-in fade-in slide-in-from-left-6 delay-300">
+              {/* <div className="mb-6">
+                <button className="px-6 py-2 bg-[#6B7B3F] text-white rounded-md font-medium font-sans transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-xl hover:bg-[#5B6B35] animate-in fade-in slide-in-from-left-6 delay-300">
                   Ver Todas as Categorias
                 </button>
-              </div>
+              </div> */}
               
               {/* Ornamento inferior */}
               <div className="flex items-center">
