@@ -26,29 +26,28 @@ const Header: React.FC<HeaderProps> = ({
       <nav className="container mx-auto px-4">        {/* Container da navegação com estilo condicional baseado no scroll */}
         <div
           className={`flex items-center justify-between transition-all duration-300`}
-        >          {/* Logo: Visível sempre em desktop, muda de tamanho conforme scroll */}
-          {!isMobile && (
-            <Link href="/" className={`transition-all duration-300 ${
-              scrolledPastHero ? "w-[140px]" : "w-[240px]"
-            }`}>              <Image
+        >          {/* Logo: Visível sempre em desktop, muda de tamanho conforme scroll */}          {!isMobile && (            <Link href="/" className="transition-all duration-300"><Image
                 src="/navbar-logo-horizontal-navbar-danieldantas.webp"
                 alt="Daniel Dantas - Psicólogo"
                 width={240}
                 height={96}
-                className="w-full h-auto transition-all duration-300"
+                className="w-auto transition-all duration-300"
                 priority
-                style={{ width: '100%', height: 'auto' }}
+                style={{ 
+                  width: 'auto', 
+                  height: scrolledPastHero ? '3rem' : '5rem' 
+                }}
               />
             </Link>
           )}          {isMobile && (
-            <div className="flex items-center justify-between w-full">
-              <Link href="/" className="w-[140px]">                <Image
+            <div className="flex items-center justify-between w-full">              <Link href="/">
+                <Image
                   src="/navbar-logo-horizontal-navbar-danieldantas.webp"
                   alt="Daniel Dantas - Psicólogo"
                   width={140}
                   height={56}
-                  className="w-full h-auto"
-                  style={{ width: '100%', height: 'auto' }}
+                  className="w-auto"
+                  style={{ width: 'auto', height: '3rem' }}
                   priority
                 />
               </Link>

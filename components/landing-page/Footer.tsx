@@ -30,7 +30,6 @@ const Footer = () => {
                 alt="Daniel Dantas - Psicólogo Logo Rodapé"
                 width={150} // Ajuste o tamanho conforme necessário
                 height={75} // Ajuste o tamanho conforme necessário
-                className="h-auto"
               />
             </Link>
             {/* Cor do texto do parágrafo ajustada e texto centralizado */}

@@ -16,14 +16,14 @@ export default function PoliticaDePrivacidade() {
     <div className="min-h-screen bg-[#F8F5F0] font-['Kaisei_Opti'] text-[#583B1F] flex flex-col">
       {/* Header com logo */}
       <header className="w-full py-6 px-8">
-        <div className="container mx-auto">
-          <Link href="/" className="w-[200px] block">
+        <div className="container mx-auto">          <Link href="/" className="block">
             <Image
               src="/navbar-logo-horizontal-navbar-danieldantas.webp"
               alt="Daniel Dantas - Psicólogo"
               width={200}
               height={80}
-              className="w-full h-auto"
+              className="w-auto h-auto"
+              style={{ width: 'auto', height: 'auto' }}
             />
           </Link>
         </div>
@@ -153,14 +153,11 @@ export default function PoliticaDePrivacidade() {
       {/* Footer simplificado */}
       <footer className="bg-[#583B1F] text-[#F8F5F0] py-8">
         <div className="container mx-auto px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <Image
+          <div className="flex flex-col md:flex-row justify-between items-center">            <div className="mb-4 md:mb-0">              <Image
                 src="/Daniel-Dantas-logo-footer-correta.webp"
                 alt="Daniel Dantas - Psicólogo"
                 width={150}
                 height={60}
-                className="w-[150px] h-auto"
               />
             </div>
             <div className="text-sm text-center md:text-right">

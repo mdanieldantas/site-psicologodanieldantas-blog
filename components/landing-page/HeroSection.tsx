@@ -48,14 +48,14 @@ const HeroSection = React.forwardRef<HTMLElement>((props, ref) => {
                   relative z-10 overflow-hidden transition-all duration-500 
                   hover:shadow-2xl hover:scale-[1.02] hover:border-[#D1AA7B]">
                 
-                {/* Imagem otimizada Next.js para o avatar principal */}
-                <Image
+                {/* Imagem otimizada Next.js para o avatar principal */}                <Image
                   src="/hero-daniel-psi-2.webp"
                   alt="Psicólogo Daniel Dantas"
                   width={350}
                   height={350}
                   priority
-                  className="object-cover w-full h-full rounded-full"
+                  className="object-cover rounded-full"
+                  style={{ width: '100%', height: '100%' }}
                 />
               </div>
               
