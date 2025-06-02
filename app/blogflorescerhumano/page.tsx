@@ -92,10 +92,8 @@ export default async function BlogHomePage() {
             </div>            {/* Descrição principal */}
             <p className="text-base md:text-lg lg:text-xl text-[#583B1F]/90 font-light leading-relaxed max-w-lg mb-3 md:mb-6 pl-5">
               Explorando o potencial humano através da psicologia humanista e do autoconhecimento.
-            </p>
-
-            {/* Botões de ação */}
-            <div className="flex flex-col sm:flex-row gap-2 md:gap-3 pl-5 mb-3 md:mb-0">
+            </p>            {/* Botões de ação - centralizados corretamente */}
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mb-3 md:mb-0">
               <Link
                 href="/blogflorescerhumano/artigos"
                 className="inline-flex items-center justify-center px-5 md:px-7 py-2 md:py-3 bg-[#583B1F] text-white rounded-xl hover:bg-[#6B8E23] transition-all duration-300 transform hover:scale-105 shadow-lg font-medium group text-sm md:text-base"
@@ -117,8 +115,8 @@ export default async function BlogHomePage() {
               >
                 Ver Categorias
               </Link>
-            </div>            {/* Estatísticas ou destaques */}
-            <div className="flex items-center mt-2 md:mt-6 pl-5 text-xs md:text-sm text-[#583B1F]/70">
+            </div>            {/* Estatísticas ou destaques - alinhadas corretamente */}
+            <div className="flex items-center mt-2 md:mt-6 text-xs md:text-sm text-[#583B1F]/70">
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-[#6B8E23] rounded-full mr-2"></div>
                 Artigos semanais
