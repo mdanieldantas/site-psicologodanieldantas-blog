@@ -148,10 +148,8 @@ export default async function BlogHomePage() {
                   transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
           </div>
-        </div>
-
-        {/* Indicador de scroll */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        </div>        {/* Indicador de scroll - apenas desktop */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
           <ScrollToFeaturedButton className="w-8 h-8 text-[#6B8E23] hover:text-[#583B1F] transition-colors cursor-pointer">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-full h-full">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
