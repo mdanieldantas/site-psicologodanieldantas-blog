@@ -120,108 +120,141 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
       // Fallback para navegadores que não suportam Web Share API
       alert('Seu navegador não suporta compartilhamento nativo. Por favor, copie o link e compartilhe manualmente.');
     }
-  };
-  return (
+  };  return (
     <div className="mt-4 mb-6">
-      <div className="flex justify-between items-center">
+      {/* Header melhorado para mobile */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
         <button 
           onClick={() => setIsOpen(!isOpen)} 
-          className="flex items-center gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
+          className="flex items-center justify-center sm:justify-start gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors w-full sm:w-auto py-2 sm:py-0"
         >
-          <FileText className="w-5 h-5" /> {/* Aumentado de w-4 h-4 para w-5 h-5 */}
+          <FileText className="w-5 h-5" />
           Como citar este post
-        </button>        <button 
+        </button>
+        
+        <button 
           onClick={handleShare}
-          className="flex items-center gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
+          className="flex items-center justify-center sm:justify-start gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors w-full sm:w-auto py-2 sm:py-0"
           aria-label="Compartilhar este artigo"
         >
-          <Share2 className="w-5 h-5" /> {/* Aumentado de w-4 h-4 para w-5 h-5 */}
-          <span className="hidden sm:inline">Compartilhar</span>
+          <Share2 className="w-5 h-5" />
+          <span>Compartilhar</span>
         </button>
       </div>
-      
-      {isOpen && (
-        <div className="mt-3 p-4 bg-[#F8F5F0]/60 rounded-lg border border-[#C19A6B]/10">
+        {isOpen && (
+        <div className="mt-3 p-3 sm:p-4 bg-[#F8F5F0]/60 rounded-lg border border-[#C19A6B]/10">
           <h4 className="text-sm font-medium text-[#5D4427] mb-3">Formatos de citação</h4>
           
-          <div className="space-y-4">
-            {/* ABNT */}
+          <div className="space-y-3 sm:space-y-4">
+            {/* ABNT - Layout mobile otimizado */}
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <h5 className="text-xs font-medium text-[#8C6D46]">ABNT</h5>
+              <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center mb-2">
+                <h5 className="text-xs font-medium text-[#8C6D46] mb-1 xs:mb-0">ABNT (NBR 6023:2018)</h5>
                 <button 
                   onClick={() => handleCopy(abntCitation, 'abnt')} 
-                  className="text-xs flex items-center gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors"
+                  className="text-xs flex items-center justify-center xs:justify-start gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors bg-white/50 px-2 py-1 rounded border border-[#C19A6B]/20 w-full xs:w-auto"
                 >
                   {copied === 'abnt' ? (
                     <>
                       <Check className="w-3 h-3" />
-                      <span>Copiado</span>
+                      <span>Copiado!</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3 h-3" />
-                      <span>Copiar</span>
+                      <span>Copiar ABNT</span>
                     </>
                   )}
                 </button>
-              </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p dangerouslySetInnerHTML={{ __html: abntFormattedDisplay }} />
+              </div>
+              
+              {/* Container scrollável para citações longas em mobile */}
+              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-3 rounded border border-[#C19A6B]/5 overflow-x-auto">
+                <p 
+                  dangerouslySetInnerHTML={{ __html: abntFormattedDisplay }} 
+                  className="whitespace-pre-wrap break-words"
+                />
               </div>
             </div>
             
-            {/* APA */}
+            {/* APA - Layout mobile otimizado */}
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <h5 className="text-xs font-medium text-[#8C6D46]">APA</h5>                <button 
+              <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center mb-2">
+                <h5 className="text-xs font-medium text-[#8C6D46] mb-1 xs:mb-0">APA (7ª Edição)</h5>
+                <button 
                   onClick={() => handleCopy(apaCitation, 'apa')} 
-                  className="text-xs flex items-center gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors"
+                  className="text-xs flex items-center justify-center xs:justify-start gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors bg-white/50 px-2 py-1 rounded border border-[#C19A6B]/20 w-full xs:w-auto"
                 >
                   {copied === 'apa' ? (
                     <>
                       <Check className="w-3 h-3" />
-                      <span>Copiado</span>
+                      <span>Copiado!</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3 h-3" />
-                      <span>Copiar</span>
+                      <span>Copiar APA</span>
                     </>
                   )}
                 </button>
-              </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p dangerouslySetInnerHTML={{ __html: apaFormattedDisplay }} />
+              </div>
+              
+              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-3 rounded border border-[#C19A6B]/5 overflow-x-auto">
+                <p 
+                  dangerouslySetInnerHTML={{ __html: apaFormattedDisplay }} 
+                  className="whitespace-pre-wrap break-words"
+                />
               </div>
             </div>
             
-            {/* Vancouver */}
+            {/* Vancouver - Layout mobile otimizado */}
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <h5 className="text-xs font-medium text-[#8C6D46]">Vancouver</h5>                <button 
+              <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center mb-2">
+                <h5 className="text-xs font-medium text-[#8C6D46] mb-1 xs:mb-0">Vancouver (ICMJE)</h5>
+                <button 
                   onClick={() => handleCopy(vancouverCitation, 'vancouver')} 
-                  className="text-xs flex items-center gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors"
+                  className="text-xs flex items-center justify-center xs:justify-start gap-1 text-[#8C6D46]/70 hover:text-[#8C6D46] transition-colors bg-white/50 px-2 py-1 rounded border border-[#C19A6B]/20 w-full xs:w-auto"
                 >
                   {copied === 'vancouver' ? (
                     <>
                       <Check className="w-3 h-3" />
-                      <span>Copiado</span>
+                      <span>Copiado!</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3 h-3" />
-                      <span>Copiar</span>
+                      <span>Copiar Vancouver</span>
                     </>
                   )}
                 </button>
-              </div>              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-2 rounded border border-[#C19A6B]/5">
-                <p>{vancouverCitation}</p>
+              </div>
+              
+              <div className="text-xs leading-relaxed text-[#5D4427]/90 bg-white/50 p-3 rounded border border-[#C19A6B]/5 overflow-x-auto">
+                <p className="whitespace-pre-wrap break-words">{vancouverCitation}</p>
               </div>
             </div>
           </div>
           
-          <p className="text-xs text-[#8C6D46]/70 mt-4">
-            Não se esqueça de verificar as normas específicas da sua instituição.
-          </p>
+          {/* Nota informativa melhorada */}
+          <div className="mt-4 p-2 bg-[#C19A6B]/5 rounded border border-[#C19A6B]/15">
+            <p className="text-xs text-[#8C6D46]/70 flex items-start gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3 w-3 mt-0.5 flex-shrink-0 text-[#C19A6B]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Verifique as normas específicas da sua instituição antes de usar.</span>
+            </p>
+          </div>
         </div>
       )}
     </div>
