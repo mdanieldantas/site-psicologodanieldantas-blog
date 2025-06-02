@@ -51,18 +51,17 @@ export default async function BlogHomePage() {
   const { data: featuredArticles } = articlesResponse;
 
   return (
-    <main className="flex-1 bg-[#F8F5F0]">      {/* Hero Section - Layout Moderno e Elegante */}
+    <main className="flex-1 bg-[#F8F5F0] w-full overflow-x-hidden">      {/* Hero Section - Layout Moderno e Elegante - Full width no mobile */}
       <section
-        className="relative min-h-[80vh] md:h-[90vh] py-8 md:py-16 bg-gradient-to-br from-white to-[#F8F5F0]"
+        className="relative min-h-[80vh] md:h-[90vh] py-8 md:py-16 bg-gradient-to-br from-white to-[#F8F5F0] w-full"
         id="hero-section"
-      >        {/* Background image com transparência balanceada para estética e legibilidade */}
-        <div className="absolute inset-0 opacity-80 bg-[url('/blogflorescerhumano/banners-blog/hero-home-banner.webp')] bg-cover bg-center bg-no-repeat scale-90 md:scale-100 transform origin-center"></div>
+      >{/* Background image com transparência balanceada para estética e legibilidade - full width no mobile */}
+        <div className="absolute inset-0 opacity-80 bg-[url('/blogflorescerhumano/banners-blog/hero-home-banner.webp')] bg-cover bg-center bg-no-repeat"></div>
         
         {/* Overlay sutil para garantir legibilidade sem perder a estética da imagem */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/20 to-white/10"></div>
-        
-        {/* Container principal */}
-        <div className="container mx-auto px-6 h-full flex flex-col-reverse md:flex-row items-center justify-between relative z-10 max-w-6xl">
+          {/* Container principal - full width no mobile */}
+        <div className="container mx-auto px-4 sm:px-6 h-full flex flex-col-reverse md:flex-row items-center justify-between relative z-10 max-w-6xl">
           {/* Coluna de texto */}
           <div className="w-full md:w-1/2 text-left md:pr-12 mb-8 md:mb-0 mt-8 md:mt-0">
             {/* Badge de identificação */}
