@@ -53,7 +53,7 @@ export default async function BlogHomePage() {
   return (
     <main className="flex-1 bg-[#F8F5F0] w-full overflow-x-hidden">      {/* Hero Section - Layout Moderno e Elegante - Full width no mobile */}
       <section
-        className="relative min-h-[80vh] md:h-[90vh] py-8 md:py-16 bg-gradient-to-br from-white to-[#F8F5F0] w-full"
+        className="relative min-h-[80vh] md:h-[90vh] pt-20 md:pt-24 pb-8 md:pb-16 bg-gradient-to-br from-white to-[#F8F5F0] w-full"
         id="hero-section"
       >{/* Background image com transparência balanceada para estética e legibilidade - full width no mobile */}
         <div className="absolute inset-0 opacity-80 bg-[url('/blogflorescerhumano/banners-blog/hero-home-banner.webp')] bg-cover bg-center bg-no-repeat"></div>
@@ -136,31 +136,27 @@ export default async function BlogHomePage() {
           </div>{" "}          {/* Coluna da imagem */}
           <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center">
             <div className="relative group">
-              {/* Container da imagem com moldura elegante */}              <div className="relative overflow-hidden rounded-2xl shadow-xl border border-[#A57C3A]/20 transform transition-all duration-500 hover:scale-105">
-                {/* Elementos decorativos */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-[#6B7B3F]/20 rounded-full z-10"></div>
-                <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#6B7B3F] rounded-full z-10"></div>
-                <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-[#A57C3A]/30 rounded-full z-10"></div>
-                  {/* Imagem principal */}
-                <div className="w-[300px] h-[350px] md:w-[400px] md:h-[450px] relative">
-                  <Image
-                    src="/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
-                    alt="Psicólogo Daniel Dantas, autor do Blog Florescer Humano"
-                    className="object-cover"
-                    fill
-                    sizes="(max-width: 768px) 300px, 400px"
-                    priority
-                    quality={90}
-                    loading="eager"
-                  />
-                  
-                  {/* Overlay sutil para melhorar integração com o design */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#583B1F]/10 via-transparent to-transparent"></div>
-                  
-                  {/* Efeito de brilho no hover */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
+              {/* Container principal com moldura circular como no site principal */}
+              <div className="w-[260px] h-[260px] md:w-[350px] md:h-[350px] rounded-full border-4 border-[#C19A6B] shadow-xl 
+                  relative z-10 overflow-hidden transition-all duration-500 
+                  hover:shadow-2xl hover:scale-[1.02] hover:border-[#D1AA7B]">
+                
+                {/* Imagem principal */}
+                <Image
+                  src="/blogflorescerhumano/autores/autores-daniel-psi-blog.webp"
+                  alt="Psicólogo Daniel Dantas, autor do Blog Florescer Humano"
+                  width={350}
+                  height={350}
+                  priority
+                  className="object-cover rounded-full"
+                  style={{ width: '100%', height: '100%' }}
+                />
               </div>
+              
+              {/* Elemento decorativo de fundo */}
+              <div className="absolute -bottom-3 -right-3 w-[260px] h-[260px] md:w-[350px] md:h-[350px] 
+                  rounded-full border-2 border-[#C19A6B]/30 z-0 
+                  transition-all duration-500 group-hover:scale-[1.1]"></div>
             </div>
           </div>
         </div>
