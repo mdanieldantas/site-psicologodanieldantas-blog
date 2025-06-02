@@ -14,6 +14,7 @@ import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // I
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
+import AudioReader from "@/app/blogflorescerhumano/components/AudioReader"; // Importa o componente de leitura em áudio
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
 import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 import { getImageUrl, getOgImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
@@ -430,9 +431,16 @@ export default async function ArtigoEspecificoPage({
                 </Link>
               ))}
             </div>
-          )}
-        </header>        {/* Barra de progresso de leitura - Componente cliente */}
-        <ProgressBar />{/* Conteúdo Principal do Artigo - Aprimorado com Índice */}        {artigoConteudo ? (
+          )}        </header>        {/* Barra de progresso de leitura - Componente cliente */}
+        <ProgressBar />
+
+        {/* Componente de Leitura em Áudio */}
+        <AudioReader 
+          conteudo={artigoConteudo || ''} 
+          titulo={titulo || ''} 
+        />
+
+{/* Conteúdo Principal do Artigo - Aprimorado com Índice */}        {artigoConteudo ? (
           <div className="article-container">
             {/* Importamos o componente cliente TableOfContents */}
             <TableOfContents articleContentId="article-content" />
