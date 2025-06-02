@@ -121,24 +121,23 @@ export default function CitationBox({ title, author, date, url }: CitationBoxPro
       alert('Seu navegador não suporta compartilhamento nativo. Por favor, copie o link e compartilhe manualmente.');
     }
   };  return (
-    <div className="mt-4 mb-6">
-      {/* Header melhorado para mobile */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+    <div className="mt-4 mb-6">      {/* Header otimizado - botões sempre na mesma linha */}
+      <div className="flex justify-between items-center gap-4">
         <button 
           onClick={() => setIsOpen(!isOpen)} 
-          className="flex items-center justify-center sm:justify-start gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors w-full sm:w-auto py-2 sm:py-0"
+          className="flex items-center gap-2 text-sm sm:text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
         >
-          <FileText className="w-5 h-5" />
-          Como citar este post
+          <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="whitespace-nowrap">Como citar este post</span>
         </button>
         
         <button 
           onClick={handleShare}
-          className="flex items-center justify-center sm:justify-start gap-2 text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors w-full sm:w-auto py-2 sm:py-0"
+          className="flex items-center gap-2 text-sm sm:text-base font-medium text-[#8C6D46] hover:text-[#C19A6B] transition-colors"
           aria-label="Compartilhar este artigo"
         >
-          <Share2 className="w-5 h-5" />
-          <span>Compartilhar</span>
+          <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="whitespace-nowrap">Compartilhar</span>
         </button>
       </div>
         {isOpen && (
