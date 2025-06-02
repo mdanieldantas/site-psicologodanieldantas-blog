@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MotionDiv, MotionH2, MotionH3, MotionP, MotionSVG, staggerContainer, cardVariants } from '@/components/ui/motion-components';
-import BlogCategoryCard from '@/components/blog-category-card';
+import BlogCategoryCard from '@/app/blogflorescerhumano/components/blog-category-card';
 import type { Database } from '@/types/supabase';
 
 type Categoria = Database['public']['Tables']['categorias']['Row'];

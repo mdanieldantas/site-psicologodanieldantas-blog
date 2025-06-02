@@ -304,7 +304,7 @@ export default function BlogCategoryCard({
               
               {category.descricao && (
                 <MotionP 
-                  className={`${featured ? 'text-base md:text-lg' : 'text-sm md:text-base'} text-white/95 line-clamp-2 leading-relaxed drop-shadow-md font-light`}
+                  className={`${featured ? 'text-base md:text-lg' : 'text-sm md:text-base'} text-white/95 line-clamp-3 leading-relaxed drop-shadow-md font-light`}
                   initial={{ opacity: 0.95 }}
                   whileHover={{ opacity: 1 }}
                 >

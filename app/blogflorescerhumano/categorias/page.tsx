@@ -5,7 +5,7 @@ import type { Database } from '@/types/supabase';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PaginationControls from '../components/PaginationControls';
-import BlogCategoryCard from '@/components/blog-category-card';
+import BlogCategoryCard from '@/app/blogflorescerhumano/components/blog-category-card';
 import { ChevronRight, Home } from 'lucide-react';
 import BannerImage from '../components/BannerImage';
 
@@ -198,51 +198,83 @@ export default async function CategoriasPage({
           </ol>
         </div>
       </nav>      {/* Main Content */}
-      <main className="container mx-auto px-4 pb-12 pt-8">
-        {/* Categories Grid */}
+      <main className="container mx-auto px-4 pb-12 pt-8">        {/* Categories Grid - Usando o mesmo estilo da página inicial */}
         {categorias && categorias.length > 0 ? (
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 delay-500">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {categorias.map((categoria, index) => (
-                <div
-                  key={categoria.id}
-                  className="animate-in fade-in zoom-in-95 slide-in-from-bottom-4 hover:zoom-in-105 transition-all duration-300"
-                  style={{
-                    animationDelay: `${600 + (index * 100)}ms`,
-                    animationFillMode: 'both'
-                  }}
-                >
-                  <div className="group h-full">
+            {/* Primeira categoria em destaque (se houver) */}
+            {categorias.length > 0 && (
+              <div className="mb-12">
+                <div className="relative animate-in fade-in zoom-in-95 slide-in-from-top-4 duration-700 delay-300">
+                  {/* Badge de destaque */}
+                  <div className="absolute -top-3 -right-3 z-10 animate-in fade-in zoom-in-95 duration-500 delay-800">
+                    <div className="bg-gradient-to-r from-[#A57C3A] to-[#6B7B3F] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      ✨ Em Destaque
+                    </div>
+                  </div>
+                  <BlogCategoryCard 
+                    category={categorias[0]}
+                    variant="visual"
+                    showImage={true}
+                    featured={true}
+                    className="transform hover:scale-[1.02] transition-all duration-300"
+                  />
+                </div>
+              </div>
+            )}
+            
+            {/* Grid das demais categorias */}
+            {categorias.length > 1 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {categorias.slice(1).map((categoria, index) => (
+                  <div
+                    key={categoria.id}
+                    className="animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-700"
+                    style={{
+                      animationDelay: `${800 + (index * 100)}ms`,
+                      animationFillMode: 'both'
+                    }}
+                  >
                     <BlogCategoryCard 
                       category={categoria}
-                      variant="enhanced"
+                      variant="visual"
                       showImage={true}
-                      className="h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:-translate-y-1"
+                      featured={false}
+                      className="h-full"
                     />
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="text-center py-16 animate-in fade-in zoom-in-75 duration-700">
-            <div className="bg-white rounded-xl shadow-lg p-12 border border-[#C19A6B]/20 max-w-md mx-auto">
-              <div className="text-[#735B43]/60 mb-4">
-                <svg className="h-16 w-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                ))}
+              </div>
+            )}
+          </div>        ) : (
+          /* Estado vazio com design aprimorado */
+          <div className="text-center py-20 animate-in fade-in zoom-in-95 duration-700">
+            <div className="max-w-md mx-auto">
+              {/* Ícone decorativo */}
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#A57C3A]/10 to-[#6B7B3F]/10 rounded-full mb-8 animate-pulse">
+                <svg className="w-10 h-10 text-[#735B43]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-[#583B1F] mb-2">
-                {error ? 'Erro ao carregar' : 'Nenhuma categoria'}
+              
+              <h3 className="text-2xl font-bold text-[#583B1F] mb-4 font-['Old_Roman']">
+                {error ? 'Erro ao carregar categorias' : 'Nenhuma categoria encontrada'}
               </h3>
-              <p className="text-[#735B43]">
+              
+              <p className="text-lg text-[#735B43] leading-relaxed">
                 {error
-                  ? 'Não foi possível carregar as categorias no momento.'
+                  ? 'Não foi possível carregar as categorias no momento. Tente novamente mais tarde.'
                   : currentPage > 1 
-                    ? 'Não há mais categorias para exibir.' 
-                    : 'Nenhuma categoria encontrada.'
+                    ? 'Não há mais categorias para exibir nesta página.' 
+                    : 'Estamos preparando conteúdo incrível para você. Volte em breve para explorar nossos temas.'
                 }
               </p>
+              
+              {/* Decoração visual */}
+              <div className="flex justify-center items-center mt-8">
+                <div className="w-8 h-1 bg-[#A57C3A]/30 rounded-full"></div>
+                <div className="w-2 h-2 bg-[#A57C3A] rounded-full mx-3"></div>
+                <div className="w-8 h-1 bg-[#A57C3A]/30 rounded-full"></div>
+              </div>
             </div>
           </div>
         )}
