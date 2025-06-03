@@ -38,14 +38,13 @@ export default function AudioPlayerTrigger({
         <svg className="w-4 h-4 ml-auto transition-transform group-hover:translate-x-1" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
         </svg>
-      </button>
-
-      {/* Floating Player */}
+      </button>      {/* Floating Player */}
       <FloatingAudioPlayer
         conteudo={conteudo}
         titulo={titulo}
         isVisible={isPlayerVisible}
         onClose={() => setIsPlayerVisible(false)}
+        startExpanded={true}
       />
     </>
   );

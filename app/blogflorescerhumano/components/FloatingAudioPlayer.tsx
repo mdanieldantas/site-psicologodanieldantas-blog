@@ -8,17 +8,27 @@ interface FloatingAudioPlayerProps {
   titulo?: string;
   isVisible?: boolean;
   onClose?: () => void;
+  startExpanded?: boolean;
 }
 
 export default function FloatingAudioPlayer({ 
   conteudo, 
   titulo, 
   isVisible = true,
-  onClose 
+  onClose,
+  startExpanded = true
 }: FloatingAudioPlayerProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(startExpanded);
   const [isMinimized, setIsMinimized] = useState(false);
-    const { elementRef, position, isDragging, handlers } = useDraggable({
+
+  // Força estado expandido quando o player é aberto
+  useEffect(() => {
+    if (isVisible && startExpanded) {
+      setIsExpanded(true);
+    }
+  }, [isVisible, startExpanded]);
+
+  const { elementRef, position, isDragging, handlers } = useDraggable({
     initialPosition: { 
       x: typeof window !== 'undefined' ? window.innerWidth - 340 : 20, 
       y: 20 
