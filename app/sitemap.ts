@@ -9,95 +9,191 @@ const supabase = createClient(
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://psicologodanieldantas.com.br';
 
-  // Busca categorias, artigos e tags publicados
-  const { data: categorias } = await supabase.from('categorias').select('slug');
-  const { data: artigos } = await supabase
-    .from('artigos')
-    .select('slug, categorias ( slug )')
-    .eq('status', 'publicado')
-    .not('data_publicacao', 'is', null);
-  const { data: tags } = await supabase.from('tags').select('slug');  // URLs estáticas principais
-  const staticUrls = [
-    { url: baseUrl, changeFrequency: 'weekly' as const, priority: 1 },
-    { url: `${baseUrl}/sobre`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/servicos`, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/faq`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/contato`, changeFrequency: 'yearly' as const, priority: 0.6 },
-    { url: `${baseUrl}/agendamento`, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/atendimento-online`, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/atendimento-lgbtqia`, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/ansiedade`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/depressao`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/autoconhecimento`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/avaliacao-psicologica`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/politica-de-privacidade`, changeFrequency: 'yearly' as const, priority: 0.3 },
-    { url: `${baseUrl}/blogflorescerhumano`, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/blogflorescerhumano/contato`, changeFrequency: 'yearly' as const, priority: 0.5 },
-    { url: `${baseUrl}/blogflorescerhumano/sobre`, changeFrequency: 'yearly' as const, priority: 0.5 },
-    { url: `${baseUrl}/blogflorescerhumano/materiais`, changeFrequency: 'monthly' as const, priority: 0.5 },
-    { url: `${baseUrl}/blogflorescerhumano/midias`, changeFrequency: 'monthly' as const, priority: 0.5 },
-    { url: `${baseUrl}/blogflorescerhumano/buscar`, changeFrequency: 'monthly' as const, priority: 0.4 },
-    { url: `${baseUrl}/blogflorescerhumano/cancelar-newsletter`, changeFrequency: 'yearly' as const, priority: 0.2 },
-    { url: `${baseUrl}/blogflorescerhumano/confirmar-newsletter`, changeFrequency: 'yearly' as const, priority: 0.2 },
-    { url: `${baseUrl}/blogflorescerhumano/artigos`, changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${baseUrl}/blogflorescerhumano/categorias`, changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/blogflorescerhumano/tags`, changeFrequency: 'monthly' as const, priority: 0.7 },    // URLs específicas para atendimento à comunidade LGBTQIA+
-    { url: `${baseUrl}/psicoterapia-lgbtqia`, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/terapia-afirmativa`, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/identidade-de-genero`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/orientacao-sexual`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    
-    // URLs específicas para psicologia racial
-    { url: `${baseUrl}/psicologia-racial`, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/letramento-racial`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/psicologia-antirracista`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    
-    // URLs específicas para atendimento internacional
-    { url: `${baseUrl}/atendimento-internacional`, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/brasileiros-no-exterior`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/psicoterapia-online-portugues`, changeFrequency: 'monthly' as const, priority: 0.8 },
-    // Adicione aqui apenas páginas reais e indexáveis
-  ];
+  try {
+    // CORREÇÃO: Consultas paralelas com Promise.all para melhor performance
+    const [categoriesResponse, articlesResponse, tagsResponse] = await Promise.all([
+      supabase.from('categorias').select('slug, data_atualizacao'),
+      supabase
+        .from('artigos')
+        .select(`
+          slug, 
+          data_atualizacao,
+          categorias!inner ( slug )
+        `)
+        .eq('status', 'publicado')
+        .not('data_publicacao', 'is', null),
+      supabase.from('tags').select('slug')
+    ]);
 
+    const { data: categorias } = categoriesResponse;
+    const { data: artigos } = articlesResponse;
+    const { data: tags } = tagsResponse;    // ✅ URLs estáticas que REALMENTE EXISTEM
+    const staticUrls: MetadataRoute.Sitemap = [
+      // SITE PRINCIPAL - apenas páginas que existem
+      { 
+        url: baseUrl, 
+        changeFrequency: 'weekly', 
+        priority: 1.0, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/em-construcao`, 
+        changeFrequency: 'yearly', 
+        priority: 0.2, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/politica-de-privacidade`, 
+        changeFrequency: 'yearly', 
+        priority: 0.3, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/test-button-blog`, 
+        changeFrequency: 'monthly', 
+        priority: 0.2, 
+        lastModified: new Date() 
+      },
+      
+      // BLOG - páginas que existem
+      { 
+        url: `${baseUrl}/blogflorescerhumano`, 
+        changeFrequency: 'daily', 
+        priority: 0.9, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/sobre`, 
+        changeFrequency: 'monthly', 
+        priority: 0.6, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/contato`, 
+        changeFrequency: 'yearly', 
+        priority: 0.5, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/artigos`, 
+        changeFrequency: 'daily', 
+        priority: 0.8, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/categorias`, 
+        changeFrequency: 'weekly', 
+        priority: 0.7, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/materiais`, 
+        changeFrequency: 'monthly', 
+        priority: 0.5, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/midias`, 
+        changeFrequency: 'monthly', 
+        priority: 0.5, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/buscar`, 
+        changeFrequency: 'weekly', 
+        priority: 0.4, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/confirmar-newsletter`, 
+        changeFrequency: 'yearly', 
+        priority: 0.2, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/cancelar-newsletter`, 
+        changeFrequency: 'yearly', 
+        priority: 0.2, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano/reenviar-confirmacao`, 
+        changeFrequency: 'yearly', 
+        priority: 0.2, 
+        lastModified: new Date() 
+      },
+    ];
   // URLs dinâmicas de categorias
   const categoriaUrls =
     categorias?.map((cat) => ({
       url: `${baseUrl}/blogflorescerhumano/${cat.slug}`,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
+      lastModified: cat.data_atualizacao ? new Date(cat.data_atualizacao) : new Date(),
     })) ?? [];
-
-  // URLs dinâmicas de artigos
+  // URLs dinâmicas de artigos - CORRIGIDO
   const artigoUrls =
     artigos?.map((art) => {
-      let categoriaSlug = 'categoria';
-      if (Array.isArray(art.categorias) && art.categorias.length > 0) {
-        categoriaSlug = art.categorias[0].slug;
+      // CORREÇÃO: Acessa corretamente o slug da categoria
+      let categoriaSlug = 'sem-categoria';
+      if (art.categorias && typeof art.categorias === 'object' && 'slug' in art.categorias) {
+        categoriaSlug = (art.categorias as { slug: string }).slug;
       }
+      
       return {
         url: `${baseUrl}/blogflorescerhumano/${categoriaSlug}/${art.slug}`,
-        changeFrequency: 'weekly' as const,
+        changeFrequency: 'monthly' as const,
         priority: 0.8,
+        lastModified: art.data_atualizacao ? new Date(art.data_atualizacao) : new Date(),
       };
     }) ?? [];
-
   // URLs dinâmicas de tags
   const tagUrls =
     tags?.map((tag) => ({
       url: `${baseUrl}/blogflorescerhumano/tags/${tag.slug}`,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
+      lastModified: new Date(),
     })) ?? [];
 
-  // Retorno final do sitemap
-  return [
+  // Combina todas as URLs
+  const allUrls = [
     ...staticUrls,
     ...categoriaUrls,
     ...artigoUrls,
     ...tagUrls,
-  ].map((entry) => ({
-    ...entry,
-    lastModified: new Date(),
-  }));
+  ];
+
+  // CORREÇÃO: Remove duplicatas e ordena por prioridade
+  const uniqueUrls = allUrls.reduce((acc, current) => {
+    const exists = acc.find(item => item.url === current.url);
+    if (!exists) {
+      acc.push(current);
+    }
+    return acc;
+  }, [] as typeof allUrls);
+
+  // Ordena por prioridade (maior para menor)
+  return uniqueUrls.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+
+  } catch (error) {
+    console.error('Erro ao gerar sitemap:', error);
+    
+    // FALLBACK: retorna apenas URLs estáticas básicas
+    return [
+      { 
+        url: baseUrl, 
+        changeFrequency: 'weekly' as const, 
+        priority: 1.0, 
+        lastModified: new Date() 
+      },
+      { 
+        url: `${baseUrl}/blogflorescerhumano`, 
+        changeFrequency: 'daily' as const, 
+        priority: 0.9, 
+        lastModified: new Date() 
+      },
+    ];
+  }
 }
 
