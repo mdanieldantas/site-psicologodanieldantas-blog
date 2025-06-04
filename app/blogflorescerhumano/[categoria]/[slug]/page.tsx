@@ -36,8 +36,10 @@ interface ArtigoPageProps {
 export async function generateMetadata({ 
   params 
 }: { 
-  params: { slug: string; categoria: string } 
+  params: Promise<{ slug: string; categoria: string }> 
 }): Promise<Metadata> {
+  const { categoria: categoriaSlug, slug: artigoSlug } = await params;
+  
   try {
     // Busca dados completos do artigo baseado na estrutura SQL real
     const { data: artigo } = await supabaseServer
@@ -52,11 +54,11 @@ export async function generateMetadata({
         categoria_id,
         autor_id,
         categorias!inner(nome, slug),
-        autores(nome)
+        autores(nome, biografia, foto_arquivo, perfil_academico_url)
       `)
-      .eq('slug', params.slug)
+      .eq('slug', artigoSlug)
       .eq('status', 'publicado')
-      .eq('categorias.slug', params.categoria)
+      .eq('categorias.slug', categoriaSlug)
       .single();
 
     if (!artigo) {
@@ -64,9 +66,7 @@ export async function generateMetadata({
         title: 'Artigo não encontrado | Blog Florescer Humano',
         description: 'O artigo que você procura não foi encontrado em nosso blog.',
       };
-    }
-
-    // Extrai dados relacionados
+    }    // Extrai dados relacionados
     const categoria = Array.isArray(artigo.categorias) 
       ? artigo.categorias[0] 
       : artigo.categorias;
@@ -75,36 +75,35 @@ export async function generateMetadata({
       ? artigo.autores[0] 
       : artigo.autores;
 
+    // Nome do autor para o título (com fallback)
+    const autorNome = autor?.nome || 'Daniel Dantas';
+
     // URLs base
     const baseUrl = 'https://psicologodanieldantas.com.br';
-    const canonicalUrl = `${baseUrl}/blogflorescerhumano/${params.categoria}/${params.slug}`;
+    const canonicalUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`;
     
     // URL da imagem otimizada para SEO
     const imagemUrl = artigo.imagem_capa_arquivo 
       ? `${baseUrl}/images/blog/${artigo.imagem_capa_arquivo}`
-      : `${baseUrl}/images/blog/default-og-image.jpg`;
-
-    // Título SEO otimizado (máx 60 caracteres)
-    const title = artigo.titulo.length > 50 
-      ? `${artigo.titulo.substring(0, 47)}... | Blog` 
-      : `${artigo.titulo} | Blog Florescer Humano`;
+      : `${baseUrl}/images/blog/default-og-image.jpg`;    // Título SEO otimizado com nome do autor (máx 60 caracteres)
+    const title = artigo.titulo.length > 40 
+      ? `${artigo.titulo.substring(0, 37)}... | ${autorNome}` 
+      : `${artigo.titulo} | ${autorNome}`;
     
     // Descrição SEO otimizada (máx 160 caracteres)
     const description = artigo.resumo && artigo.resumo.length > 0
       ? artigo.resumo.length > 155 
         ? `${artigo.resumo.substring(0, 152)}...`
         : artigo.resumo
-      : `Artigo sobre ${categoria?.nome || 'psicologia'} no blog do Psicólogo Daniel Dantas. Conteúdo sobre desenvolvimento pessoal e terapia humanista.`;
-
-    // Keywords dinâmicas baseadas no conteúdo
+      : `Artigo sobre ${categoria?.nome || 'psicologia'} no blog do Psicólogo Daniel Dantas. Conteúdo sobre desenvolvimento pessoal e terapia humanista.`;    // Keywords dinâmicas baseadas no conteúdo
     const keywords = [
       ...artigo.titulo.split(' ').filter(word => word.length > 3).slice(0, 5),
       categoria?.nome || 'psicologia',
+      autorNome,
       'psicologia humanista',
       'autoconhecimento',
       'terapia',
       'desenvolvimento pessoal',
-      'Daniel Dantas',
       'psicólogo',
       'blog psicologia'
     ].join(', ');
@@ -116,7 +115,14 @@ export async function generateMetadata({
       // Keywords para SEO
       keywords,
       
-      // Open Graph para redes sociais
+      // Metadados de autoria
+      authors: [{ 
+        name: autorNome,
+        url: autor?.perfil_academico_url || 'https://www.psicologodanieldantas.com.br/'
+      }],
+      creator: autorNome,
+      publisher: 'Blog Florescer Humano',
+        // Open Graph para redes sociais
       openGraph: {
         title: artigo.titulo,
         description,
@@ -131,10 +137,11 @@ export async function generateMetadata({
           }
         ],
         locale: 'pt_BR',
-        type: 'article',        publishedTime: artigo.data_publicacao || undefined,
+        type: 'article',
+        publishedTime: artigo.data_publicacao || undefined,
         modifiedTime: artigo.data_atualizacao || undefined,
         section: categoria?.nome || 'Psicologia',
-        authors: [autor?.nome || 'Daniel Dantas'],
+        authors: [autorNome],
       },
 
       // Twitter Cards
@@ -143,7 +150,7 @@ export async function generateMetadata({
         title: artigo.titulo,
         description,
         images: [imagemUrl],
-        creator: '@psicologodaniel',
+        creator: `@${autorNome.replace(/\s+/g, '').toLowerCase()}`,
         site: '@psicologodaniel',
       },
 
@@ -163,13 +170,13 @@ export async function generateMetadata({
           'max-image-preview': 'large',
           'max-snippet': -1,
         },
-      },      // Meta tags adicionais para SEO - CORRIGIDO
+      },      // Meta tags adicionais para SEO - com autor dinâmico
       other: {
-        'article:author': autor?.nome || 'Daniel Dantas',
-        'article:section': artigo.categorias?.nome || 'Psicologia',
+        'article:author': autorNome,
+        'article:section': categoria?.nome || 'Psicologia',
         'article:published_time': artigo.data_publicacao || '',
         'article:modified_time': artigo.data_atualizacao || '',
-        'article:tag': artigo.categorias?.nome || '',
+        'article:tag': categoria?.nome || '',
       },
     };
 
