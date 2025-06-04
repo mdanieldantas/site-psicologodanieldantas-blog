@@ -11,6 +11,7 @@ import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; //
 import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Metadata
 import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; // Importa o componente de Schema JSON-LD
 import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
+import ElegantImageFrame from "@/app/blogflorescerhumano/components/ElegantImageFrame"; // Importa o componente de moldura elegante
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
@@ -377,34 +378,20 @@ export default async function ArtigoEspecificoPage({
                 </span>
               </div>
             </div>
-          </div>          {/* Imagem de Capa Otimizada - Mostra a imagem completa sem cortes */}
-          <div className="mb-8 relative w-full rounded-2xl overflow-hidden shadow-lg bg-[#F8F5F0]">
-            {/* Container com aspect ratio adaptativo e melhor visualização */}
-            <div className="relative w-full aspect-[4/3] md:aspect-[3/2] lg:aspect-[5/3]">
-              <Image
-                src={imageUrl}
-                alt={hasValidImage(imagem_capa_arquivo) 
-                  ? `Imagem de capa para ${titulo ?? "artigo"}` 
-                  : 'Blog Florescer Humano - Artigo'
-                }
-                fill
-                className="object-contain p-2"
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-              />
-              {/* Overlay sutil apenas nas bordas para destacar o conteúdo da imagem */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#F8F5F0]/20 via-transparent to-[#F8F5F0]/20 pointer-events-none"></div>
-            </div>
-            
-            {/* Resumo do artigo como legenda da imagem */}
-            {resumo && (
-              <div className="p-4 bg-[#F8F5F0]/80 backdrop-blur-sm border-t border-[#C19A6B]/20">
-                <p className="text-[#583B1F] text-sm md:text-base font-medium leading-relaxed">
-                  {resumo}
-                </p>
-              </div>
-            )}
-          </div>
+          </div>          {/* Imagem de Capa com Moldura Elegante */}
+          <ElegantImageFrame
+            src={imageUrl}
+            alt={hasValidImage(imagem_capa_arquivo) 
+              ? `Imagem de capa para ${titulo ?? "artigo"}` 
+              : 'Blog Florescer Humano - Artigo'
+            }
+            title={titulo ?? undefined}
+            subtitle={resumo ?? undefined}
+            frameStyle="elegant"
+            priority
+            className="mb-8"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+          />
 
             {/* Exibição das Tags - Design elegante e refinado */}{tags && Array.isArray(tags) && tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3">              <div className="flex items-center text-xs text-[#735B43] mr-1">
