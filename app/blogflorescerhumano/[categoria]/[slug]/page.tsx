@@ -377,9 +377,10 @@ export default async function ArtigoEspecificoPage({
                 </span>
               </div>
             </div>
-          </div>          {/* Imagem de Capa Aprimorada */}
-          <div className="mb-3 relative w-full overflow-hidden rounded-lg shadow-lg">
-            <AspectRatio.Root ratio={16 / 9}>
+          </div>          {/* Imagem de Capa Otimizada - Mostra a imagem completa sem cortes */}
+          <div className="mb-8 relative w-full rounded-2xl overflow-hidden shadow-lg bg-[#F8F5F0]">
+            {/* Container com aspect ratio adaptativo e melhor visualização */}
+            <div className="relative w-full aspect-[4/3] md:aspect-[3/2] lg:aspect-[5/3]">
               <Image
                 src={imageUrl}
                 alt={hasValidImage(imagem_capa_arquivo) 
@@ -387,19 +388,23 @@ export default async function ArtigoEspecificoPage({
                   : 'Blog Florescer Humano - Artigo'
                 }
                 fill
-                className="object-cover"
+                className="object-contain p-2"
                 priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
               />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-60 pointer-events-none"></div>
-                {resumo && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-                    <p className="text-white text-sm md:text-base font-medium drop-shadow-md hidden md:block">
-                      {resumo}
-                    </p>
-                  </div>                )}
-              </AspectRatio.Root>
+              {/* Overlay sutil apenas nas bordas para destacar o conteúdo da imagem */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#F8F5F0]/20 via-transparent to-[#F8F5F0]/20 pointer-events-none"></div>
             </div>
+            
+            {/* Resumo do artigo como legenda da imagem */}
+            {resumo && (
+              <div className="p-4 bg-[#F8F5F0]/80 backdrop-blur-sm border-t border-[#C19A6B]/20">
+                <p className="text-[#583B1F] text-sm md:text-base font-medium leading-relaxed">
+                  {resumo}
+                </p>
+              </div>
+            )}
+          </div>
 
             {/* Exibição das Tags - Design elegante e refinado */}{tags && Array.isArray(tags) && tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3">              <div className="flex items-center text-xs text-[#735B43] mr-1">
