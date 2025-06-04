@@ -79,14 +79,14 @@ const ArticleCardBlog: React.FC<ArticleCardBlogProps> = ({
         className="block h-full transform transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
       >
         <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-lg group-hover:shadow-2xl border border-[#E8E6E2] transition-all duration-500 group-hover:border-[#A57C3A]/30">
-          
-          {/* Imagem do Artigo */}
-          <div className="relative w-full h-56 overflow-hidden">            <Image
+            {/* Imagem do Artigo */}
+          <div className="relative w-full h-56 overflow-hidden bg-gradient-to-br from-[#F8F5F0] to-[#E8E6E2]">
+            <Image
               src={imagemProcessada}
               alt={temImagemValida ? `Imagem para ${titulo}` : `Imagem padrão do blog Florescer Humano - ${titulo}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              className="object-contain transition-transform duration-700 group-hover:scale-105"
               priority
             />
             
