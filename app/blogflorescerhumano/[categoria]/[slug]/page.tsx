@@ -20,6 +20,7 @@ import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa est
 import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 import { getImageUrl, getOgImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
+// Tipos de dados
 type Artigo = Database["public"]["Tables"]["artigos"]["Row"];
 type Categoria = Database["public"]["Tables"]["categorias"]["Row"];
 type Autor = Database["public"]["Tables"]["autores"]["Row"];
@@ -29,6 +30,159 @@ interface ArtigoPageProps {
     categoria: string; // slug da categoria
     slug: string; // slug do artigo
   }>;
+}
+
+// ✅ PASSO 2: Função generateMetadata otimizada para SEO
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { slug: string; categoria: string } 
+}): Promise<Metadata> {
+  try {
+    // Busca dados completos do artigo baseado na estrutura SQL real
+    const { data: artigo } = await supabaseServer
+      .from('artigos')
+      .select(`
+        id,
+        titulo,
+        resumo,
+        imagem_capa_arquivo,
+        data_publicacao,
+        data_atualizacao,
+        categoria_id,
+        autor_id,
+        categorias!inner(nome, slug),
+        autores(nome)
+      `)
+      .eq('slug', params.slug)
+      .eq('status', 'publicado')
+      .eq('categorias.slug', params.categoria)
+      .single();
+
+    if (!artigo) {
+      return {
+        title: 'Artigo não encontrado | Blog Florescer Humano',
+        description: 'O artigo que você procura não foi encontrado em nosso blog.',
+      };
+    }
+
+    // Extrai dados relacionados
+    const categoria = Array.isArray(artigo.categorias) 
+      ? artigo.categorias[0] 
+      : artigo.categorias;
+    
+    const autor = Array.isArray(artigo.autores) 
+      ? artigo.autores[0] 
+      : artigo.autores;
+
+    // URLs base
+    const baseUrl = 'https://psicologodanieldantas.com.br';
+    const canonicalUrl = `${baseUrl}/blogflorescerhumano/${params.categoria}/${params.slug}`;
+    
+    // URL da imagem otimizada para SEO
+    const imagemUrl = artigo.imagem_capa_arquivo 
+      ? `${baseUrl}/images/blog/${artigo.imagem_capa_arquivo}`
+      : `${baseUrl}/images/blog/default-og-image.jpg`;
+
+    // Título SEO otimizado (máx 60 caracteres)
+    const title = artigo.titulo.length > 50 
+      ? `${artigo.titulo.substring(0, 47)}... | Blog` 
+      : `${artigo.titulo} | Blog Florescer Humano`;
+    
+    // Descrição SEO otimizada (máx 160 caracteres)
+    const description = artigo.resumo && artigo.resumo.length > 0
+      ? artigo.resumo.length > 155 
+        ? `${artigo.resumo.substring(0, 152)}...`
+        : artigo.resumo
+      : `Artigo sobre ${categoria?.nome || 'psicologia'} no blog do Psicólogo Daniel Dantas. Conteúdo sobre desenvolvimento pessoal e terapia humanista.`;
+
+    // Keywords dinâmicas baseadas no conteúdo
+    const keywords = [
+      ...artigo.titulo.split(' ').filter(word => word.length > 3).slice(0, 5),
+      categoria?.nome || 'psicologia',
+      'psicologia humanista',
+      'autoconhecimento',
+      'terapia',
+      'desenvolvimento pessoal',
+      'Daniel Dantas',
+      'psicólogo',
+      'blog psicologia'
+    ].join(', ');
+
+    return {
+      title,
+      description,
+      
+      // Keywords para SEO
+      keywords,
+      
+      // Open Graph para redes sociais
+      openGraph: {
+        title: artigo.titulo,
+        description,
+        url: canonicalUrl,
+        siteName: 'Psicólogo Daniel Dantas - Blog Florescer Humano',
+        images: [
+          {
+            url: imagemUrl,
+            width: 1200,
+            height: 630,
+            alt: `${artigo.titulo} - Blog Florescer Humano`,
+          }
+        ],
+        locale: 'pt_BR',
+        type: 'article',        publishedTime: artigo.data_publicacao || undefined,
+        modifiedTime: artigo.data_atualizacao || undefined,
+        section: categoria?.nome || 'Psicologia',
+        authors: [autor?.nome || 'Daniel Dantas'],
+      },
+
+      // Twitter Cards
+      twitter: {
+        card: 'summary_large_image',
+        title: artigo.titulo,
+        description,
+        images: [imagemUrl],
+        creator: '@psicologodaniel',
+        site: '@psicologodaniel',
+      },
+
+      // URL canônica para evitar conteúdo duplicado
+      alternates: {
+        canonical: canonicalUrl,
+      },
+
+      // Robots otimizado para SEO
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },      // Meta tags adicionais para SEO - CORRIGIDO
+      other: {
+        'article:author': autor?.nome || 'Daniel Dantas',
+        'article:section': artigo.categorias?.nome || 'Psicologia',
+        'article:published_time': artigo.data_publicacao || '',
+        'article:modified_time': artigo.data_atualizacao || '',
+        'article:tag': artigo.categorias?.nome || '',
+      },
+    };
+
+  } catch (error) {
+    console.error('Erro ao gerar metadata do artigo:', error);
+    
+    // Fallback em caso de erro
+    return {
+      title: 'Blog Florescer Humano | Psicólogo Daniel Dantas',
+      description: 'Artigos sobre psicologia humanista, autoconhecimento e desenvolvimento pessoal por Daniel Dantas.',
+      robots: { index: false, follow: false }, // Não indexa se houver erro
+    };
+  }
 }
 
 // --- Tipagem Explícita para Dados do Artigo --- //
@@ -48,79 +202,6 @@ type ArtigoComRelacoes = Database["public"]["Tables"]["artigos"]["Row"] & {
       >[]
     | null; // Array de tags
 };
-
-// --- Geração de Metadados Dinâmicos --- //
-export async function generateMetadata(
-  { params }: ArtigoPageProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // Await params para Next.js 15
-  const resolvedParams = await params;
-  const categoriaSlugParam = resolvedParams.categoria;
-  const artigoSlugParam = resolvedParams.slug;
-
-  // Busca apenas os dados necessários para metadata
-  const { data: artigo, error } = await supabaseServer
-    .from("artigos")
-    .select("titulo, resumo, imagem_capa_arquivo, categorias ( slug )") // Seleciona o slug da categoria também
-    .eq("slug", artigoSlugParam)
-    .eq("categorias.slug", categoriaSlugParam) // Garante que o artigo pertence à categoria correta
-    .eq("status", "publicado")
-    .lte("data_publicacao", new Date().toISOString())
-    .maybeSingle();
-  // Se não encontrar o artigo ou houver erro, chama notFound()
-  if (error || !artigo) {
-    // Em vez de retornar metadados padrão, chama notFound() diretamente
-    // Isso evita o erro no console e mostra a página 404 corretamente
-    notFound();
-  }
-  // Gera URL da imagem com fallback e retrocompatibilidade
-  const ogImageUrl = getOgImageUrl(
-    artigo.imagem_capa_arquivo, 
-    categoriaSlugParam,
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-  );
-
-  const pageTitle = `${artigo.titulo ?? "Artigo"} | Blog Florescer Humano`;
-  const pageDescription =
-    artigo.resumo ?? "Leia este artigo no Blog Florescer Humano.";
-  // Constrói a URL canônica da página
-  const canonicalUrl = `/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
-
-  return {
-    title: pageTitle,
-    description: pageDescription,
-    alternates: {
-      canonical: canonicalUrl, // Adiciona URL canônica
-    },
-    openGraph: {
-      title: pageTitle,
-      description: pageDescription,
-      url: canonicalUrl,
-      siteName: "Blog Florescer Humano",      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: hasValidImage(artigo.imagem_capa_arquivo) 
-            ? `Imagem para ${artigo.titulo}` 
-            : 'Blog Florescer Humano - Artigo',
-        },
-      ],
-      locale: "pt_BR",
-      type: "article", // Define o tipo como artigo para OG
-      // publishedTime: artigo.data_publicacao, // Requer buscar data_publicacao
-      // authors: [nomeAutor], // Requer buscar nomeAutor
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description: pageDescription,      images: [ogImageUrl],
-      // site: '@seuTwitter', // Opcional: seu handle do Twitter
-      // creator: '@autorTwitter', // Opcional: handle do autor
-    },
-  };
-}
 
 // --- Componente da Página --- //
 export default async function ArtigoEspecificoPage({
