@@ -34,19 +34,34 @@ export const metadata: Metadata = {  // Metadados básicos
     // Open Graph (para compartilhamento em redes sociais)
   openGraph: {
     type: "website",
-    locale: "pt_BR",
-    url: "https://psicologodanieldantas.com.br",
-    siteName: "Daniel Dantas - Psicólogo Online",
+    locale: "pt_BR",    url: "https://psicologodanieldantas.com.br",
+    siteName: "Psicólogo Online - Terapia Humanista",
     title: "Psicólogo Daniel Dantas | Terapia Online Humanista | CRP 11/11854",
     description: "Terapia online humanista c/ Psicólogo Daniel Dantas p/ ansiedade, estresse, autoconhecimento. Espaço sensível a questões étnico-raciais e LGBTQIA+. BR/Mundo.",
     images: [
-      {
-        url: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
+      {        url: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
         width: 1200,
         height: 630,        alt: "Foto do Psicólogo Daniel Dantas",
+        type: "image/webp",
       }
-    ]
+    ],
+    emails: ['contatomarcosdgomes@gmail.com'],
+    phoneNumbers: ['+55-85-986013431'],
+    countryName: 'Brasil',  },
+  
+  // Configurações de SEO e indexação
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
+  
     // Twitter Card
   twitter: {
     card: "summary_large_image",

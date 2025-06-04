@@ -5,11 +5,12 @@ export default function SchemaMarkup() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ProfessionalService",
-            name: "Daniel Dantas - Psicólogo Online",            image: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
+            "@context": "https://schema.org",            "@type": "ProfessionalService",
+            name: "Daniel Dantas - Psicólogo Online",
+            image: "https://psicologodanieldantas.com.br/foto-psicologo-daniel-dantas.webp",
             url: "https://psicologodanieldantas.com.br",
             telephone: "+5585986013431",
+            email: "contatomarcosdgomes@gmail.com",
             address: {
               "@type": "PostalAddress",
               addressLocality: "Fortaleza",
@@ -132,7 +133,23 @@ export default function SchemaMarkup() {
                   "@type": "Answer",
                   text: "Sim, ofereço um espaço seguro, acolhedor e afirmativo para pessoas lésbicas, gays, bissexuais, transgêneros, queer, intersexo, assexuais e qualquer pessoa da comunidade LGBTQIA+. Sou psicólogo com formação em terapia afirmativa e trabalho respeitando a diversidade de identidades de gênero e orientações sexuais.",
                 },
+              },            ],
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                "url": "https://wa.me/5585986013431?text=Olá%20Dr.%20Daniel,%20gostaria%20de%20agendar%20uma%20consulta",
+                "contactType": "customer service",
+                "name": "WhatsApp - Agendamento de Consultas",
+                "availableLanguage": "Portuguese",
+                "areaServed": ["BR", "PT", "Global"]
               },
+              {
+                "@type": "ContactPoint", 
+                "telephone": "+5585986013431",
+                "contactType": "technical support",
+                "availableLanguage": "Portuguese",
+                "areaServed": ["BR", "PT", "Global"]
+              }
             ],
           }),
         }}
