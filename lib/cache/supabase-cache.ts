@@ -6,12 +6,11 @@ import {
   getCategoriaBySlug as originalGetCategoriaBySlug,
   getArtigosByCategoriaSlug as originalGetArtigosByCategoriaSlug
 } from '@/lib/supabase/queries';
-import { ISR_CONFIG, SUPABASE_CACHE_CONFIG, logISR } from './isr-config';
 
 // 🎯 CACHE CONFIGURATION FOR NEXT.JS 15 + ISR
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-// ⚡ Configurações de cache sincronizadas com ISR
+// ⚡ Configurações de cache simplificadas (sem dependências externas)
 const CACHE_STRATEGY = {
   development: {
     articles: 300,      // 5 min - testes rápidos
@@ -20,27 +19,34 @@ const CACHE_STRATEGY = {
     single_category: 300 // 5 min - mudanças médias
   },
   production: {
-    articles: ISR_CONFIG.LISTING_PAGES,     // 15 min - sincronizado com ISR
-    categories: ISR_CONFIG.STATIC_PAGES / 24, // 1 hora - categorias são estáveis
-    single_article: ISR_CONFIG.ARTICLE_PAGES, // 1 hora - sincronizado com ISR dos artigos
-    single_category: ISR_CONFIG.CATEGORY_PAGES // 30 min - páginas de categoria
+    articles: 900,      // 15 min - sincronizado com ISR
+    categories: 3600,   // 1 hora - categorias são estáveis
+    single_article: 3600, // 1 hora - sincronizado com ISR dos artigos
+    single_category: 1800 // 30 min - páginas de categoria
   }
 };
 
 const cache = isDevelopment ? CACHE_STRATEGY.development : CACHE_STRATEGY.production;
 
+// 🔧 Função de log simplificada
+const logCacheOperation = (operation: string, env: string, ttl: number) => {
+  if (isDevelopment) {
+    console.log(`🔄 ${env} Cache: ${operation} (TTL: ${ttl}s)`);
+  }
+};
+
 // ✅ ARTIGOS CACHE - Sincronizado com ISR das páginas
 export const getCachedPublishedArtigos = unstable_cache(
   async () => {
-    logISR('Cache', 'Published Articles fetch', { ttl: cache.articles });
+    logCacheOperation('Published Articles fetch', isDevelopment ? 'DEV' : 'PROD', cache.articles);
     const result = await originalGetPublishedArtigos();
-    logISR('Cache', `Loaded ${result.length} articles`);
+    console.log(`   📄 Loaded ${result.length} articles`);
     return result;
   },
   ['published-artigos-isr-v3'], // Versioning para invalidar caches antigos
   {
     revalidate: cache.articles,
-    tags: [SUPABASE_CACHE_CONFIG.CACHE_TAGS.ARTICLES, 'published', 'isr-sync']
+    tags: ['artigos', 'published', 'isr-sync']
   }
 );
 
@@ -61,9 +67,9 @@ export const getCachedAllCategorias = unstable_cache(
 
 // ✅ ARTIGO INDIVIDUAL - Cache alinhado com ISR de páginas específicas
 export const getCachedArtigoBySlug = unstable_cache(
-  async (slug: string, categoriaSlug: string) => {
-    logCacheOperation(`Article: ${categoriaSlug}/${slug}`, isDevelopment ? 'DEV' : 'PROD', cache.single_article);
-    const result = await originalGetArtigoBySlug(slug, categoriaSlug);
+  async (slug: string) => {
+    logCacheOperation(`Article: ${slug}`, isDevelopment ? 'DEV' : 'PROD', cache.single_article);
+    const result = await originalGetArtigoBySlug(slug);
     return result;
   },
   ['artigo-by-slug-v2'],
@@ -89,10 +95,9 @@ export const getCachedCategoriaBySlug = unstable_cache(
 
 // ✅ ARTIGOS POR CATEGORIA - Cache inteligente com paginação
 export const getCachedArtigosByCategoriaSlug = unstable_cache(
-  async (categoriaSlug: string, page: number = 1, limit: number = 6) => {
-    const cacheKey = `${categoriaSlug}-p${page}-l${limit}`;
-    logCacheOperation(`Category Articles: ${cacheKey}`, isDevelopment ? 'DEV' : 'PROD', cache.single_category);
-    const result = await originalGetArtigosByCategoriaSlug(categoriaSlug, page, limit);
+  async (categoriaSlug: string) => {
+    logCacheOperation(`Category Articles: ${categoriaSlug}`, isDevelopment ? 'DEV' : 'PROD', cache.single_category);
+    const result = await originalGetArtigosByCategoriaSlug(categoriaSlug);
     console.log(`   📄 Loaded ${result.length} articles for category ${categoriaSlug}`);
     return result;
   },

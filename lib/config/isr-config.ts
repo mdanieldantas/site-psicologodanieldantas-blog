@@ -1,4 +1,6 @@
 // lib/config/isr-config.ts
+import { unstable_cache } from 'next/cache';
+
 /**
  * 🚀 ISR CONFIGURATION FOR NEXT.JS 15.2.4
  * Configurações centralizadas para Incremental Static Regeneration
@@ -57,6 +59,15 @@ export const CACHE_TAGS = {
   isr: 'isr-sync'
 } as const;
 
+// 📊 SUPABASE CACHE CONFIG (adicionado para compatibilidade)
+export const SUPABASE_CACHE_CONFIG = {
+  CACHE_TAGS: CACHE_TAGS,
+  ARTICLES_CACHE_TTL: 3600,
+  CATEGORIES_CACHE_TTL: 7200,
+  TAGS_CACHE_TTL: 1800,
+  AUTHORS_CACHE_TTL: 86400,
+};
+
 // 📊 PERFORMANCE MONITORING
 export const ISR_METRICS = {
   // Logs de performance em desenvolvimento
@@ -94,11 +105,11 @@ export const getContentCacheConfig = (contentType: keyof typeof ISR_CONFIG.conte
 };
 
 // 🚨 DEVELOPMENT HELPERS
-export const logISREvent = (event: string, details?: any) => {
+export const logISR = (context: string, message: string, data?: any) => {
   if (ISR_METRICS.enableLogging) {
     const timestamp = new Date().toISOString();
     const env = isDevelopment ? '🚧 DEV' : '🚀 PROD';
-    console.log(`${env} [ISR] ${timestamp} - ${event}`, details ? details : '');
+    console.log(`${env} [ISR ${context}] ${message}`, data ? data : '');
   }
 };
 
@@ -119,8 +130,7 @@ export const validateNextJSCompatibility = () => {
   const nextVersion = process.env.NEXT_RUNTIME || 'unknown';
   const isAppRouter = true; // Assumindo App Router
   const hasUnstableCache = typeof unstable_cache !== 'undefined';
-  
-  logISREvent('ISR Compatibility Check', {
+    logISR('Compatibility', 'ISR System Check', {
     nextVersion,
     appRouter: isAppRouter,
     unstableCache: hasUnstableCache,
