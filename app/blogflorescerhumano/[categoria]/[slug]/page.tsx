@@ -19,6 +19,61 @@ import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa est
 import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 import { getImageUrl, getOgImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
+// ✅ PASSO 5.2 - ISR CONFIGURATION FOR NEXT.JS 15.2.4
+// Time-based revalidation - artigos se atualizam raramente, então 1 hora é ideal
+export const revalidate = 3600; // 1 hora
+
+// Controla comportamento para paths não pré-gerados
+export const dynamicParams = true; // Permite gerar páginas on-demand para artigos novos
+
+// ✅ PASSO 5.2 - STATIC GENERATION PARA ARTIGOS PRINCIPAIS
+export async function generateStaticParams() {
+  try {
+    console.log('🔄 [ISR] Iniciando generateStaticParams para artigos principais...');
+    
+    // Busca os 15 artigos mais populares/recentes para pré-renderizar
+    const { data: artigos, error } = await supabaseServer
+      .from('artigos')
+      .select(`
+        slug,
+        categorias!inner (
+          slug
+        )
+      `)
+      .eq('status', 'publicado')
+      .lte('data_publicacao', new Date().toISOString())
+      .order('data_publicacao', { ascending: false })
+      .limit(15); // Pré-gera apenas os 15 mais importantes
+
+    if (error) {
+      console.error('❌ [ISR] Erro ao buscar artigos para generateStaticParams:', error);
+      return []; // Fallback: nenhum path pré-gerado
+    }
+
+    if (!artigos || artigos.length === 0) {
+      console.log('⚠️ [ISR] Nenhum artigo encontrado para pré-renderização');
+      return [];
+    }
+
+    const paths = artigos
+      .filter(artigo => artigo.categorias?.slug && artigo.slug)
+      .map(artigo => ({
+        categoria: artigo.categorias!.slug,
+        slug: artigo.slug
+      }));
+
+    console.log(`✅ [ISR] ${paths.length} artigos serão pré-renderizados:`, 
+      paths.map(p => `/${p.categoria}/${p.slug}`).slice(0, 3), '...'
+    );
+
+    return paths;
+
+  } catch (error) {
+    console.error('💥 [ISR] Erro crítico no generateStaticParams:', error);
+    return []; // Graceful fallback
+  }
+}
+
 // Tipos de dados
 type Artigo = Database["public"]["Tables"]["artigos"]["Row"];
 type Categoria = Database["public"]["Tables"]["categorias"]["Row"];

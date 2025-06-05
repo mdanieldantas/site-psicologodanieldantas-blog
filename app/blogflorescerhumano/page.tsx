@@ -12,6 +12,9 @@ import Link from "next/link";
 import Image from "next/image";
 import ScrollToFeaturedButton from "./components/ScrollToFeaturedButton";
 
+// ✅ PASSO 5.2 - ISR CONFIGURATION FOR BLOG HOME PAGE (Next.js 15)
+export const revalidate = 900; // 15 minutos - homepage muda frequentemente
+
 // --- Metadados Estáticos para a Página Inicial do Blog --- //
 export const metadata: Metadata = {
   title: "Blog Florescer Humano | Psicologia Humanista e Autoconhecimento",
@@ -20,7 +23,40 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/blogflorescerhumano",
   },
-  // OpenGraph e Twitter podem ser adicionados depois se necessário
+  keywords: [
+    "psicologia humanista",
+    "autoconhecimento", 
+    "desenvolvimento pessoal",
+    "blog psicologia",
+    "bem-estar mental",
+    "crescimento pessoal",
+    "terapia humanista",
+    "Daniel Dantas psicólogo"
+  ].join(", "),
+  openGraph: {
+    title: "Blog Florescer Humano | Psicologia Humanista",
+    description: "Artigos sobre autoconhecimento e desenvolvimento pessoal através da psicologia humanista",
+    url: "https://psicologodanieldantas.com.br/blogflorescerhumano",
+    siteName: "Psicólogo Daniel Dantas",
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog Florescer Humano | Psicologia Humanista",
+    description: "Artigos sobre autoconhecimento e desenvolvimento pessoal",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default async function BlogHomePage() {

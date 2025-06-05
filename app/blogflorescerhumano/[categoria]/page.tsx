@@ -1,8 +1,6 @@
-
 // app/blogflorescerhumano/[categoria]/page.tsx
 import React, { Suspense } from 'react';
 import Link from 'next/link';
-// Image from 'next/image' não está sendo usado diretamente no banner, BannerImage é usado.
 import { supabaseServer } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import type { Database } from '@/types/supabase';
@@ -10,10 +8,54 @@ import ArticleCardBlog from '../components/ArticleCardBlog';
 import PaginationControls from '../components/PaginationControls';
 import type { Metadata, ResolvingMetadata } from 'next';
 import CategorySchema from '../components/CategorySchema';
-import BannerImage from '../components/BannerImage'; // Importação já existente e correta
+import BannerImage from '../components/BannerImage';
 
-// Força renderização dinâmica para Next.js 15
-export const dynamic = 'force-dynamic';
+// ✅ PASSO 5.2 - ISR CONFIGURATION FOR CATEGORY PAGES (Next.js 15)
+export const revalidate = 1800; // 30 minutos - categorias podem ter novos artigos
+
+// Permite gerar páginas on-demand para novas categorias
+export const dynamicParams = true;
+
+// ✅ PASSO 5.2 - STATIC GENERATION PARA CATEGORIAS PRINCIPAIS
+export async function generateStaticParams() {
+  try {
+    console.log('🔄 [ISR Category] Iniciando generateStaticParams para categorias...');
+      // Busca todas as categorias (sem coluna 'ativa' que não existe)
+    const { data: categorias, error } = await supabaseServer
+      .from('categorias')
+      .select('slug')
+      .order('nome', { ascending: true });
+
+    if (error) {
+      console.error('❌ [ISR Category] Erro ao buscar categorias:', error);
+      return [];
+    }
+
+    if (!categorias || categorias.length === 0) {
+      console.log('⚠️ [ISR Category] Nenhuma categoria encontrada');
+      return [];
+    }
+
+    const paths = categorias
+      .filter(categoria => categoria.slug)
+      .map(categoria => ({
+        categoria: categoria.slug
+      }));
+
+    console.log(`✅ [ISR Category] ${paths.length} categorias pré-renderizadas:`, 
+      paths.map(p => `/${p.categoria}`).join(', ')
+    );
+
+    return paths;
+
+  } catch (error) {
+    console.error('💥 [ISR Category] Erro crítico:', error);
+    return [];
+  }
+}
+
+// Força renderização dinâmica para Next.js 15 - REMOVIDO para ISR
+// export const dynamic = 'force-dynamic';
 
 // Define quantos artigos serão exibidos por página
 const ARTICLES_PER_PAGE = 6; // Valor original
