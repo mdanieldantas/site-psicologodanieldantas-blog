@@ -39,37 +39,62 @@ const FaqSection = () => {
         "Você pode agendar uma consulta através do formulário de contato neste site, por telefone ou WhatsApp. Após o contato inicial, agendaremos um horário que seja conveniente para você.",
     },
   ];
+
+  // CORREÇÃO: Dados estruturados corretos para resolver FAQPage duplicado
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer,
+      },
+    })),
+  };
+
   return (
     <section id="faq" className="py-20 bg-[#F8F5F0]">
+      {/* CORREÇÃO: Script com dados estruturados para evitar duplicação */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       <div className="container mx-auto px-4 sm:px-[10%] max-w-4xl">
         {/* Título da seção */}
-        <h2 className="text-3xl font-light mb-4 text-center">Perguntas Frequentes</h2>
+        <h2 className="text-3xl font-light mb-4 text-center">
+          Perguntas Frequentes
+        </h2>
         {/* Subtítulo */}
         <p className="text-xl text-[#583B1F] mb-12 text-center max-w-2xl mx-auto font-light">
           Tire suas dúvidas sobre meus serviços e abordagem terapêutica.
-        </p>        {/* Container Principal do FAQ */}
+        </p>
+        {/* Container Principal do FAQ */}
         <div className="bg-[#F0EBE6] shadow-md p-6 sm:p-8 relative">
           {/* Ícone Centralizado - Maior e mais destacado */}
           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-[#583B1F] p-4 rounded-full shadow-lg">
             <MessageSquare className="h-8 w-8 text-[#F8F5F0]" />
           </div>
-          
+
           {/* Componente Acordeão com transição melhorada */}
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full space-y-0 pt-10"
-          >
+          <Accordion type="single" collapsible className="w-full space-y-0 pt-10">
             {/* Mapeia os itens do FAQ */}
-            {faqItems.map((item, index) => (                <AccordionItem
+            {faqItems.map((item, index) => (
+              <AccordionItem
                 key={item.value}
-                value={item.value}                className={`px-4 sm:px-6 ${
+                value={item.value}
+                className={`px-4 sm:px-6 ${
                   index < faqItems.length - 1
                     ? "border-b border-[#A57C3A]/40"
                     : "border-b-0"
                 } transition-all duration-300`}
               >
-                <AccordionTrigger                  className="text-base sm:text-lg font-medium text-[#583B1F] hover:text-[#A57C3A] hover:no-underline text-left py-5 
+                <AccordionTrigger
+                  className="text-base sm:text-lg font-medium text-[#583B1F] hover:text-[#A57C3A] hover:no-underline text-left py-5 
                     focus:outline-none transition-all duration-300 data-[state=open]:text-[#A57C3A]"
                 >
                   {item.question}
@@ -86,9 +111,11 @@ const FaqSection = () => {
         </div>
 
         {/* Botão de Contato Abaixo do Container - Melhorado com ícone */}
-        <div className="mt-12 text-center">          <button
+        <div className="mt-12 text-center">
+          <button
             type="button"
-            onClick={openModal}            className="px-4 py-2 sm:px-6 md:px-8 sm:py-3 md:py-4 text-sm sm:text-base bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-all duration-300 
+            onClick={openModal}
+            className="px-4 py-2 sm:px-6 md:px-8 sm:py-3 md:py-4 text-sm sm:text-base bg-[#583B1F] text-[#F8F5F0] hover:bg-[#735B43] transition-all duration-300 
               rounded-lg inline-flex items-center justify-center gap-1 sm:gap-2 shadow-md
               border border-transparent hover:border-[#A57C3A] focus:outline-none focus:ring-2 focus:ring-[#A57C3A]"
           >
