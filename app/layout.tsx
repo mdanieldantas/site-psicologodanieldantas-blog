@@ -4,8 +4,9 @@ import "../styles/globals.css"; // Importa estilos globais
 import { cn } from "@/lib/utils"; // Utilitário para mesclar classes CSS
 import { ThemeProvider } from "@/components/theme-provider"; // Provedor para gerenciamento de tema (dark/light)
 import { WhatsAppModalProvider } from "@/components/whatsapp-modal-context";
-// Corrigido: Importação padrão para Analytics
-import Analytics from "@/components/analytics"; // Componente para analytics (ex: Vercel Analytics)
+// Componentes de Performance
+import GlobalPerformanceOptimizer from "@/components/GlobalPerformanceOptimizer"; // Otimizador global de performance
+import GlobalResourcePreloader from "@/components/GlobalResourcePreloader"; // Preload inteligente de recursos
 import { SpeedInsights } from "@vercel/speed-insights/next"; // Componente para Vercel Speed Insights
 import CookieConsent from "@/components/cookie-consent"; // Componente para banner de consentimento de cookies
 import { GoogleTagManager } from '@next/third-parties/google'; // Componente para Google Tag Manager
@@ -131,14 +132,17 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 // Componente RootLayout: define a estrutura HTML base da aplicação
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {  return (
-    <html lang="pt-BR" suppressHydrationWarning>
+export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {  return (    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         {/* Otimização para recursos de terceiros */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
         <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+        <link rel="dns-prefetch" href="https://vitals.vercel-analytics.com"/>
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        
+        {/* Preload crítico de recursos */}
+        <GlobalResourcePreloader />
         
         {/* Componente para adicionar dados estruturados JSON-LD */}
         <SchemaMarkup/>
@@ -149,10 +153,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
       <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden w-full", fontSans.variable)}>
         <WhatsAppModalProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            {children}
-            <Suspense fallback={null}>
+            {children}            <Suspense fallback={null}>
               <CookieConsent/>
-              <Analytics/>
+              <GlobalPerformanceOptimizer/>
               <SpeedInsights debug={false}/>
             </Suspense>
           </ThemeProvider>        </WhatsAppModalProvider>
