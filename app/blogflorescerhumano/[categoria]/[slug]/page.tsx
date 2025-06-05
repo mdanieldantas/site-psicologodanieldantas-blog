@@ -9,7 +9,6 @@ import GiscusComments from "@/app/blogflorescerhumano/components/GiscusComments"
 import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticles"; // Corrigido o import para usar o alias @/
 import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
 import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Metadata
-import ArticleSchema from "@/app/blogflorescerhumano/components/ArticleSchema"; // Importa o componente de Schema JSON-LD
 import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
 import ElegantImageFrame from "@/app/blogflorescerhumano/components/ElegantImageFrame"; // Importa o componente de moldura elegante
 
@@ -281,25 +280,89 @@ export default async function ArtigoEspecificoPage({
         month: "long",
         day: "numeric",      })
     : "Data não disponível";
-
   // --- Construção da URL Completa para Compartilhamento --- //
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://psicologodanieldantas.com.br";
   const shareUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
 
+  // Schema Markup JSON-LD para SEO
+  const articleUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
+  const imagemCompleta = imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`;
+  
+  // Buscar dados do autor do Supabase
+  const { data: autorCompleto } = await supabaseServer
+    .from('autores')
+    .select('nome, biografia, foto_arquivo, perfil_academico_url')
+    .eq('id', artigo.autor_id)
+    .single();
+
+  const autorNomeCompleto = autorCompleto?.nome || nomeAutor;
+  
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: titulo,
+    description: resumo || `Artigo sobre ${nomeCategoria} no blog do Psicólogo Daniel Dantas.`,
+    author: {
+      '@type': 'Person',
+      name: autorNomeCompleto,
+      url: autorCompleto?.perfil_academico_url || `${baseUrl}`,
+      jobTitle: 'Psicólogo Clínico',
+      description: autorCompleto?.biografia || 'Psicólogo especialista em Saúde Mental com formação em ACP e Focalização.',
+      image: autorCompleto?.foto_arquivo 
+        ? `${baseUrl}/images/autores/${autorCompleto.foto_arquivo}`
+        : `${baseUrl}/images/autores/default-autor.jpg`
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Blog Florescer Humano',
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/logo-blog-florescer-humano.png`,
+        width: 600,
+        height: 60
+      },
+      description: 'Blog sobre psicologia humanista, autoconhecimento e desenvolvimento pessoal.'
+    },
+    datePublished: data_publicacao,
+    dateModified: artigo.data_atualizacao || data_publicacao,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl
+    },
+    image: {
+      '@type': 'ImageObject',
+      url: imagemCompleta,
+      width: 1200,
+      height: 630,
+      alt: `${titulo} - Blog Florescer Humano`
+    },
+    articleSection: nomeCategoria,
+    wordCount: artigoConteudo ? artigoConteudo.split(' ').length : 0,
+    keywords: tags && tags.length > 0 
+      ? tags.map(tag => tag.nome).join(', ')
+      : `${nomeCategoria}, psicologia, autoconhecimento, desenvolvimento pessoal`,
+    inLanguage: 'pt-BR',
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'Blog Florescer Humano',
+      url: `${baseUrl}/blogflorescerhumano`
+    },
+    about: {
+      '@type': 'Thing',
+      name: nomeCategoria,
+      description: `Conteúdo sobre ${nomeCategoria.toLowerCase()} no contexto da psicologia humanista.`
+    }
+  };
+
   return (
     <>
-      {/* Componente ArticleSchema para gerar Schema.org markup para artigos */}
-      <ArticleSchema
-        title={titulo}
-        description={resumo || ""}
-        publishDate={data_publicacao || ""}
-        authorName={nomeAutor}
-        imagePath={imageUrl}
-        categoryName={categorias?.nome || ""}
-        tags={tags || []}
-        url={`/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
-      />      <article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
+      {/* 🎯 PASSO 3 - Schema Markup JSON-LD para SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      /><article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
         <nav aria-label="Navegação estrutural" className="mb-3 pt-0 pb-1 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
           <ol className="flex items-center text-xs whitespace-nowrap w-full">
             <li className="flex items-center">
