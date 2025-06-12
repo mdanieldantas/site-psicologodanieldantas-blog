@@ -581,30 +581,18 @@ export default async function ArtigoEspecificoPage({
                   {artigoConteudo
                     ? `${Math.max(1, Math.ceil(artigoConteudo.split(" ").length / 200))} min de leitura`
                     : "5 min de leitura"}
-                </span>
-              </div>
+                </span>              </div>
             </div>
-          </div>          {/* Imagem de Capa com Moldura Elegante */}
-          <ElegantImageFrame
-            src={imageUrl}
-            alt={hasValidImage(imagem_capa_arquivo) 
-              ? `Imagem de capa para ${titulo ?? "artigo"}` 
-              : 'Blog Florescer Humano - Artigo'
-            }
-            title={titulo ?? undefined}
-            subtitle={resumo ?? undefined}
-            frameStyle="elegant"
-            priority
-            className="mb-8"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
-          />
+          </div>
 
-            {/* Exibição das Tags - Design elegante e refinado */}{tags && Array.isArray(tags) && tags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3">              <div className="flex items-center text-xs text-[#735B43] mr-1">
-                <div className="flex items-center justify-center w-4 h-4 bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
+          {/* Exibição das Tags - Design elegante e refinado */}
+          {tags && Array.isArray(tags) && tags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-6 tags-container-mobile">
+              <div className="flex items-center text-xs text-[#735B43] mr-1 tag-label-mobile">
+                <div className="flex items-center justify-center w-4 h-4 tag-icon-mobile-small bg-gradient-to-br from-[#F8F5F0] to-[#C19A6B]/10 rounded-full border-[0.5px] border-[#C19A6B]/30 mr-1.5 shadow-sm">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-3.5 w-3.5 text-[#C19A6B]" // Aumentado de h-3 w-3
+                    className="h-3.5 w-3.5 text-[#C19A6B]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -617,19 +605,34 @@ export default async function ArtigoEspecificoPage({
                     />
                   </svg>
                 </div>
+                Tags:
               </div>
               {tags.map((tag) => (
                 <Link
                   key={tag.id}
                   href={`/blogflorescerhumano/tags/${tag.slug}`}
-                  className="inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8F5F0]/50 to-[#F8F5F0]/80 text-[#583B1F] border-[0.5px] border-[#C19A6B]/15 hover:from-[#F8F5F0]/70 hover:to-[#F8F5F0] hover:border-[#C19A6B]/30 transition-all duration-300 hover:shadow-sm"
+                  className="tag-mobile-small inline-flex items-center text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8F5F0]/50 to-[#F8F5F0]/80 text-[#583B1F] border-[0.5px] border-[#C19A6B]/15 hover:from-[#F8F5F0]/70 hover:to-[#F8F5F0] hover:border-[#C19A6B]/30 transition-all duration-300 hover:shadow-sm"
                 >
                   <span className="text-[#C19A6B] mr-0.5 font-medium">#</span>
                   <span className="tracking-tight">{tag.nome}</span>
                 </Link>
               ))}
             </div>
-          )}        </header>        {/* Barra de progresso de leitura - Componente cliente */}
+          )}
+
+          {/* Imagem de Capa com Moldura Elegante */}
+          <ElegantImageFrame
+            src={imageUrl}
+            alt={hasValidImage(imagem_capa_arquivo) 
+              ? `Imagem de capa para ${titulo ?? "artigo"}` 
+              : 'Blog Florescer Humano - Artigo'
+            }
+            title={titulo ?? undefined}
+            subtitle={resumo ?? undefined}
+            frameStyle="elegant"
+            priority
+            className="mb-8"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"          /></header>{/* Barra de progresso de leitura - Componente cliente */}
         <ProgressBar />        {/* Componente de Player de Áudio Flutuante */}
         <AudioPlayerTrigger 
           conteudo={artigoConteudo || ''} 
