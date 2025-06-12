@@ -100,6 +100,62 @@ html.contrast-normal,
   color-scheme: light !important;
 }
 
+/* REGRAS REFORÇADAS PARA MODO NORMAL - Garantem que o reset funcione corretamente */
+html.contrast-normal,
+html.contrast-normal body,
+.contrast-normal,
+.contrast-normal body {
+  background-color: #F8F5F0 !important;
+  color: #583B1F !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Garantir que botões retornem ao normal */
+html.contrast-normal button,
+html.contrast-normal .button,
+.contrast-normal button,
+.contrast-normal .button {
+  color: inherit;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Botões com fundos específicos mantêm suas cores */
+html.contrast-normal .bg-\[#C19A6B\],
+html.contrast-normal .bg-\[#583B1F\],
+html.contrast-normal .bg-\[#735B43\],
+.contrast-normal .bg-\[#C19A6B\],
+.contrast-normal .bg-\[#583B1F\],
+.contrast-normal .bg-\[#735B43\] {
+  color: white !important;
+}
+
+/* Links específicos do modo normal */
+html.contrast-normal a,
+.contrast-normal a {
+  color: #A57C3A !important;
+}
+
+/* Elementos de texto específicos do modo normal */
+html.contrast-normal p,
+html.contrast-normal span,
+html.contrast-normal h1,
+html.contrast-normal h2,
+html.contrast-normal h3,
+html.contrast-normal h4,
+html.contrast-normal h5,
+html.contrast-normal h6,
+.contrast-normal p,
+.contrast-normal span,
+.contrast-normal h1,
+.contrast-normal h2,
+.contrast-normal h3,
+.contrast-normal h4,
+.contrast-normal h5,
+.contrast-normal h6 {
+  color: #583B1F !important;
+}
+
 html.contrast-high,
 .contrast-high {
   /* Alto contraste - fundo branco e texto preto */

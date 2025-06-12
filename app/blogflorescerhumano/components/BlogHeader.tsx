@@ -584,9 +584,8 @@ const BlogHeader = () => {
     
     // Mostrar feedback visual
     provideFeedback(`Tamanho da fonte ${sizeName} aplicado`);
-  };  // Função para aplicar modo de contraste - implementação aprimorada com abordagem agressiva (client-side only)
+  };  // Função para aplicar modo de contraste - implementação híbrida corrigida
   const applyContrastMode = (mode: keyof typeof CONTRAST_MODES) => {
-    // Verificar se estamos no navegador
     if (typeof window === 'undefined') return;
     
     console.log(`Aplicando modo de contraste: ${mode}`);
@@ -597,285 +596,195 @@ const BlogHeader = () => {
       return;
     }
     
-    // Função para limpar estilos antes de aplicar novos
-    const cleanupPreviousStyles = () => {
-      // Remover todos os estilos dinâmicos anteriores
-      const oldContrastStyle = document.getElementById('dynamic-contrast-mode');
-      if (oldContrastStyle) {
-        oldContrastStyle.remove();
-      }
-      
-      // Remover classes de contraste anteriores
-      document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-      document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-      
-      // Forçar um reflow para aplicar as remoções
-      void document.documentElement.offsetHeight;
-      void document.body.offsetHeight;
-      
-      console.log('Estilos anteriores limpos com sucesso');
-    };
+    // Limpar classes anteriores
+    const contrastClasses = ['contrast-normal', 'contrast-high', 'contrast-dark'];
+    contrastClasses.forEach(className => {
+      document.documentElement.classList.remove(className);
+      document.body.classList.remove(className);
+    });
     
-    // Limpar estilos anteriores
-    cleanupPreviousStyles();
-
+    // Remover estilos dinâmicos anteriores
+    const dynamicStyles = document.querySelectorAll('style[data-contrast-mode]');
+    dynamicStyles.forEach(style => style.remove());
+    
+    // Determinar a nova classe
     const contrastClass = 
       mode === 'normal' ? 'contrast-normal' : 
       mode === 'highContrast' ? 'contrast-high' : 
       'contrast-dark';
-
-    // ABORDAGEM ULTRA-AGRESSIVA: Aplicar estilos diretamente com a maior especificidade possível
+    
+    // Aplicar nova classe
+    document.documentElement.classList.add(contrastClass);
+    document.body.classList.add(contrastClass);
+    
+    // Aplicar estilos específicos para cada modo usando abordagem híbrida
     const styleEl = document.createElement('style');
+    styleEl.setAttribute('data-contrast-mode', mode);
+    
     if (mode === 'normal') {
-      // Modo normal - cores padrão
+      // MODO NORMAL - Reset suave que respeita o design system
       styleEl.textContent = `
-        :root {
-          --text-primary: #583B1F !important;
-          --text-secondary: #735B43 !important;
-          --background-primary: #F8F5F0 !important;
-          --link-color: #C19A6B !important;
+        /* Reset específico para modo normal */
+        .contrast-normal {
+          --blog-background: 36 33% 97%;
+          --blog-foreground: 30 45% 23%;
         }
         
-        html, body {
-          color-scheme: light !important;
-          background-color: #F8F5F0 !important;
-          color: #583B1F !important;
+        /* Força aplicação das variáveis CSS existentes */
+        .contrast-normal body {
+          background-color: hsl(var(--blog-background)) !important;
+          color: hsl(var(--blog-foreground)) !important;
         }
         
-        /* Restaurar cores de links padrão */
-        a:not([class]), a.default-link {
-          color: #C19A6B !important;
-          text-decoration: none !important;
+        /* Remove qualquer override que possa persistir */
+        .contrast-normal * {
+          color: inherit;
+          background-color: inherit;
         }
         
-        /* Restaurar cores de texto para os diferentes elementos */
-        p, span, h1, h2, h3, h4, h5, h6, li {
-          color: #583B1F !important;
-        }
-        
-        /* Elementos com fundos específicos */
-        .bg-\[#F8F5F0\] {
-          background-color: #F8F5F0 !important;
-        }
-        
-        .bg-\[#FFFFFF\], .bg-white {
-          background-color: #FFFFFF !important;
-        }
-        
-        /* Botões com cores específicas mantem o texto branco */
-        .bg-\[#C19A6B\], .bg-\[#C19A6B\]\/90, 
-        .bg-\[#735B43\], .bg-\[#735B43\]\/90,
-        .bg-\[#583B1F\], .bg-\[#583B1F\]\/90 {
+        /* Restaura cores específicas dos botões */
+        .contrast-normal .bg-\\[\\#C19A6B\\],
+        .contrast-normal .bg-\\[\\#583B1F\\],
+        .contrast-normal .bg-\\[\\#735B43\\] {
           color: white !important;
         }
         
-        /* Tratamento específico para o botão "Voltar ao site" */
-        a[href="/"] {
-          color: white !important;
-        }
-        
-        /* Botões no cabeçalho */
-        header button, 
-        header .button, 
-        nav button, 
-        nav .button {
-          color: #583B1F !important;
-        }
-        
-        /* Botões com fundo colorido sempre terão texto branco */
-        button.bg-\[#C19A6B\], .button.bg-\[#C19A6B\],
-        button.bg-\[#583B1F\], .button.bg-\[#583B1F\],
-        button.bg-\[#735B43\], .button.bg-\[#735B43\],
-        a.bg-\[#C19A6B\], a.bg-\[#583B1F\], a.bg-\[#735B43\] {
-          color: white !important;
-        }
-        
-        /* Garantir que links dentro de elementos com fundo colorido tenham texto branco */
-        .bg-\[#C19A6B\] a, .bg-\[#C19A6B\]\/90 a, 
-        .bg-\[#583B1F\] a, .bg-\[#735B43\] a {
-          color: white !important;
+        /* Garante que botões no header mantenham cor correta */
+        .contrast-normal header button:not([class*="bg-"]) {
+          color: hsl(var(--blog-foreground)) !important;
         }
       `;
+      
+      // Para modo normal, remove o estilo após 1 segundo
+      setTimeout(() => {
+        styleEl.remove();
+      }, 1000);
+      
     } else if (mode === 'highContrast') {
-      // Alto contraste
+      // MODO ALTO CONTRASTE - Estilos agressivos necessários
       styleEl.textContent = `
-        :root {
-          --text-primary: #000000 !important;
-          --text-secondary: #333333 !important;
-          --background-primary: #FFFFFF !important;
-          --link-color: #0000CC !important;
-        }
-        
-        html, body {
-          color-scheme: light !important;
-          background-color: white !important;
-          color: black !important;
-        }
-        
-        html.contrast-high body,
-        html.contrast-high main,
-        html.contrast-high article,
-        html.contrast-high section,
-        html.contrast-high header,
-        html.contrast-high nav,
-        html.contrast-high footer,
-        html.contrast-high div,
-        html.contrast-high aside,
-        html.contrast-high p,
-        html.contrast-high span,
-        html.contrast-high h1,
-        html.contrast-high h2,
-        html.contrast-high h3,
-        html.contrast-high h4,
-        html.contrast-high h5,
-        html.contrast-high h6 {
+        /* Alto contraste - fundo branco, texto preto */
+        .contrast-high,
+        .contrast-high body,
+        .contrast-high main,
+        .contrast-high article,
+        .contrast-high section,
+        .contrast-high header,
+        .contrast-high nav,
+        .contrast-high footer,
+        .contrast-high div,
+        .contrast-high aside {
           background-color: white !important;
           color: black !important;
           border-color: black !important;
         }
         
-        html.contrast-high a:not(.btn):not(.button) {
+        .contrast-high p,
+        .contrast-high span,
+        .contrast-high h1,
+        .contrast-high h2,
+        .contrast-high h3,
+        .contrast-high h4,
+        .contrast-high h5,
+        .contrast-high h6,
+        .contrast-high li {
+          color: black !important;
+        }
+        
+        .contrast-high a:not(.btn):not(.button) {
           color: #0000CC !important;
           text-decoration: underline !important;
           text-underline-offset: 2px !important;
         }
         
-        html.contrast-high button, 
-        html.contrast-high .button,
-        html.contrast-high .btn {
+        .contrast-high button,
+        .contrast-high .button,
+        .contrast-high .btn {
           border: 2px solid black !important;
           background: white !important;
           color: black !important;
           font-weight: bold !important;
         }
         
-        html.contrast-high img, 
-        html.contrast-high svg,
-        html.contrast-high video {
+        .contrast-high img,
+        .contrast-high svg,
+        .contrast-high video {
           filter: grayscale(100%) contrast(120%) !important;
         }
       `;
-    } else { // darkMode
-      // Modo escuro
+      
+    } else {
+      // MODO ESCURO - Estilos agressivos necessários
       styleEl.textContent = `
-        :root {
-          --text-primary: #FFFFFF !important;
-          --text-secondary: #CCCCCC !important;
-          --background-primary: #121212 !important;
-          --link-color: #93C5FD !important;
-        }
-        
-        html, body {
-          color-scheme: dark !important;
-          background-color: #121212 !important;
-          color: #FFFFFF !important;
-        }
-        
-        html.contrast-dark body,
-        html.contrast-dark main,
-        html.contrast-dark article,
-        html.contrast-dark section,
-        html.contrast-dark header,
-        html.contrast-dark nav,
-        html.contrast-dark footer,
-        html.contrast-dark div,
-        html.contrast-dark aside {
+        /* Modo escuro - fundo escuro, texto claro */
+        .contrast-dark,
+        .contrast-dark body,
+        .contrast-dark main,
+        .contrast-dark article,
+        .contrast-dark section,
+        .contrast-dark header,
+        .contrast-dark nav,
+        .contrast-dark footer,
+        .contrast-dark div,
+        .contrast-dark aside {
           background-color: #121212 !important;
           color: #FFFFFF !important;
           border-color: #333333 !important;
         }
         
-        html.contrast-dark p,
-        html.contrast-dark span,
-        html.contrast-dark h1,
-        html.contrast-dark h2,
-        html.contrast-dark h3,
-        html.contrast-dark h4,
-        html.contrast-dark h5,
-        html.contrast-dark h6,
-        html.contrast-dark li {
+        .contrast-dark p,
+        .contrast-dark span,
+        .contrast-dark h1,
+        .contrast-dark h2,
+        .contrast-dark h3,
+        .contrast-dark h4,
+        .contrast-dark h5,
+        .contrast-dark h6,
+        .contrast-dark li {
           color: #FFFFFF !important;
         }
         
-        html.contrast-dark a:not(.btn):not(.button) {
+        .contrast-dark a:not(.btn):not(.button) {
           color: #93C5FD !important;
           text-decoration: underline !important;
           text-underline-offset: 2px !important;
         }
         
-        html.contrast-dark button, 
-        html.contrast-dark .button,
-        html.contrast-dark .btn {
+        .contrast-dark button,
+        .contrast-dark .button,
+        .contrast-dark .btn {
           border: 2px solid #FFFFFF !important;
+          background: #121212 !important;
+          color: #FFFFFF !important;
         }
         
-        html.contrast-dark img, 
-        html.contrast-dark svg {
+        .contrast-dark img,
+        .contrast-dark svg {
           filter: brightness(0.8) contrast(1.2) !important;
         }
       `;
     }
     
-    // Remover qualquer estilo anterior injetado
-    const oldStyle = document.getElementById('dynamic-contrast-mode');
-    if (oldStyle) {
-      oldStyle.remove();
-    }
-    
-    // Adicionar ID para referência futura
-    styleEl.id = 'dynamic-contrast-mode';
+    // Adicionar o estilo ao head
     document.head.appendChild(styleEl);
     
-    // Aplicação tradicional das classes para compatibilidade
-    document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-    console.log(`Adicionando classe de contraste: ${contrastClass}`);
-    document.documentElement.classList.add(contrastClass);
-    
-    // Aplicar também ao body para maior compatibilidade
-    document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-    document.body.classList.add(contrastClass);
-      // Forçar um reflow mais agressivo para garantir que as mudanças sejam aplicadas
+    // Forçar reflow para garantir aplicação
     void document.documentElement.offsetHeight;
     void document.body.offsetHeight;
     
-    // Adicionar uma segunda aplicação de classe após um pequeno delay para garantir que as classes foram aplicadas
+    // Verificação adicional para garantir que a classe foi aplicada
     setTimeout(() => {
-      // Garantir que as classes estão corretamente aplicadas
-      document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-      document.documentElement.classList.add(contrastClass);
-      document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
-      document.body.classList.add(contrastClass);
-      
-      console.log(`Classes de contraste reaplicadas após delay: ${contrastClass}`);
-    }, 50);
-    
-    // Verificar se mudanças foram aplicadas e tentar novamente se necessário
-    setTimeout(() => {
-      const computedBodyBg = window.getComputedStyle(document.body).backgroundColor;
-      const expectedBg = mode === 'normal' ? 'rgb(248, 245, 240)' : 
-                         mode === 'highContrast' ? 'rgb(255, 255, 255)' : 
-                         'rgb(18, 18, 18)';
-      
-      if (!document.documentElement.classList.contains(contrastClass) || 
-          !computedBodyBg.includes(expectedBg.split(' ')[0])) {
-        console.warn('Contraste não foi aplicado corretamente. Tentando novamente...');
-        
-        // Aplicar novamente as classes
-        document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
+      if (!document.documentElement.classList.contains(contrastClass)) {
         document.documentElement.classList.add(contrastClass);
-        document.body.classList.remove('contrast-normal', 'contrast-high', 'contrast-dark');
         document.body.classList.add(contrastClass);
-        
-        // Forçar outro reflow
-        void document.documentElement.offsetHeight;
-        void document.body.offsetHeight;
+        console.log(`Classe ${contrastClass} reaplicada após verificação`);
       }
-    }, 50);
+    }, 100);
     
-    // Atualizar o estado
+    // Atualizar estado
     setPreferences(prev => ({ ...prev, contrastMode: mode }));
     
-    // Tentar salvar no localStorage apenas se estivermos no navegador
+    // Salvar no localStorage
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('userReadingPreferences', JSON.stringify({
