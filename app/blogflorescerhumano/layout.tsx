@@ -6,11 +6,10 @@ import React from 'react';
 import './components/article-styles.css'; // Importando estilos específicos para artigos
 
 // Metadados específicos para o Blog Florescer Humano
-export const metadata: Metadata = {
-  // Metadados básicos do blog
+export const metadata: Metadata = {  // Metadados básicos do blog
   title: {
     default: "Blog Florescer Humano | Psicólogo Daniel Dantas",
-    template: "%s | Blog Florescer Humano"
+    template: "%s"
   },
   description: "Blog de psicologia com artigos sobre desenvolvimento pessoal, saúde mental e terapia humanista por Daniel Dantas",
     // Open Graph para WhatsApp, Facebook e outras redes sociais
