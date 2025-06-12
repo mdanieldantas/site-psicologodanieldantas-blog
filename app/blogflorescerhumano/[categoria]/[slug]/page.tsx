@@ -93,7 +93,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string; categoria: string }> 
 }): Promise<Metadata> {
   const { categoria: categoriaSlug, slug: artigoSlug } = await params;
-    try {    // Busca dados completos do artigo baseado na estrutura SQL real
+    try {
+    // Busca dados completos do artigo baseado na estrutura SQL real
     const { data: artigo } = await supabaseServer
       .from('artigos')
       .select(`
@@ -110,26 +111,8 @@ export async function generateMetadata({
       `)
       .eq('slug', artigoSlug)
       .eq('status', 'publicado')
-      .eq('categorias.slug', categoriaSlug)      .single();
-
-    if (!artigo) {
-      return {
-        title: 'Artigo não encontrado | Blog Florescer Humano',
-        description: 'O artigo que você procura não foi encontrado em nosso blog.',
-      };
-    }
-
-    // Extrai dados relacionados
-    const categoria = Array.isArray(artigo.categorias) 
-      ? artigo.categorias[0] 
-      : artigo.categorias;
-    
-    const autor = Array.isArray(artigo.autores) 
-      ? artigo.autores[0] 
-      : artigo.autores;
-
-    // Nome do autor para o título (com fallback)
-    const autorNome = autor?.nome || 'Daniel Dantas';    // ✅ BUSCA SEGURA DO META_TITULO (não quebra se coluna não existir)
+      .eq('categorias.slug', categoriaSlug)
+      .single();    // ✅ BUSCA SEGURA DO META_TITULO (não quebra se coluna não existir)
     let metaTituloFromDB: string | null = null;
     try {
       const { data: metaData } = await supabaseServer
@@ -144,6 +127,21 @@ export async function generateMetadata({
       console.log('Campo meta_titulo ainda não disponível, usando fallback');
     }
 
+    if (!artigo) {
+      return {
+        title: 'Artigo não encontrado | Blog Florescer Humano',
+        description: 'O artigo que você procura não foi encontrado em nosso blog.',
+      };
+    }    // Extrai dados relacionados
+    const categoria = Array.isArray(artigo.categorias) 
+      ? artigo.categorias[0] 
+      : artigo.categorias;
+    
+    const autor = Array.isArray(artigo.autores) 
+      ? artigo.autores[0] 
+      : artigo.autores;    // Nome do autor para o título (com fallback)
+    const autorNome = autor?.nome || 'Daniel Dantas';
+
     // URLs base
     const baseUrl = 'https://psicologodanieldantas.com.br';
     const canonicalUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`;
@@ -157,13 +155,13 @@ export async function generateMetadata({
     let metaTitulo: string;
     
     // Verifica se meta_titulo existe e tem conteúdo válido
-    const hasValidMetaTitulo = metaTituloFromDB && 
-                              typeof metaTituloFromDB === 'string' && 
-                              metaTituloFromDB.trim().length > 0;
+    const hasValidMetaTitulo = (artigo as any).meta_titulo && 
+                              typeof (artigo as any).meta_titulo === 'string' && 
+                              (artigo as any).meta_titulo.trim().length > 0;
     
     if (hasValidMetaTitulo) {
       // Usa meta_titulo se disponível
-      metaTitulo = metaTituloFromDB!.trim();
+      metaTitulo = (artigo as any).meta_titulo.trim();
     } else {
       // Fallback: usa titulo com truncamento inteligente
       const tituloOriginal = artigo.titulo || 'Sem título';
@@ -290,7 +288,6 @@ export async function generateMetadata({
 
 // --- Tipagem Explícita para Dados do Artigo --- //
 type ArtigoComRelacoes = Database["public"]["Tables"]["artigos"]["Row"] & {
-  meta_titulo?: string | null; // Novo campo opcional
   categorias: Pick<
     Database["public"]["Tables"]["categorias"]["Row"],
     "id" | "nome" | "slug"
@@ -327,11 +324,11 @@ export default async function ArtigoEspecificoPage({
   );
   // Usamos a tipagem explícita aqui
   const { data: artigo, error: artigoError } = await supabaseServer
-    .from("artigos")    .select(
+    .from("artigos")
+    .select(
       `
       id,
       titulo,
-      meta_titulo,
       conteudo,
       data_publicacao,
       imagem_capa_arquivo,
@@ -351,18 +348,18 @@ export default async function ArtigoEspecificoPage({
   if (artigoError || !artigo) {
     notFound(); // Exibe a página 404
   }
+
   // --- Extração de Dados --- //
   const {
     id: currentArticleId,
     titulo,
-    meta_titulo,
     conteudo: artigoConteudo,
     data_publicacao,
     imagem_capa_arquivo,
     categorias,
     autores,
     tags,
-    resumo,  } = artigo; // Extrai o ID, resumo e meta_titulo
+    resumo,  } = artigo; // Extrai o ID e resumo também
   
   const nomeAutor = autores?.nome ?? "Autor Desconhecido";
   const nomeCategoria = categorias?.nome ?? "Categoria Desconhecida";
