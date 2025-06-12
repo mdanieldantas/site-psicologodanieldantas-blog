@@ -219,11 +219,111 @@ button:hover {
   animation-delay: 600ms;
 }
 
-/* Melhorias de acessibilidade */
-@media (prefers-reduced-motion: reduce) {
-  .animate-fade-in,
-  .animate-slide-up,
-  .animate-scale-x {
-    animation: none !important;
+/* 📱 TAGS MENORES - APENAS MOBILE */
+@media (max-width: 767px) {
+  /* Container das tags - espaçamento reduzido */
+  .tags-container-mobile {
+    gap: 3px 5px !important;
+  }
+
+  /* Tags compactas mas ainda acessíveis */
+  .tag-mobile-small {
+    font-size: 10px !important;
+    line-height: 14px !important;
+    padding: 2px 6px !important;
+    min-height: 24px !important;
+    border-radius: 8px !important;
+    position: relative;
+  }
+
+  /* Área de toque invisível - mantém acessibilidade */
+  .tag-mobile-small::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    min-height: 44px;
+    min-width: 44px;
+    z-index: 1;
+  }
+
+  /* Ícone da tag menor */
+  .tag-icon-mobile-small {
+    width: 10px !important;
+    height: 10px !important;
+    margin-right: 3px !important;
+  }
+
+  /* Texto "Tags:" menor */
+  .tag-label-mobile {
+    font-size: 9px !important;
+    line-height: 12px !important;
+  }
+
+  /* Escala de fonte para tags mobile */
+  .tag-mobile-small {
+    font-size: calc(var(--font-size-multiplier, 1) * 10px) !important;
+  }
+
+  /* Ajuste para fonte extra large no mobile */
+  html.font-size-xl .tag-mobile-small {
+    font-size: calc(var(--font-size-multiplier, 1) * 12px) !important;
+    min-height: 28px !important;
+    padding: 3px 8px !important;
+  }
+
+  /* Alto contraste para tags mobile */
+  html.contrast-high .tag-mobile-small {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Modo escuro para tags mobile */
+  html.contrast-dark .tag-mobile-small {
+    background: #333333 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #666666 !important;
+  }
+}
+
+/* 📱 EXTRA SMALL - Para telas muito pequenas */
+@media (max-width: 400px) {
+  .tags-container-mobile {
+    gap: 2px 4px !important;
+  }
+
+  .tag-mobile-small {
+    font-size: 9px !important;
+    line-height: 12px !important;
+    padding: 1px 5px !important;
+    min-height: 20px !important;
+    border-radius: 6px !important;
+  }
+
+  .tag-icon-mobile-small {
+    width: 8px !important;
+    height: 8px !important;
+    margin-right: 2px !important;
+  }
+
+  .tag-label-mobile {
+    font-size: 8px !important;
+    line-height: 10px !important;
+  }
+}
+
+/* 🖥️ DESKTOP - Nenhuma alteração aplicada (min-width: 768px) */
+@media (min-width: 768px) {
+  /* Desktop permanece 100% inalterado */
+  .tag-mobile-small {
+    all: unset;
+  }
+  
+  .tag-mobile-small::after {
+    display: none;
   }
 }
