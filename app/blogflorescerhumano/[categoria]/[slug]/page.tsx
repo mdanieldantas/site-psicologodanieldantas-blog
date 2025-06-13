@@ -7,17 +7,19 @@ import Image from "next/image";
 import type { Database } from "@/types/supabase";
 import GiscusComments from "@/app/blogflorescerhumano/components/GiscusComments";
 import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticles"; // Corrigido o import para usar o alias @/
-import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
-import type { Metadata, ResolvingMetadata } from "next"; // Importa tipos de Metadata
+// import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
+import type { Metadata } from "next"; // Importa tipos de Metadata
 import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
-import ElegantImageFrame from "@/app/blogflorescerhumano/components/ElegantImageFrame"; // Importa o componente de moldura elegante
+// import ElegantImageFrame from "@/app/blogflorescerhumano/components/ElegantImageFrame"; // Importa o componente de moldura elegante
+// import ResponsiveArticleHero from "./components/ResponsiveArticleHero"; // ✅ Novo componente sem moldura
+// import MinimalImage from "./components/MinimalImage"; // ✅ Versão mínima SEM bordas
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
 import AudioPlayerTrigger from "@/app/blogflorescerhumano/components/AudioPlayerTrigger"; // Importa o componente de player de áudio flutuante
 import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa estilos específicos para artigos
-import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
-import { getImageUrl, getOgImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
+// import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
+import { getImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR NEXT.JS 15.2.4
 // Time-based revalidation - artigos se atualizam raramente, então 1 hora é ideal
@@ -658,21 +660,21 @@ export default async function ArtigoEspecificoPage({
                 </Link>
               ))}
             </div>
-          )}
-
-          {/* Imagem de Capa com Moldura Elegante */}
-          <ElegantImageFrame
-            src={imageUrl}
-            alt={hasValidImage(imagem_capa_arquivo) 
-              ? `Imagem de capa para ${titulo ?? "artigo"}` 
-              : 'Blog Florescer Humano - Artigo'
-            }
-            title={titulo ?? undefined}
-            subtitle={resumo ?? undefined}
-            frameStyle="elegant"
-            priority
-            className="mb-8"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"          /></header>{/* Barra de progresso de leitura - Componente cliente */}
+          )}          {/* ✅ Next.js Image INLINE - Com bordas arredondadas via Tailwind */}
+          <div className="w-full mb-8">
+            <Image
+              src={imageUrl}
+              alt={hasValidImage(imagem_capa_arquivo) 
+                ? `Imagem de capa para ${titulo ?? "artigo"}` 
+                : 'Blog Florescer Humano - Artigo'
+              }
+              width={1200}
+              height={0}
+              priority
+              className="w-full h-auto rounded-lg"
+              quality={90}
+            />
+          </div></header>{/* Barra de progresso de leitura - Componente cliente */}
         <ProgressBar />        {/* Componente de Player de Áudio Flutuante */}
         <AudioPlayerTrigger 
           conteudo={artigoConteudo || ''} 
