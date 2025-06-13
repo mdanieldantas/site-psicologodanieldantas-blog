@@ -7,12 +7,8 @@ import Image from "next/image";
 import type { Database } from "@/types/supabase";
 import GiscusComments from "@/app/blogflorescerhumano/components/GiscusComments";
 import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticles"; // Corrigido o import para usar o alias @/
-// import ShareButtons from "@/app/blogflorescerhumano/components/ShareButtons"; // Importa o novo componente
 import type { Metadata } from "next"; // Importa tipos de Metadata
 import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
-// import ElegantImageFrame from "@/app/blogflorescerhumano/components/ElegantImageFrame"; // Importa o componente de moldura elegante
-// import ResponsiveArticleHero from "./components/ResponsiveArticleHero"; // ✅ Novo componente sem moldura
-// import MinimalImage from "./components/MinimalImage"; // ✅ Versão mínima SEM bordas
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
@@ -660,21 +656,21 @@ export default async function ArtigoEspecificoPage({
                 </Link>
               ))}
             </div>
-          )}          {/* ✅ Next.js Image INLINE - Com bordas arredondadas via Tailwind */}
-          <div className="w-full mb-8">
-            <Image
-              src={imageUrl}
-              alt={hasValidImage(imagem_capa_arquivo) 
-                ? `Imagem de capa para ${titulo ?? "artigo"}` 
-                : 'Blog Florescer Humano - Artigo'
-              }
-              width={1200}
-              height={0}
-              priority
-              className="w-full h-auto rounded-lg"
-              quality={90}
-            />
-          </div></header>{/* Barra de progresso de leitura - Componente cliente */}
+          )}          {/* ✅ Next.js Image Otimizada - Versão Ultra-Simplificada */}
+          {hasValidImage(imagem_capa_arquivo) && (
+            <div className="w-full mb-8">
+              <Image
+                src={imageUrl}
+                alt={`Imagem de capa para ${titulo ?? "artigo"}`}
+                width={1200}
+                height={0}
+                priority
+                className="w-full h-auto rounded-lg"
+                quality={90}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+              />
+            </div>
+          )}</header>{/* Barra de progresso de leitura - Componente cliente */}
         <ProgressBar />        {/* Componente de Player de Áudio Flutuante */}
         <AudioPlayerTrigger 
           conteudo={artigoConteudo || ''} 
