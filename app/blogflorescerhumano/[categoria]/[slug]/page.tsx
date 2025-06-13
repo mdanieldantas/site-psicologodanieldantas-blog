@@ -17,6 +17,14 @@ import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa est
 // import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 import { getImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
+// ✅ IMPORTS para FAQ e Schema inteligente
+import { extractFAQFromHTML, generateFAQSchema } from "@/lib/faq-extractor";
+import { 
+  determineSchemaConfig, 
+  generateArticleSchema, 
+  generateCreativeWorkSchema 
+} from "@/lib/schema-generator";
+
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR NEXT.JS 15.2.4
 // Time-based revalidation - artigos se atualizam raramente, então 1 hora é ideal
 export const revalidate = 3600; // 1 hora
@@ -381,8 +389,7 @@ export default async function ArtigoEspecificoPage({
   // Schema Markup JSON-LD para SEO
   const articleUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`;
   const imagemCompleta = imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`;
-  
-  // Buscar dados do autor do Supabase
+    // Buscar dados do autor do Supabase
   const { data: autorCompleto } = await supabaseServer
     .from('autores')
     .select('nome, biografia, foto_arquivo, perfil_academico_url')
@@ -390,72 +397,80 @@ export default async function ArtigoEspecificoPage({
     .single();
 
   const autorNomeCompleto = autorCompleto?.nome || nomeAutor;
+  // ✅ ESTRATÉGIA FAQ E SCHEMA INTELIGENTE
+  console.log(`[Schema Strategy] Processando artigo: "${titulo}"`);
   
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: titulo,
-    description: resumo || `Artigo sobre ${nomeCategoria} no blog do Psicólogo Daniel Dantas.`,
-    author: {
-      '@type': 'Person',
-      name: autorNomeCompleto,
-      url: autorCompleto?.perfil_academico_url || `${baseUrl}`,
-      jobTitle: 'Psicólogo Clínico',
-      description: autorCompleto?.biografia || 'Psicólogo especialista em Saúde Mental com formação em ACP e Focalização.',
-      image: autorCompleto?.foto_arquivo 
-        ? `${baseUrl}/images/autores/${autorCompleto.foto_arquivo}`
-        : `${baseUrl}/images/autores/default-autor.jpg`
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Blog Florescer Humano',
-      url: baseUrl,
-      logo: {
-        '@type': 'ImageObject',
-        url: `${baseUrl}/images/logo-blog-florescer-humano.png`,
-        width: 600,
-        height: 60
-      },
-      description: 'Blog sobre psicologia humanista, autoconhecimento e desenvolvimento pessoal.'
-    },
-    datePublished: data_publicacao,
-    dateModified: artigo.data_atualizacao || data_publicacao,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': articleUrl
-    },
-    image: {
-      '@type': 'ImageObject',
-      url: imagemCompleta,
-      width: 1200,
-      height: 630,
-      alt: `${titulo} - Blog Florescer Humano`
-    },
-    articleSection: nomeCategoria,
-    wordCount: artigoConteudo ? artigoConteudo.split(' ').length : 0,
-    keywords: tags && tags.length > 0 
-      ? tags.map(tag => tag.nome).join(', ')
-      : `${nomeCategoria}, psicologia, autoconhecimento, desenvolvimento pessoal`,
-    inLanguage: 'pt-BR',
-    isPartOf: {
-      '@type': 'Blog',
-      name: 'Blog Florescer Humano',
-      url: `${baseUrl}/blogflorescerhumano`
-    },
-    about: {
-      '@type': 'Thing',
-      name: nomeCategoria,
-      description: `Conteúdo sobre ${nomeCategoria.toLowerCase()} no contexto da psicologia humanista.`
-    }
-  };
+  // 1. Extrai FAQ do HTML se existir
+  const extractedFAQItems = extractFAQFromHTML(artigoConteudo || '');
+  const hasFAQInHTML = Boolean(extractedFAQItems && extractedFAQItems.length > 0);
+  
+  // 2. Determina configuração de schema
+  const schemaConfig = determineSchemaConfig(hasFAQInHTML);
+  
+  // Extrai categoria e tags para uso nas funções de schema
+  const categoriaData = categorias;
+  const tagsData = tags?.map(tag => ({ nome: tag.nome }));
+  
+  // 3. Gera schema apropriado
+  let mainSchema: any;
+  let faqSchema: any = null;
+  
+  if (schemaConfig.hasSpecificFAQ) {
+    // Artigo educacional com FAQ específica
+    mainSchema = generateArticleSchema(
+      artigo,
+      autorCompleto,
+      categoriaData,
+      articleUrl,
+      baseUrl,
+      imagemCompleta,
+      tagsData
+    );
+    
+    faqSchema = generateFAQSchema(
+      extractedFAQItems!,
+      titulo,
+      articleUrl,
+      autorNomeCompleto
+    );
+    
+    console.log(`[Schema Strategy] Article + FAQ Schema gerado (${extractedFAQItems!.length} FAQs)`);
+  } else {
+    // Conteúdo criativo sem FAQ
+    mainSchema = generateCreativeWorkSchema(
+      artigo,
+      autorCompleto,
+      categoriaData,
+      articleUrl,
+      baseUrl,
+      imagemCompleta
+    );
+    
+    console.log(`[Schema Strategy] CreativeWork Schema gerado (sem FAQ)`);
+  }
 
+  // 4. Log da estratégia aplicada
+  console.log(`[Schema Strategy] Estratégia final:`, {
+    articleTitle: titulo,
+    schemaType: schemaConfig.schemaType,
+    hasFAQ: schemaConfig.hasSpecificFAQ,
+    faqCount: extractedFAQItems?.length || 0
+  });
   return (
     <>
-      {/* 🎯 PASSO 3 - Schema Markup JSON-LD para SEO */}
+      {/* ✅ SCHEMA PRINCIPAL - Article ou CreativeWork */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      /><article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(mainSchema) }}
+      />
+      
+      {/* ✅ SCHEMA FAQ - Apenas se extraído do HTML */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}<article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
         <nav aria-label="Navegação estrutural" className="mb-3 pt-0 pb-1 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
           <ol className="flex items-center text-xs whitespace-nowrap w-full">
             <li className="flex items-center">
@@ -799,7 +814,79 @@ export default async function ArtigoEspecificoPage({
               </a>
             </Link>
           </div>
-        )}{" "}        {/* Bio do Autor ao Final do Artigo */}
+        )}        {/* ✅ FAQ EXTRAÍDA DO HTML (se existir) */}
+        {extractedFAQItems && extractedFAQItems.length > 0 && (
+          <section className="mt-12 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-8 border border-amber-200">
+            <h2 className="text-2xl font-bold mb-6 text-amber-900 flex items-center gap-3">
+              <span className="text-3xl">❓</span>
+              Dúvidas Frequentes
+            </h2>
+            <div className="space-y-4">
+              {extractedFAQItems.map((faq, index) => (
+                <details 
+                  key={index} 
+                  className="bg-white rounded-lg border border-amber-200 p-5 shadow-sm hover:shadow-md transition-shadow"
+                  id={`faq-${index + 1}`}
+                >
+                  <summary className="font-semibold text-amber-800 cursor-pointer hover:text-amber-900 transition-colors">
+                    {faq.pergunta}
+                  </summary>
+                  <div className="mt-4 text-amber-700 leading-relaxed pl-4 border-l-4 border-amber-200">
+                    {faq.resposta}
+                  </div>
+                </details>
+              ))}
+            </div>
+            <div className="mt-8 pt-6 border-t border-amber-200 text-center">
+              <a 
+                href="/consulta" 
+                className="bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors inline-block"
+              >
+                📅 Agendar Consulta
+              </a>
+            </div>
+          </section>
+        )}
+        
+        {/* ✅ CTA PARA CONTEÚDO CRIATIVO (sem FAQ) */}
+        {(!extractedFAQItems || extractedFAQItems.length === 0) && (
+          <div className="mt-12 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-8 border border-purple-200">
+            <h3 className="text-xl font-bold text-purple-900 mb-4 text-center">
+              ✨ Gostou deste conteúdo?
+            </h3>
+            <p className="text-purple-700 mb-6 text-center">
+              Se este texto despertou reflexões ou sentimentos, considere um espaço terapêutico 
+              para explorar mais profundamente essas descobertas.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a 
+                href={`/blogflorescerhumano/${categoriaSlug}`}
+                className="bg-white text-purple-700 px-6 py-3 rounded-lg font-semibold border border-purple-300 hover:bg-purple-50 transition-colors"
+              >
+                📚 Explorar Mais
+              </a>
+              <a 
+                href="/consulta" 
+                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+              >
+                💬 Agendar Consulta
+              </a>
+            </div>
+          </div>
+        )}
+        
+        {/* ✅ DEBUG INFO (apenas em desenvolvimento) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h4 className="font-semibold text-blue-800 mb-2">🔍 Schema Strategy Debug</h4>
+            <div className="text-sm text-blue-700 space-y-1">
+              <p><strong>Schema Type:</strong> {schemaConfig.schemaType}</p>
+              <p><strong>Has FAQ:</strong> {schemaConfig.hasSpecificFAQ ? 'Sim' : 'Não'}</p>
+              <p><strong>FAQ Count:</strong> {extractedFAQItems?.length || 0}</p>
+              <p><strong>Article:</strong> {titulo}</p>
+            </div>
+          </div>
+        )}
         <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
             <div className="flex-shrink-0 self-center">
