@@ -870,7 +870,7 @@ export default async function ArtigoEspecificoPage({
         )}
         
         {/* ✅ DEBUG INFO (apenas em desenvolvimento) */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* {process.env.NODE_ENV === 'development' && (
           <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h4 className="font-semibold text-blue-800 mb-2">🔍 Schema Strategy Debug</h4>
             <div className="text-sm text-blue-700 space-y-1">
@@ -880,7 +880,7 @@ export default async function ArtigoEspecificoPage({
               <p><strong>Article:</strong> {titulo}</p>
             </div>
           </div>
-        )}
+        )} */}
         <div className="mt-12 pt-6 border-t border-[#C19A6B]/30">
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 p-6 bg-[#F8F5F0] rounded-lg shadow-sm border border-[#C19A6B]/20">
             <div className="flex-shrink-0 self-center">
