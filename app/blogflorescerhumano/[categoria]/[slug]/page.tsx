@@ -680,59 +680,9 @@ export default async function ArtigoEspecificoPage({
               </a>
             </Link>
           </div>
-        )}        {/* ✅ FAQ EXTRAÍDA DO HTML (se existir) */}
-        {extractedFAQItems && extractedFAQItems.length > 0 && (
-          <section className="mt-12 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-8 border border-amber-200">
-            <h2 className="text-2xl font-bold mb-6 text-amber-900 flex items-center gap-3">
-              <span className="text-3xl">❓</span>
-              Dúvidas Frequentes
-            </h2>
-            <div className="space-y-4">
-              {extractedFAQItems.map((faq, index) => (
-                <details 
-                  key={index} 
-                  className="bg-white rounded-lg border border-amber-200 p-5 shadow-sm hover:shadow-md transition-shadow"
-                  id={`faq-${index + 1}`}
-                >                  <summary className="font-semibold text-amber-800 cursor-pointer hover:text-amber-900 transition-colors">
-                    {faq.question}
-                  </summary>
-                  <div className="mt-4 text-amber-700 leading-relaxed pl-4 border-l-4 border-amber-200">
-                    {faq.answer}
-                  </div>
-                </details>
-              ))}
-            </div>
-            <div className="mt-8 pt-6 border-t border-amber-200 text-center">
-              <a 
-                href="/consulta" 
-                className="bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors inline-block"
-              >
-                📅 Agendar Consulta
-              </a>
-            </div>
-          </section>
-        )}        {/* ✅ CTA PARA CONTEÚDO CRIATIVO (sem FAQ) */}
-        {(!extractedFAQItems || extractedFAQItems.length === 0) && (
-          <div className="mt-12 bg-gradient-to-r from-[#F8F5F0] to-[#E8E6E2] rounded-xl p-8 border border-[#A57C3A]/30 shadow-lg">
-            <h3 className="font-serif text-2xl font-bold text-[#583B1F] mb-4 text-center">
-              Grato pela leitura!
-            </h3>
-            <p className="font-sans text-[#7D6E63] mb-8 text-center leading-relaxed">
-              Continue sua jornada explorando outros temas e artigos em nosso blog.
-            </p>
-            <div className="flex justify-center">
-              <a 
-                href={`/blogflorescerhumano/${categoriaSlug}`}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#583B1F] text-white rounded-lg font-semibold 
-                          transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 
-                          shadow-lg hover:shadow-xl hover:bg-[#6B7B3F]"
-              >
-                <span className="text-lg"></span>
-                <span className="font-sans">Ver mais artigos desta categoria</span>
-              </a>
-            </div>
-          </div>
-        )}
+        )}        {/* ✅ CORREÇÃO: FAQ extraído APENAS para Schema.org SEO - NÃO para renderização visual */}
+        {/* FAQ visual já vem do banco de dados via dangerouslySetInnerHTML no conteúdo do artigo */}
+        {/* extractedFAQItems é usado SOMENTE para gerar JSON-LD Schema.org, não HTML visual */}        {/* ✅ SEÇÃO CTA REMOVIDA - Foco em conteúdo limpo sem CTAs desnecessários */}
         
         {/* ✅ DEBUG INFO (apenas em desenvolvimento) */}
         {/* {process.env.NODE_ENV === 'development' && (
