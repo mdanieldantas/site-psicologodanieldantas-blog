@@ -1,7 +1,6 @@
 // app/blogflorescerhumano/layout.tsx (Server Component)
 import type { Metadata } from 'next';
 import BlogClientLayout from './blog-client-layout'; // Importando o layout do cliente
-import BlogSchema from './components/BlogSchema'; // Importando o componente de schema
 import React from 'react';
 import './components/article-styles.css'; // Importando estilos específicos para artigos
 
@@ -186,7 +185,6 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <BlogSchema />
       <BlogClientLayout>{children}</BlogClientLayout>
     </>
   );
