@@ -10,7 +10,6 @@ import GlobalResourcePreloader from "@/components/GlobalResourcePreloader"; // P
 import { SpeedInsights } from "@vercel/speed-insights/next"; // Componente para Vercel Speed Insights
 import CookieConsent from "@/components/cookie-consent"; // Componente para banner de consentimento de cookies
 import { GoogleTagManager } from '@next/third-parties/google'; // Componente para Google Tag Manager
-import SchemaMarkup from "./schema-markup"; // Componente para adicionar dados estruturados (Schema.org)
 import { Suspense } from "react";
 
 // Configuração da fonte principal (Inter) com subset latino e como variável CSS
@@ -132,7 +131,9 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 // Componente RootLayout: define a estrutura HTML base da aplicação
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {  return (    <html lang="pt-BR" suppressHydrationWarning>
+export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+  return (
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         {/* Otimização para recursos de terceiros */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com"/>
@@ -140,25 +141,22 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <link rel="dns-prefetch" href="https://vitals.vercel-analytics.com"/>
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        
         {/* Preload crítico de recursos */}
         <GlobalResourcePreloader />
-        
-        {/* Componente para adicionar dados estruturados JSON-LD */}
-        <SchemaMarkup/>
-        
         {/* Adiciona o script do Google Tag Manager se o ID estiver definido */}
         {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID}/>}
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden w-full", fontSans.variable)}>
         <WhatsAppModalProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            {children}            <Suspense fallback={null}>
+            {children}
+            <Suspense fallback={null}>
               <CookieConsent/>
               <GlobalPerformanceOptimizer/>
               <SpeedInsights debug={false}/>
             </Suspense>
-          </ThemeProvider>        </WhatsAppModalProvider>
+          </ThemeProvider>
+        </WhatsAppModalProvider>
       </body>
     </html>
   );

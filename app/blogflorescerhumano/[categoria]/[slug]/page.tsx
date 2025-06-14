@@ -846,30 +846,24 @@ export default async function ArtigoEspecificoPage({
               </a>
             </div>
           </section>
-        )}
-        
-        {/* ✅ CTA PARA CONTEÚDO CRIATIVO (sem FAQ) */}
+        )}        {/* ✅ CTA PARA CONTEÚDO CRIATIVO (sem FAQ) */}
         {(!extractedFAQItems || extractedFAQItems.length === 0) && (
-          <div className="mt-12 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-8 border border-purple-200">
-            <h3 className="text-xl font-bold text-purple-900 mb-4 text-center">
-              ✨ Gostou deste conteúdo?
+          <div className="mt-12 bg-gradient-to-r from-[#F8F5F0] to-[#E8E6E2] rounded-xl p-8 border border-[#A57C3A]/30 shadow-lg">
+            <h3 className="font-serif text-2xl font-bold text-[#583B1F] mb-4 text-center">
+              Grato pela leitura!
             </h3>
-            <p className="text-purple-700 mb-6 text-center">
-              Se este texto despertou reflexões ou sentimentos, considere um espaço terapêutico 
-              para explorar mais profundamente essas descobertas.
+            <p className="font-sans text-[#7D6E63] mb-8 text-center leading-relaxed">
+              Continue sua jornada explorando outros temas e artigos em nosso blog.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex justify-center">
               <a 
                 href={`/blogflorescerhumano/${categoriaSlug}`}
-                className="bg-white text-purple-700 px-6 py-3 rounded-lg font-semibold border border-purple-300 hover:bg-purple-50 transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#583B1F] text-white rounded-lg font-semibold 
+                          transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 
+                          shadow-lg hover:shadow-xl hover:bg-[#6B7B3F]"
               >
-                📚 Explorar Mais
-              </a>
-              <a 
-                href="/consulta" 
-                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
-              >
-                💬 Agendar Consulta
+                <span className="text-lg"></span>
+                <span className="font-sans">Ver mais artigos desta categoria</span>
               </a>
             </div>
           </div>
