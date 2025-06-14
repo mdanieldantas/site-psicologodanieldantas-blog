@@ -1,3 +1,4 @@
+
 // app/blogflorescerhumano/metadata.ts
 import { Metadata } from 'next';
 
