@@ -135,15 +135,17 @@ export async function generateMetadata({
     } catch (metaError) {
       // Se der erro (coluna não existe), continua normalmente
       console.log('Campo meta_titulo ainda não disponível, usando titulo padrão');
-    }
-
-    if (!artigo) {
+    }    if (!artigo) {
       return createMetadata({
-        title: 'Artigo não encontrado | Blog Florescer Humano',
+        title: 'Artigo não encontrado',
         description: 'O artigo que você procura não foi encontrado em nosso blog.',
         path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+        pageType: 'article',
+        robots: { index: false, follow: false }
       });
-    }    // ✅ EXTRAÇÃO SEGURA DE DADOS RELACIONAIS
+    }
+
+    // ✅ EXTRAÇÃO SEGURA DE DADOS RELACIONAIS
     const categoria = Array.isArray(artigo.categorias) ? artigo.categorias[0] : artigo.categorias;
     const autor = Array.isArray(artigo.autores) ? artigo.autores[0] : artigo.autores;
     const autorNome = autor?.nome || 'Daniel Dantas';
@@ -153,21 +155,18 @@ export async function generateMetadata({
     const descricaoOtimizada = optimizeDescription(
       artigo.resumo, 
       `Artigo sobre ${categoria?.nome || 'psicologia'} por ${autorNome}.`
-    );
-    
-    // ✅ TÍTULO FINAL COM BRANDING CONSISTENTE
-    const titleFinal = `${tituloOtimizado} | ${autorNome}`;
-
-    // ✅ CONFIGURAÇÃO DE IMAGEM COM FALLBACKS
+    );    // ✅ CONFIGURAÇÃO DE IMAGEM COM FALLBACKS
     const imagemUrl = artigo.imagem_capa_arquivo 
       ? `/images/blog/${artigo.imagem_capa_arquivo}`
       : '/blogflorescerhumano/logos-blog/logo-fundomarrom.webp';
 
-    // ✅ USAR SISTEMA UNIFICADO PARA METADADOS
+    // ✅ USAR SISTEMA UNIFICADO PARA METADADOS COM E-A-T
     return createMetadata({
-      title: titleFinal,
+      title: tituloOtimizado, // ✅ NOVO: Título limpo sem autor duplicado
       description: descricaoOtimizada,
       path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+      pageType: 'article', // ✅ NOVO: Define como artigo
+      articleAuthor: autorNome, // ✅ NOVO: Autor específico para E-A-T
       images: [imagemUrl],
       type: 'article',
       publishedTime: artigo.data_publicacao || undefined,
@@ -178,12 +177,12 @@ export async function generateMetadata({
     });
   } catch (error) {
     console.error('❌ Erro ao gerar metadata do artigo:', error);
-    
-    // ✅ FALLBACK SEGURO EM CASO DE ERRO
+      // ✅ FALLBACK SEGURO EM CASO DE ERRO
     return createMetadata({
-      title: 'Erro ao carregar artigo | Blog Florescer Humano',
+      title: 'Erro ao carregar artigo',
       description: 'Houve um erro ao carregar este artigo. Tente novamente mais tarde.',
       path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+      pageType: 'article',
       robots: { index: false, follow: false }
     });
   }

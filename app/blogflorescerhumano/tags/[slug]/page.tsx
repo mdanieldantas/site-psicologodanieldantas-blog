@@ -48,14 +48,14 @@ export async function generateMetadata(
     `) 
     .eq('slug', tagSlug)
     .maybeSingle();
-
   // Se não encontrar a tag ou houver erro
   if (error || !tag) {
     console.error(`[Metadata] Tag não encontrada para slug: ${tagSlug}`, error);
     return createMetadata({
-      title: 'Tag não encontrada | Blog Florescer Humano',
+      title: 'Tag não encontrada',
       description: 'A tag de artigos que você procura não foi encontrada.',
       path: `/blogflorescerhumano/tags/${tagSlug}`,
+      pageType: 'tag',
       robots: { index: false, follow: false }
     });
   }
@@ -64,10 +64,12 @@ export async function generateMetadata(
   const articleCount = (tag as any).artigos_tags?.[0]?.count || 0;
   const articleText = articleCount === 1 ? 'artigo' : 'artigos';
 
-  // ✅ USAR SISTEMA UNIFICADO DE METADADOS
+  // ✅ USAR SISTEMA UNIFICADO DE METADADOS COM E-A-T
   return createMetadata({
-    title: `${tag.nome} | Tags | Blog Florescer Humano`,    description: `${articleCount} ${articleText} sobre ${tag.nome}. Explore conteúdos de psicologia humanista relacionados a este tema.`,
+    title: `${tag.nome} | Tags`,
+    description: `${articleCount} ${articleText} sobre ${tag.nome}. Explore conteúdos de psicologia humanista relacionados a este tema.`,
     path: `/blogflorescerhumano/tags/${tagSlug}`,
+    pageType: 'tag', // ✅ NOVO: Define como página de tag
     type: 'website',
     robots: { index: true, follow: true }
   });

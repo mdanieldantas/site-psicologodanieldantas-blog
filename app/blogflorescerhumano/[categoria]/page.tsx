@@ -93,11 +93,11 @@ export async function generateMetadata(
       categoriaSlug.startsWith('api') ||
       categoriaSlug === 'not-found' ||
       categoriaSlug.startsWith('-') ||
-      categoriaSlug.endsWith('-')) {
-    return createMetadata({
-      title: 'Página não encontrada | Blog Florescer Humano',
+      categoriaSlug.endsWith('-')) {    return createMetadata({
+      title: 'Página não encontrada',
       description: 'A página que você procura não foi encontrada.',
       path: `/blogflorescerhumano/${categoriaSlug}`,
+      pageType: 'category',
       robots: { index: false, follow: false }
     });
   }
@@ -111,20 +111,20 @@ export async function generateMetadata(
   if (error || !categoria) {
     if (process.env.NODE_ENV === 'development') {
       console.log(`[Dev] Categoria não encontrada para slug: ${categoriaSlug}`);
-    }
-    return createMetadata({
-      title: 'Categoria não encontrada | Blog Florescer Humano',
+    }    return createMetadata({
+      title: 'Categoria não encontrada',
       description: 'A categoria de artigos que você procura não foi encontrada.',
       path: `/blogflorescerhumano/${categoriaSlug}`,
+      pageType: 'category',
       robots: { index: false, follow: false }
     });
   }
-
-  // ✅ USAR SISTEMA UNIFICADO DE METADADOS
+  // ✅ USAR SISTEMA UNIFICADO DE METADADOS COM E-A-T
   return createMetadata({
-    title: `${categoria.nome} | Blog Florescer Humano`,
+    title: categoria.nome,
     description: categoria.descricao || `Explore artigos sobre ${categoria.nome} no Blog Florescer Humano.`,
     path: `/blogflorescerhumano/${categoriaSlug}`,
+    pageType: 'category', // ✅ NOVO: Define como página de categoria
     type: 'website',
     robots: { index: true, follow: true }
   });

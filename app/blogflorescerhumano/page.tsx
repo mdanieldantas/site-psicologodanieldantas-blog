@@ -18,10 +18,12 @@ import { createMetadata, BLOG_CONFIG } from '../../lib/metadata-config';
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR BLOG HOME PAGE (Next.js 15)
 export const revalidate = 900; // 15 minutos - homepage muda frequentemente
 
-// ✅ METADADOS OTIMIZADOS PARA HOMEPAGE DO BLOG
+// ✅ METADADOS OTIMIZADOS PARA HOMEPAGE DO BLOG COM E-A-T
 export const metadata: Metadata = createMetadata({
-  title: "Blog Florescer Humano | Psicologia Humanista e Autoconhecimento",
-  description: "Explore artigos sobre autoconhecimento, bem-estar, relacionamentos e crescimento pessoal através da perspectiva da psicologia humanista no Blog Florescer Humano.",  path: "/blogflorescerhumano",
+  title: "Blog Florescer Humano",
+  description: "Explore artigos sobre autoconhecimento, bem-estar, relacionamentos e crescimento pessoal através da perspectiva da psicologia humanista no Blog Florescer Humano.",
+  path: "/blogflorescerhumano",
+  pageType: "homepage", // ✅ NOVO: Define como homepage do blog
   images: ["/blogflorescerhumano/logos-blog/logo-fundomarrom.webp"],
   type: "website",
   robots: { index: true, follow: true }

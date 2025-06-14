@@ -57,6 +57,10 @@ interface MetadataOptions {
   images?: string[];
   /** Tipo de conteúdo para Open Graph */
   type?: 'website' | 'article';
+  /** Tipo de página para lógica de título inteligente */
+  pageType?: 'homepage' | 'article' | 'category' | 'tag';
+  /** Nome do autor específico do artigo (para E-A-T) */
+  articleAuthor?: string;
   /** Data de publicação (formato ISO) */
   publishedTime?: string;
   /** Data de última modificação (formato ISO) */
@@ -100,12 +104,65 @@ export const SITE_CONFIG: SiteConfig = {
 /**
  * Configurações específicas do blog
  */
-export const BLOG_CONFIG: BlogConfig = {
+export const BLOG_CONFIG = {
   name: "Blog Florescer Humano",
+  nameWithAuthor: "Blog Florescer Humano | por Psi Daniel Dantas", // Para homepage
+  editorChief: "Psi Daniel Dantas", // Editor principal
+  shortName: "Blog Florescer Humano",
   description: "Blog de psicologia com artigos sobre desenvolvimento pessoal, saúde mental e terapia humanista por Daniel Dantas",
   url: `${SITE_CONFIG.url}/blogflorescerhumano`,
   path: "/blogflorescerhumano"
 } as const;
+
+// ==========================================
+// FUNÇÃO INTELIGENTE PARA TÍTULOS E-A-T
+// ==========================================
+
+/**
+ * Constrói títulos inteligentes baseados no tipo de página e E-A-T
+ * (Expertise, Authoritativeness, Trustworthiness)
+ * 
+ * @param pageTitle - Título base da página
+ * @param pageType - Tipo de página para aplicar lógica específica
+ * @param articleAuthor - Nome do autor específico do artigo (para E-A-T)
+ * @returns Título otimizado para SEO e E-A-T
+ * 
+ * @example
+ * ```typescript
+ * // Homepage do blog
+ * buildSmartTitle("Blog Florescer Humano", "homepage") 
+ * // → "Blog Florescer Humano | por Psi Daniel Dantas"
+ * 
+ * // Artigo com autor específico
+ * buildSmartTitle("Como Superar a Ansiedade", "article", "Dra. Ana Silva")
+ * // → "Como Superar a Ansiedade | Dra. Ana Silva"
+ * 
+ * // Categoria
+ * buildSmartTitle("Psicologia Humanista", "category")
+ * // → "Psicologia Humanista | Blog Florescer Humano"
+ * ```
+ */
+function buildSmartTitle(
+  pageTitle: string,
+  pageType: 'homepage' | 'article' | 'category' | 'tag' = 'article',
+  articleAuthor?: string
+): string {
+  
+  // CASO 1: Homepage do Blog (Editor-Chefe tem autoridade principal)
+  if (pageType === 'homepage') {
+    return BLOG_CONFIG.nameWithAuthor;
+  }
+  
+  // CASO 2: Artigo (E-A-T - Autor específico tem autoridade sobre o conteúdo)
+  if (pageType === 'article' && articleAuthor) {
+    // Estrutura limpa: Título | Autor do Post
+    // Isso fortalece o E-A-T individual de cada autor
+    return `${pageTitle} | ${articleAuthor}`;
+  }
+  
+  // CASO 3: Categorias/Tags (Marca do Blog para páginas de agrupamento)
+  return `${pageTitle} | ${BLOG_CONFIG.name}`;
+}
 
 // ==========================================
 // FUNÇÃO PRINCIPAL DE GERAÇÃO DE METADADOS
@@ -136,19 +193,34 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
   // Construir URL canônica completa
   const canonicalUrl = `${SITE_CONFIG.url}${options.path || ''}`;
   
-  // Determinar título final (string ou objeto com template)
-  const finalTitle = options.title || SITE_CONFIG.name;
+  // ✅ NOVO: Usar título inteligente baseado no E-A-T
+  let finalTitle: string;
+  if (typeof options.title === 'string') {
+    // Aplicar lógica inteligente para títulos
+    finalTitle = buildSmartTitle(
+      options.title,
+      options.pageType || 'article',
+      options.articleAuthor
+    );
+  } else {
+    // Manter compatibilidade com objetos de título
+    finalTitle = options.title?.default || SITE_CONFIG.name;
+  }
   
   // Usar descrição fornecida ou fallback para descrição padrão
   const finalDescription = options.description || SITE_CONFIG.description;
   
-  // Configurar imagens com fallbacks seguros
+  // ✅ NOVO: Site name inteligente baseado no tipo de página
+  const siteName = options.pageType === 'homepage' 
+    ? BLOG_CONFIG.nameWithAuthor 
+    : (options.pageType === 'article' ? BLOG_CONFIG.name : SITE_CONFIG.name);
+    // Configurar imagens com fallbacks seguros
   const defaultImage = `${SITE_CONFIG.url}/foto-psicologo-daniel-dantas.webp`;
   const images = options.images?.map(img => ({
     url: img.startsWith('http') ? img : `${SITE_CONFIG.url}${img}`,
     width: 1200,
     height: 630,
-    alt: typeof finalTitle === 'string' ? finalTitle : finalTitle.default || SITE_CONFIG.name,
+    alt: finalTitle,
   })) || [{
     url: defaultImage,
     width: 1200,
@@ -178,8 +250,7 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
     authors,
     creator: SITE_CONFIG.author.name,
     publisher: SITE_CONFIG.author.name,
-    
-    // URL canônica para SEO
+      // URL canônica para SEO
     alternates: {
       canonical: canonicalUrl,
     },
@@ -189,8 +260,8 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
       type: options.type || 'website',
       locale: 'pt_BR',
       url: canonicalUrl,
-      siteName: SITE_CONFIG.name,
-      title: typeof finalTitle === 'string' ? finalTitle : finalTitle.default,
+      siteName: siteName, // ✅ NOVO: Site name inteligente
+      title: finalTitle,
       description: finalDescription,
       images,
       
@@ -207,7 +278,7 @@ export function createMetadata(options: MetadataOptions = {}): Metadata {
     // Twitter Cards
     twitter: {
       card: 'summary_large_image',
-      title: typeof finalTitle === 'string' ? finalTitle : finalTitle.default,
+      title: finalTitle,
       description: finalDescription,
       creator: SITE_CONFIG.social.twitter,
       images: options.images?.map(img => 
