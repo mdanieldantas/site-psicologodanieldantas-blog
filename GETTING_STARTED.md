@@ -14,7 +14,7 @@ Este guia descreve os passos para configurar e iniciar o ambiente de desenvolvim
         ```powershell
         cd "c:\\DevDriverRepo\\landing-page-psiblog-vscode-insiders"
         ```
-        *(Ajuste o caminho se necessário)*
+        *(Ajuste o caminho se necessário.)*
 
 2.  **Instalar as Dependências do Projeto:**
     *   Dentro da pasta do projeto, execute o comando de instalação do `npm`. Ele lerá o arquivo `package.json` e usará o `package-lock.json` para instalar as versões corretas das dependências:
