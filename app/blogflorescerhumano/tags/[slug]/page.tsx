@@ -9,6 +9,9 @@ import BannerImage from '@/app/blogflorescerhumano/components/BannerImage'; // C
 import type { Metadata, ResolvingMetadata } from 'next'; // Importa tipos de Metadata
 import { ChevronRight } from 'lucide-react'; // Ícone para breadcrumb
 
+// ✅ SISTEMA UNIFICADO DE METADADOS
+import { createMetadata } from '../../../../lib/metadata-config';
+
 // Força renderização dinâmica para Next.js 15
 export const dynamic = 'force-dynamic';
 
@@ -36,48 +39,38 @@ export async function generateMetadata(
   const resolvedParams = await params;
   const tagSlug = resolvedParams.slug;
 
-  // Busca nome da tag
+  // Busca nome da tag e conta artigos
   const { data: tag, error } = await supabaseServer
     .from('tags')
-    .select('nome') // Seleciona apenas o nome
+    .select(`
+      nome,
+      artigos_tags(count)
+    `) 
     .eq('slug', tagSlug)
     .maybeSingle();
 
   // Se não encontrar a tag ou houver erro
   if (error || !tag) {
     console.error(`[Metadata] Tag não encontrada para slug: ${tagSlug}`, error);
-    return {
+    return createMetadata({
       title: 'Tag não encontrada | Blog Florescer Humano',
       description: 'A tag de artigos que você procura não foi encontrada.',
-    };
+      path: `/blogflorescerhumano/tags/${tagSlug}`,
+      robots: { index: false, follow: false }
+    });
   }
 
-  const pageTitle = `Artigos sobre ${tag.nome} | Blog Florescer Humano`;
-  const pageDescription = `Explore artigos marcados com a tag "${tag.nome}" no Blog Florescer Humano.`;
-  const canonicalUrl = `/blogflorescerhumano/tags/${tagSlug}`;
+  // Conta artigos para descrição mais rica
+  const articleCount = (tag as any).artigos_tags?.[0]?.count || 0;
+  const articleText = articleCount === 1 ? 'artigo' : 'artigos';
 
-  return {
-    title: pageTitle,
-    description: pageDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: pageTitle,
-      description: pageDescription,
-      url: canonicalUrl,
-      siteName: 'Blog Florescer Humano',
-      // Não há imagem específica para tag por padrão, herda do layout
-      locale: 'pt_BR',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary',
-      title: pageTitle,
-      description: pageDescription,
-      // Não há imagem específica para tag por padrão
-    },
-  };
+  // ✅ USAR SISTEMA UNIFICADO DE METADADOS
+  return createMetadata({
+    title: `${tag.nome} | Tags | Blog Florescer Humano`,    description: `${articleCount} ${articleText} sobre ${tag.nome}. Explore conteúdos de psicologia humanista relacionados a este tema.`,
+    path: `/blogflorescerhumano/tags/${tagSlug}`,
+    type: 'website',
+    robots: { index: true, follow: true }
+  });
 }
 
 // --- Componente da Página --- //

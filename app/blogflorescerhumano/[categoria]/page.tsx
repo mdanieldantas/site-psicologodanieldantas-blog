@@ -10,6 +10,9 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import CategorySchema from '../components/CategorySchema';
 import BannerImage from '../components/BannerImage';
 
+// ✅ SISTEMA UNIFICADO DE METADADOS
+import { createMetadata } from '../../../lib/metadata-config';
+
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR CATEGORY PAGES (Next.js 15)
 export const revalidate = 1800; // 30 minutos - categorias podem ter novos artigos
 
@@ -91,10 +94,12 @@ export async function generateMetadata(
       categoriaSlug === 'not-found' ||
       categoriaSlug.startsWith('-') ||
       categoriaSlug.endsWith('-')) {
-    return {
+    return createMetadata({
       title: 'Página não encontrada | Blog Florescer Humano',
       description: 'A página que você procura não foi encontrada.',
-    };
+      path: `/blogflorescerhumano/${categoriaSlug}`,
+      robots: { index: false, follow: false }
+    });
   }
 
   const { data: categoria, error } = await supabaseServer
@@ -107,36 +112,22 @@ export async function generateMetadata(
     if (process.env.NODE_ENV === 'development') {
       console.log(`[Dev] Categoria não encontrada para slug: ${categoriaSlug}`);
     }
-    return {
+    return createMetadata({
       title: 'Categoria não encontrada | Blog Florescer Humano',
       description: 'A categoria de artigos que você procura não foi encontrada.',
-    };
+      path: `/blogflorescerhumano/${categoriaSlug}`,
+      robots: { index: false, follow: false }
+    });
   }
 
-  const pageTitle = `${categoria.nome} | Blog Florescer Humano`;
-  const pageDescription = categoria.descricao ?? `Explore artigos sobre ${categoria.nome} no Blog Florescer Humano.`;
-  const canonicalUrl = `/blogflorescerhumano/${categoriaSlug}`;
-
-  return {
-    title: pageTitle,
-    description: pageDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: pageTitle,
-      description: pageDescription,
-      url: canonicalUrl,
-      siteName: 'Blog Florescer Humano',
-      locale: 'pt_BR',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary',
-      title: pageTitle,
-      description: pageDescription,
-    },
-  };
+  // ✅ USAR SISTEMA UNIFICADO DE METADADOS
+  return createMetadata({
+    title: `${categoria.nome} | Blog Florescer Humano`,
+    description: categoria.descricao || `Explore artigos sobre ${categoria.nome} no Blog Florescer Humano.`,
+    path: `/blogflorescerhumano/${categoriaSlug}`,
+    type: 'website',
+    robots: { index: true, follow: true }
+  });
 }
 
 // --- Componente da Página --- //

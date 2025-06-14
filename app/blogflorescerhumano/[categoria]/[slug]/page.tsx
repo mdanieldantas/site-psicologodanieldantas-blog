@@ -17,8 +17,12 @@ import "@/app/blogflorescerhumano/components/article-styles.css"; // Importa est
 // import * as AspectRatio from "@radix-ui/react-aspect-ratio"; // Importa o componente AspectRatio
 import { getImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utilitários de imagem
 
+// ✅ IMPORTS do sistema unificado de SEO
+import { createMetadata, optimizeTitle, optimizeDescription } from '../../../../lib/metadata-config';
+import { getArticleBreadcrumbs, generateBreadcrumbJsonLd } from '../../../../lib/breadcrumbs';
+import { generateArticleJsonLd, extractFAQFromHTML, type ArticleSchemaData } from '../../../../lib/article-schema';
+
 // ✅ IMPORTS para FAQ e Schema inteligente
-import { extractFAQFromHTML, generateFAQSchema } from "@/lib/faq-extractor";
 import { 
   determineSchemaConfig, 
   generateArticleSchema, 
@@ -92,15 +96,15 @@ interface ArtigoPageProps {
   }>;
 }
 
-// ✅ PASSO 2: Função generateMetadata otimizada para SEO
+// ✅ GENERATEMETADATA OTIMIZADO - Usando sistema unificado de SEO
 export async function generateMetadata({ 
   params 
 }: { 
   params: Promise<{ slug: string; categoria: string }> 
 }): Promise<Metadata> {
   const { categoria: categoriaSlug, slug: artigoSlug } = await params;
-    try {
-    // Busca dados completos do artigo baseado na estrutura SQL real
+  
+  try {    // ✅ QUERY SEGURA - Usando apenas campos que existem
     const { data: artigo } = await supabaseServer
       .from('artigos')
       .select(`
@@ -110,15 +114,15 @@ export async function generateMetadata({
         imagem_capa_arquivo,
         data_publicacao,
         data_atualizacao,
-        categoria_id,
-        autor_id,
-        categorias!inner(nome, slug),
-        autores(nome, biografia, foto_arquivo, perfil_academico_url)
+        categorias!inner(nome, slug, descricao),
+        autores(nome, biografia, perfil_academico_url)
       `)
       .eq('slug', artigoSlug)
       .eq('status', 'publicado')
       .eq('categorias.slug', categoriaSlug)
-      .single();    // ✅ BUSCA SEGURA DO META_TITULO (não quebra se coluna não existir)
+      .single();
+
+    // ✅ BUSCA SEGURA DO META_TITULO (separada para não quebrar se não existir)
     let metaTituloFromDB: string | null = null;
     try {
       const { data: metaData } = await supabaseServer
@@ -130,165 +134,58 @@ export async function generateMetadata({
       metaTituloFromDB = (metaData as any)?.meta_titulo || null;
     } catch (metaError) {
       // Se der erro (coluna não existe), continua normalmente
-      console.log('Campo meta_titulo ainda não disponível, usando fallback');
+      console.log('Campo meta_titulo ainda não disponível, usando titulo padrão');
     }
 
     if (!artigo) {
-      return {
+      return createMetadata({
         title: 'Artigo não encontrado | Blog Florescer Humano',
         description: 'O artigo que você procura não foi encontrado em nosso blog.',
-      };
-    }    // Extrai dados relacionados
-    const categoria = Array.isArray(artigo.categorias) 
-      ? artigo.categorias[0] 
-      : artigo.categorias;
-    
-    const autor = Array.isArray(artigo.autores) 
-      ? artigo.autores[0] 
-      : artigo.autores;    // Nome do autor para o título (com fallback)
+        path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+      });
+    }    // ✅ EXTRAÇÃO SEGURA DE DADOS RELACIONAIS
+    const categoria = Array.isArray(artigo.categorias) ? artigo.categorias[0] : artigo.categorias;
+    const autor = Array.isArray(artigo.autores) ? artigo.autores[0] : artigo.autores;
     const autorNome = autor?.nome || 'Daniel Dantas';
 
-    // URLs base
-    const baseUrl = 'https://psicologodanieldantas.com.br';
-    const canonicalUrl = `${baseUrl}/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`;
+    // ✅ TÍTULOS E DESCRIÇÕES OTIMIZADOS (usando meta_titulo se disponível)
+    const tituloOtimizado = optimizeTitle(metaTituloFromDB, artigo.titulo, 50);
+    const descricaoOtimizada = optimizeDescription(
+      artigo.resumo, 
+      `Artigo sobre ${categoria?.nome || 'psicologia'} por ${autorNome}.`
+    );
     
-    // URL da imagem otimizada para SEO
+    // ✅ TÍTULO FINAL COM BRANDING CONSISTENTE
+    const titleFinal = `${tituloOtimizado} | ${autorNome}`;
+
+    // ✅ CONFIGURAÇÃO DE IMAGEM COM FALLBACKS
     const imagemUrl = artigo.imagem_capa_arquivo 
-      ? `${baseUrl}/images/blog/${artigo.imagem_capa_arquivo}`
-      : `${baseUrl}/images/blog/default-og-image.jpg`;
+      ? `/images/blog/${artigo.imagem_capa_arquivo}`
+      : '/blogflorescerhumano/logos-blog/logo-fundomarrom.webp';
 
-    // ✅ LÓGICA SEGURA PARA META_TITULO (com fallback inteligente)
-    let metaTitulo: string;
-    
-    // Verifica se meta_titulo existe e tem conteúdo válido
-    const hasValidMetaTitulo = (artigo as any).meta_titulo && 
-                              typeof (artigo as any).meta_titulo === 'string' && 
-                              (artigo as any).meta_titulo.trim().length > 0;
-    
-    if (hasValidMetaTitulo) {
-      // Usa meta_titulo se disponível
-      metaTitulo = (artigo as any).meta_titulo.trim();
-    } else {
-      // Fallback: usa titulo com truncamento inteligente
-      const tituloOriginal = artigo.titulo || 'Sem título';
-      const espacoParaAutor = ` | ${autorNome}`.length;
-      const limiteCaracteres = Math.max(25, 60 - espacoParaAutor); // Mínimo 25 chars
-      
-      if (tituloOriginal.length > limiteCaracteres) {
-        metaTitulo = tituloOriginal.slice(0, limiteCaracteres).trim();
-        
-        // Remove palavra incompleta no final para melhor legibilidade
-        const ultimoEspaco = metaTitulo.lastIndexOf(' ');
-        if (ultimoEspaco > limiteCaracteres * 0.7) {
-          metaTitulo = metaTitulo.slice(0, ultimoEspaco);
-        }
-      } else {
-        metaTitulo = tituloOriginal;
-      }
-    }
-    
-    // Título final com autor dinâmico
-    const title = `${metaTitulo} | ${autorNome}`;
-    
-    // Descrição SEO otimizada (máx 160 caracteres)
-    const description = artigo.resumo && artigo.resumo.length > 0
-      ? artigo.resumo.length > 155 
-        ? `${artigo.resumo.substring(0, 152)}...`
-        : artigo.resumo
-      : `Artigo sobre ${categoria?.nome || 'psicologia'} no blog do Psicólogo Daniel Dantas. Conteúdo sobre desenvolvimento pessoal e terapia humanista.`;    // Keywords dinâmicas baseadas no conteúdo
-    const keywords = [
-      ...artigo.titulo.split(' ').filter(word => word.length > 3).slice(0, 5),
-      categoria?.nome || 'psicologia',
-      autorNome,
-      'psicologia humanista',
-      'autoconhecimento',
-      'terapia',
-      'desenvolvimento pessoal',
-      'psicólogo',
-      'blog psicologia'
-    ].join(', ');
-
-    return {
-      title,
-      description,
-      
-      // Keywords para SEO
-      keywords,
-      
-      // Metadados de autoria
-      authors: [{ 
-        name: autorNome,
-        url: autor?.perfil_academico_url || 'https://www.psicologodanieldantas.com.br/'
-      }],
-      creator: autorNome,
-      publisher: 'Blog Florescer Humano',
-        // Open Graph para redes sociais
-      openGraph: {
-        title: artigo.titulo,
-        description,
-        url: canonicalUrl,
-        siteName: 'Psicólogo Daniel Dantas - Blog Florescer Humano',
-        images: [
-          {
-            url: imagemUrl,
-            width: 1200,
-            height: 630,
-            alt: `${artigo.titulo} - Blog Florescer Humano`,
-          }
-        ],
-        locale: 'pt_BR',
-        type: 'article',
-        publishedTime: artigo.data_publicacao || undefined,
-        modifiedTime: artigo.data_atualizacao || undefined,
-        section: categoria?.nome || 'Psicologia',
-        authors: [autorNome],
-      },
-
-      // Twitter Cards
-      twitter: {
-        card: 'summary_large_image',
-        title: artigo.titulo,
-        description,
-        images: [imagemUrl],
-        creator: `@${autorNome.replace(/\s+/g, '').toLowerCase()}`,
-        site: '@psicologodaniel',
-      },
-
-      // URL canônica para evitar conteúdo duplicado
-      alternates: {
-        canonical: canonicalUrl,
-      },
-
-      // Robots otimizado para SEO
-      robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        },
-      },      // Meta tags adicionais para SEO - com autor dinâmico
-      other: {
-        'article:author': autorNome,
-        'article:section': categoria?.nome || 'Psicologia',
-        'article:published_time': artigo.data_publicacao || '',
-        'article:modified_time': artigo.data_atualizacao || '',
-        'article:tag': categoria?.nome || '',
-      },
-    };
-
+    // ✅ USAR SISTEMA UNIFICADO PARA METADADOS
+    return createMetadata({
+      title: titleFinal,
+      description: descricaoOtimizada,
+      path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+      images: [imagemUrl],
+      type: 'article',
+      publishedTime: artigo.data_publicacao || undefined,
+      modifiedTime: artigo.data_atualizacao || undefined,
+      section: categoria?.nome || 'Psicologia',
+      authors: [autorNome],
+      tags: [categoria?.nome || 'psicologia', 'desenvolvimento pessoal'] // Tags básicas
+    });
   } catch (error) {
-    console.error('Erro ao gerar metadata do artigo:', error);
+    console.error('❌ Erro ao gerar metadata do artigo:', error);
     
-    // Fallback em caso de erro
-    return {
-      title: 'Blog Florescer Humano | Psicólogo Daniel Dantas',
-      description: 'Artigos sobre psicologia humanista, autoconhecimento e desenvolvimento pessoal por Daniel Dantas.',
-      robots: { index: false, follow: false }, // Não indexa se houver erro
-    };
+    // ✅ FALLBACK SEGURO EM CASO DE ERRO
+    return createMetadata({
+      title: 'Erro ao carregar artigo | Blog Florescer Humano',
+      description: 'Houve um erro ao carregar este artigo. Tente novamente mais tarde.',
+      path: `/blogflorescerhumano/${categoriaSlug}/${artigoSlug}`,
+      robots: { index: false, follow: false }
+    });
   }
 }
 
@@ -398,79 +295,49 @@ export default async function ArtigoEspecificoPage({
 
   const autorNomeCompleto = autorCompleto?.nome || nomeAutor;
   // ✅ ESTRATÉGIA FAQ E SCHEMA INTELIGENTE
-  console.log(`[Schema Strategy] Processando artigo: "${titulo}"`);
-  
-  // 1. Extrai FAQ do HTML se existir
-  const extractedFAQItems = extractFAQFromHTML(artigoConteudo || '');
-  const hasFAQInHTML = Boolean(extractedFAQItems && extractedFAQItems.length > 0);
-  
-  // 2. Determina configuração de schema
-  const schemaConfig = determineSchemaConfig(hasFAQInHTML);
-  
-  // Extrai categoria e tags para uso nas funções de schema
-  const categoriaData = categorias;
-  const tagsData = tags?.map(tag => ({ nome: tag.nome }));
-  
-  // 3. Gera schema apropriado
-  let mainSchema: any;
-  let faqSchema: any = null;
-  
-  if (schemaConfig.hasSpecificFAQ) {
-    // Artigo educacional com FAQ específica
-    mainSchema = generateArticleSchema(
-      artigo,
-      autorCompleto,
-      categoriaData,
-      articleUrl,
-      baseUrl,
-      imagemCompleta,
-      tagsData
-    );
-    
-    faqSchema = generateFAQSchema(
-      extractedFAQItems!,
-      titulo,
-      articleUrl,
-      autorNomeCompleto
-    );
-    
-    console.log(`[Schema Strategy] Article + FAQ Schema gerado (${extractedFAQItems!.length} FAQs)`);
-  } else {
-    // Conteúdo criativo sem FAQ
-    mainSchema = generateCreativeWorkSchema(
-      artigo,
-      autorCompleto,
-      categoriaData,
-      articleUrl,
-      baseUrl,
-      imagemCompleta
-    );
-    
-    console.log(`[Schema Strategy] CreativeWork Schema gerado (sem FAQ)`);
-  }
+  console.log(`[Schema Strategy] Processando artigo: "${titulo}"`);  // ✅ PREPARAR DADOS PARA SCHEMA.ORG UNIFICADO
+  const articleSchemaData: ArticleSchemaData = {
+    titulo,
+    meta_titulo: (artigo as any).meta_titulo || null, // Compatibilidade com campo que pode não existir
+    resumo,
+    conteudo: artigoConteudo || '',
+    data_publicacao: data_publicacao,
+    data_atualizacao: artigo.data_atualizacao || data_publicacao || undefined,
+    imagem_capa_arquivo: imagem_capa_arquivo,
+    categoria: {
+      nome: nomeCategoria,
+      slug: categoriaSlug,
+      descricao: (categorias as any)?.descricao || null // Cast temporário para compatibilidade
+    },
+    autor: {
+      nome: nomeAutor,
+      biografia: autorCompleto?.biografia || null,
+      perfil_academico_url: autorCompleto?.perfil_academico_url || null
+    },
+    slug: artigoSlugParam,
+    categoriaSlug: categoriaSlugParam
+  };
+  // ✅ GERAR SCHEMAS JSON-LD
+  const articleJsonLd = generateArticleJsonLd(articleSchemaData);
+  const breadcrumbs = getArticleBreadcrumbs(nomeCategoria, categoriaSlug, titulo, artigoSlugParam);
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd(breadcrumbs);
 
-  // 4. Log da estratégia aplicada
-  console.log(`[Schema Strategy] Estratégia final:`, {
-    articleTitle: titulo,
-    schemaType: schemaConfig.schemaType,
-    hasFAQ: schemaConfig.hasSpecificFAQ,
-    faqCount: extractedFAQItems?.length || 0
-  });
+  // ✅ EXTRAIR FAQ DO CONTEÚDO (se existir)
+  const extractedFAQItems = extractFAQFromHTML(artigoConteudo || '');
+
   return (
     <>
-      {/* ✅ SCHEMA PRINCIPAL - Article ou CreativeWork */}
+      {/* ✅ SCHEMA.ORG INTELIGENTE - FAQ ou CreativeWork baseado no conteúdo */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(mainSchema) }}
+        dangerouslySetInnerHTML={articleJsonLd}
       />
       
-      {/* ✅ SCHEMA FAQ - Apenas se extraído do HTML */}
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}<article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
+      {/* ✅ BREADCRUMBS SCHEMA - Rich snippets de navegação */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={breadcrumbJsonLd}
+      /><article className="container mx-auto px-4 pt-2 pb-12 max-w-4xl">        {/* Navegação Estrutural (Breadcrumbs) - Versão sofisticada */}
         <nav aria-label="Navegação estrutural" className="mb-3 pt-0 pb-1 px-2.5 bg-gradient-to-r from-[#F8F5F0]/20 to-[#F8F5F0]/80 rounded-lg shadow-sm overflow-hidden">
           <ol className="flex items-center text-xs whitespace-nowrap w-full">
             <li className="flex items-center">
@@ -827,12 +694,11 @@ export default async function ArtigoEspecificoPage({
                   key={index} 
                   className="bg-white rounded-lg border border-amber-200 p-5 shadow-sm hover:shadow-md transition-shadow"
                   id={`faq-${index + 1}`}
-                >
-                  <summary className="font-semibold text-amber-800 cursor-pointer hover:text-amber-900 transition-colors">
-                    {faq.pergunta}
+                >                  <summary className="font-semibold text-amber-800 cursor-pointer hover:text-amber-900 transition-colors">
+                    {faq.question}
                   </summary>
                   <div className="mt-4 text-amber-700 leading-relaxed pl-4 border-l-4 border-amber-200">
-                    {faq.resposta}
+                    {faq.answer}
                   </div>
                 </details>
               ))}

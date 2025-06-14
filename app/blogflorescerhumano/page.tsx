@@ -12,52 +12,20 @@ import Link from "next/link";
 import Image from "next/image";
 import ScrollToFeaturedButton from "./components/ScrollToFeaturedButton";
 
+// ✅ SISTEMA UNIFICADO DE METADADOS
+import { createMetadata, BLOG_CONFIG } from '../../lib/metadata-config';
+
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR BLOG HOME PAGE (Next.js 15)
 export const revalidate = 900; // 15 minutos - homepage muda frequentemente
 
-// --- Metadados Estáticos para a Página Inicial do Blog --- //
-export const metadata: Metadata = {
+// ✅ METADADOS OTIMIZADOS PARA HOMEPAGE DO BLOG
+export const metadata: Metadata = createMetadata({
   title: "Blog Florescer Humano | Psicologia Humanista e Autoconhecimento",
-  description:
-    "Explore artigos sobre autoconhecimento, bem-estar, relacionamentos e crescimento pessoal através da perspectiva da psicologia humanista no Blog Florescer Humano.",
-  alternates: {
-    canonical: "/blogflorescerhumano",
-  },
-  keywords: [
-    "psicologia humanista",
-    "autoconhecimento", 
-    "desenvolvimento pessoal",
-    "blog psicologia",
-    "bem-estar mental",
-    "crescimento pessoal",
-    "terapia humanista",
-    "Daniel Dantas psicólogo"
-  ].join(", "),
-  openGraph: {
-    title: "Blog Florescer Humano | Psicologia Humanista",
-    description: "Artigos sobre autoconhecimento e desenvolvimento pessoal através da psicologia humanista",
-    url: "https://psicologodanieldantas.com.br/blogflorescerhumano",
-    siteName: "Psicólogo Daniel Dantas",
-    type: "website",
-    locale: "pt_BR",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blog Florescer Humano | Psicologia Humanista",
-    description: "Artigos sobre autoconhecimento e desenvolvimento pessoal",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-};
+  description: "Explore artigos sobre autoconhecimento, bem-estar, relacionamentos e crescimento pessoal através da perspectiva da psicologia humanista no Blog Florescer Humano.",  path: "/blogflorescerhumano",
+  images: ["/blogflorescerhumano/logos-blog/logo-fundomarrom.webp"],
+  type: "website",
+  robots: { index: true, follow: true }
+});
 
 export default async function BlogHomePage() {
   // Buscar categorias e artigos em destaque
