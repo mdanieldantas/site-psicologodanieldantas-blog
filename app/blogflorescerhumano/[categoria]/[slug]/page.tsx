@@ -9,6 +9,7 @@ import GiscusComments from "@/app/blogflorescerhumano/components/GiscusComments"
 import RelatedArticles from "@/app/blogflorescerhumano/components/RelatedArticles"; // Corrigido o import para usar o alias @/
 import type { Metadata } from "next"; // Importa tipos de Metadata
 import CitationBox from "@/app/blogflorescerhumano/components/CitationBox"; // Importa o componente de citação
+import { UniversalDownloadSection } from "./components/UniversalDownloadSection"; // Importa o componente de download
 
 import ProgressBar from "@/app/blogflorescerhumano/components/ProgressBar"; // Importa o componente da barra de progresso
 import TableOfContents from "@/app/blogflorescerhumano/components/TableOfContents"; // Importa o componente do índice
@@ -657,11 +658,13 @@ export default async function ArtigoEspecificoPage({
                     /<td/gi,
                     '<td style="border: 1px solid #C19A6B30; padding: 0.85rem; color: #583B1F;"'
                   ),
-              }}
-            />
+              }}            />
+            
+            {/* Seção de Download de Materiais - Suporte a Supabase, Google Drive e links externos */}
+            <UniversalDownloadSection artigo={artigo} />
             
             {/* Adicionando o CitationBox novamente aqui */}
-            <CitationBox 
+            <CitationBox
               title={titulo}
               author="Marcos Daniel Gomes Dantas"
               date={data_publicacao || new Date().toISOString()}
