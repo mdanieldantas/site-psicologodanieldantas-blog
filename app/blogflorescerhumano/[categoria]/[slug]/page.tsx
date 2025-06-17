@@ -20,14 +20,9 @@ import { getImageUrl, hasValidImage } from "@/lib/image-utils"; // Importa utili
 // ✅ IMPORTS do sistema unificado de SEO
 import { createMetadata, optimizeTitle, optimizeDescription } from '../../../../lib/metadata-config';
 import { getArticleBreadcrumbs, generateBreadcrumbJsonLd } from '../../../../lib/breadcrumbs';
-import { generateArticleJsonLd, extractFAQFromHTML, type ArticleSchemaData } from '../../../../lib/article-schema';
+import { generateSchemaByFactory, generateSchemaJsonLd, type ArticleSchemaData, type ArticleSchemaDataExtended } from '../../../../lib/article-schema';
 
-// ✅ IMPORTS para FAQ e Schema inteligente
-import { 
-  determineSchemaConfig, 
-  generateArticleSchema, 
-  generateCreativeWorkSchema 
-} from "@/lib/schema-generator";
+// ✅ IMPORTS para FAQ e Schema inteligente (removido - não mais usado)
 
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR NEXT.JS 15.2.4
 // Time-based revalidation - artigos se atualizam raramente, então 1 hora é ideal
@@ -314,19 +309,49 @@ export default async function ArtigoEspecificoPage({
       perfil_academico_url: autorCompleto?.perfil_academico_url || null
     },
     slug: artigoSlugParam,
-    categoriaSlug: categoriaSlugParam
+    categoriaSlug: categoriaSlugParam  };
+  
+  // ✅ FUNÇÃO PARA CONVERTER FAQ DATA DO SUPABASE
+  const convertFAQData = (faqData: any): readonly { question: string; answer: string }[] | null => {
+    if (!faqData || !Array.isArray(faqData)) return null;
+    
+    try {
+      return faqData.filter((item: any) => 
+        item && 
+        typeof item === 'object' && 
+        typeof item.question === 'string' && 
+        typeof item.answer === 'string'
+      ).map((item: any) => ({
+        question: item.question,
+        answer: item.answer
+      }));
+    } catch {
+      return null;
+    }
   };
-  // ✅ GERAR SCHEMAS JSON-LD
-  const articleJsonLd = generateArticleJsonLd(articleSchemaData);
+  
+  // ✅ PREPARAR DADOS ESTENDIDOS PARA A FÁBRICA DE SEO
+  const articleExtendedData: ArticleSchemaDataExtended = {
+    ...articleSchemaData,
+    schema_type: (artigo as any).schema_type || null,
+    faq_data: convertFAQData((artigo as any).faq_data),
+    url_video: (artigo as any).url_video || null,
+    url_podcast: (artigo as any).url_podcast || null,
+    download_url: (artigo as any).download_url || null,
+    download_title: (artigo as any).download_title || null,
+    download_format: (artigo as any).download_format || null,
+    download_description: (artigo as any).download_description || null,
+    download_size_mb: (artigo as any).download_size_mb || null,
+    content_tier: (artigo as any).content_tier || null
+  };
+  
+  // ✅ GERAR SCHEMAS JSON-LD COM A NOVA FÁBRICA DE SEO
+  const articleJsonLd = generateSchemaJsonLd(articleExtendedData, articleExtendedData.schema_type);
   const breadcrumbs = getArticleBreadcrumbs(nomeCategoria, categoriaSlug, titulo, artigoSlugParam);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd(breadcrumbs);
 
-  // ✅ EXTRAIR FAQ DO CONTEÚDO (se existir)
-  const extractedFAQItems = extractFAQFromHTML(artigoConteudo || '');
-
   return (
-    <>
-      {/* ✅ SCHEMA.ORG INTELIGENTE - FAQ ou CreativeWork baseado no conteúdo */}
+    <>      {/* ✅ FÁBRICA DE SEO - Schema.org inteligente (26 tipos suportados) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={articleJsonLd}
