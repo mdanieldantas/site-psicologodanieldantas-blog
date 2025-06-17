@@ -98,14 +98,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string; categoria: string }> 
 }): Promise<Metadata> {
   const { categoria: categoriaSlug, slug: artigoSlug } = await params;
-  
-  try {    // ✅ QUERY SEGURA - Usando apenas campos que existem
+    try {    // ✅ QUERY SEGURA - Incluindo meta_descricao para priorização no SEO
     const { data: artigo } = await supabaseServer
       .from('artigos')
       .select(`
         id,
         titulo,
         resumo,
+        meta_descricao,
         imagem_capa_arquivo,
         data_publicacao,
         data_atualizacao,
@@ -143,14 +143,15 @@ export async function generateMetadata({
     // ✅ EXTRAÇÃO SEGURA DE DADOS RELACIONAIS
     const categoria = Array.isArray(artigo.categorias) ? artigo.categorias[0] : artigo.categorias;
     const autor = Array.isArray(artigo.autores) ? artigo.autores[0] : artigo.autores;
-    const autorNome = autor?.nome || 'Daniel Dantas';
-
-    // ✅ TÍTULOS E DESCRIÇÕES OTIMIZADOS (usando meta_titulo se disponível)
+    const autorNome = autor?.nome || 'Daniel Dantas';    // ✅ TÍTULOS E DESCRIÇÕES OTIMIZADOS (usando meta_titulo se disponível)
     const tituloOtimizado = optimizeTitle(metaTituloFromDB, artigo.titulo, 50);
+    
+    // ✅ PRIORIZAÇÃO DE META_DESCRICAO - Campo específico para SEO tem prioridade sobre resumo
+    const metaDescricaoFromDB = (artigo as any)?.meta_descricao || null;
     const descricaoOtimizada = optimizeDescription(
-      artigo.resumo, 
+      metaDescricaoFromDB || artigo.resumo, // Prioriza meta_descricao, fallback para resumo
       `Artigo sobre ${categoria?.nome || 'psicologia'} por ${autorNome}.`
-    );    // ✅ CONFIGURAÇÃO DE IMAGEM COM FALLBACKS
+    );// ✅ CONFIGURAÇÃO DE IMAGEM COM FALLBACKS
     const imagemUrl = artigo.imagem_capa_arquivo 
       ? `/images/blog/${artigo.imagem_capa_arquivo}`
       : '/blogflorescerhumano/logos-blog/logo-fundomarrom.webp';
