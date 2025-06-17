@@ -3,8 +3,8 @@
  * Execute: node --loader ts-node/esm test-implementation.ts
  */
 
-import { extractFAQFromHTML, generateFAQSchema } from './lib/faq-extractor.js';
-import { determineSchemaConfig, generateArticleSchema, generateCreativeWorkSchema } from './lib/schema-generator.js';
+import { extractFAQFromHTML, generateFAQSchema } from '../lib/faq-extractor.js';
+import { determineSchemaConfig, generateArticleSchema, generateCreativeWorkSchema } from '../lib/schema-generator.js';
 
 // Teste 1: HTML com FAQ
 const htmlComFAQ = `

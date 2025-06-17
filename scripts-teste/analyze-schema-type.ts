@@ -1,6 +1,6 @@
 // scripts/analyze-schema-type.ts
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../../../../types/supabase';
+import type { Database } from '../types/supabase';
 
 // Configure suas credenciais do Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
