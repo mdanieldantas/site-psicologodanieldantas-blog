@@ -33,6 +33,24 @@ import type {
   SchemaTypeEnum
 } from '../core/types';
 
+// 🚀 SEO 2025: Importar extrator automático de FAQ
+import { EnhancedFAQExtractor, DEFAULT_EXTRACTION_CONFIG } from '../core/auto-extractors';
+import type { EnhancedFAQData, AutoExtractionResult } from '../core/seo-enhancements';
+
+// 🎯 Interface para análise tradicional de FAQ (compatibilidade)
+interface FAQAnalysis {
+  questions: Array<{
+    question: string;
+    answer: string;
+    acceptedAnswer?: {
+      '@type': 'Answer';
+      text: string;
+    };
+  }>;
+  qualityScore: number;
+  totalQuestions: number;
+}
+
 // ==========================================
 // 🤔 GERADOR FAQPAGE
 // ==========================================
@@ -45,8 +63,7 @@ export class FAQPageGenerator extends BaseSchemaGenerator {
   protected readonly requiredFields: string[] = [
     'mainEntity'
   ];
-  
-  /**
+    /**
    * Gera schema FAQPage completo
    */
   async generate(context: SchemaGenerationContext): Promise<SchemaGenerationResult> {
@@ -54,28 +71,44 @@ export class FAQPageGenerator extends BaseSchemaGenerator {
     const { article } = context;
     
     try {
-      this.log('info', `Gerando FAQPage para: ${article.titulo}`);
+      this.log('info', `Gerando FAQPage para: ${article.titulo}`);      // 🚀 SEO 2025: Extração automática melhorada
+      const extractor = new EnhancedFAQExtractor(DEFAULT_EXTRACTION_CONFIG);
+      const autoExtraction = await extractor.enhanceFAQData(
+        article.faq_data ? JSON.parse(article.faq_data) : [],
+        article.conteudo
+      );
       
-      // Extração de perguntas e respostas
-      const questions = this.extractQuestions(article.conteudo);
+      // Fallback para extração tradicional se automática falhou
+      const faqAnalysis = autoExtraction.data ? 
+        this.convertAutoExtractionToAnalysis(autoExtraction.data) :
+        this.extractQuestionsTraditional(article.conteudo);
+        
+      // Log de qualidade da extração
+      if (autoExtraction.data) {
+        this.log('info', `Extração automática bem-sucedida (confiança: ${autoExtraction.confidence})`);
+        if (autoExtraction.warnings.length > 0) {
+          this.log('warn', `Avisos na extração: ${autoExtraction.warnings.join(', ')}`);
+        }
+      } else {
+        this.log('warn', 'Usando extração tradicional como fallback');
+      }
       
       // Validação mínima
-      if (questions.length < 2) {
-        const warning = `FAQ deve ter pelo menos 2 perguntas válidas (encontradas: ${questions.length})`;
+      if (faqAnalysis.questions.length < 2) {
+        const warning = `FAQ deve ter pelo menos 2 perguntas válidas (encontradas: ${faqAnalysis.questions.length})`;
         this.log('warn', warning);
         
         // Retorna sem schema se não há Q&As suficientes
         return this.createResult({}, context, startTime, [warning], []);
       }
-      
-      // Campos base do schema
+        // Campos base do schema
       const baseFields = this.generateBaseFields(context);
       
       // Construção do schema FAQPage
       const schema = {
         ...baseFields,
         '@type': 'FAQPage',
-        mainEntity: questions.map(qa => ({
+        mainEntity: faqAnalysis.questions.map((qa: any, index: number) => ({
           '@type': 'Question',
           name: qa.question,
           acceptedAnswer: {
@@ -87,12 +120,12 @@ export class FAQPageGenerator extends BaseSchemaGenerator {
       
       // Validação e warnings
       const warnings = this.validateSchema(schema);
-      this.addSEOWarnings(warnings, questions);
+      this.addSEOWarnings(warnings, faqAnalysis.questions);
       
-      this.log('info', `FAQPage gerado com ${questions.length} perguntas`, {
-        questionsCount: questions.length,
-        averageQuestionLength: Math.round(questions.reduce((acc, qa) => acc + qa.question.length, 0) / questions.length),
-        averageAnswerLength: Math.round(questions.reduce((acc, qa) => acc + qa.answer.length, 0) / questions.length)
+      this.log('info', `FAQPage gerado com ${faqAnalysis.questions.length} perguntas`, {
+        questionsCount: faqAnalysis.questions.length,
+        averageQuestionLength: Math.round(faqAnalysis.questions.reduce((acc: number, qa: any) => acc + qa.question.length, 0) / faqAnalysis.questions.length),
+        averageAnswerLength: Math.round(faqAnalysis.questions.reduce((acc: number, qa: any) => acc + qa.answer.length, 0) / faqAnalysis.questions.length)
       });
       
       return this.createResult(schema, context, startTime, warnings);
@@ -303,6 +336,42 @@ export class FAQPageGenerator extends BaseSchemaGenerator {
     if (duplicates.length > 0) {
       warnings.push('Perguntas duplicadas detectadas');
     }
+  }
+  /**
+   * 🚀 SEO 2025: Converte dados de extração automática para formato tradicional
+   */
+  private convertAutoExtractionToAnalysis(enhancedFAQ: EnhancedFAQData): FAQAnalysis {
+    return {
+      questions: enhancedFAQ.questions.map(q => ({
+        question: q.question,
+        answer: q.answer,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: q.answer
+        }
+      })),
+      qualityScore: enhancedFAQ.structuringConfidence,
+      totalQuestions: enhancedFAQ.questions.length
+    };
+  }
+
+  /**
+   * 🚀 SEO 2025: Método de extração tradicional (renomeado para clareza)
+   */
+  private extractQuestionsTraditional(content: string): FAQAnalysis {
+    const questions = this.extractQuestions(content);
+    return {
+      questions: questions.map(q => ({
+        question: q.question,
+        answer: q.answer,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: q.answer
+        }
+      })),
+      qualityScore: Math.min(questions.length * 0.3, 1.0),
+      totalQuestions: questions.length
+    };
   }
 }
 

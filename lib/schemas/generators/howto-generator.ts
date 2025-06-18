@@ -35,6 +35,44 @@ import type {
   SchemaTypeEnum
 } from '../core/types';
 
+// 🚀 SEO 2025: Importar extrator automático
+import { HowToExtractor, DEFAULT_EXTRACTION_CONFIG } from '../core/auto-extractors';
+import type { HowToData, AutoExtractionResult } from '../core/seo-enhancements';
+
+// 🎯 Interface para análise tradicional do HowTo (compatibilidade)
+interface HowToAnalysis {
+  steps: Array<{
+    name: string;
+    text: string;
+    url?: string;
+    image?: string;
+    video?: string;
+    direction?: string;
+    tip?: string;
+  }>;
+  tools: Array<{
+    name: string;
+    description?: string;
+  }>;
+  supplies: Array<{
+    name: string;
+    description?: string;
+  }>;
+  sections: Array<{
+    name: string;
+    steps: Array<{
+      name: string;
+      text: string;
+      direction?: string;
+      tip?: string;
+    }>;
+  }>;
+  complexity: string;
+  difficulty?: string;
+  estimatedCost?: number;
+  expectedResult?: string;
+}
+
 import {
   generateSchemaId,
   formatSchemaDate,
@@ -56,8 +94,7 @@ class HowToGenerator extends BaseSchemaGenerator {
     'step',
     'totalTime'
   ];
-  
-  /**
+    /**
    * Gera schema HowTo completo
    */
   async generate(context: SchemaGenerationContext): Promise<SchemaGenerationResult> {
@@ -70,9 +107,26 @@ class HowToGenerator extends BaseSchemaGenerator {
       // Campos base do schema
       const baseFields = this.generateBaseFields(context);
       
-      // Análise do conteúdo para extrair passos
-      const howToAnalysis = this.analyzeHowToContent(article);
+      // 🚀 SEO 2025: Extração automática melhorada
+      const extractor = new HowToExtractor(DEFAULT_EXTRACTION_CONFIG);
+      const autoExtraction = await extractor.extractHowToData(article.conteudo, article.titulo);
+      
+      // Fallback para análise tradicional se extração automática falhou
+      const howToAnalysis = autoExtraction.data ? 
+        this.convertAutoExtractionToAnalysis(autoExtraction.data) :
+        this.analyzeHowToContent(article);
+        
       const contentStats = getContentStats(article.conteudo);
+      
+      // Log de qualidade da extração
+      if (autoExtraction.data) {
+        this.log('info', `Extração automática bem-sucedida (confiança: ${autoExtraction.confidence})`);
+        if (autoExtraction.warnings.length > 0) {
+          this.log('warn', `Avisos na extração: ${autoExtraction.warnings.join(', ')}`);
+        }
+      } else {
+        this.log('warn', 'Usando análise tradicional como fallback');
+      }
       
       // Verificar se há passos suficientes
       if (howToAnalysis.steps.length < 2) {
@@ -98,10 +152,11 @@ class HowToGenerator extends BaseSchemaGenerator {
           text: step.text,
           ...(step.url && { url: step.url }),
           ...(step.image && { image: step.image })
-        })),
-        
-        // Tempo total estimado
-        totalTime: this.estimateHowToTime(contentStats.readingTime, howToAnalysis.complexity),
+        })),        // Tempo total estimado
+        totalTime: this.estimateHowToTime(
+          typeof contentStats.readingTime === 'number' ? contentStats.readingTime : 5, 
+          this.getComplexityScore(String(howToAnalysis.complexity))
+        ),
         
         // Ferramentas necessárias (se detectadas)
         ...(howToAnalysis.tools.length > 0 && {
@@ -670,6 +725,50 @@ class HowToGenerator extends BaseSchemaGenerator {
    */
   protected getDetectionReason(context: SchemaGenerationContext): string {
     return 'HowTo selecionado devido ao conteúdo estruturado em passos/instruções detectado';
+  }
+  /**
+   * 🚀 SEO 2025: Converte dados de extração automática para formato tradicional
+   */
+  private convertAutoExtractionToAnalysis(howToData: HowToData): HowToAnalysis {
+    return {
+      steps: howToData.steps.map(step => ({
+        name: step.name,
+        text: step.text,
+        image: step.image,
+        video: step.video,
+        direction: step.text, // Texto como direção
+        tip: step.tip
+      })),
+      tools: howToData.tools || [],
+      supplies: howToData.supplies || [],
+      sections: [], // Seções não suportadas na extração automática ainda
+      complexity: 'medium', // Complexidade padrão para dados extraídos
+      estimatedCost: howToData.estimatedCost?.value,
+      expectedResult: 'Resultado conforme instruções do tutorial' // Resultado padrão
+    };
+  }
+  
+  /**
+   * 🚀 SEO 2025: Converte complexidade string para score numérico
+   */
+  private getComplexityScore(complexity: string): number {
+    switch (complexity.toLowerCase()) {
+      case 'low':
+      case 'básico':
+      case 'fácil':
+        return 1;
+      case 'medium':
+      case 'médio':
+      case 'intermediário':
+        return 2;
+      case 'high':
+      case 'alto':
+      case 'avançado':
+      case 'expert':
+        return 3;
+      default:
+        return 2; // Padrão médio
+    }
   }
 }
 

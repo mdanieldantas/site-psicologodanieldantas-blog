@@ -34,6 +34,10 @@ import type {
   SchemaTypeEnum
 } from '../core/types';
 
+// 🚀 SEO 2025: Importar extrator automático de multimídia
+import { MultimediaExtractor, DEFAULT_EXTRACTION_CONFIG } from '../core/auto-extractors';
+import type { EnhancedVideoData, AutoExtractionResult } from '../core/seo-enhancements';
+
 import {
   generateSchemaId,
   formatSchemaDate,
@@ -57,8 +61,7 @@ export class VideoObjectGenerator extends BaseSchemaGenerator {
     'author',
     'description'
   ];
-  
-  /**
+    /**
    * Gera schema VideoObject completo
    */
   async generate(context: SchemaGenerationContext): Promise<SchemaGenerationResult> {
@@ -75,39 +78,82 @@ export class VideoObjectGenerator extends BaseSchemaGenerator {
         return this.createResult({}, context, startTime, [], [error]);
       }
       
+      // 🚀 SEO 2025: Extração automática melhorada de dados de vídeo
+      const extractor = new MultimediaExtractor(DEFAULT_EXTRACTION_CONFIG);
+      const autoExtraction = await extractor.extractVideoData(
+        article.url_video,
+        article.conteudo,
+        article.titulo
+      );
+      
+      // Log de qualidade da extração
+      if (autoExtraction.data) {
+        this.log('info', `Extração automática bem-sucedida (confiança: ${autoExtraction.confidence})`);
+        if (autoExtraction.warnings.length > 0) {
+          this.log('warn', `Avisos na extração: ${autoExtraction.warnings.join(', ')}`);
+        }
+      } else {
+        this.log('warn', 'Usando análise tradicional como fallback');
+      }
+      
       // Campos base do schema
       const baseFields = this.generateBaseFields(context);
       
       // Estatísticas do conteúdo para duração estimada
       const contentStats = getContentStats(article.conteudo);
       
-      // Detectar plataforma de vídeo
-      const videoInfo = this.analyzeVideoUrl(article.url_video);
-      
-      // Schema VideoObject específico
+      // Detectar plataforma de vídeo (tradicional)
+      const videoInfo = this.analyzeVideoUrl(article.url_video);      // Schema VideoObject específico com dados extraídos
       const schema = {
         ...baseFields,
         '@type': 'VideoObject',
         
         // Campos obrigatórios do VideoObject
-        name: article.titulo,
+        name: autoExtraction.data?.name || article.titulo,
         contentUrl: article.url_video,
         uploadDate: formatSchemaDate(article.data_publicacao || article.data_criacao),
-        description: this.generateVideoDescription(article),
+        description: autoExtraction.data?.description || this.generateVideoDescription(article),
         
-        // Metadados de vídeo
-        thumbnailUrl: this.generateThumbnailUrl(article.url_video, article.imagem_capa_arquivo),
-        duration: this.estimateVideoDuration(contentStats.readingTime),
-        encodingFormat: videoInfo.format,
+        // 🚀 SEO 2025: Metadados aprimorados de vídeo
+        ...(autoExtraction.data?.duration && {
+          duration: autoExtraction.data.duration
+        }),
+        ...(autoExtraction.data?.thumbnailUrl && {
+          thumbnailUrl: autoExtraction.data.thumbnailUrl
+        }),
+        ...(autoExtraction.data?.embedUrl && {
+          embedUrl: autoExtraction.data.embedUrl
+        }),
         
-        // Plataforma e embed
-        ...(videoInfo.platform && {
+        // Fallbacks para dados tradicionais se extração não forneceu
+        ...(!autoExtraction.data?.thumbnailUrl && {
+          thumbnailUrl: this.generateThumbnailUrl(article.url_video, article.imagem_capa_arquivo)
+        }),
+        ...(!autoExtraction.data?.duration && {
+          duration: this.estimateVideoDuration(typeof contentStats.readingTime === 'number' ? contentStats.readingTime : 5)
+        }),
+        
+        encodingFormat: videoInfo.format, // Usar análise tradicional para formato
+        
+        // Plataforma e embed (fallback se não extraído automaticamente)
+        ...(videoInfo.platform && !autoExtraction.data?.embedUrl && {
           embedUrl: this.generateEmbedUrl(article.url_video, videoInfo.platform),
           uploadDate: formatSchemaDate(article.data_publicacao || article.data_criacao)
         }),
         
-        // Interações e estatísticas (estimativas baseadas no engajamento)
-        interactionStatistic: this.generateVideoInteractionStats(article, videoInfo.platform),
+        // 🚀 SEO 2025: Interações aprimoradas
+        ...(autoExtraction.data?.interactionCount && {
+          interactionStatistic: [{
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/WatchAction',
+            userInteractionCount: autoExtraction.data.interactionCount
+          }]
+        }),
+        
+        // Fallback para estatísticas tradicionais
+        ...(!autoExtraction.data?.interactionCount && {
+          interactionStatistic: this.generateVideoInteractionStats(article, videoInfo.platform)
+        }),
         
         // Conteúdo relacionado
         ...(article.categoria_principal && {
