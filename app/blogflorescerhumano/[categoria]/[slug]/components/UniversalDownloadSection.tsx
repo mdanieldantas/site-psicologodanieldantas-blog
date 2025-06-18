@@ -93,25 +93,28 @@ export function UniversalDownloadSection({ artigo }: UniversalDownloadSectionPro
 // 🎯 FUNÇÃO PRINCIPAL: Processa URL baseado na origem
 function processDownloadUrl(artigo: ArtigoMultimidia) {
   const { download_source, download_url } = artigo;
-  
-  switch (download_source) {
-    case 'SUPABASE':
+    switch (download_source) {
+    case 'Supabase':
       return {
         finalUrl: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/materiais_download/${download_url}`,
         directDownload: true
       };
     
-    case 'GDRIVE':
-      // Converte Google Drive share link para download direto
+    case 'External':
+      // Converte Google Drive share link para download direto se for Google Drive
       const fileId = extractGoogleDriveFileId(download_url || '');
+      if (fileId) {
+        return {
+          finalUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,
+          directDownload: true
+        };
+      }
       return {
-        finalUrl: fileId 
-          ? `https://drive.google.com/uc?export=download&id=${fileId}`
-          : download_url || '',
-        directDownload: true
+        finalUrl: download_url || '',
+        directDownload: isDirectDownloadUrl(download_url || '')
       };
     
-    case 'EXTERNAL':
+    case 'None':
     default:
       return {
         finalUrl: download_url || '',
