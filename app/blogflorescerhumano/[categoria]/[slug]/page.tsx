@@ -22,7 +22,9 @@ import { createMetadata, optimizeTitle, optimizeDescription } from '../../../../
 import { getArticleBreadcrumbs, generateBreadcrumbJsonLd } from '../../../../lib/breadcrumbs';
 import { generateSchemaByFactory, generateSchemaJsonLd, type ArticleSchemaData, type ArticleSchemaDataExtended } from '../../../../lib/article-schema';
 
-// ✅ IMPORTS para FAQ e Schema inteligente (removido - não mais usado)
+// ✅ IMPORTS para FAQ - Sistema Modular
+import FAQSection from './components/FAQSection';
+import { processFAQData } from '@/lib/faq-utils';
 
 // ✅ PASSO 5.2 - ISR CONFIGURATION FOR NEXT.JS 15.2.4
 // Time-based revalidation - artigos se atualizam raramente, então 1 hora é ideal
@@ -98,14 +100,16 @@ export async function generateMetadata({
   params: Promise<{ slug: string; categoria: string }> 
 }): Promise<Metadata> {
   const { categoria: categoriaSlug, slug: artigoSlug } = await params;
-    try {    // ✅ QUERY SEGURA - Incluindo meta_descricao para priorização no SEO
+    try {    // ✅ QUERY SEGURA - Incluindo meta_descricao e faq_data para SEO e FAQ
     const { data: artigo } = await supabaseServer
       .from('artigos')
       .select(`
         id,
         titulo,
         resumo,
+        conteudo,
         meta_descricao,
+        faq_data,
         imagem_capa_arquivo,
         data_publicacao,
         data_atualizacao,
@@ -219,8 +223,7 @@ export default async function ArtigoEspecificoPage({
   // --- 1. Busca do Artigo Específico --- //
   console.log(
     `[Artigo Page] Buscando artigo com slug: "${artigoSlugParam}" na categoria com slug: "${categoriaSlugParam}"`
-  );
-  // Usamos a tipagem explícita aqui
+  );  // Usamos a tipagem explícita aqui
   const { data: artigo, error: artigoError } = await supabaseServer
     .from("artigos")
     .select(
@@ -228,6 +231,8 @@ export default async function ArtigoEspecificoPage({
       id,
       titulo,
       conteudo,
+      resumo,
+      faq_data,
       data_publicacao,
       imagem_capa_arquivo,
       categorias!inner ( id, nome, slug ),
@@ -246,7 +251,6 @@ export default async function ArtigoEspecificoPage({
   if (artigoError || !artigo) {
     notFound(); // Exibe a página 404
   }
-
   // --- Extração de Dados --- //
   const {
     id: currentArticleId,
@@ -257,7 +261,9 @@ export default async function ArtigoEspecificoPage({
     categorias,
     autores,
     tags,
-    resumo,  } = artigo; // Extrai o ID e resumo também
+    resumo,
+    faq_data, // ✅ Adicionando faq_data na extração
+  } = artigo; // Extrai o ID, resumo e faq_data também
   
   const nomeAutor = autores?.nome ?? "Autor Desconhecido";
   const nomeCategoria = categorias?.nome ?? "Categoria Desconhecida";
@@ -265,7 +271,6 @@ export default async function ArtigoEspecificoPage({
 
   // --- Geração de URL da Imagem com Fallback --- //
   const imageUrl = getImageUrl(imagem_capa_arquivo, categoriaSlug);
-
   // --- Formatação da Data --- //
   const dataFormatada = data_publicacao
     ? new Date(data_publicacao).toLocaleDateString("pt-BR", {
@@ -273,6 +278,16 @@ export default async function ArtigoEspecificoPage({
         month: "long",
         day: "numeric",      })
     : "Data não disponível";
+  // ✅ --- Processamento do FAQ --- //
+  console.log(`📋 [FAQ] Processando FAQ para artigo: "${titulo}"`);
+  // Cast seguro do tipo Json do Supabase para nosso tipo RawFAQData
+  const faqProcessado = processFAQData(faq_data as any);
+  
+  if (faqProcessado) {
+    console.log(`✅ [FAQ] ${faqProcessado.length} perguntas processadas com sucesso`);
+  } else {
+    console.log(`ℹ️ [FAQ] Nenhum FAQ encontrado para este artigo`);
+  }
   // --- Construção da URL Completa para Compartilhamento --- //
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://psicologodanieldantas.com.br";
@@ -685,14 +700,31 @@ export default async function ArtigoEspecificoPage({
                   ),
               }}
             />
-            
-            {/* Adicionando o CitationBox novamente aqui */}
+              {/* Adicionando o CitationBox novamente aqui */}
             <CitationBox 
               title={titulo}
               author="Marcos Daniel Gomes Dantas"
               date={data_publicacao || new Date().toISOString()}
               url={`https://www.psicologodanieldantas.com/blogflorescerhumano/${categoriaSlugParam}/${artigoSlugParam}`}
             />
+
+            {/* ✅ FAQ SECTION - Renderizado após o conteúdo principal */}
+            {faqProcessado && (
+              <FAQSection 
+                faqData={faqProcessado}
+                titulo="Dúvidas sobre este artigo?"
+                subtitulo="Esclarecemos as principais questões relacionadas ao tema"
+                position="after-content"
+                allowMultiple={true}
+                showIcons={true}
+                showCounter={true}
+                showFooter={true}
+                accessibility={{
+                  sectionId: `faq-${currentArticleId}`,
+                  headingLevel: 'h2'
+                }}
+              />
+            )}
 
           </div>
         ) : (
