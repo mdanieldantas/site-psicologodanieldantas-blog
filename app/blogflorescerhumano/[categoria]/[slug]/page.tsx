@@ -620,22 +620,10 @@ export default async function ArtigoEspecificoPage({
                 fontSize: "1.125rem",
                 color: "#583B1F",
               }}dangerouslySetInnerHTML={{
-                __html: artigoConteudo
-                  // Garantindo que não há spans ou textos com cor branca ou invisível
+                __html: artigoConteudo                  // ✅ LIMPEZA MÍNIMA - Apenas correções essenciais para compatibilidade
                   .replace(/color:\s*white/gi, "color: #583B1F")
-                  .replace(/color:\s*#fff(fff)?/gi, "color: #583B1F")
-                  .replace(
-                    /color:\s*rgb\(\s*255\s*,\s*255\s*,\s*255\s*\)/gi,
-                    "color: #583B1F"
-                  )
-                  .replace(/style="color:\s*white/gi, 'style="color: #583B1F')
-                  .replace(
-                    /style="color:\s*#fff(fff)?/gi,
-                    'style="color: #583B1F'
-                  )
-                  .replace(/color:\s*transparent/gi, "color: #583B1F")
-                  
-                  // Melhorar os headings para SEO - adicionando IDs semânticos e classes
+                  .replace(/color:\s*transparent/gi, "color: #583B1F")                  
+                  // ✅ HEADINGS COM IDs SEMÂNTICOS para SEO e TableOfContents
                   .replace(/<h1(.*?)>(.*?)<\/h1>/gi, (match, attributes, content) => {
                     const cleanContent = content.replace(/<.*?>/g, '').trim();
                     const id = cleanContent.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
@@ -655,48 +643,19 @@ export default async function ArtigoEspecificoPage({
                     const cleanContent = content.replace(/<.*?>/g, '').trim();
                     const id = cleanContent.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
                     return `<h${level}${attributes} id="${id}" class="heading-h${level}" style="color: #583B1F; margin-top: 2rem; margin-bottom: 1rem; font-weight: 600; font-size: 1.25rem; line-height: 1.4;">${content}</h${level}>`;
-                  })
-                  
-                  // Aplicar melhorias de estilo aos parágrafos e outros elementos
+                  })                  
+                  // ✅ ESTILOS BÁSICOS - Mantendo apenas o essencial
                   .replace(
                     /<p>/gi,
-                    '<p style="color: #583B1F; margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem;">'
-                  )
-                  .replace(/<span/gi, '<span style="color: inherit"')
-                  .replace(
-                    /<li/gi,
-                    '<li style="color: #583B1F; margin-bottom: 0.75rem; line-height: 1.7;"'
+                    '<p style="margin-bottom: 1.5rem; line-height: 1.8;">'
                   )
                   .replace(
                     /<ul/gi,
-                    '<ul style="color: #583B1F; margin-top: 1.5rem; margin-bottom: 2rem; padding-left: 1.75rem; list-style-type: disc;"'
+                    '<ul style="margin: 1.5rem 0; padding-left: 1.75rem;"'
                   )
                   .replace(
                     /<ol/gi,
-                    '<ol style="color: #583B1F; margin-top: 1.5rem; margin-bottom: 2rem; padding-left: 1.75rem; list-style-type: decimal;"'
-                  )
-                  // Estilizar links dentro do conteúdo
-                  .replace(
-                    /<a /gi,
-                    '<a style="color: #C19A6B; text-decoration: none; border-bottom: 1px dotted #C19A6B; transition: all 0.2s ease;" onmouseover="this.style.color=\'#735B43\'" onmouseout="this.style.color=\'#C19A6B\'" '
-                  )
-                  // Melhorar aparência de blockquotes
-                  .replace(
-                    /<blockquote>/gi,
-                    '<blockquote style="border-left: 4px solid #C19A6B; padding: 1.25rem 1.5rem; font-style: italic; color: #735B43; margin: 2.5rem 0; background-color: #F8F5F0; font-size: 1.1rem; line-height: 1.7;">'
-                  )
-                  // Adicionar estilo para tabelas
-                  .replace(
-                    /<table/gi,
-                    '<table style="border-collapse: collapse; width: 100%; margin: 2.5rem 0;"'
-                  )
-                  .replace(
-                    /<th/gi,
-                    '<th style="border: 1px solid #C19A6B; padding: 0.85rem; background-color: #F8F5F0; color: #583B1F; font-weight: 600; text-align: left;"'
-                  )
-                  .replace(
-                    /<td/gi,
-                    '<td style="border: 1px solid #C19A6B30; padding: 0.85rem; color: #583B1F;"'
+                    '<ol style="margin: 1.5rem 0; padding-left: 1.75rem;"'
                   ),
               }}
             />

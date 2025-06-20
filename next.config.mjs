@@ -2,10 +2,17 @@
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  typescript: {
+  },  typescript: {
     ignoreBuildErrors: true,
   },
+  
+  // 🎯 CONFIGURAÇÃO OTIMIZADA: Mantém logs importantes, remove debug
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'] // Mantém apenas logs críticos
+    } : false
+  },
+  
   images: {
     unoptimized: true,
     // Otimizações para performance de imagens
