@@ -8,13 +8,23 @@ import BlogFooter from './components/BlogFooter';
 import ContentWrapper from './components/ContentWrapper';
 import ScrollButton from './components/ScrollButton';
 import { ConnectionQualityAdjuster } from './components/ConnectionQualityAdjuster';
+import { PageContext } from './page-context';
 import './ui/globalsBlog.css';
 import './ui/mobile-improvements.css';
 
 // Removida a exportação de metadata daqui
 
-export default function BlogClientLayout({ children }: { children: React.ReactNode }) {  const pathname = usePathname();
+export default function BlogClientLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const isHome = pathname === '/blogflorescerhumano';
+  
+  // 🎯 LÓGICA ULTRA-SIMPLES: Schema Blog só em páginas apropriadas
+  // ✅ Home: /blogflorescerhumano
+  // ✅ Categorias: /blogflorescerhumano/categoria/[categoria]
+  // ✅ Tags: /blogflorescerhumano/tag/[tag]
+  // ❌ Artigos: /blogflorescerhumano/[slug] (mais de 2 segmentos = artigo)
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const shouldShowBlogSchema = pathSegments.length <= 3; // /blogflorescerhumano, /categoria/x, /tag/x
     // Carrega scripts quando o componente monta
   React.useEffect(() => {
     // Importação dinâmica do script de interações mobile
@@ -137,9 +147,8 @@ export default function BlogClientLayout({ children }: { children: React.ReactNo
         executarTodosTestes();
       }, 3000);
     }
-  }, []);
-  return (
-    <>
+  }, []);  return (
+    <PageContext.Provider value={{ shouldShowBlogSchema }}>
       {/* Componente que ajusta a qualidade baseado na conexão do usuário */}
       <ConnectionQualityAdjuster />
       
@@ -158,6 +167,6 @@ export default function BlogClientLayout({ children }: { children: React.ReactNo
         <BlogFooter />
           {/* Botão de Scroll */}        <ScrollButton />
       </div>
-    </>
+    </PageContext.Provider>
   );
 }

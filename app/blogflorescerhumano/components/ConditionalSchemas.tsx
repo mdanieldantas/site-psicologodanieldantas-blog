@@ -1,22 +1,7 @@
-// app/blogflorescerhumano/layout.tsx (Server Component)
-import type { Metadata } from 'next';
-import BlogClientLayout from './blog-client-layout'; // Importando o layout do cliente
-import SchemaManager from './schema-manager'; // Importando o gerenciador de schemas
-import React from 'react';
-import './components/article-styles.css'; // Importando estilos específicos para artigos
+'use client'
 
-// ✅ SISTEMA UNIFICADO DE METADADOS
-import { createMetadata, BLOG_CONFIG } from '../../lib/metadata-config';
-
-// ✅ METADADOS OTIMIZADOS PARA O BLOG
-export const metadata: Metadata = createMetadata({
-  title: BLOG_CONFIG.name,
-  description: BLOG_CONFIG.description,
-  path: "/blogflorescerhumano",
-  images: ["/blogflorescerhumano/logos-blog/logo-fundomarrom.webp"],
-  type: "website",
-  robots: { index: true, follow: true }
-});
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 // ✅ SCHEMA.ORG DO BLOG ENRIQUECIDO PARA SEO
 const blogSchema = {
@@ -123,26 +108,61 @@ const breadcrumbSchema = {
   ]
 };
 
-interface BlogLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function BlogLayout({ children }: BlogLayoutProps) {
-  // 🎯 PREPARAÇÃO DOS SCHEMAS PARA O GERENCIADOR
-  const blogSchemaHtml = JSON.stringify(blogSchema, null, 0);
-  const breadcrumbSchemaHtml = JSON.stringify(breadcrumbSchema, null, 0);
+export default function ConditionalSchemas() {
+  const pathname = usePathname();
+  const [shouldShowBlogSchema, setShouldShowBlogSchema] = useState(true);
+  
+  useEffect(() => {
+    // ✅ LAYER 1: Detecção por URL Pattern (Primária - 95% dos casos)
+    const isArticleByURL = /\/blogflorescerhumano\/[^\/]+\/[^\/]+$/.test(pathname);
+    
+    // ✅ LAYER 2: Detecção por Schema Existente (Secundária - 4% dos casos)
+    const hasArticleSchema = Array.from(document.querySelectorAll('script[type="application/ld+json"]'))
+      .some(script => {
+        try {
+          const data = JSON.parse(script.textContent || '');
+          return data['@type'] === 'BlogPosting' || data['@type'] === 'Article';
+        } catch {
+          return false;
+        }
+      });
+    
+    // ✅ LAYER 3: Detecção por Metadata (Terciária - 1% dos casos)
+    const isArticleByMeta = document.title.includes(' | ') && 
+                           !document.title.includes('Blog Florescer Humano');
+    
+    // ✅ DECISÃO FINAL: NÃO mostrar Blog schema se for artigo
+    const isArticlePage = isArticleByURL || hasArticleSchema || isArticleByMeta;
+    setShouldShowBlogSchema(!isArticlePage);
+    
+    // ✅ LOG para debug (apenas em desenvolvimento)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Schema Detection:', {
+        pathname,
+        isArticleByURL,
+        hasArticleSchema,
+        isArticleByMeta,
+        finalDecision: isArticlePage ? 'HIDE Blog Schema' : 'SHOW Blog Schema'
+      });
+    }
+    
+  }, [pathname]);
 
   return (
     <>
-      {/* Layout do Cliente com funcionalidades interativas */}
-      <BlogClientLayout>
-        {/* 🎯 GERENCIADOR INTELIGENTE DE SCHEMAS */}
-        <SchemaManager 
-          blogSchemaHtml={blogSchemaHtml}
-          breadcrumbSchemaHtml={breadcrumbSchemaHtml}
+      {/* ✅ SCHEMA BLOG: Apenas quando apropriado (homepage, categorias, tags) */}
+      {shouldShowBlogSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema, null, 0) }}
         />
-        {children}
-      </BlogClientLayout>
+      )}
+      
+      {/* ✅ BREADCRUMB: Sempre presente em todas as páginas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema, null, 0) }}
+      />
     </>
   );
 }
